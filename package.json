@@ -18,7 +18,8 @@
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0",
-    "vue-3-component-library": "vue-3-component-library-0.1.0.tgz"
+    "vue-3-component-library": "vue-3-component-library-0.1.0.tgz",
+    "inuits-vuejs-oidc": "git+https://github.com/inuits/inuits-vuejs-oidc.git#next"
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",
