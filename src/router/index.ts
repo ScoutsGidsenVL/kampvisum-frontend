@@ -7,7 +7,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Home',
     component: Home,
     meta: {
-      requiresOpenIdAuth: true,
+      // requiresOpenIdAuth: true,
     },
   },
   {
