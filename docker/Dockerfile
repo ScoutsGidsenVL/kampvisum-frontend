@@ -1,7 +1,14 @@
 ### Development stage
-FROM node:lts-alpine as development-stage
-RUN yarn global add @vue/cli@3.9.1 
+FROM  registry-dev.cloud.inuits.io/node:lts-alpine as development-stage
+
 WORKDIR /app
-RUN apk add --no-cache git
-CMD npm install && npm run serve
+ENTRYPOINT ["/entrypoint.sh"]
+
+COPY docker/entrypoint*.sh /
+COPY package.json package-lock.json ./
+
+COPY ./ ./
+
 EXPOSE 8080
+
+
