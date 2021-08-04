@@ -10,9 +10,10 @@ import { OpenIdConnectPlugin } from 'inuits-vuejs-oidc'
 import RepositoryFactory from './repositories/repositoryFactory'
 import AuthRepository from './repositories/authRepository'
 import StaticFileRepository from './repositories/staticFileRepository'
+import i18n from './i18n'
 
 new StaticFileRepository().getFile('config.json').then((result: any) => {
-  const app = createApp(App)
+  const app = createApp(App).use(i18n)
 
   let configFile = result
 
