@@ -2,9 +2,6 @@
 
 set -e
 
-echo "================="
 echo "Starting frontend"
-echo "================="
-
-npm i &&
+npm link ./vue-3-component-library &&
 exec npm run serve

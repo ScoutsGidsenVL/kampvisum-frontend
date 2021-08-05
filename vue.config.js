@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   pluginOptions: {
     i18n: {
@@ -8,6 +10,14 @@ module.exports = {
       runtimeOnly: false,
       compositionOnly: false,
       fullInstall: true
+    }
+  },
+  configureWebpack: {
+    resolve: {
+      symlinks: false,
+      alias: {
+        vue: path.resolve('./node_modules/vue')
+      }
     }
   }
 }
