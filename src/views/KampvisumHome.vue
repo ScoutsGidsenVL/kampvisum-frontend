@@ -1,24 +1,25 @@
 <template>
   <div class="home">
-
-    <!-- <HelloWorld />
-
-    <div class="w-96">
-      <CustomInput name="ricardo" label="ricardo" rules="required" />
-    </div> -->
+    <custom-button :isSubmitting="false" text="Maak nieuw kamp aan">
+      <template v-slot:icon>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+        </svg>
+      </template>
+      
+    </custom-button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { HelloWorld, CustomInput } from 'vue-3-component-library'
+import { CustomButton } from 'vue-3-component-library'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'KampvisumHome',
   components: {
-    HelloWorld,
-    CustomInput,
+    'custom-button': CustomButton
   },
   setup() {
     const { t } = useI18n({
