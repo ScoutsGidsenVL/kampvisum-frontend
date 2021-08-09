@@ -1,30 +1,41 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div id="app" class="pb-10">
+    <base-page>
+      <div v-if="$route.meta.titleKey" class="container mt-8 mb-4 pt-2">
+        <page-title :title="t($route.meta.titleKey)" :homeUrl="$route.meta.homescreen" />
+        <router-view />
+      </div>
+    </base-page>
   </div>
-  <router-view/>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import {BasePage, PageTitle} from 'vue-3-component-library'
+import { defineComponent } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-#nav {
-  padding: 30px;
-}
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+export default defineComponent({
+  name: 'App',
+  components: {
+    'base-page': BasePage,
+    'page-title': PageTitle,
+  },
+  setup() {
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+    return { t }
+  },
+})
+</script>
+
+<style scoped>
+@media (min-width: 992px) {
+  #app {
+    padding-left: 4rem;
+  }
 }
 </style>

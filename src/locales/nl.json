@@ -1,8 +1,6 @@
 {
-  "welcome": "Message by Vue-l18n!",
-  "kampvisum": "Kampvisum",
-  "upload-section": {
-    "upload-file": "upload bestand",
-    "drag-here": "sleep hier"
-  }
+  "page-titles": {
+    "kampvisum": "Kampvisum"
+  },
+  "welcome": "Message by Vue-l18n!"
 }

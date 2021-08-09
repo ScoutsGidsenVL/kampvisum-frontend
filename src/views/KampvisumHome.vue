@@ -1,14 +1,11 @@
 <template>
   <div class="home">
-    <div>
-      <h1>{{ t('welcome') }}</h1>
-    </div>
 
-    <HelloWorld />
+    <!-- <HelloWorld />
 
     <div class="w-96">
       <CustomInput name="ricardo" label="ricardo" rules="required" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -18,7 +15,7 @@ import { HelloWorld, CustomInput } from 'vue-3-component-library'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
-  name: 'Home',
+  name: 'KampvisumHome',
   components: {
     HelloWorld,
     CustomInput,
