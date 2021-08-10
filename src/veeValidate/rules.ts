@@ -6,9 +6,6 @@ export const defineRules = () => {
   defineRule('required', required)
 
   configure({
-    // Generates an English message locale generator
-    // https://vee-validate.logaretm.com/v4/guide/i18n#global-message-generator
-
     generateMessage: localize({
       en: {
         messages: {

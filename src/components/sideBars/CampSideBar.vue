@@ -36,21 +36,20 @@
           <custom-button :isSubmitting="false" :text="sideBarState.state === 'edit' ? 'Bewerk' : 'Voeg toe'" />
         </div>
       </form>
-
     </base-side-bar>
   </div>
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, option, InputTypes, CustomInput, CustomButton } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, option, InputTypes, CustomButton, CustomInput } from 'vue-3-component-library'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { scrollToFirstError } from '@/veeValidate/helpers'
-import { useForm } from 'vee-validate'
+import { useForm, useField } from 'vee-validate'
 
 export interface camp {
-name: String,
-endDate: String,
-startDate: String
+  name: String
+  endDate: String
+  startDate: String
 }
 
 export default defineComponent({
@@ -58,7 +57,7 @@ export default defineComponent({
   components: {
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,
-    'custom-button': CustomButton
+    'custom-button': CustomButton,
   },
   props: {
     title: {
@@ -102,7 +101,7 @@ export default defineComponent({
     const options = ref<option[]>([
       { text: 'Nieuw', value: 'Nieuw' },
       { text: 'Uit eerdere aanvragen', value: 'Bestaand' },
-    ])    
+    ])
 
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
@@ -119,8 +118,7 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
-      console.log('PRESSED')
-      // await validate().then((validation: any) => scrollToFirstError(validation, 'addNewNonMember'))
+      // await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
       await validate().then((validation: any) => console.log('VALIDATION:', validation))
 
       handleSubmit(async (values: camp) => {
@@ -141,6 +139,12 @@ export default defineComponent({
       }
     })
 
+    const nameField = useField('name', 'required', {
+      initialValue: '',
+    })
+
+    console.log('check: ', nameField)
+
     return {
       sideBarState,
       closeSideBar,
@@ -148,9 +152,10 @@ export default defineComponent({
       options,
       selected,
       onSubmit,
-      InputTypes
+      InputTypes,
+      nameField,
+      values,
     }
   },
 })
 </script>
-
