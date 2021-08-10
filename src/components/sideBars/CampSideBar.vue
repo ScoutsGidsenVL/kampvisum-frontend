@@ -41,16 +41,13 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, option, InputTypes, CustomButton, CustomInput } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, option, InputTypes, CustomButton, CustomInput, scrollToFirstError, useFormSendWithSuccess, useScrollToTop } from 'vue-3-component-library'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
-import { scrollToFirstError } from '@/veeValidate/helpers'
-import { useForm, useField } from 'vee-validate'
+import RepositoryFactory from '@/repositories/repositoryFactory'
+import { CampRepository } from '@/repositories/campRepository'
 
-export interface camp {
-  name: String
-  endDate: String
-  startDate: String
-}
+import { Camp } from '../../serializer/Camp'
+import { useForm } from 'vee-validate'
 
 export default defineComponent({
   name: 'NonMemberSideBar',
@@ -95,9 +92,12 @@ export default defineComponent({
   },
   emits: ['update:sideBarState', 'addCreatedNonMemberToList', 'updateMemberInList'],
   setup(props, context) {
-    const { resetForm, errors, handleSubmit, validate, meta, values, isSubmitting } = useForm<camp>()
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
+    const { resetForm, errors, handleSubmit, validate, meta, values, isSubmitting } = useForm<Camp>()
+    // const { formSendWithSuccess } = useFormSendWithSuccess<Camp>(meta)
+    const { scrollToTop } = useScrollToTop()
     const { sideBarState } = toRefs(props)
+
     const options = ref<option[]>([
       { text: 'Nieuw', value: 'Nieuw' },
       { text: 'Uit eerdere aanvragen', value: 'Bestaand' },
@@ -118,19 +118,33 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
-      // await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
-      await validate().then((validation: any) => console.log('VALIDATION:', validation))
-
-      handleSubmit(async (values: camp) => {
+      await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
+      handleSubmit(async (values: Camp) => {
         if (props.sideBarState.state === 'new' || props.sideBarState.state === 'edit') {
-          const camp = ref<camp>({
+          const camp = ref<Camp>({
             name: values.name,
             startDate: values.startDate,
             endDate: values.endDate,
           })
-          console.log('KAMP: ', camp.value)
+          if (props.sideBarState.state === 'edit') {
+            console.log('edit: ', camp.value)
+          } else {
+            await postCamp(camp.value)
+          }
         }
       })()
+    }
+
+    const postCamp = async (data: Camp) => {
+      // formSendWithSuccess.value = false
+      await RepositoryFactory.get(CampRepository)
+        .create(data)
+        .then((completed: Camp) => {
+          // formSendWithSuccess.value = true
+          scrollToTop()
+          resetForm()
+          console.log('post response: ', completed)
+        })
     }
 
     watch(sideBarState, (value: sideBarState<any>) => {
@@ -138,12 +152,6 @@ export default defineComponent({
         console.log('CAMP SIDE BAR EDIT')
       }
     })
-
-    const nameField = useField('name', 'required', {
-      initialValue: '',
-    })
-
-    console.log('check: ', nameField)
 
     return {
       sideBarState,
@@ -153,7 +161,6 @@ export default defineComponent({
       selected,
       onSubmit,
       InputTypes,
-      nameField,
       values,
     }
   },
