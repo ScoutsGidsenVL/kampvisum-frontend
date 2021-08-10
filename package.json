@@ -11,20 +11,20 @@
   },
   "dependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.2",
-    "@vee-validate/i18n": "^4.4.7",
-    "@vee-validate/rules": "^4.4.7",
     "autoprefixer": "^9",
     "core-js": "^3.6.5",
     "inuits-vuejs-oidc": "git+https://github.com/inuits/inuits-vuejs-oidc.git#next",
     "postcss": "^7",
     "register-service-worker": "^1.7.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
-    "vee-validate": "^4.4.9",
     "vue": "^3.0.0",
-    "vue-3-component-library": "vue-3-component-library-0.1.0.tgz",
+    "vue-3-component-library": "git+https://github.com/ScoutsGidsenVL/vue-3-component-library#master",
     "vue-i18n": "^9.1.0",
     "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0"
+    "vuex": "^4.0.0-0",
+    "@vee-validate/i18n": "^4.4.7",
+    "@vee-validate/rules": "^4.4.7",
+    "vee-validate": "^4.4.9"
   },
   "devDependencies": {
     "@intlify/vue-i18n-loader": "^2.1.0",
