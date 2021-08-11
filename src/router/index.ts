@@ -1,14 +1,20 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import KampvisumHome from '@/views/KampvisumHome.vue'
+import StartView from '@/components/start.vue'
 
 const routes: Array<RouteRecordRaw> = [
-  { path: '/', redirect: '/kampvisum-home' },
+  { path: '/', redirect: '/start' },
+  {
+    path: '/start',
+    name: 'Start',
+    component: StartView,
+  },
   {
     path: '/kampvisum-home',
     name: 'Kampvisum Home',
     component: KampvisumHome,
     meta: {
-      // requiresOpenIdAuth: true,
+      requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
       titleKey: 'page-titles.kampvisum',
     },

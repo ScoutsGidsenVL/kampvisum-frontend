@@ -8,6 +8,8 @@
       </template>
     </custom-button>
 
+    <camp-info-card class="mt-5" />
+
     <camp-side-bar :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState"/>
 
   </div>
@@ -18,12 +20,14 @@ import { CustomButton, sideBarState } from 'vue-3-component-library'
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 
 export default defineComponent({
   name: 'KampvisumHome',
   components: {
     'custom-button': CustomButton,
     'camp-side-bar': CampSidebar,
+    'camp-info-card': CampInfoCard
   },
   setup() {
     const campSideBarState = ref<sideBarState<any>>({ state: 'hide' })
