@@ -2,5 +2,19 @@
   "page-titles": {
     "kampvisum": "Kampvisum"
   },
-  "welcome": "Message by Vue-l18n!"
+  "pages": {
+    "kampvisum-overview": {
+      "create-camp-button": "Maak nieuw kamp aan"
+    }
+  },
+  "sidebars": {
+    "kampvisum-sidebar": {
+      "input-fields": {
+        "new": "Nieuw",
+        "name": "Naam",
+        "start-date": "Startdatum",
+        "end-date": "Einddatum"
+      }
+    }
+  }
 }

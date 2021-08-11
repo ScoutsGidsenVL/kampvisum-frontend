@@ -13,7 +13,7 @@ import StaticFileRepository from './repositories/staticFileRepository'
 import i18n from './i18n'
 
 new StaticFileRepository().getFile('config.json').then((result: any) => {
-  const app = createApp(App).use(i18n)
+  const app = createApp(App).use(i18n).use(i18n)
 
   let configFile = result
 

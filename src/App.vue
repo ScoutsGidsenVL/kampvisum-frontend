@@ -13,7 +13,6 @@
 import { BasePage, PageTitle, defineRules } from 'vue-3-component-library'
 import { defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
-// import { defineRules } from './veeValidate/rules'
 
 export default defineComponent({
   name: 'App',

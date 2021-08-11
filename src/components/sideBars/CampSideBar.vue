@@ -41,16 +41,15 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, option, InputTypes, CustomButton, CustomInput, scrollToFirstError, useFormSendWithSuccess, useScrollToTop } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, option, InputTypes, CustomButton, CustomInput, scrollToFirstError } from 'vue-3-component-library'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { CampRepository } from '@/repositories/campRepository'
-
 import { Camp } from '../../serializer/Camp'
 import { useForm } from 'vee-validate'
 
 export default defineComponent({
-  name: 'NonMemberSideBar',
+  name: 'CampSideBar',
   components: {
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,
@@ -93,9 +92,7 @@ export default defineComponent({
   emits: ['update:sideBarState', 'addCreatedNonMemberToList', 'updateMemberInList'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
-    const { resetForm, errors, handleSubmit, validate, meta, values, isSubmitting } = useForm<Camp>()
-    // const { formSendWithSuccess } = useFormSendWithSuccess<Camp>(meta)
-    const { scrollToTop } = useScrollToTop()
+    const { resetForm, handleSubmit, validate, values } = useForm<Camp>()
     const { sideBarState } = toRefs(props)
 
     const options = ref<option[]>([
@@ -119,6 +116,7 @@ export default defineComponent({
 
     const onSubmit = async () => {
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
+      console.log('POST')
       handleSubmit(async (values: Camp) => {
         if (props.sideBarState.state === 'new' || props.sideBarState.state === 'edit') {
           const camp = ref<Camp>({
@@ -135,13 +133,11 @@ export default defineComponent({
       })()
     }
 
-    const postCamp = async (data: Camp) => {
-      // formSendWithSuccess.value = false
+    const postCamp = async (data: any) => {
+      console.log('input: ', data)
       await RepositoryFactory.get(CampRepository)
         .create(data)
         .then((completed: Camp) => {
-          // formSendWithSuccess.value = true
-          scrollToTop()
           resetForm()
           console.log('post response: ', completed)
         })
