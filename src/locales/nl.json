@@ -9,11 +9,16 @@
   },
   "sidebars": {
     "kampvisum-sidebar": {
+      "title": "Kamp",
       "input-fields": {
         "new": "Nieuw",
+        "existing": "Bestaande kampen",
         "name": "Naam",
         "start-date": "Startdatum",
         "end-date": "Einddatum"
+      },
+      "buttons": {
+        "add": "Voeg toe"
       }
     }
   }

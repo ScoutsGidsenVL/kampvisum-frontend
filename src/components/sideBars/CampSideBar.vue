@@ -20,20 +20,20 @@
       >
         <div class="mt-4">
           <div class="w-100">
-            <custom-input :isSubmitting="false" :type="InputTypes.TEXT" rules="required" name="name" label="Naam" />
+            <custom-input :isSubmitting="false" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :isSubmitting="false" :type="InputTypes.TEXT" rules="required" name="startDate" label="Startdatum" />
+            <custom-input :isSubmitting="false" :type="InputTypes.DATE" rules="required" name="startDate" :label="t('sidebars.kampvisum-sidebar.input-fields.start-date')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :isSubmitting="false" :type="InputTypes.TEXT" rules="required" name="endDate" label="Einddatum" />
+            <custom-input :isSubmitting="false" :type="InputTypes.DATE" rules="required" name="endDate" :label="t('sidebars.kampvisum-sidebar.input-fields.end-date')" />
           </div>
         </div>
 
         <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
-          <custom-button :isSubmitting="false" :text="sideBarState.state === 'edit' ? 'Bewerk' : 'Voeg toe'" />
+          <custom-button :isSubmitting="false" :text="sideBarState.state === 'edit' ? 'Bewerk' : t('sidebars.kampvisum-sidebar.buttons.add')" />
         </div>
       </form>
     </base-side-bar>
@@ -47,6 +47,7 @@ import RepositoryFactory from '@/repositories/repositoryFactory'
 import { CampRepository } from '@/repositories/campRepository'
 import { Camp } from '../../serializer/Camp'
 import { useForm } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'CampSideBar',
@@ -95,9 +96,14 @@ export default defineComponent({
     const { resetForm, handleSubmit, validate, values } = useForm<Camp>()
     const { sideBarState } = toRefs(props)
 
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
+
     const options = ref<option[]>([
-      { text: 'Nieuw', value: 'Nieuw' },
-      { text: 'Uit eerdere aanvragen', value: 'Bestaand' },
+      { text: t('sidebars.kampvisum-sidebar.input-fields.new'), value: 'Nieuw' },
+      { text: t('sidebars.kampvisum-sidebar.input-fields.existing'), value: 'Bestaand' },
     ])
 
     const closeSideBar = () => {
@@ -158,6 +164,7 @@ export default defineComponent({
       onSubmit,
       InputTypes,
       values,
+      t,
     }
   },
 })

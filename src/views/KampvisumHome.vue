@@ -8,7 +8,7 @@
       </template>
     </custom-button>
 
-    <camp-side-bar title="Camp" v-model:sideBarState="campSideBarState"/>
+    <camp-side-bar :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState"/>
 
   </div>
 </template>
