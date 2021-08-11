@@ -3,7 +3,7 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store/store'
-import './index.css'
+import 'vue-3-component-library/lib/index.css'
 
 import MasterConfig from './models/config/masterConfig'
 import { OpenIdConnectPlugin } from 'inuits-vuejs-oidc'
