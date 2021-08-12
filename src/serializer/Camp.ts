@@ -1,8 +1,8 @@
 export interface Camp {
-  id?: String
-  name?: String
-  endDate?: String
-  startDate?: String
+  id?: string
+  name?: string
+  endDate?: string
+  startDate?: string
 }
 
 export const CampDeserializer = (input: any): Camp => {

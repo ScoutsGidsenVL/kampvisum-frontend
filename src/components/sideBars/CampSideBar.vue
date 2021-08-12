@@ -7,8 +7,6 @@
       :is-edit="sideBarState.state === 'edit'"
       name="Camp"
       :title="title"
-      :options="options"
-      @options="changeSideBar"
       @hideSidebar="closeSideBar"
     >
       <form
@@ -20,20 +18,20 @@
       >
         <div class="mt-4">
           <div class="w-100">
-            <custom-input :isSubmitting="false" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
+            <custom-input :isSubmitting="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :isSubmitting="false" :type="InputTypes.DATE" rules="required" name="startDate" :label="t('sidebars.kampvisum-sidebar.input-fields.start-date')" />
+            <custom-input :isSubmitting="isSubmitting" :type="InputTypes.DATE" rules="required" name="startDate" :label="t('sidebars.kampvisum-sidebar.input-fields.start-date')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :isSubmitting="false" :type="InputTypes.DATE" rules="required" name="endDate" :label="t('sidebars.kampvisum-sidebar.input-fields.end-date')" />
+            <custom-input :isSubmitting="isSubmitting" :type="InputTypes.DATE" rules="required" name="endDate" :label="t('sidebars.kampvisum-sidebar.input-fields.end-date')" />
           </div>
         </div>
 
         <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
-          <custom-button :isSubmitting="false" :text="sideBarState.state === 'edit' ? 'Bewerk' : t('sidebars.kampvisum-sidebar.buttons.add')" />
+          <custom-button :isSubmitting="isSubmitting" :text="sideBarState.state === 'edit' ? 'Bewerk' : t('sidebars.kampvisum-sidebar.buttons.add')" />
         </div>
       </form>
     </base-side-bar>
@@ -93,7 +91,7 @@ export default defineComponent({
   emits: ['update:sideBarState', 'addCreatedNonMemberToList', 'updateMemberInList'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
-    const { resetForm, handleSubmit, validate, values } = useForm<Camp>()
+    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Camp>()
     const { sideBarState } = toRefs(props)
 
     const { t } = useI18n({
@@ -101,23 +99,8 @@ export default defineComponent({
       useScope: 'local',
     })
 
-    const options = ref<option[]>([
-      { text: t('sidebars.kampvisum-sidebar.input-fields.new'), value: 'Nieuw' },
-      { text: t('sidebars.kampvisum-sidebar.input-fields.existing'), value: 'Bestaand' },
-    ])
-
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
-    }
-
-    const changeSideBar = (options: 'NieuwNonMember' | 'BestaandNonMember') => {
-      if (options === 'NieuwNonMember') {
-        context.emit('update:sideBarState', { state: 'new' })
-      }
-
-      if (options === 'BestaandNonMember') {
-        context.emit('update:sideBarState', { state: 'list' })
-      }
     }
 
     const onSubmit = async () => {
@@ -133,7 +116,9 @@ export default defineComponent({
           if (props.sideBarState.state === 'edit') {
             console.log('edit: ', camp.value)
           } else {
-            await postCamp(camp.value)
+            await postCamp(camp.value).then(() => {
+              closeSideBar()
+            })
           }
         }
       })()
@@ -156,10 +141,9 @@ export default defineComponent({
     })
 
     return {
+      isSubmitting,
       sideBarState,
       closeSideBar,
-      changeSideBar,
-      options,
       selected,
       onSubmit,
       InputTypes,
