@@ -38,16 +38,15 @@
 </template>
 
 <script lang="ts">
-import { CustomButton, sideBarState } from 'vue-3-component-library'
+import { CustomButton, sideBarState, Warning } from 'vue-3-component-library'
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
-import { defineComponent, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
+import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
 import {ArrayResult} from '../interfaces/ArrayResult'
-import Warning from '@/components/Warning.vue'
+import { defineComponent, ref } from 'vue'
 import { Camp } from '../serializer/Camp'
+import { useI18n } from 'vue-i18n'
 
 
 export default defineComponent({

@@ -42,9 +42,7 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
 
   router.beforeEach((to: any, from: any, next: any) => {
     if (to.matched.some((record: any) => record.meta.requiresOpenIdAuth)) {
-      console.log('LOG 1')
       if (store.getters.isLoggedIn) {
-      console.log('LOG 2')
         !store.getters.loaded
           ? RepositoryFactory.get(AuthRepository)
               .me()
