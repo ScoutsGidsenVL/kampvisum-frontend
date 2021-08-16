@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <warning :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
+    <warning :title="campToBeDeleted?.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
 
     <custom-button @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
       <template v-slot:icon>
@@ -9,12 +9,16 @@
         </svg>
       </template>
     </custom-button>
+
+    <div>
+      <success-toast v-show="toastState.visible" :label="toastState.label" @hideToast="hideToast()" />
+    </div>
     
     <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
       <div v-for="camp in camps" :key="camp.id">
         <camp-info-card class="mt-5" :camp="camp" >
           <template v-slot:buttons>
-            <svg @click.stop="editCamp()" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hover:text-lightGreen cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+            <svg @click.stop="editCamp(camp)" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hover:text-lightGreen cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
               <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
             </svg>
 
@@ -30,15 +34,15 @@
 
       </div>
     </div>
-    
-
-    <camp-side-bar :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState"/>
+    <pre>
+    </pre>
+    <camp-side-bar :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)"/>
 
   </div>
 </template>
 
 <script lang="ts">
-import { CustomButton, sideBarState, Warning } from 'vue-3-component-library'
+import { CustomButton, sideBarState, Warning, SuccessToast } from 'vue-3-component-library'
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
@@ -48,6 +52,10 @@ import { defineComponent, ref } from 'vue'
 import { Camp } from '../serializer/Camp'
 import { useI18n } from 'vue-i18n'
 
+export interface ToastState {
+  visible: boolean,
+  label: string
+}
 
 export default defineComponent({
   name: 'KampvisumHome',
@@ -55,11 +63,13 @@ export default defineComponent({
     'custom-button': CustomButton,
     'camp-side-bar': CampSidebar,
     'camp-info-card': CampInfoCard,
-    'warning': Warning
+    'warning': Warning,
+    'success-toast': SuccessToast
   },
   setup() {
-    const campSideBarState = ref<sideBarState<any>>({ state: 'hide' })
+    const campSideBarState = ref<any>({ state: 'hide', entity: {} })
     const isWarningDisplayed = ref<Boolean>(false)
+    const isDeletingCamp = ref<Boolean>(false)
     const camps = ref<any>([])
     const campToBeDeleted = ref<Camp>({})
     const { t } = useI18n({
@@ -67,24 +77,33 @@ export default defineComponent({
       useScope: 'local',
     })
 
-    const getCamps = () => {
-      RepositoryFactory.get(CampRepository)
+    const getCamps = async () => {
+      await RepositoryFactory.get(CampRepository)
         .getArray('/insurances/?page=1&page_size=10')
         .then((c: ArrayResult) => {
           camps.value = c
         })
     }
 
-    const editCamp = () => {
-      console.log('editCamp')
+    const editCamp = (camp: Camp) => {
+      campSideBarState.value = {
+        state: 'edit',
+        entity: camp,
+      }
     }
 
     const deleteCamp = () => {
       if (campToBeDeleted.value.id) {
+        isDeletingCamp.value = true
         RepositoryFactory.get(CampRepository)
         .removeById(campToBeDeleted.value.id)
         .then((c) => {
-          console.log('DELETED: ', c)
+          getCamps().then(() => {
+            isDeletingCamp.value = false
+            isWarningDisplayed.value = false
+            toastState.value.visible = true
+            toastState.value.label = "Kamp is succesvol verwijderd"
+          })
         })
       }
     }
@@ -102,10 +121,33 @@ export default defineComponent({
       isWarningDisplayed.value = false
     }
 
+    const toastState = ref<ToastState>(
+      {
+        visible: false,
+        label: 'hidden'
+      }
+    )
+
+    const hideToast = () => {
+      console.log('CHECK')
+      toastState.value.visible = false
+    }
+
+
+    const actionSuccess = (action: string) => {
+      if (action === 'POST') {
+        toastState.value.label = 'Kamp is succesvol aangemaakt'
+      }
+      if (action === 'UPDATE') {
+        toastState.value.label = 'Kamp is succesvol bewerkt'
+      }
+      toastState.value.visible = true
+      getCamps()
+    }
+
     getCamps()
 
-
-    return { t, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning }
+    return { t, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
   },
 })
 </script>

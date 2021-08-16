@@ -71,7 +71,7 @@ export default defineComponent({
       required: false,
     },
     sideBarState: {
-      type: Object as PropType<sideBarState<any>>,
+      type: Object as PropType<sideBarState<Camp>>,
       required: true,
       default: () => {
         'hide'
@@ -88,7 +88,7 @@ export default defineComponent({
       default: true,
     },
   },
-  emits: ['update:sideBarState', 'addCreatedNonMemberToList', 'updateMemberInList'],
+  emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Camp>()
@@ -101,44 +101,52 @@ export default defineComponent({
 
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
+      resetForm()
     }
 
     const onSubmit = async () => {
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
-      console.log('POST')
       handleSubmit(async (values: Camp) => {
-        if (props.sideBarState.state === 'new' || props.sideBarState.state === 'edit') {
-          const camp = ref<Camp>({
-            name: values.name,
-            startDate: values.startDate,
-            endDate: values.endDate,
-          })
-          if (props.sideBarState.state === 'edit') {
-            console.log('edit: ', camp.value)
-          } else {
-            await postCamp(camp.value).then(() => {
-              closeSideBar()
-            })
-          }
+        const camp = ref<Camp>(values)
+
+        if (props.sideBarState.state === 'edit') {
+          await updateCamp(camp.value)
+        } else {
+          await postCamp(camp.value)
         }
-      })()
+      })().then(() => {
+        closeSideBar()
+      })
     }
 
-    const postCamp = async (data: any) => {
-      console.log('input: ', data)
+    const updateCamp = async (data: Camp) => {
+      if (data.id) {
+        await RepositoryFactory.get(CampRepository)
+          .update(data.id, data)
+          .then((completed: Camp) => {
+            context.emit('actionSuccess', 'UPDATE')
+          })
+      }
+    }
+
+    const postCamp = async (data: Camp) => {
       await RepositoryFactory.get(CampRepository)
         .create(data)
         .then((completed: Camp) => {
-          resetForm()
-          console.log('post response: ', completed)
+          context.emit('actionSuccess', 'POST')
         })
     }
 
-    watch(sideBarState, (value: sideBarState<any>) => {
-      if (value.state === 'edit') {
-        console.log('CAMP SIDE BAR EDIT')
+    watch(
+      () => props.sideBarState,
+      (value: sideBarState<any>) => {
+        if (value.state === 'edit') {
+          resetForm({
+            values: value.entity,
+          })
+        }
       }
-    })
+    )
 
     return {
       isSubmitting,

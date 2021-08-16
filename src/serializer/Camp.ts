@@ -1,5 +1,6 @@
 export interface Camp {
   id?: string
+  uuid?: string
   name?: string
   endDate?: string
   startDate?: string
@@ -7,7 +8,8 @@ export interface Camp {
 
 export const CampDeserializer = (input: any): Camp => {
   const single: Camp = {
-    id: input.uuid,
+    id: input.id,
+    uuid: input.uuid,
     name: input.name,
     startDate: input.start_date,
     endDate: input.end_date,

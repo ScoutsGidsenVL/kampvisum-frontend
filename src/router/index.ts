@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Kampvisum Home',
     component: KampvisumHome,
     meta: {
-      requiresOpenIdAuth: false,
+      requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
       titleKey: 'page-titles.kampvisum',
     },
