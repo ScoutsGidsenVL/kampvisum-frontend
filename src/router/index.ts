@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import KampvisumHome from '@/views/KampvisumHome.vue'
+import CampOverview from '@/views/CampOverview.vue'
 import StartView from '@/components/start.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -17,6 +18,15 @@ const routes: Array<RouteRecordRaw> = [
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
       titleKey: 'page-titles.kampvisum',
+    },
+  },
+  {
+    path: '/kamp/:id?',
+    name: 'Kamp',
+    component: CampOverview,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
     },
   },
 ]
