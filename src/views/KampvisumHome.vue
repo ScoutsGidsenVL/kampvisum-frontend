@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <warning :title="campToBeDeleted?.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
+    <warning v-if="campToBeDeleted.name" :title="campToBeDeleted.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
 
     <custom-button @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
       <template v-slot:icon>

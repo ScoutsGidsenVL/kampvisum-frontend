@@ -19,7 +19,6 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    console.log('HIT')
     // Custom start view to work with the inuits oicd/Keycloak when vue is not in history mode
 
     // check if auth code from Keycloack is there

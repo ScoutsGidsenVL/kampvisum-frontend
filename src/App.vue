@@ -2,7 +2,7 @@
   <div id="app" class="pb-10">
     <base-page>
       <div class="container mt-8 mb-4 pt-2">
-        <page-title :title="$route.meta.titleKey ? t($route.meta.titleKey) : ''" :homeUrl="$route.meta.homescreen" />
+        <page-title :title="$route.meta.titleKey ? t($route.meta.titleKey) : ''" :homeUrl="$route.meta.homescreen ? $route.meta.homescreen : ''" />
         <router-view />
       </div>
     </base-page>

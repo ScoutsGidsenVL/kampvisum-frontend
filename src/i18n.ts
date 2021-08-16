@@ -22,6 +22,6 @@ function loadLocaleMessages(): LocaleMessages<VueMessageType> {
 export default createI18n({
   legacy: false,
   locale: 'nl',
-  fallbackLocale: 'en',
+  fallbackLocale: 'nl',
   messages: loadLocaleMessages()
 })
