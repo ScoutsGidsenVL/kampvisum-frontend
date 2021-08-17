@@ -34,6 +34,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@import url('https://use.typekit.net/frt5hnw.css');
+
 @media (min-width: 992px) {
   #app {
     padding-left: 4rem;
