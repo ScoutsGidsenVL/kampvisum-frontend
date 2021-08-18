@@ -42,7 +42,7 @@ export abstract class BaseRepository extends BaseApiRepository {
     })
   }
 
-  search(query: string, insuranceTypeId?: string): Promise<any> {
+  search(query: string): Promise<any> {
     return this.get(this.endpoint + '?term=' + query, {}).then((response: any[]) => {
       const array: any[] = []
       response.forEach((result: any) => {

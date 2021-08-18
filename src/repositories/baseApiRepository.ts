@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
 import { OpenIdConnectInterceptors } from 'inuits-vuejs-oidc'
-import { Store } from 'vuex'
 import MasterConfig from '../models/config/masterConfig'
 import store from '@/store/store'
 

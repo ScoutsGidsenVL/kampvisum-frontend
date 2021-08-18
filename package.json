@@ -13,6 +13,7 @@
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "@vee-validate/i18n": "^4.4.7",
     "@vee-validate/rules": "^4.4.7",
+    "@vueform/multiselect": "^2.1.2",
     "autoprefixer": "^9",
     "core-js": "^3.6.5",
     "inuits-vuejs-oidc": "git+https://github.com/inuits/inuits-vuejs-oidc.git#next",

@@ -1,7 +1,18 @@
 <template>
   <div class="home">
     <warning v-if="campToBeDeleted.name" :title="campToBeDeleted.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
-
+    <div class="pb-3" style="margin-top: -2em">
+          <multi-select
+            label="groepen"
+            id="group"
+            :object="true"
+            placeholder="Kies een groep"
+            @addSelection="selectedGroup($event)"
+            track-by="fullInfo"
+            value-prop="id"
+            :options="fakeGroups"
+          />
+        </div>
     <custom-button @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
       <template v-slot:icon>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -47,6 +58,7 @@ import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
+import MultiSelect from '../components/inputs/MultiSelect.vue'
 import {ArrayResult} from '../interfaces/ArrayResult'
 import { defineComponent, ref } from 'vue'
 import { Camp } from '../serializer/Camp'
@@ -60,11 +72,12 @@ export interface ToastState {
 export default defineComponent({
   name: 'KampvisumHome',
   components: {
-    'custom-button': CustomButton,
-    'camp-side-bar': CampSidebar,
     'camp-info-card': CampInfoCard,
+    'custom-button': CustomButton,
+    'success-toast': SuccessToast,
+    'camp-side-bar': CampSidebar,
+    'multi-select': MultiSelect,
     'warning': Warning,
-    'success-toast': SuccessToast
   },
   setup() {
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })
@@ -72,6 +85,21 @@ export default defineComponent({
     const isDeletingCamp = ref<Boolean>(false)
     const camps = ref<any>([])
     const campToBeDeleted = ref<Camp>({})
+    const fakeGroups =  [
+      {
+        "id": "X9002G",
+        "name": "Testgroep voor .be-site",
+        "location": " Borgerhout (Antwerpen)",
+        "fullInfo": "Testgroep voor .be-site - X9002G"
+      },
+      {
+        "id": "X9004G",
+        "name": "Testgroep voor .be-site v2",
+        "location": " Borgerhout (Antwerpen)",
+        "fullInfo": "Testgroep voor .be-site v2 - X9004G"
+      }
+    ]
+
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -145,9 +173,13 @@ export default defineComponent({
       getCamps()
     }
 
+    const selectedGroup = (event: any) => {
+      console.log('SELECTED VALUE: ', event)
+    }
+
     getCamps()
 
-    return { t, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
+    return { t,fakeGroups, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
   },
 })
 </script>
