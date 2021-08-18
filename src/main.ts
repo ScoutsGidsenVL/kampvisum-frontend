@@ -1,15 +1,14 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import './registerServiceWorker'
-import router from './router'
-import store from './store/store'
-import 'vue-3-component-library/lib/index.css'
-
-import MasterConfig from './models/config/masterConfig'
-import { OpenIdConnectPlugin } from 'inuits-vuejs-oidc'
+import StaticFileRepository from './repositories/staticFileRepository'
 import RepositoryFactory from './repositories/repositoryFactory'
 import AuthRepository from './repositories/authRepository'
-import StaticFileRepository from './repositories/staticFileRepository'
+import MasterConfig from './models/config/masterConfig'
+import { OpenIdConnectPlugin } from 'inuits-vuejs-oidc'
+import 'vue-3-component-library/lib/index.css'
+import store from './store/store'
+import './registerServiceWorker'
+import { createApp } from 'vue'
+import router from './router'
+import App from './App.vue'
 import i18n from './i18n'
 
 new StaticFileRepository().getFile('config.json').then((result: any) => {
@@ -62,8 +61,3 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
 
   app.use(router).use(i18n).use(store).mount('#app')
 })
-
-// createApp(App)
-//   .use(store)
-//   .use(router)
-//   .mount('#app')

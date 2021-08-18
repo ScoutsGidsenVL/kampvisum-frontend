@@ -34,11 +34,7 @@ export default defineComponent({
         window.location.replace(url.toString())
       })
     } else {
-      if (localStorage.getItem('homescreen')) {
-        router.push(String(localStorage.getItem('homescreen')))
-      } else {
         router.push('/kampvisum-home')
-      }
     }
     return {}
   },
