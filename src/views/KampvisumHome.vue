@@ -1,18 +1,24 @@
 <template>
   <div class="home">
     <warning v-if="campToBeDeleted.name" :title="campToBeDeleted.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
-    <div class="pb-3" style="margin-top: -2em">
-          <multi-select
-            label="groepen"
-            id="group"
-            :object="true"
-            placeholder="Kies een groep"
-            @addSelection="selectedGroup($event)"
-            track-by="fullInfo"
-            value-prop="id"
-            :options="fakeGroups"
-          />
-        </div>
+    <div class="pb-3 grid grid-cols-2 gap-3" style="margin-top: -2em">
+      <multi-select
+        id="group"
+        :object="true"
+        placeholder="Kies een groep"
+        @addSelection="selectedGroup($event)"
+        track-by="fullInfo"
+        value-prop="id"
+        :options="fakeGroups"
+      />
+      <multi-select
+        id="year"
+        placeholder="Kies een jaar"
+        @addSelection="selectedGroup($event)"
+        value-prop="id"
+        :options="['2019', '2020', 2021]"
+      />
+    </div>
     <custom-button @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
       <template v-slot:icon>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
