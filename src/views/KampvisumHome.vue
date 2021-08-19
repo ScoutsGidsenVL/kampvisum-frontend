@@ -3,13 +3,15 @@
     <warning v-if="campToBeDeleted.name" :title="campToBeDeleted.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
     <div class="pb-3 grid grid-cols-2 gap-3" style="margin-top: -2em">
       <multi-select
+        v-if="myGroups[0]"
         id="group"
         :object="true"
         placeholder="Kies een groep"
-        @addSelection="selectedGroup($event)"
+        @addSelection="selectGroup($event)"
         track-by="fullInfo"
         value-prop="id"
         :options="myGroups"
+        :value="myGroups[0]"
       />
       <multi-select
         id="year"
@@ -19,6 +21,7 @@
         :options="['2019', '2020', 2021]"
       />
     </div>
+
     <custom-button @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
       <template v-slot:icon>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -48,13 +51,11 @@
             </svg>
           </template>
         </camp-info-card>
-
       </div>
     </div>
     <pre>
     </pre>
-    <camp-side-bar :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)"/>
-
+    <camp-side-bar v-if="selectedGroup" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.id"/>
   </div>
 </template>
 
@@ -91,9 +92,10 @@ export default defineComponent({
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })
     const isWarningDisplayed = ref<Boolean>(false)
     const isDeletingCamp = ref<Boolean>(false)
-    const camps = ref<any>([])
     const campToBeDeleted = ref<Camp>({})
+    const selectedGroup = ref<Group>()
     const myGroups = ref<any>([])  
+    const camps = ref<any>([])
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -108,11 +110,16 @@ export default defineComponent({
         })
     }
 
+    const setSelectedGroup = (group: Group) => {
+      selectedGroup.value = group
+    }
+
     const getUserGroups = async () => {
       await RepositoryFactory.get(GroupRepository)
         .getArray()
         .then((c: ArrayResult) => {
           myGroups.value = c
+          setSelectedGroup(myGroups.value[0])
         })
     }
 
@@ -160,7 +167,6 @@ export default defineComponent({
     )
 
     const hideToast = () => {
-      console.log('CHECK')
       toastState.value.visible = false
     }
 
@@ -176,14 +182,15 @@ export default defineComponent({
       getCamps()
     }
 
-    const selectedGroup = (event: any) => {
-      console.log('SELECTED VALUE: ', event)
+
+    const selectGroup = (event: any) => {
+      setSelectedGroup(event)
     }
 
     getCamps()
     getUserGroups()
 
-    return { t,myGroups, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
+    return { t,myGroups, selectGroup, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
   },
 })
 </script>

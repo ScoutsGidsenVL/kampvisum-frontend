@@ -28,6 +28,10 @@
           <div class="w-100 mt-4">
             <custom-input :isSubmitting="isSubmitting" :type="InputTypes.DATE" rules="required" name="endDate" :label="t('sidebars.kampvisum-sidebar.input-fields.end-date')" />
           </div>
+
+          <div v-for="groupSection in groupSections" :key="groupSection.id">
+            <p>{{ groupSection.name }} - {{ groupSection.hidden }}</p>
+          </div>
         </div>
 
         <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
@@ -46,6 +50,8 @@ import { CampRepository } from '@/repositories/campRepository'
 import { Camp } from '../../serializer/Camp'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import { GroupRepository } from '@/repositories/groupRepository'
+import { Section } from '@/serializer/Section'
 
 export default defineComponent({
   name: 'CampSideBar',
@@ -87,12 +93,17 @@ export default defineComponent({
       required: false,
       default: true,
     },
+    selectedGroupId: {
+      type: String,
+      required: true,
+    },
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Camp>()
     const { sideBarState } = toRefs(props)
+    const groupSections = ref<Section[]>([])
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -137,6 +148,16 @@ export default defineComponent({
         })
     }
 
+    const getGroupSection = async (groupId: string) => {
+      await RepositoryFactory.get(GroupRepository)
+        .getGroupSections(groupId)
+        .then((results: Section[]) => {
+          groupSections.value = results
+        })
+    }
+
+    getGroupSection(props.selectedGroupId)
+
     watch(
       () => props.sideBarState,
       (value: sideBarState<any>) => {
@@ -157,6 +178,7 @@ export default defineComponent({
       InputTypes,
       values,
       t,
+      groupSections,
     }
   },
 })
