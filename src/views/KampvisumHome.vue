@@ -9,7 +9,7 @@
         @addSelection="selectedGroup($event)"
         track-by="fullInfo"
         value-prop="id"
-        :options="fakeGroups"
+        :options="myGroups"
       />
       <multi-select
         id="year"
@@ -64,10 +64,12 @@ import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
+import { GroupRepository } from '@/repositories/groupRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
 import {ArrayResult} from '../interfaces/ArrayResult'
 import { defineComponent, ref } from 'vue'
 import { Camp } from '../serializer/Camp'
+import { Group } from '../serializer/Group'
 import { useI18n } from 'vue-i18n'
 
 export interface ToastState {
@@ -91,20 +93,7 @@ export default defineComponent({
     const isDeletingCamp = ref<Boolean>(false)
     const camps = ref<any>([])
     const campToBeDeleted = ref<Camp>({})
-    const fakeGroups =  [
-      {
-        "id": "X9002G",
-        "name": "Testgroep voor .be-site",
-        "location": " Borgerhout (Antwerpen)",
-        "fullInfo": "Testgroep voor .be-site - X9002G"
-      },
-      {
-        "id": "X9004G",
-        "name": "Testgroep voor .be-site v2",
-        "location": " Borgerhout (Antwerpen)",
-        "fullInfo": "Testgroep voor .be-site v2 - X9004G"
-      }
-    ]
+    const myGroups = ref<any>([])  
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -116,6 +105,14 @@ export default defineComponent({
         .getArray('/insurances/?page=1&page_size=10')
         .then((c: ArrayResult) => {
           camps.value = c
+        })
+    }
+
+    const getUserGroups = async () => {
+      await RepositoryFactory.get(GroupRepository)
+        .getArray()
+        .then((c: ArrayResult) => {
+          myGroups.value = c
         })
     }
 
@@ -131,7 +128,7 @@ export default defineComponent({
         isDeletingCamp.value = true
         RepositoryFactory.get(CampRepository)
         .removeById(campToBeDeleted.value.id)
-        .then((c) => {
+        .then(() => {
           getCamps().then(() => {
             isDeletingCamp.value = false
             isWarningDisplayed.value = false
@@ -184,8 +181,9 @@ export default defineComponent({
     }
 
     getCamps()
+    getUserGroups()
 
-    return { t,fakeGroups, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
+    return { t,myGroups, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
   },
 })
 </script>

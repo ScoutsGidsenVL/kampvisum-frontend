@@ -1,7 +1,7 @@
 <template>
   <div v-if="options" class="pt-4">
     <div>
-      <strong>
+      <strong v-show="label">
         {{ label }}
       </strong>
       <strong><required class="inline" v-if="label" :rules="rules" /></strong>
@@ -67,7 +67,7 @@ export default defineComponent({
     },
     label: {
       type: String,
-      required: true,
+      required: false,
     },
     loading: {
       type: Boolean,
@@ -85,7 +85,7 @@ export default defineComponent({
     },
     trackBy: {
       type: String,
-      required: true,
+      required: false,
     },
     placeholder: {
       type: String,
