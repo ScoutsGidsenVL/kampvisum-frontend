@@ -12,8 +12,6 @@ export class GroupRepository extends BaseRepository {
     return this.get(this.endpoint + groupId + '/sections', {}).then((response: []) => {
       const array: any[] = []
       response.forEach((result: Section) => {
-        console.log('BEFORE: ', result)
-        console.log('AFTER: ', SectionDeserializer(result))
         array.push(SectionDeserializer(result))
       })
       return array

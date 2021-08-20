@@ -9,6 +9,9 @@
       :title="title"
       @hideSidebar="closeSideBar"
     >
+      <pre>
+        {{values}}
+      </pre>
       <form
         id="addNewCamp"
         ref="formDiv"
@@ -29,8 +32,9 @@
             <custom-input :isSubmitting="isSubmitting" :type="InputTypes.DATE" rules="required" name="endDate" :label="t('sidebars.kampvisum-sidebar.input-fields.end-date')" />
           </div>
 
+          <custom-header text="Takken die meegaan" type="h3" />
           <div v-for="groupSection in groupSections" :key="groupSection.id">
-            <p>{{ groupSection.name }} - {{ groupSection.hidden }}</p>
+            <custom-input v-model="selectedGroupSection" :isSubmitting="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="groupSection.uuid" :label="groupSection.name.name" />
           </div>
         </div>
 
@@ -43,15 +47,16 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, option, InputTypes, CustomButton, CustomInput, scrollToFirstError } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { CampRepository } from '@/repositories/campRepository'
-import { Camp } from '../../serializer/Camp'
-import { useForm } from 'vee-validate'
-import { useI18n } from 'vue-i18n'
 import { GroupRepository } from '@/repositories/groupRepository'
+import { CampRepository } from '@/repositories/campRepository'
 import { Section } from '@/serializer/Section'
+import { Camp } from '../../serializer/Camp'
+import { useForm, useField, ErrorMessage } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
+
 
 export default defineComponent({
   name: 'CampSideBar',
@@ -59,6 +64,7 @@ export default defineComponent({
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,
     'custom-button': CustomButton,
+    'custom-header': CustomHeader,
   },
   props: {
     title: {
@@ -105,6 +111,10 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const groupSections = ref<Section[]>([])
 
+    const { value: selectedGroupSection } = useField('sections', '', {
+      initialValue: Array<Section>()
+    })
+
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -118,12 +128,10 @@ export default defineComponent({
     const onSubmit = async () => {
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
       handleSubmit(async (values: Camp) => {
-        const camp = ref<Camp>(values)
-
         if (props.sideBarState.state === 'edit') {
-          await updateCamp(camp.value)
+          await updateCamp(values)
         } else {
-          await postCamp(camp.value)
+          await postCamp(values)
         }
       })().then(() => {
         closeSideBar()
@@ -134,16 +142,17 @@ export default defineComponent({
       if (data.id) {
         await RepositoryFactory.get(CampRepository)
           .update(data.id, data)
-          .then((completed: Camp) => {
+          .then(() => {
             context.emit('actionSuccess', 'UPDATE')
           })
       }
     }
 
     const postCamp = async (data: Camp) => {
+      console.log('POST2: ', data)
       await RepositoryFactory.get(CampRepository)
         .create(data)
-        .then((completed: Camp) => {
+        .then(() => {
           context.emit('actionSuccess', 'POST')
         })
     }
@@ -179,6 +188,7 @@ export default defineComponent({
       values,
       t,
       groupSections,
+      selectedGroupSection
     }
   },
 })

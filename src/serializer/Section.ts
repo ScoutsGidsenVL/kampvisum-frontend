@@ -1,6 +1,8 @@
+import { Name, NameDeserializer, NameSerializer } from "./Name"
+
 export interface Section {
   readonly id?: string
-  readonly name?: string
+  readonly name?: Name
   readonly deleted?: any
   readonly uuid?: string
   readonly hidden?: boolean
@@ -10,7 +12,7 @@ export interface Section {
 export const SectionDeserializer = (input: any): Section => {
   const single: Section = {
     id: input.id ? input.id : undefined,
-    name: input.name ? input.name : undefined,
+    name: input.name ? NameDeserializer(input.name) : undefined,
     deleted: input.deleted ? input.deleted : undefined,
     uuid: input.uuid ? input.uuid : undefined,
     hidden: input.hidden,
@@ -23,7 +25,7 @@ export const SectionDeserializer = (input: any): Section => {
 export const SectionSerializer = (input: any): any => {
   const single: any = {
     id: input.id ? input.id : undefined,
-    name: input.name ? input.name : undefined,
+    name: input.name ? NameSerializer(input.name) : undefined,
     deleted: input.deleted ? input.deleted : undefined,
     uuid: input.uuid ? input.uuid : undefined,
     hidden: input.hidden ? input.hidden : undefined,

@@ -1,6 +1,8 @@
 <template>
   <div class="home">
     <warning v-if="campToBeDeleted.name" :title="campToBeDeleted.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
+    <camp-side-bar v-if="selectedGroup" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.uuid"/>
+    
     <div class="pb-3 grid grid-cols-2 gap-3" style="margin-top: -2em">
       <multi-select
         v-if="myGroups[0]"
@@ -55,7 +57,6 @@
     </div>
     <pre>
     </pre>
-    <camp-side-bar v-if="selectedGroup" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.id"/>
   </div>
 </template>
 
@@ -131,10 +132,10 @@ export default defineComponent({
     }
 
     const deleteCamp = () => {
-      if (campToBeDeleted.value.id) {
+      if (campToBeDeleted.value.uuid) {
         isDeletingCamp.value = true
         RepositoryFactory.get(CampRepository)
-        .removeById(campToBeDeleted.value.id)
+        .removeById(campToBeDeleted.value.uuid)
         .then(() => {
           getCamps().then(() => {
             isDeletingCamp.value = false

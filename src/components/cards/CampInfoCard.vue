@@ -2,7 +2,7 @@
     <div @click="navigateTowardsCamp(camp)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen">
       <div class="z-2">
         <div class="flex justify-between">
-          <h3 class="text-sm text-green mb-0">kapoenen & welpen</h3>
+          <h3 class="text-sm text-green mb-0">{{camp.sections[0]?.name?.name}}</h3>
           <div class="d-flex gap-3 mt-1">
             <slot name="buttons" />
           </div>
