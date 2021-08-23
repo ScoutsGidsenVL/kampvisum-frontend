@@ -29,6 +29,10 @@
         :searchable="searchable"
         :search="true"
         :object="object"
+        :allow-empty="false"
+        :multiple="false"
+        :canClear="canClear"
+        :canDeselect="canDeselect"
         :options="
           searchable
             ? async function (query) {
@@ -131,6 +135,16 @@ export default defineComponent({
       default: false,
       required: false,
     },
+    canClear: {
+      type: Boolean,
+      default: true,
+      required: false,
+    },
+    canDeselect: {
+      type: Boolean,
+      default: true,
+      required: false,
+    }
   },
   setup(props, context) {
     const multiselect = ref()
@@ -173,3 +187,9 @@ export default defineComponent({
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
+
+<style scoped>
+/* ::v-deep .multiselect-clear {
+  display: none !important;
+} */
+</style>

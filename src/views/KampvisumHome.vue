@@ -14,11 +14,12 @@
         value-prop="id"
         :options="myGroups"
         :value="myGroups[0]"
+        :canClear="false"
+        :canDeselect="false"
       />
       <multi-select
         id="year"
         placeholder="Kies een jaar"
-        @addSelection="selectedGroup($event)"
         value-prop="id"
         :options="['2019', '2020', 2021]"
       />

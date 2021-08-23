@@ -9,9 +9,6 @@
       :title="title"
       @hideSidebar="closeSideBar"
     >
-      <pre>
-        {{values}}
-      </pre>
       <form
         id="addNewCamp"
         ref="formDiv"
@@ -24,18 +21,20 @@
             <custom-input :isSubmitting="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
           </div>
 
-          <div class="w-100 mt-4">
-            <custom-input :isSubmitting="isSubmitting" :type="InputTypes.DATE" rules="required" name="startDate" :label="t('sidebars.kampvisum-sidebar.input-fields.start-date')" />
+          <!-- <div class="w-100 mt-4">
+            <custom-input :isSubmitting="isSubmitting" :type="InputTypes.DATE" name="startDate" :label="t('sidebars.kampvisum-sidebar.input-fields.start-date')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :isSubmitting="isSubmitting" :type="InputTypes.DATE" rules="required" name="endDate" :label="t('sidebars.kampvisum-sidebar.input-fields.end-date')" />
+            <custom-input :isSubmitting="isSubmitting" :type="InputTypes.DATE" name="endDate" :label="t('sidebars.kampvisum-sidebar.input-fields.end-date')" />
+          </div> -->
+          <div v-if="sideBarState.state !== 'hide'">
+            <custom-header text="Takken die meegaan" type="h3" />
+            <div v-for="groupSection in groupSections" :key="groupSection.id">
+              <custom-input v-model="selectedGroupSections" :isSubmitting="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="groupSection.uuid" :label="groupSection.name.name" />
+            </div>
           </div>
-
-          <custom-header text="Takken die meegaan" type="h3" />
-          <div v-for="groupSection in groupSections" :key="groupSection.id">
-            <custom-input v-model="selectedGroupSection" :isSubmitting="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="groupSection.uuid" :label="groupSection.name.name" />
-          </div>
+          
         </div>
 
         <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
@@ -111,7 +110,7 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const groupSections = ref<Section[]>([])
 
-    const { value: selectedGroupSection } = useField('sections', '', {
+    const { value: selectedGroupSections } = useField('sections', '', {
       initialValue: Array<Section>()
     })
 
@@ -123,6 +122,7 @@ export default defineComponent({
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
       resetForm()
+      console.log('SELECTED: ', selectedGroupSections.value)
     }
 
     const onSubmit = async () => {
@@ -188,7 +188,7 @@ export default defineComponent({
       values,
       t,
       groupSections,
-      selectedGroupSection
+      selectedGroupSections
     }
   },
 })

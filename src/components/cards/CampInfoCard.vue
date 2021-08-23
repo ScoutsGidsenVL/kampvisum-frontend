@@ -2,7 +2,11 @@
     <div @click="navigateTowardsCamp(camp)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen">
       <div class="z-2">
         <div class="flex justify-between">
-          <h3 class="text-sm text-green mb-0">{{camp.sections[0]?.name?.name}}</h3>
+          <h3 class="text-sm text-green mb-0">
+            <span v-for="(section, index) in camp.sections" :key="section">
+              {{camp.sections.length > 1 && index != camp.sections.length - 1 ? section.name.name + ' & ' : section.name.name}}
+            </span>
+          </h3>
           <div class="d-flex gap-3 mt-1">
             <slot name="buttons" />
           </div>
