@@ -30,12 +30,15 @@
           </div> -->
           <div v-if="sideBarState.state !== 'hide'">
             <custom-header text="Takken die meegaan" type="h3" />
-            <!-- {{selectedGroupSections}} -->
+
+            <span name="sections">
+              <ErrorMessage name="sections" class="text-red text-sm block mt-1 w-80" />
+            </span>
+
             <div v-for="groupSection in groupSections" :key="groupSection.id">
               <custom-input v-model="selectedGroupSections" :isSubmitting="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="groupSection.uuid" :label="groupSection.name.name" />
             </div>
           </div>
-          
         </div>
 
         <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
@@ -57,7 +60,6 @@ import { Camp } from '../../serializer/Camp'
 import { useForm, useField, ErrorMessage } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 
-
 export default defineComponent({
   name: 'CampSideBar',
   components: {
@@ -65,6 +67,7 @@ export default defineComponent({
     'custom-input': CustomInput,
     'custom-button': CustomButton,
     'custom-header': CustomHeader,
+    ErrorMessage,
   },
   props: {
     title: {
@@ -111,8 +114,8 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const groupSections = ref<Section[]>([])
 
-    const { value: selectedGroupSections } = useField('sections', '', {
-      initialValue: Array<String>()
+    const { value: selectedGroupSections } = useField('sections', 'minimumOneSection', {
+      initialValue: Array<String>(),
     })
 
     const { t } = useI18n({
@@ -171,7 +174,14 @@ export default defineComponent({
       () => props.sideBarState,
       (value: sideBarState<any>) => {
         if (value.state === 'edit') {
-          const camp = ref<Camp>({ id: value.entity.id, uuid: value.entity.uuid, name: value.entity.name, endDate: value.entity.endDate, startDate: value.entity.startDate, sections: value.entity.sections})
+          const camp = ref<Camp>({
+            id: value.entity.id,
+            uuid: value.entity.uuid,
+            name: value.entity.name,
+            endDate: value.entity.endDate,
+            startDate: value.entity.startDate,
+            sections: value.entity.sections,
+          })
           camp.value.sections = SectionObjectsToSectionStrings(value.entity.sections)
           selectedGroupSections.value = SectionObjectsToSectionStrings(value.entity.sections)
           resetForm({
@@ -191,7 +201,7 @@ export default defineComponent({
       values,
       t,
       groupSections,
-      selectedGroupSections
+      selectedGroupSections,
     }
   },
 })

@@ -13,6 +13,7 @@
       }"
     >
       <multi-select
+        class="z-0"
         :id="id"
         ref="multiselect"
         v-model="inputValue"

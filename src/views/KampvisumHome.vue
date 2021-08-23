@@ -1,8 +1,11 @@
 <template>
   <div class="home">
     <warning v-if="campToBeDeleted.name" :title="campToBeDeleted.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
-    <camp-side-bar v-if="selectedGroup" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.uuid"/>
     
+    <div>
+      <camp-side-bar v-if="selectedGroup" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.uuid"/>
+    </div>
+
     <div class="pb-3 grid grid-cols-2 gap-3" style="margin-top: -2em">
       <multi-select
         v-if="myGroups[0]"
@@ -56,8 +59,6 @@
         </camp-info-card>
       </div>
     </div>
-    <pre>
-    </pre>
   </div>
 </template>
 
@@ -196,3 +197,17 @@ export default defineComponent({
   },
 })
 </script>
+
+<style>
+#overlay {
+  background-color: rgba(0,0,0,0);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  z-index:1;
+  transition: all 300ms ease;
+}
+</style>
