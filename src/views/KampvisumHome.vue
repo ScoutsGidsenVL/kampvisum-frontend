@@ -3,7 +3,7 @@
     <warning v-if="campToBeDeleted.name" :title="campToBeDeleted.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
     
     <div>
-      <camp-side-bar v-if="selectedGroup" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.uuid"/>
+      <camp-side-bar v-if="selectedGroup.uuid" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.uuid"/>
     </div>
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
@@ -96,7 +96,8 @@ export default defineComponent({
     const isWarningDisplayed = ref<Boolean>(false)
     const isDeletingCamp = ref<Boolean>(false)
     const campToBeDeleted = ref<Camp>({})
-    const selectedGroup = ref<Group>()
+    const selectedGroup = ref<Group>({})
+    const selectedYear = ref<string>('')
     const myGroups = ref<any>([])  
     const camps = ref<any>([])
 
@@ -105,9 +106,9 @@ export default defineComponent({
       useScope: 'local',
     })
 
-    const getCamps = async () => {
+    const getCamps = async (groupId: string, year: string) => {
       await RepositoryFactory.get(CampRepository)
-        .getArray('/insurances/?page=1&page_size=10')
+        .getArray('?page=1&page_size=100&group=' + groupId + year ? '&year=' + year : '')
         .then((c: ArrayResult) => {
           camps.value = c
         })
@@ -139,7 +140,7 @@ export default defineComponent({
         RepositoryFactory.get(CampRepository)
         .removeById(campToBeDeleted.value.uuid)
         .then(() => {
-          getCamps().then(() => {
+          getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '').then(() => {
             isDeletingCamp.value = false
             isWarningDisplayed.value = false
             toastState.value.visible = true
@@ -182,16 +183,17 @@ export default defineComponent({
         toastState.value.label = 'Kamp is succesvol bewerkt'
       }
       toastState.value.visible = true
-      getCamps()
+      getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '')
     }
 
 
     const selectGroup = (event: any) => {
       setSelectedGroup(event)
+      getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '')
+
     }
 
-    getCamps()
-    getUserGroups()
+    getUserGroups().then(() => getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : ''))
 
     return { t,myGroups, selectGroup, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
   },
