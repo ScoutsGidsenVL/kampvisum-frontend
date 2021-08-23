@@ -129,14 +129,17 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
-      await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
+      await validate().then((validation: any) => {
+        console.log('VALIDATION: ', validation)
+        scrollToFirstError(validation, 'addNewCamp')
+      })
+
       handleSubmit(async (values: Camp) => {
         if (props.sideBarState.state === 'edit') {
           await updateCamp(values)
         } else {
           await postCamp(values)
         }
-      })().then(() => {
         closeSideBar()
       })
     }

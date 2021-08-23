@@ -1,5 +1,5 @@
 <template>
-  <div v-if="options" class="pt-4">
+  <div v-if="options">
     <div>
       <strong v-show="label">
         {{ label }}
@@ -13,7 +13,6 @@
       }"
     >
       <multi-select
-        class="z-0"
         :id="id"
         ref="multiselect"
         v-model="inputValue"

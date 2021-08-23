@@ -6,7 +6,7 @@
       <camp-side-bar v-if="selectedGroup" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.uuid"/>
     </div>
 
-    <div class="pb-3 grid grid-cols-2 gap-3" style="margin-top: -2em">
+    <div class="pb-3 grid md:grid-cols-2 gap-3">
       <multi-select
         v-if="myGroups[0]"
         id="group"
