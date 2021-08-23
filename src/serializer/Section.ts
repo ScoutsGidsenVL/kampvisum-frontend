@@ -34,3 +34,15 @@ export const SectionSerializer = (input: any): any => {
 
   return single
 }
+
+export const SectionObjectsToSectionStrings = (sections: Section[]) => {
+  const sectionsUuids: string[] = []
+
+  sections.forEach((section: Section) => {
+    if (section.uuid) {
+      sectionsUuids.push(section.uuid)
+    }
+  })
+
+  return sectionsUuids
+}

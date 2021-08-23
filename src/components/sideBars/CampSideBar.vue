@@ -30,6 +30,7 @@
           </div> -->
           <div v-if="sideBarState.state !== 'hide'">
             <custom-header text="Takken die meegaan" type="h3" />
+            <!-- {{selectedGroupSections}} -->
             <div v-for="groupSection in groupSections" :key="groupSection.id">
               <custom-input v-model="selectedGroupSections" :isSubmitting="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="groupSection.uuid" :label="groupSection.name.name" />
             </div>
@@ -51,7 +52,7 @@ import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { GroupRepository } from '@/repositories/groupRepository'
 import { CampRepository } from '@/repositories/campRepository'
-import { Section } from '@/serializer/Section'
+import { Section, SectionObjectsToSectionStrings } from '@/serializer/Section'
 import { Camp } from '../../serializer/Camp'
 import { useForm, useField, ErrorMessage } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
@@ -111,7 +112,7 @@ export default defineComponent({
     const groupSections = ref<Section[]>([])
 
     const { value: selectedGroupSections } = useField('sections', '', {
-      initialValue: Array<Section>()
+      initialValue: Array<String>()
     })
 
     const { t } = useI18n({
@@ -122,7 +123,6 @@ export default defineComponent({
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
       resetForm()
-      console.log('SELECTED: ', selectedGroupSections.value)
     }
 
     const onSubmit = async () => {
@@ -139,9 +139,9 @@ export default defineComponent({
     }
 
     const updateCamp = async (data: Camp) => {
-      if (data.id) {
+      if (data.uuid) {
         await RepositoryFactory.get(CampRepository)
-          .update(data.id, data)
+          .update(data.uuid, data)
           .then(() => {
             context.emit('actionSuccess', 'UPDATE')
           })
@@ -171,8 +171,11 @@ export default defineComponent({
       () => props.sideBarState,
       (value: sideBarState<any>) => {
         if (value.state === 'edit') {
+          const camp = ref<Camp>({ id: value.entity.id, uuid: value.entity.uuid, name: value.entity.name, endDate: value.entity.endDate, startDate: value.entity.startDate, sections: value.entity.sections})
+          camp.value.sections = SectionObjectsToSectionStrings(value.entity.sections)
+          selectedGroupSections.value = SectionObjectsToSectionStrings(value.entity.sections)
           resetForm({
-            values: value.entity,
+            values: camp.value,
           })
         }
       }

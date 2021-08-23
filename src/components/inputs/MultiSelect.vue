@@ -187,9 +187,3 @@ export default defineComponent({
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
-
-<style scoped>
-/* ::v-deep .multiselect-clear {
-  display: none !important;
-} */
-</style>
