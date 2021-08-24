@@ -18,4 +18,11 @@ export class GroupRepository extends BaseRepository {
     })
   }
 
+  // getGroupYears(GroupId: string): Promise<any> {
+  //   return this.get(this.endpoint + groupId + '/sections', {}).then((response: []) => {
+  //     console.log('YEARS: ', response)
+  //     return response
+  //   })
+  // }
+
 }

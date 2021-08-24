@@ -12,7 +12,7 @@
         id="group"
         :object="true"
         placeholder="Kies een groep"
-        @addSelection="selectGroup($event)"
+        @addSelection="selectFilter($event, 'group')"
         track-by="fullInfo"
         value-prop="id"
         :options="myGroups"
@@ -24,7 +24,8 @@
         id="year"
         placeholder="Kies een jaar"
         value-prop="id"
-        :options="['2019', '2020', 2021]"
+        :options="['2021', '2022']"
+        @addSelection="selectFilter($event, 'year')"
       />
     </div>
 
@@ -108,7 +109,7 @@ export default defineComponent({
 
     const getCamps = async (groupId: string, year: string) => {
       await RepositoryFactory.get(CampRepository)
-        .getArray('?page=1&page_size=100&group=' + groupId + year ? '&year=' + year : '')
+        .getArray('?page=1&page_size=100&group=' + groupId + ((year !== '') ? '&year=' + year : ''))
         .then((c: ArrayResult) => {
           camps.value = c
         })
@@ -140,7 +141,7 @@ export default defineComponent({
         RepositoryFactory.get(CampRepository)
         .removeById(campToBeDeleted.value.uuid)
         .then(() => {
-          getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '').then(() => {
+          getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '', selectedYear.value).then(() => {
             isDeletingCamp.value = false
             isWarningDisplayed.value = false
             toastState.value.visible = true
@@ -183,19 +184,22 @@ export default defineComponent({
         toastState.value.label = 'Kamp is succesvol bewerkt'
       }
       toastState.value.visible = true
-      getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '')
+      getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '', selectedYear.value)
+    }
+
+    const setSelectedYear = (year: string) => {
+      selectedYear.value = year
     }
 
 
-    const selectGroup = (event: any) => {
-      setSelectedGroup(event)
-      getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '')
-
+    const selectFilter = (event: any, filter: string) => {
+      filter === 'group' ? setSelectedGroup(event) : event !== null ? setSelectedYear(event) : setSelectedYear('')
+      getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '', selectedYear.value)
     }
 
-    getUserGroups().then(() => getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : ''))
+    getUserGroups().then(() => getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '', selectedYear.value))
 
-    return { t,myGroups, selectGroup, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
+    return { t,myGroups, selectFilter, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
   },
 })
 </script>

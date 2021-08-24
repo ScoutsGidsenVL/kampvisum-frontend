@@ -129,11 +129,7 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
-      await validate().then((validation: any) => {
-        console.log('VALIDATION: ', validation)
-        scrollToFirstError(validation, 'addNewCamp')
-      })
-
+      await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
       handleSubmit(async (values: Camp) => {
         if (props.sideBarState.state === 'edit') {
           await updateCamp(values)
@@ -141,7 +137,7 @@ export default defineComponent({
           await postCamp(values)
         }
         closeSideBar()
-      })
+      })()
     }
 
     const updateCamp = async (data: Camp) => {
@@ -155,7 +151,6 @@ export default defineComponent({
     }
 
     const postCamp = async (data: Camp) => {
-      console.log('POST2: ', data)
       await RepositoryFactory.get(CampRepository)
         .create(data)
         .then(() => {
