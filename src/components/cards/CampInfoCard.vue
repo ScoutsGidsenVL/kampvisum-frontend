@@ -39,7 +39,7 @@ export default defineComponent({
   setup () {
 
     const navigateTowardsCamp = (camp: Camp) => {
-      router.push('/kamp/' + camp.id)
+      router.push('/kamp/' + camp.uuid)
     }
 
     const navigateTowardsCategory = () => {

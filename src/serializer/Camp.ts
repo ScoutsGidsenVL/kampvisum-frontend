@@ -2,7 +2,7 @@ import { Section, SectionDeserializer } from "./Section"
 
 export interface Camp {
   id?: string
-  uuid?: string
+  uuid: string
   name?: string
   endDate?: string
   startDate?: string

@@ -13,7 +13,7 @@ export interface Group {
   readonly type?: any
   readonly publicRegistration?: any
   readonly deleted?: any
-  readonly uuid?: string
+  readonly uuid: string
   readonly fullInfo?: string
 }
 

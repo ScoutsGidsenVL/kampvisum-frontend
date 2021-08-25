@@ -17,4 +17,10 @@ export class CampRepository extends BaseRepository {
       return array
     })
   }
+
+  getGroupYears(groupId: string): Promise<any> {
+    return this.get(this.endpoint + groupId + '/years', {}).then((response: []) => {
+      return response
+    })
+  }
 }

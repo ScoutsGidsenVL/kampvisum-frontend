@@ -24,7 +24,7 @@
         id="year"
         placeholder="Kies een jaar"
         value-prop="id"
-        :options="['2021', '2022']"
+        :options="groupYears"
         @addSelection="selectFilter($event, 'year')"
       />
     </div>
@@ -96,9 +96,10 @@ export default defineComponent({
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })
     const isWarningDisplayed = ref<Boolean>(false)
     const isDeletingCamp = ref<Boolean>(false)
-    const campToBeDeleted = ref<Camp>({})
-    const selectedGroup = ref<Group>({})
+    const campToBeDeleted = ref<Camp>({ uuid: ''})
+    const selectedGroup = ref<Group>({ uuid: ''})
     const selectedYear = ref<string>('')
+    const groupYears = ref<string[]>([])
     const myGroups = ref<any>([])  
     const camps = ref<any>([])
 
@@ -128,6 +129,14 @@ export default defineComponent({
         })
     }
 
+    const getGroupYears = async (groupId: string) => {
+      await RepositoryFactory.get(CampRepository)
+        .getGroupYears(groupId)
+        .then((years: Array<string>) => {
+          groupYears.value = years
+        })
+    }
+
     const editCamp = (camp: Camp) => {
       campSideBarState.value = {
         state: 'edit',
@@ -136,19 +145,17 @@ export default defineComponent({
     }
 
     const deleteCamp = () => {
-      if (campToBeDeleted.value.uuid) {
         isDeletingCamp.value = true
         RepositoryFactory.get(CampRepository)
         .removeById(campToBeDeleted.value.uuid)
         .then(() => {
-          getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '', selectedYear.value).then(() => {
+          getCamps(selectedGroup.value.uuid, selectedYear.value).then(() => {
             isDeletingCamp.value = false
             isWarningDisplayed.value = false
             toastState.value.visible = true
             toastState.value.label = "Kamp is succesvol verwijderd"
           })
         })
-      }
     }
 
     const displayWarning = (camp: Camp) => {
@@ -184,7 +191,7 @@ export default defineComponent({
         toastState.value.label = 'Kamp is succesvol bewerkt'
       }
       toastState.value.visible = true
-      getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '', selectedYear.value)
+      getCamps(selectedGroup.value.uuid, selectedYear.value)
     }
 
     const setSelectedYear = (year: string) => {
@@ -194,26 +201,13 @@ export default defineComponent({
 
     const selectFilter = (event: any, filter: string) => {
       filter === 'group' ? setSelectedGroup(event) : event !== null ? setSelectedYear(event) : setSelectedYear('')
-      getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '', selectedYear.value)
+      getCamps(selectedGroup.value.uuid, selectedYear.value)
     }
 
-    getUserGroups().then(() => getCamps(selectedGroup.value.uuid ? selectedGroup.value.uuid : '', selectedYear.value))
+    getUserGroups().then(() => getGroupYears(selectedGroup.value.uuid))
+    .then(() => getCamps(selectedGroup.value.uuid, selectedYear.value))
 
-    return { t,myGroups, selectFilter, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
+    return { t,myGroups, groupYears, selectFilter, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
   },
 })
 </script>
-
-<style>
-#overlay {
-  background-color: rgba(0,0,0,0);
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  pointer-events: none;
-  z-index:1;
-  transition: all 300ms ease;
-}
-</style>
