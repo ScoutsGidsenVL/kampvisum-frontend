@@ -18,6 +18,7 @@ export const SectionDeserializer = (input: any): Section => {
     hidden: input.hidden,
     group: input.group ? input.group : undefined,
   }
+  console.log("SECTION: ", single)
 
   return single
 }
