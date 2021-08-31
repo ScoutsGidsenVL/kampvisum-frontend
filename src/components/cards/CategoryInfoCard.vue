@@ -1,7 +1,7 @@
 <template>
   <div @click="navigateTowardsCategory(category)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen">
     <div class="z-2">
-      <h2 class="mb-3 mt-0">{{ category.name }}</h2>
+      <h2 class="mb-3 mt-0">{{ category }}</h2>
       <div v-for="category in subCategories" :key="category" class="d-flex gap-3 my-2.5 items-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path

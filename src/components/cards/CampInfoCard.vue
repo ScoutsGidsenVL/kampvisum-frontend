@@ -4,7 +4,7 @@
         <div class="flex justify-between">
           <h3 class="text-sm text-green mb-0">
             <span v-for="(section, index) in camp.sections" :key="section">
-              {{camp.sections.length > 1 && index != camp.sections.length - 1 ? section.name.name + ' & ' : section.name.name}}
+              {{camp.sections.length > 1 && index != camp.sections.length - 1 ? section.name + ' & ' : section.name}}
             </span>
           </h3>
           <div class="d-flex gap-3 mt-1">

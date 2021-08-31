@@ -12,7 +12,7 @@ export interface Section {
 export const SectionDeserializer = (input: any): Section => {
   const single: Section = {
     id: input.id ? input.id : undefined,
-    name: input.name ? NameDeserializer(input.name) : undefined,
+    name: input.name ? input.name : undefined,
     deleted: input.deleted ? input.deleted : undefined,
     uuid: input.uuid ? input.uuid : undefined,
     hidden: input.hidden,
