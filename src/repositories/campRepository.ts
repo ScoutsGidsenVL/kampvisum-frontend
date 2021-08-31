@@ -3,8 +3,8 @@ import { BaseRepository } from '@/repositories/baseRepository'
 import { ArrayResult } from '@/interfaces/ArrayResult'
 
 export class CampRepository extends BaseRepository {
-  id = '/camp/'
-  endpoint = '/camps/'
+  id = '/camps/'
+  endpoint = '/visums/'
   deserializer = CampDeserializer
   serializer = CampSerializer
 
@@ -19,7 +19,8 @@ export class CampRepository extends BaseRepository {
   }
 
   getGroupYears(groupId: string): Promise<any> {
-    return this.get(this.endpoint + groupId + '/years', {}).then((response: []) => {
+    // return this.get(this.endpoint + groupId + '/years', {}).then((response: []) => {
+    return this.get(this.id + groupId + '/years', {}).then((response: []) => {
       return response
     })
   }
