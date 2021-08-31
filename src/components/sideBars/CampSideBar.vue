@@ -158,7 +158,7 @@ export default defineComponent({
         })
     }
 
-    const getGroupSection = async (groupId: string) => {
+    const getGroupSections = async (groupId: string) => {
       await RepositoryFactory.get(GroupRepository)
         .getGroupSections(groupId)
         .then((results: Section[]) => {
@@ -166,7 +166,14 @@ export default defineComponent({
         })
     }
 
-    getGroupSection(props.selectedGroupId)
+    getGroupSections(props.selectedGroupId)
+
+    watch(
+      () => props.selectedGroupId,
+      () => {
+        getGroupSections(props.selectedGroupId)
+      }
+    )
 
     watch(
       () => props.sideBarState,
