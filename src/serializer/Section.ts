@@ -2,9 +2,9 @@ import { Name, NameDeserializer, NameSerializer } from "./Name"
 
 export interface Section {
   readonly id?: string
-  readonly name?: Name
-  readonly deleted?: any
   readonly uuid?: string
+  readonly deleted?: any
+  readonly name?: Name
   readonly hidden?: boolean
   readonly group?: string
 }
@@ -18,7 +18,7 @@ export const SectionDeserializer = (input: any): Section => {
     hidden: input.hidden,
     group: input.group ? input.group : undefined,
   }
-
+  console.log("test: ", single)
   return single
 }
 
