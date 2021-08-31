@@ -9,7 +9,7 @@
     <hr />
 
     <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
-      <div v-for="category in categories" :key="category">
+      <div v-for="category in camp.categories" :key="category">
         <category-info-card :category="category" />
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { Category, CategoryDeserializer } from "./Category"
 import { Section, SectionDeserializer } from "./Section"
 
 export interface Camp {
@@ -7,6 +8,7 @@ export interface Camp {
   endDate?: string
   startDate?: string
   sections?: Array<string> | Array<Section>
+  categories?: Array<Category>
 }
 
 export const CampDeserializer = (input: any): Camp => {
@@ -16,8 +18,8 @@ export const CampDeserializer = (input: any): Camp => {
     name: input.name,
     startDate: input.start_date,
     endDate: input.end_date,
-    sections: input.sections.map((section: any) => SectionDeserializer(section))
-    
+    sections: input.sections.map((section: any) => SectionDeserializer(section)),
+    categories: input.categories.map((category: any) => CategoryDeserializer(category))
   }
 
   return single

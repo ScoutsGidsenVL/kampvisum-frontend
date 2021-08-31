@@ -1,14 +1,22 @@
+import { SubCategory, SubCategoryDeserializer } from "./SubCategory"
+
 export interface Category {
-  id?: string
-  uuid?: string
   name?: string
+  status?: boolean
+  uuid?: string
+  subCategories?: SubCategory
 }
 
 export const CategoryDeserializer = (input: any): Category => {
   const single: Category = {
-    id: input.id,
-    uuid: input.uuid,
     name: input.name,
+    status: input.status,
+    uuid: input.uuid,
+    subCategories: input.sub_categories ? input.sub_categories.map((subCategory: any) => SubCategoryDeserializer(subCategory)) : [
+      {name: 'Planning', status: false, uuid: 'UUID123456789'},
+      {name: 'Logistiek', status: false, uuid: 'UUID123456789'},
+      {name: 'Veiligheid', status: false, uuid: 'UUID123456789'}
+    ]
   }
 
   return single
