@@ -1,7 +1,7 @@
 <template>
   <div class=" w-auto h-screen z-40">
-    <div class="d-flex h-screen" :class="{ 'w-96': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
-      <div class="w-96 fixed d-flex">
+    <div class="d-flex h-screen" :class="{ 'md:w-96 xs:w-4/5': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
+      <div class="md:w-96 xs:w-4/5 fixed d-flex">
         <div class="flex-column bg-gray h-screen px-4" :class="{ 'd-none': sidebar.state === SidebarState.CLOSED, 'd-flex': sidebar.state === SidebarState.OPEN }">
           
           <div class="mt-4 d-flex gap-4 mb-3">
@@ -49,10 +49,12 @@ export default defineComponent({
     const toggleSideBar: () => void = () => {
       if (sidebar.value.state === SidebarState.OPEN) {
         sidebar.value.state = SidebarState.CLOSED
+        // document.body.classList.remove('overflow-hidden')
         return;
       }
       if (sidebar.value.state === SidebarState.CLOSED) {
         sidebar.value.state = SidebarState.OPEN
+        // document.body.classList.add('overflow-hidden')
         return;
       }
     }
