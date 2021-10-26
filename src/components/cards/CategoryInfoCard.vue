@@ -1,5 +1,5 @@
 <template>
-  <div @click="navigateTowardsCategory(category.name, category.uuid, route)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen" style="height: 222px">
+  <div @click="navigateTowardsCategory(category.name, camp, category.uuid, route)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen" style="height: 222px">
     <div class="z-2">
       <h2 class="mb-3 mt-0">{{ category.name }}</h2>
       <div v-for="subCategory in category.subCategories" :key="subCategory" class="d-flex gap-3 my-2.5 items-center">
@@ -18,6 +18,7 @@ import { Category } from '../../serializer/Category'
 import { defineComponent, PropType } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
+import { Camp } from '@/serializer/Camp'
 
 export default defineComponent({
   name: 'CategoryInfoCard',
@@ -27,10 +28,13 @@ export default defineComponent({
       type: Object as PropType<Category>,
       required: true,
     },
+    camp: {
+      type: Object as PropType<Camp>,
+      required: true,
+    }
   },
   setup() {
     const { navigateTowardsCategory } = useNavigation()
-
     const route = useRoute()
 
     const navigateTowardsSubCategory = (subCategory: SubCategory) => {

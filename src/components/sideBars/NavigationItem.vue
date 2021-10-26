@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="py-2 d-flex justify-between">
+    <div @click="toggleDrawer()" class="py-2 d-flex justify-between">
       <div>
-        <strong class="xs:text-xs md:text-md">
+        <strong @click="navigate()" class="xs:text-xs md:text-md cursor-pointer">
           {{text}}
         </strong>
       </div>
-      <div class="ml-3 cursor-pointer" @click="toggleDrawer()">
+      <div v-if="!link" class="ml-3 cursor-pointer">
         <svg v-if="drawer.state === DrawerState.CLOSED" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
@@ -23,6 +23,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import router from '@/router'
 
 export enum DrawerState {
   OPEN = 'OPEN',
@@ -36,25 +37,35 @@ export type Drawer = {
 export default defineComponent({
   name: 'NavigationItem',
   props: {
-    text: String
+    text: String,
+    link: String
   },
-  setup () {
+  setup (props) {
+    
     const drawer = ref<Drawer>({state: DrawerState.CLOSED})
+
     const toggleDrawer = () => {
-      if (drawer.value.state === DrawerState.OPEN) {
-        drawer.value.state = DrawerState.CLOSED
-        return;
+      if (!props.link) {
+        if (drawer.value.state === DrawerState.OPEN) {
+          drawer.value.state = DrawerState.CLOSED
+          return;
+        }
+        if (drawer.value.state === DrawerState.CLOSED) {
+          drawer.value.state = DrawerState.OPEN
+          return;
+        }
       }
-      if (drawer.value.state === DrawerState.CLOSED) {
-        drawer.value.state = DrawerState.OPEN
-        return;
-      }
+    }
+
+    const navigate = () => {
+      router.push(props.link ? props.link : '')
     }
 
     return {
       toggleDrawer,
       DrawerState,
-      drawer
+      navigate,
+      drawer,
     }
   }
 })

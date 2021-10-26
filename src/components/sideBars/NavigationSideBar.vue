@@ -17,10 +17,17 @@
             <div v-if="campsByGroup && campsByGroup.length > 0">
               <div v-for="(camp) in campsByGroup" :key="camp">
                 <navigation-item :text="getSectionsTitle(camp)">
-                  <a class="xs:text-sm md:text-md block  cursor-pointer py-1" v-for="(category) in camp.categories" :key="category">{{category.name}}</a>
+                  <div v-for="(category) in camp.categories" :key="category">
+                    <a @click="navigateTowardsCategory(category.name, camp, category.uuid, route)" class="xs:text-sm md:text-md block cursor-pointer py-1">{{category.name}}</a>
+                  </div>
                 </navigation-item>
               </div>
             </div>
+
+            <navigation-item link="/instellingen" text="Instellingen"/>
+            <navigation-item link="/documenten" text="Documenten"/>
+            <navigation-item link="/locaties" text="Locaties"/>
+            <navigation-item link="/niet-leden" text="Niet-leden"/>
           </div>
         </div>
         
@@ -44,6 +51,8 @@ import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { useCampHelper } from '../../helpers/campHelper'
 import NavigationItem from './NavigationItem.vue'
 import { defineComponent, ref } from 'vue'
+import { useNavigation } from '../../router/navigation'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   components: { NavigationItem },
@@ -52,6 +61,8 @@ export default defineComponent({
     const { getSectionsTitle } = useSectionsHelper()
     const { campsByGroup } = useCampHelper()
     const sidebar = ref<Sidebar>({ state: SidebarState.CLOSED })
+    const { navigateTowardsCategory } = useNavigation()
+    const route = useRoute()
 
     const toggleSideBar: () => void = () => {
       if (sidebar.value.state === SidebarState.OPEN) {
@@ -65,11 +76,13 @@ export default defineComponent({
     }
 
     return {
+      navigateTowardsCategory,
       getSectionsTitle,
       toggleSideBar,
       SidebarState,
       campsByGroup,
       sidebar,
+      route
     }
   }
 })

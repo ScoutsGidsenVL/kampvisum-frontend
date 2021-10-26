@@ -1,14 +1,13 @@
-import CommunicationAppointments from '@/views/categories/CommunicationAppointments.vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import MembersLeadership from '@/views/categories/MembersLeadership.vue'
-import Logistics from '@/views/categories/Logistics.vue'
-import Planning from '@/views/categories/Planning.vue'
+import BaseCategoryView from '@/views/categories/BaseCategoryView.vue'
+import SettingsOverview from '@/views/SettingsOverview.vue'
+import DocumentsOverview from '@/views/DocumentsOverview.vue'
+import LocationsOverview from '@/views/LocationsOverview.vue'
+import NonMembersOverview from '@/views/NonMembersOverview.vue'
+
 import KampvisumHome from '@/views/KampvisumHome.vue'
 import CampOverview from '@/views/CampOverview.vue'
-import Budget from '@/views/categories/Budget.vue'
-import Safety from '@/views/categories/Safety.vue'
 import StartView from '@/components/start.vue'
-import BaseCategoryView from '@/views/categories/BaseCategoryView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/start' },
@@ -25,6 +24,46 @@ const routes: Array<RouteRecordRaw> = [
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
       titleKey: 'page-titles.kampvisum',
+    },
+  },
+  {
+    path: '/instellingen',
+    name: 'Settings',
+    component: SettingsOverview,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/instellingen',
+      titleKey: 'page-titles.settings',
+    },
+  },
+  {
+    path: '/documenten',
+    name: 'Documents',
+    component: DocumentsOverview,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/documenten',
+      titleKey: 'page-titles.documents',
+    },
+  },
+  {
+    path: '/locaties',
+    name: 'Locations',
+    component: LocationsOverview,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/locaties',
+      titleKey: 'page-titles.locations',
+    },
+  },
+  {
+    path: '/niet-leden',
+    name: 'NonMembers',
+    component: NonMembersOverview,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/niet-leden',
+      titleKey: 'page-titles.non-members',
     },
   },
   {

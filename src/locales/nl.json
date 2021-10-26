@@ -1,6 +1,11 @@
 {
   "page-titles": {
-    "kampvisum": "Kampvisum"
+    "kampvisum": "Kampvisum",
+    "settings": "Instellingen",
+    "documents": "Documenten",
+    "locations": "Locaties",
+    "non-members": "Niet leden"
+
   },
   "pages": {
     "kampvisum-overview": {

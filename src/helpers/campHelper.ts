@@ -15,6 +15,7 @@ export const useCampHelper = (): {
   const route = useRoute()
 
   const getCampByRouteParam = async (): Promise<Camp> => {
+    console.log('WOW: ', route.params.campId.toString())
     return RepositoryFactory.get(CampRepository)
       .getById(route.params.campId.toString())
       .then((c: Camp) => { return c})
