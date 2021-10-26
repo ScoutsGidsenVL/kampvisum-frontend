@@ -18,11 +18,11 @@
 
 <script lang="ts">
 import { BasePage, PageTitle, defineRules, Breadcrumb } from 'vue-3-component-library'
+import NavigationSideBar from './components/sideBars/NavigationSideBar.vue'
 import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
-import NavigationSideBar from './components/sideBars/NavigationSideBar.vue'
 
 export default defineComponent({
   name: 'App',
@@ -43,9 +43,9 @@ export default defineComponent({
     defineRules()
 
     return {
-      t,
-      route,
       router,
+      route,
+      t,
     }
   },
 })

@@ -14,10 +14,13 @@
           </div>
 
           <div class="top-44 w-auto">
-            <navigation-item text="Jonggivers" />
-            <navigation-item text="Jonggivers" />
-            <navigation-item text="Jonggivers" />
-            <navigation-item text="Jonggivers" />
+            <div v-if="campsByGroup && campsByGroup.length > 0">
+              <div v-for="(camp) in campsByGroup" :key="camp">
+                <navigation-item :text="getSectionsTitle(camp)">
+                  <a class="xs:text-sm md:text-md block  cursor-pointer py-1" v-for="(category) in camp.categories" :key="category">{{category.name}}</a>
+                </navigation-item>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -36,34 +39,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
 import { Sidebar, SidebarState } from './InformationSideBar.vue'
+import { useSectionsHelper } from '../../helpers/sectionsHelper'
+import { useCampHelper } from '../../helpers/campHelper'
 import NavigationItem from './NavigationItem.vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   components: { NavigationItem },
   name: 'NavigationSideBar',
   setup() {
-
+    const { getSectionsTitle } = useSectionsHelper()
+    const { campsByGroup } = useCampHelper()
     const sidebar = ref<Sidebar>({ state: SidebarState.CLOSED })
 
     const toggleSideBar: () => void = () => {
       if (sidebar.value.state === SidebarState.OPEN) {
         sidebar.value.state = SidebarState.CLOSED
-        // document.body.classList.remove('overflow-hidden')
         return;
       }
       if (sidebar.value.state === SidebarState.CLOSED) {
         sidebar.value.state = SidebarState.OPEN
-        // document.body.classList.add('overflow-hidden')
         return;
       }
     }
 
     return {
+      getSectionsTitle,
       toggleSideBar,
+      SidebarState,
+      campsByGroup,
       sidebar,
-      SidebarState
     }
   }
 })

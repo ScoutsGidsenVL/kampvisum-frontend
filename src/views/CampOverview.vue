@@ -2,7 +2,7 @@
   <div v-if="camp" class="p-3">
     <h1>{{ camp.name }}</h1>
 
-    <h4 v-if="sidebar" class="text-green inline">
+    <h4 class="text-green inline">
       {{ getSectionsTitle(camp) }}
     </h4>
     
@@ -18,8 +18,8 @@
 
 <script lang="ts">
 import CategoryInfoCard from '../components/cards/CategoryInfoCard.vue'
-import { useCampHelper } from '../helpers/campHelper'
 import { useSectionsHelper } from '../helpers/sectionsHelper'
+import { useCampHelper } from '../helpers/campHelper'
 import { defineComponent, ref } from 'vue'
 import { Camp } from '../serializer/Camp'
 

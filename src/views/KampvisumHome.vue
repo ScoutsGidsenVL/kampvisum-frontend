@@ -1,7 +1,6 @@
 <template>
   <div class="home p-3">
     <warning v-if="campToBeDeleted.name" :title="campToBeDeleted.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
-    
     <div>
       <camp-side-bar v-if="selectedGroup.uuid" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.uuid"/>
     </div>
@@ -29,13 +28,16 @@
       />
     </div>
 
-    <custom-button @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
-      <template v-slot:icon>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-        </svg>
-      </template>
-    </custom-button>
+    <div class="xs:w-100 md:w-80">
+      <custom-button class="w-100" :extraStyle="'w-100'" @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
+        <template v-slot:icon>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+          </svg>
+        </template>
+      </custom-button>
+    </div>
+    
 
     <div>
       <success-toast v-show="toastState.visible" :label="toastState.label" @hideToast="hideToast()" />
@@ -67,14 +69,15 @@
 import { CustomButton, sideBarState, Warning, SuccessToast } from 'vue-3-component-library'
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
+import { GroupRepository } from '@/repositories/groupRepository'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
-import { GroupRepository } from '@/repositories/groupRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
 import {ArrayResult} from '../interfaces/ArrayResult'
+import { useCampHelper } from '../helpers/campHelper'
+import { Group } from '../serializer/Group'
 import { defineComponent, ref } from 'vue'
 import { Camp } from '../serializer/Camp'
-import { Group } from '../serializer/Group'
 import { useI18n } from 'vue-i18n'
 
 export interface ToastState {
@@ -94,10 +97,11 @@ export default defineComponent({
   },
   setup() {
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })
+    const { setCampsByGroup, campsByGroup } = useCampHelper()
     const isWarningDisplayed = ref<Boolean>(false)
-    const isDeletingCamp = ref<Boolean>(false)
     const campToBeDeleted = ref<Camp>({ uuid: ''})
     const selectedGroup = ref<Group>({ uuid: ''})
+    const isDeletingCamp = ref<Boolean>(false)
     const selectedYear = ref<string>('')
     const groupYears = ref<string[]>([])
     const myGroups = ref<any>([])  
@@ -113,6 +117,7 @@ export default defineComponent({
         .getArray('?page=1&page_size=100&group=' + groupId + ((year !== '') ? '&year=' + year : ''))
         .then((c: ArrayResult) => {
           camps.value = c
+          setCampsByGroup(camps.value)
         })
     }
 
@@ -199,7 +204,6 @@ export default defineComponent({
       selectedYear.value = year
     }
 
-
     const selectFilter = (event: any, filter: string) => {
       filter === 'group' ? setSelectedGroup(event) : event !== null ? setSelectedYear(event) : setSelectedYear('')
       getCamps(selectedGroup.value.uuid, selectedYear.value)
@@ -208,7 +212,27 @@ export default defineComponent({
     getUserGroups().then(() => getGroupYears(selectedGroup.value.uuid))
     .then(() => getCamps(selectedGroup.value.uuid, selectedYear.value))
 
-    return { t,myGroups, groupYears, selectFilter, selectedGroup, campSideBarState, openCampSideBar, camps, editCamp, deleteCamp, displayWarning, isWarningDisplayed, hideWarning, hideToast, toastState, isDeletingCamp, campToBeDeleted, actionSuccess }
+    return { 
+      isWarningDisplayed, 
+      campSideBarState, 
+      openCampSideBar, 
+      campToBeDeleted, 
+      displayWarning, 
+      isDeletingCamp, 
+      selectedGroup, 
+      actionSuccess, 
+      selectFilter, 
+      hideWarning, 
+      groupYears, 
+      deleteCamp, 
+      toastState, 
+      campsByGroup,
+      hideToast, 
+      myGroups, 
+      editCamp, 
+      camps, 
+      t,
+    }
   },
 })
 </script>

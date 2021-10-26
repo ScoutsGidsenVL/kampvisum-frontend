@@ -75,16 +75,6 @@ export default defineComponent({
       context.emit('openSidebar')
     }
 
-    watch(props.sidebar, (value: Sidebar) => {
-      if (props.isOverflowHidden === true) {
-        if (value.state == SidebarState.OPEN) {
-          // document.body.classList.add('overflow-hidden')
-        } else {
-          // document.body.classList.remove('overflow-hidden')
-        }
-      }
-    })
-
     return {
       closeSideBar,
       SidebarState,
