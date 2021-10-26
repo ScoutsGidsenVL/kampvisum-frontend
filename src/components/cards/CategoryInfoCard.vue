@@ -1,5 +1,5 @@
 <template>
-  <div @click="navigateTowardsCategory(category)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen">
+  <div @click="navigateTowardsCategory(category.name, category.uuid, route)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen" style="height: 222px">
     <div class="z-2">
       <h2 class="mb-3 mt-0">{{ category.name }}</h2>
       <div v-for="subCategory in category.subCategories" :key="subCategory" class="d-flex gap-3 my-2.5 items-center">
@@ -12,9 +12,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { Category } from '../../serializer/Category'
 import { SubCategory } from '../../serializer/SubCategory'
+import { useNavigation } from '../../router/navigation'
+import { Category } from '../../serializer/Category'
+import { defineComponent, PropType } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 
@@ -28,19 +29,18 @@ export default defineComponent({
     },
   },
   setup() {
-    const route = useRoute()
+    const { navigateTowardsCategory } = useNavigation()
 
-    const navigateTowardsCategory = (category: Category) => {
-      router.push('/kamp/' + route.params.id.toString() + '/planning/' + category.uuid)
-    }
+    const route = useRoute()
 
     const navigateTowardsSubCategory = (subCategory: SubCategory) => {
       router.push('/kamp/' + route.params.id.toString() + '/planning/' + subCategory.uuid)
     }
 
     return {
-      navigateTowardsCategory,
       navigateTowardsSubCategory,
+      navigateTowardsCategory,
+      route,
     }
   },
 })

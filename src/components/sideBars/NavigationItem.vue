@@ -1,0 +1,26 @@
+<template>
+  <div>
+    <div class="py-2 d-flex justify-between">
+      <div>
+        <strong>
+          {{text}}
+        </strong>
+      </div>
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  name: 'NavigationItem',
+  props: {
+    text: String
+  }
+})
+</script>

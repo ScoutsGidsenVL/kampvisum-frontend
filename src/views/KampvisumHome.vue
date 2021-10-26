@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home p-3">
     <warning v-if="campToBeDeleted.name" :title="campToBeDeleted.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
     
     <div>

@@ -1,10 +1,16 @@
 <template>
-  <div id="app" class="pb-10">
+  <div id="app">
     <base-page>
-      <div class="container mt-8 mb-4 pt-2">
+      <!-- <div class="sticky top-0 pl-10 py-2 bg-white z-50 border border-lightGray">
         <bread-crumb :home="'/kampvisum-home/'" :router="router" :route="route" />
-        <page-title :title="$route.meta.titleKey ? t($route.meta.titleKey) : ''" :homeUrl="$route.meta.homescreen ? $route.meta.homescreen : ''" />
-        <router-view />
+      </div> -->
+      
+      <div class="d-flex">
+        <navigation-side-bar class="mr-3" />
+        <div class="w-100">
+          <page-title class="ml-3" :title="$route.meta.titleKey ? t($route.meta.titleKey) : ''" :homeUrl="$route.meta.homescreen ? $route.meta.homescreen : ''" />
+          <router-view />
+        </div>
       </div>
     </base-page>
   </div>
@@ -12,11 +18,11 @@
 
 <script lang="ts">
 import { BasePage, PageTitle, defineRules, Breadcrumb } from 'vue-3-component-library'
-// import BreadCrumb from './components/breadcrumb/Breadcrumb.vue'
 import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
+import NavigationSideBar from './components/sideBars/NavigationSideBar.vue'
 
 export default defineComponent({
   name: 'App',
@@ -24,6 +30,7 @@ export default defineComponent({
     'base-page': BasePage,
     'page-title': PageTitle,
     'bread-crumb': Breadcrumb,
+    NavigationSideBar,
   },
   setup() {
     const { t } = useI18n({
@@ -48,8 +55,12 @@ export default defineComponent({
 @import url('https://use.typekit.net/frt5hnw.css');
 
 @media (min-width: 992px) {
-  #app {
+  /* #app {
     padding-left: 4rem;
+  } */
+
+  body {
+    margin: 0 !important;
   }
 }
 </style>
