@@ -18,7 +18,9 @@
               <div v-for="(camp) in campsByGroup" :key="camp">
                 <navigation-item :text="getSectionsTitle(camp)">
                   <div v-for="(category) in camp.categories" :key="category">
-                    <a @click="navigateTowardsCategory(category.name, camp, category.uuid, route)" class="xs:text-sm md:text-md block cursor-pointer py-1">{{category.name}}</a>
+                    <a @click="navigateTowardsCategory(category.name, camp, category.uuid, route)" class="xs:text-sm md:text-md block cursor-pointer py-1">
+                      {{category.name}}
+                    </a>
                   </div>
                 </navigation-item>
               </div>

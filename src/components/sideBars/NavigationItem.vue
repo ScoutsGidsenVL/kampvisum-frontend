@@ -16,7 +16,7 @@
       </div>
     </div>
     <div v-if="drawer.state === DrawerState.OPEN" class="ml-3">
-      <slot />
+      <slot /> 
     </div>
   </div>
 </template>
