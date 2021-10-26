@@ -5,8 +5,8 @@
         <page-header :title="route.name" :subTitle="getSectionsTitle(camp)" />
       </div>
 
-      <div class="pt-3 md:pr-3">
-          <div>
+      <div class="w-100 flex pt-3">
+          <div class="w-100">
             <base-subcategory-card title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
             <base-subcategory-card class="mt-2" title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
             <base-subcategory-card class="mt-2" title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
@@ -14,9 +14,9 @@
             <base-subcategory-card class="mt-2" title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
             <base-subcategory-card class="mt-2" title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
           </div>
+          <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
       </div>
     </div>
-    <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
   </div>
 </template>
 
