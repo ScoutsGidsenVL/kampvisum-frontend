@@ -5,7 +5,7 @@
         <page-header :title="route.name" :subTitle="getSectionsTitle(camp)" />
       </div>
 
-      <div class="pt-3 pr-3">
+      <div class="pt-3 md:pr-3">
           <div>
             <base-subcategory-card title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
             <base-subcategory-card class="mt-2" title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
@@ -48,7 +48,7 @@ export default defineComponent({
       camp.value = c
     })
 
-    const sidebar = ref<Sidebar>({state: SidebarState.OPEN})
+    const sidebar = ref<Sidebar>({state: SidebarState.CLOSED})
 
     const closeSidebar = () => {
       sidebar.value.state = SidebarState.CLOSED

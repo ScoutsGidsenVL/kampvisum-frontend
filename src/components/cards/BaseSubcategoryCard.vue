@@ -26,8 +26,8 @@
         <file-item />
         <file-item />
         <div>
-        <div class="flex justify-between bg-gray p-3">
-          <custom-button text="+ voeg document toe" extraStyle="md:pl-6 md:pr-6" />
+        <div class="w-100">
+          <custom-button text="+ voeg document toe" extraStyle="w-100" />
         </div>
       </div>
       </div>
