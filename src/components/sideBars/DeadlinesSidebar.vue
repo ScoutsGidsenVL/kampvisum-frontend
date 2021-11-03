@@ -28,8 +28,10 @@
         </svg>
       </div>
 
-      <div class="pt-3">
+      <div class="pt-3 flex flex-column gap-5">
         <deadline-info-card />
+        <deadline-card />
+        <deadline-card :isImportant="true" />
       </div>
     </div>
   </div>
@@ -38,6 +40,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import DeadlineInfoCard from '@/components/cards/DeadlineInfoCard.vue'
+import DeadlineCard from '@/components/cards/DeadlineCard.vue'
 
 export enum SidebarState {
   OPEN = 'OPEN',
@@ -51,7 +54,8 @@ export type Sidebar = {
 export default defineComponent({
   name: 'DeadlinesSideBar',
   components: {
-    'deadline-info-card': DeadlineInfoCard
+    'deadline-info-card': DeadlineInfoCard,
+    'deadline-card': DeadlineCard
   },
   props: {
     sidebar: {
