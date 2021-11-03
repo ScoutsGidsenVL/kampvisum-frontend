@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <scouts-dummy-bar />
+    <!-- DUMMY NEEDS TO GET REMOVED AND IS ONLY FOR STYLING PURPOSES -->
+    <scouts-dummy-bar /> 
     <base-page class="scouts-bar-padding">
       <div class="sticky top-0 pl-4 py-2 bg-white z-40 border border-lightGray">
-        <bread-crumb class="md:px-5 md:mx-3" :home="'/kampvisum-home/'" :router="router" :route="route" />
+        <bread-crumb :isInternetActive="isInternetActive" class="md:px-5 md:mx-3" :home="'/kampvisum-home/'" :router="router" :route="route" />
       </div>
       <div class="d-flex">
         <navigation-side-bar class="mr-3" />
@@ -19,6 +20,7 @@
 <script lang="ts">
 import { BasePage, ScoutsDummyBar, defineRules, Breadcrumb } from 'vue-3-component-library'
 import NavigationSideBar from './components/sideBars/NavigationSideBar.vue'
+import { useInternetHelper } from './helpers/internetHelper'
 import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -33,6 +35,9 @@ export default defineComponent({
     NavigationSideBar,
   },
   setup() {
+
+    const { checkIfInternetActive, isInternetActive } = useInternetHelper()
+
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -40,9 +45,12 @@ export default defineComponent({
 
     const route = useRoute()
 
+    checkIfInternetActive()
+
     defineRules()
 
     return {
+      isInternetActive,
       router,
       route,
       t,
