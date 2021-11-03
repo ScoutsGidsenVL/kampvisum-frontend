@@ -1,5 +1,5 @@
 <template>
-  <div class=" w-auto h-screen z-40">
+  <div class=" w-auto h-screen z-30">
     <div class="d-flex h-screen" :class="{ 'md:w-96 xs:w-100': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
       <div class="fixed d-flex" :class="{ 'md:w-96 xs:w-100': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
         <div class="w-100 border-r-2 border-lightGray flex-column bg-gray h-screen px-4" :class="{ 'd-none': sidebar.state === SidebarState.CLOSED, 'd-flex': sidebar.state === SidebarState.OPEN }">

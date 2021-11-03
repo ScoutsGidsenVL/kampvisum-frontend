@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-    <base-page>
-      <div class="sticky top-0 pl-4 py-2 bg-white z-50 border border-lightGray">
-        <bread-crumb :home="'/kampvisum-home/'" :router="router" :route="route" />
+    <scouts-dummy-bar />
+    <base-page class="scouts-bar-padding">
+      <div class="sticky top-0 pl-4 py-2 bg-white z-40 border border-lightGray">
+        <bread-crumb class="md:px-5 md:mx-3" :home="'/kampvisum-home/'" :router="router" :route="route" />
       </div>
-      
       <div class="d-flex">
         <navigation-side-bar class="mr-3" />
-        <div class="w-100">
-          <page-title class="ml-3" :title="$route.meta.titleKey ? t($route.meta.titleKey) : ''" :homeUrl="$route.meta.homescreen ? $route.meta.homescreen : ''" />
+        <div class="w-100 md:px-5 md:mx-3 mt-3">
+          <h1 class="ml-3 w-full h1">{{ $route.meta.titleKey ? t($route.meta.titleKey) : '' }}</h1>
           <router-view />
         </div>
       </div>
@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { BasePage, PageTitle, defineRules, Breadcrumb } from 'vue-3-component-library'
+import { BasePage, ScoutsDummyBar, defineRules, Breadcrumb } from 'vue-3-component-library'
 import NavigationSideBar from './components/sideBars/NavigationSideBar.vue'
 import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
@@ -28,7 +28,7 @@ export default defineComponent({
   name: 'App',
   components: {
     'base-page': BasePage,
-    'page-title': PageTitle,
+    'scouts-dummy-bar': ScoutsDummyBar,
     'bread-crumb': Breadcrumb,
     NavigationSideBar,
   },
@@ -61,6 +61,10 @@ export default defineComponent({
 
   body {
     margin: 0 !important;
+  }
+
+  .scouts-bar-padding {
+    padding-left: 66px;
   }
 }
 </style>

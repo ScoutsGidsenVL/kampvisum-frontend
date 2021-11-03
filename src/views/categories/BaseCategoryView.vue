@@ -21,6 +21,7 @@
 </template>
 
 <script lang="ts">
+import InformationSideBar, { Sidebar, SidebarState } from '@/components/sideBars/InformationSideBar.vue'
 import BaseSubcategoryCard from '../../components/cards/BaseSubcategoryCard.vue'
 import PageHeader from '../../components/semantics/PageHeader.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
@@ -28,7 +29,6 @@ import { useCampHelper } from '../../helpers/campHelper'
 import { Camp } from '../../serializer/Camp'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import InformationSideBar, { Sidebar, SidebarState } from '@/components/sideBars/InformationSideBar.vue'
 
 
 export default defineComponent({
@@ -58,14 +58,13 @@ export default defineComponent({
       sidebar.value.state = SidebarState.OPEN
     }
 
-
     return {
       getSectionsTitle,
+      closeSidebar,
+      openSidebar,
+      sidebar,
       route,
       camp,
-      sidebar,
-      closeSidebar,
-      openSidebar
     }
   },
 })

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-lighterGreen z-40" :class="{ 'md:w-96 xs:w-11/12 xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }">
+  <div class="bg-lighterGreen z-30" :class="{ 'md:w-96 xs:w-11/12 xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }">
 
     <!-- WHEN CLOSED -->
     <div @click="openSideBar()" class="w-8 h-screen fixed flex-column pt-3 cursor-pointer" :class="{ 'd-none': sidebar.state === SidebarState.OPEN, 'd-flex': sidebar.state === SidebarState.CLOSED }">
@@ -15,7 +15,7 @@
       </div>
     </div>
     
-    <!-- <div v-if="sidebar.state === SidebarState.OPEN" class="h-full w-full fixed top-0 left-0 overflow-x-hidden bg-black bg-opacity-20 z-40" @click="closeSideBar()"></div> -->
+    <!-- <div v-if="sidebar.state === SidebarState.OPEN" class="h-full w-full fixed top-0 left-0 overflow-x-hidden bg-black bg-opacity-20 z-30" @click="closeSideBar()"></div> -->
 
     <div class="h-screen fixed" :class="{ 'd-flex p-4 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
       <div class="w-100 pt-5 flex justify-between cursor-pointer" @click="closeSideBar()">
@@ -24,14 +24,14 @@
             Info
           </strong>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-x-lg stroke-current stroke-1 text-black" viewBox="0 0 16 16">
           <path
             d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"
           />
         </svg>
       </div>
       <slot />
-      <div class="mt-">
+      <div>
         Ga verder met de planning van je kamp. In het Kampvisum vind je alles terug dat je zeker in orde moet brengen.​ 
         <br>
         <br>
