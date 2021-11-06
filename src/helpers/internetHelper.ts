@@ -20,7 +20,7 @@ export const useInternetHelper = (): {
         isInternetActive.value = x
         console.log('INTERNET IS', isInternetActive.value ? ' ONLINE' : ' OFFLINE')
       })
-    }, 5000);
+    }, 20000);
   }
 
   return {

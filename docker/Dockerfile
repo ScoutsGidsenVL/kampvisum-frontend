@@ -1,5 +1,5 @@
-### Development stage
-FROM  registry-dev.cloud.inuits.io/node:lts-alpine as development-stage
+### Development stage - Node v16.13.0
+FROM  node:16-alpine3.14 as development-stage
 RUN apk add --no-cache git
 
 WORKDIR /app

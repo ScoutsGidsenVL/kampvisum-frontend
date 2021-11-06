@@ -1,62 +1,43 @@
 <template>
   <div>
-    <div class="p-3 border border-lightGray">
-
-      <!-- CARD HEADER -->
-      <div class="flex justify-between">
-        <div>
-          <h4 class="font-semibold font-sans">{{title}}</h4>
-        </div>
-        <div class="cursor-pointer flex gap-3">
-          <p class="underline text-darkGray">Vorig jaar</p>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="darkGray">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-        </div>
-      </div>
-
-      <!-- TEXTFIELD -->
-      <div v-if="baseState.hasTextFieldSection">
-        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="'Opmerkingen'" :label="'Opmerkingen'" />
-      </div>
-
-      <!-- FILES -->
-      <div v-if="baseState.hasFileSection" class="mt-5">
-        <file-item />
-        <file-item />
-        <file-item />
-        <div>
-        <div class="w-100">
-          <custom-button text="+ voeg document toe" extraStyle="w-100" />
-        </div>
-      </div>
+    <div class="p-3 border border-lightGray flex gap-6 flex-col">
+      <header-subcategory-card :title="title" />
+      <!-- LOOP TROUGH ALL CONCERNS AND DISPLAY DEPENDING ON THE GIVEN TYPE-->
+      <div v-for="(concern) in concerns" :key="concern" >
+        <concern-switch :concernType="concern" />
       </div>
     </div>
-
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
-import { InputTypes, CustomButton, CustomInput } from 'vue-3-component-library'
-import FileItem from '../upload/FileItem.vue'
+import OverviewFiles from '../upload/overviewFiles.vue'
+import ConcernSwitch from '@/components/cards/ConcernSwitch.vue'
+import HeaderSubcategoryCard from '../semantics/HeaderSubcategoryCard.vue'
 
 export interface SubCategoryState {
   hasTextFieldSection: boolean,
-  hasFileSection: boolean
+  hasFileSection: boolean,
+  hasChecksSection: boolean,
+  hasMessageSection: boolean,
 }
 
 export default defineComponent({
   name: 'BaseSubcategoryCard',
   components: {
-    CustomInput,
-    'file-item': FileItem,
-    'custom-button': CustomButton
+    'overview-files': OverviewFiles,
+    'concern-switch': ConcernSwitch,
+    'header-subcategory-card': HeaderSubcategoryCard,
   },
   props: {
     title: {
       type: String,
       required: true,
+    },
+    titleTextfield: {
+      type: String,
+      required: false,
     },
     baseState: {
       type: Object as PropType<SubCategoryState>,
@@ -66,9 +47,10 @@ export default defineComponent({
   },
   setup() {
     const textField = ref<string>('')
+    const concerns = ref<any>(['Message', 'SimpleCheck', 'InputCheck', 'FileUploadCheck'])
 
     return {
-      InputTypes,
+      concerns,
       textField
     }
   },

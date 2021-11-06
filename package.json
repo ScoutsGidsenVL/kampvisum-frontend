@@ -10,6 +10,7 @@
     "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
   },
   "dependencies": {
+    "@lmiller1990/v-switch": "^1.1.0",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "@vee-validate/i18n": "^4.4.7",
     "@vee-validate/rules": "^4.4.7",

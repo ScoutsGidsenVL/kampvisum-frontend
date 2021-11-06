@@ -6,13 +6,11 @@
       </div>
 
       <div class="w-100 flex pt-3">
+
           <div class="w-100">
-            <base-subcategory-card title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
-            <base-subcategory-card class="mt-2" title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
-            <base-subcategory-card class="mt-2" title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
-            <base-subcategory-card class="mt-2" title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
-            <base-subcategory-card class="mt-2" title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
-            <base-subcategory-card class="mt-2" title="Date" :baseState="{ hasTextFieldSection: true, hasFileSection: true }" />
+            <base-subcategory-card class="mb-3" title="Datum" titleTextfield="Opmerkingen" :baseState="{ hasTextFieldSection: true, hasFileSection: false, hasChecksSection: false, hasMessageSection: false }" />
+            <base-subcategory-card class="mb-3" title="Activiteiten" titleTextfield="Opmerkingen" :baseState="{ hasTextFieldSection: true, hasFileSection: true, hasChecksSection: true, hasMessageSection: false }" />
+            <base-subcategory-card class="mb-3" title="Menu" titleTextfield="Opmerkingen" :baseState="{ hasTextFieldSection: true, hasFileSection: true, hasChecksSection: false, hasMessageSection: false }" />
           </div>
           <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
       </div>
