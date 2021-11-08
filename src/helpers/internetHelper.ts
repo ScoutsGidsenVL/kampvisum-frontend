@@ -7,7 +7,7 @@ export const useInternetHelper = (): {
 } => {
 
   const checkIfInternetActive = () => {
-    const isOnline = require('is-online');
+    const isOnline = require('is-online')
     //FIRST TIME
     isOnline().then((x: any) => {
       isInternetActive.value = x

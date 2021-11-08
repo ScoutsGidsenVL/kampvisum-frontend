@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="p-3 border border-lightGray flex gap-6 flex-col">
-      <header-subcategory-card :title="title" />
+      <header-subcategory-card :hasInfo="true" :title="title" @openSidebar="openSidebar()" />
       <!-- LOOP TROUGH ALL CONCERNS AND DISPLAY DEPENDING ON THE GIVEN TYPE-->
       <div v-for="(concern) in concerns" :key="concern" >
-        <concern-switch :concernType="concern" />
+        <concern-switch :camp="camp" :concernType="concern" />
       </div>
     </div>
   </div>
@@ -12,23 +12,17 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
-import OverviewFiles from '../upload/overviewFiles.vue'
+const LitepieDatepicker = require('litepie-datepicker')
 import ConcernSwitch from '@/components/cards/ConcernSwitch.vue'
 import HeaderSubcategoryCard from '../semantics/HeaderSubcategoryCard.vue'
-
-export interface SubCategoryState {
-  hasTextFieldSection: boolean,
-  hasFileSection: boolean,
-  hasChecksSection: boolean,
-  hasMessageSection: boolean,
-}
+import { Camp } from '@/serializer/Camp'
 
 export default defineComponent({
   name: 'BaseSubcategoryCard',
   components: {
-    'overview-files': OverviewFiles,
     'concern-switch': ConcernSwitch,
     'header-subcategory-card': HeaderSubcategoryCard,
+    'litepie-datepicker': LitepieDatepicker
   },
   props: {
     title: {
@@ -39,19 +33,20 @@ export default defineComponent({
       type: String,
       required: false,
     },
-    baseState: {
-      type: Object as PropType<SubCategoryState>,
-      required: false,
-      default: () => { return { hasTextFieldSection: false, hasFileSection: false } }
-    }
+    camp: {
+      type: Object as PropType<Camp>,
+      required: true,
+    },
+    concerns: Array
   },
-  setup() {
+  setup(props, context) {
     const textField = ref<string>('')
-    const concerns = ref<any>(['Message', 'SimpleCheck', 'InputCheck', 'FileUploadCheck'])
-
+    const openSidebar = () => {
+      context.emit('openSidebar')
+    }
     return {
-      concerns,
-      textField
+      textField,
+      openSidebar
     }
   },
 })

@@ -4,7 +4,7 @@
       <div class="fixed d-flex" :class="{ 'md:w-96 xs:w-100': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
         <div class="w-100 border-r-2 border-lightGray flex-column bg-gray h-screen px-4" :class="{ 'd-none': sidebar.state === SidebarState.CLOSED, 'd-flex': sidebar.state === SidebarState.OPEN }">
           
-          <div class="mt-4 d-flex justify-between mb-3">
+          <div class="mt-4 d-flex justify-between mb-3 items-center">
             <svg width="47" height="36" viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19.6099 0.437012L3.08984 24.2465H28.4577L11.802 0.437012" stroke="black" stroke-width="3" stroke-miterlimit="10"/>
               <path d="M10.8374 24.2466L15.7814 17.1641L20.4238 24.2466H10.8374Z" fill="#231F20" stroke="#231F20" stroke-miterlimit="10"/>
@@ -62,7 +62,7 @@ export default defineComponent({
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
     const { campsByGroup } = useCampHelper()
-    const sidebar = ref<Sidebar>({ state: SidebarState.CLOSED })
+    const sidebar = ref<Sidebar>({ state: SidebarState.OPEN })
     const { navigateTowardsCategory } = useNavigation()
     const route = useRoute()
 

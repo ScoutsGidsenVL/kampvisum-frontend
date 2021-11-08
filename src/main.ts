@@ -10,6 +10,7 @@ import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
 import i18n from './i18n'
+// import LitepieDatepicker from 'litepie-datepicker'
 
 new StaticFileRepository().getFile('config.json').then((result: any) => {
   const app = createApp(App)

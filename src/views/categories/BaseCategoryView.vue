@@ -6,11 +6,9 @@
       </div>
 
       <div class="w-100 flex pt-3">
-
-          <div class="w-100">
-            <base-subcategory-card class="mb-3" title="Datum" titleTextfield="Opmerkingen" :baseState="{ hasTextFieldSection: true, hasFileSection: false, hasChecksSection: false, hasMessageSection: false }" />
-            <base-subcategory-card class="mb-3" title="Activiteiten" titleTextfield="Opmerkingen" :baseState="{ hasTextFieldSection: true, hasFileSection: true, hasChecksSection: true, hasMessageSection: false }" />
-            <base-subcategory-card class="mb-3" title="Menu" titleTextfield="Opmerkingen" :baseState="{ hasTextFieldSection: true, hasFileSection: true, hasChecksSection: false, hasMessageSection: false }" />
+          <div v-if="camp" class="w-100">
+            <base-subcategory-card :camp="camp" class="mb-3" title="Datum" titleTextfield="Opmerkingen" :concerns="['Message', 'SimpleCheck', 'InputCheck', 'FileUploadCheck', 'DateCheck']" @openSidebar="openSidebar()" />
+            <base-subcategory-card :camp="camp" class="mb-3" title="Datum" titleTextfield="Opmerkingen" :concerns="['InputCheck']"  @openSidebar="openSidebar()" />
           </div>
           <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
       </div>
@@ -23,11 +21,11 @@ import InformationSideBar, { Sidebar, SidebarState } from '@/components/sideBars
 import BaseSubcategoryCard from '../../components/cards/BaseSubcategoryCard.vue'
 import PageHeader from '../../components/semantics/PageHeader.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
+import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { useCampHelper } from '../../helpers/campHelper'
 import { Camp } from '../../serializer/Camp'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-
 
 export default defineComponent({
   name: 'BaseCategoryView',
@@ -41,12 +39,15 @@ export default defineComponent({
     const camp = ref<Camp>()
     const { getCampByRouteParam } = useCampHelper()
     const { getSectionsTitle } = useSectionsHelper()
+    const { setCategoryInfo } = useInfoBarHelper()
+
+    setCategoryInfo("Ga verder met de planning van je kamp. In het Kampvisum vind je alles terug dat je zeker in orde moet brengen.​<br><br>Je bent niet alleen. Kom eens buiten samen volgens de huidige maatregelen om bepaalde zaken samen verder uit te werken.<br><br>Of vraag hulp aan de districtcommissarissen bij twijfel. Tip: geef al wat meer aandacht aan spelletjes en inkleding. Als dit nu al klaar is kan je in juni meer tijd vrij maken voor praktische aanpassingen naargelang de maatregelen.")
 
     getCampByRouteParam().then((c) => {
       camp.value = c
     })
 
-    const sidebar = ref<Sidebar>({state: SidebarState.CLOSED})
+    const sidebar = ref<Sidebar>({state: SidebarState.OPEN})
 
     const closeSidebar = () => {
       sidebar.value.state = SidebarState.CLOSED

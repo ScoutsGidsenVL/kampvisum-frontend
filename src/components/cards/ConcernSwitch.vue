@@ -11,7 +11,7 @@
       </template>
 
       <template #DateCheck>
-        DateCheck component
+          <date-field class="my-2" v-for="(section) in camp.sections" :key="section" :title="section.name" />
       </template>
 
       <template #LocationCheck>
@@ -41,17 +41,20 @@
 import Check from './checks/check.vue'
 import VSwitch from '@lmiller1990/v-switch'
 import { defineComponent, PropType, ref } from 'vue'
+import DateField from '@/components/semantics/DateField.vue'
 import Message, { ColorState } from '../semantics/message.vue'
 import { InputTypes, CustomInput } from 'vue-3-component-library'
+import OverviewFiles from '@/components/upload/overviewFiles.vue'
+import { Camp } from '@/serializer/Camp'
 
 export enum ConcernType {
-  SIMPLE_CHECK = 'SimpleCheck',
-  DATE_CHECK = 'DateCheck',
+  INFORMATION_CHECK = 'InformationCheck',
+  FILE_UPLOAD_CHECK = 'FileUploadCheck',
   LOCATION_CHECK = 'LocationCheck',
   CONTACT_CHECK = 'ContactCheck',
-  FILE_UPLOAD_CHECK = 'FileUploadCheck',
+  SIMPLE_CHECK = 'SimpleCheck',
   INPUT_CHECK = 'InputCheck',
-  INFORMATION_CHECK = 'InformationCheck',
+  DATE_CHECK = 'DateCheck',
 }
 
 export default defineComponent({
@@ -60,11 +63,17 @@ export default defineComponent({
     Check,
     VSwitch,
     Message,
+    DateField,
     InputTypes,
     CustomInput,
+    OverviewFiles
   },
   props: {
-    concernType: Object as PropType<ConcernType>,
+    concernType: String,
+    camp: {
+      type: Object as PropType<Camp>,
+      required: true,
+    }
   },
   setup () {
     return {

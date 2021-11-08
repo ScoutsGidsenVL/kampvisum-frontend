@@ -4,7 +4,7 @@
     <!-- WHEN CLOSED -->
     <div @click="openSideBar()" class="w-8 h-screen fixed flex-column pt-3 cursor-pointer" :class="{ 'd-none': sidebar.state === SidebarState.OPEN, 'd-flex': sidebar.state === SidebarState.CLOSED }">
       <div class="flex justify-center w-100" >
-        <svg class="mt-0.5" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg style="margin-top: 20px" class="mr-1" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M17.0754 2.93327C13.1726 -0.974358 6.84097 -0.978243 2.93329 2.92454C-0.974347 6.82743 -0.97828 13.1591 2.92461 17.0667C6.8274 20.9744 13.1591 20.9783 17.0668 17.0754C20.9744 13.1726 20.9783 6.8409 17.0754 2.93327ZM11.3963 16.3455C11.3963 16.4998 11.2712 16.6247 11.117 16.6247H8.88304C8.72884 16.6247 8.60379 16.4998 8.60379 16.3455V8.05243C8.60379 7.89813 8.72884 7.77318 8.88304 7.77318H11.117C11.2712 7.77318 11.3963 7.89808 11.3963 8.05243V16.3455ZM10 6.61427C9.10703 6.61427 8.38047 5.88781 8.38047 4.99477C8.38047 4.10182 9.10699 3.37521 10 3.37521C10.8931 3.37521 11.6196 4.10177 11.6196 4.99477C11.6196 5.88781 10.893 6.61427 10 6.61427Z" fill="#7B8F1C"/>
         </svg>
       </div>
@@ -15,10 +15,8 @@
       </div>
     </div>
     
-    <!-- <div v-if="sidebar.state === SidebarState.OPEN" class="h-full w-full fixed top-0 left-0 overflow-x-hidden bg-black bg-opacity-20 z-30" @click="closeSideBar()"></div> -->
-
-    <div class="h-screen fixed" :class="{ 'd-flex p-4 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
-      <div class="w-100 pt-5 flex justify-between cursor-pointer" @click="closeSideBar()">
+    <div class="h-screen" :class="{ 'd-flex p-3 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
+      <div class="w-100 pt-3 flex xs:pt-20 justify-between cursor-pointer" @click="closeSideBar()">
         <div class="flex gap-3">
           <strong>
             Info
@@ -31,21 +29,15 @@
         </svg>
       </div>
       <slot />
-      <div>
-        Ga verder met de planning van je kamp. In het Kampvisum vind je alles terug dat je zeker in orde moet brengen.​ 
-        <br>
-        <br>
-        Je bent niet alleen. Kom eens buiten samen volgens de huidige maatregelen om bepaalde zaken samen verder uit te werken. 
-        <br>
-        <br>
-        Of vraag hulp aan de districtcommissarissen bij twijfel. Tip: geef al wat meer aandacht aan spelletjes en inkleding. Als dit nu al klaar is kan je in juni meer tijd vrij maken voor praktische aanpassingen naargelang de maatregelen.
+      <div v-html="info" class="break-all mt-4">
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watch } from 'vue'
+import { defineComponent, PropType } from 'vue'
+import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 
 export enum SidebarState {
   OPEN = 'OPEN',
@@ -67,7 +59,10 @@ export default defineComponent({
   },
   setup(props, context) {
 
+    const { info, setInfo } = useInfoBarHelper()
+
     const closeSideBar: () => void = () => {
+      setInfo()
       context.emit('closeSidebar')
     }
 
@@ -78,7 +73,8 @@ export default defineComponent({
     return {
       closeSideBar,
       SidebarState,
-      openSideBar
+      openSideBar,
+      info
     }
   }
 })
