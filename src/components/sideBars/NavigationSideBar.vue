@@ -51,10 +51,12 @@
 import { Sidebar, SidebarState } from './InformationSideBar.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { useCampHelper } from '../../helpers/campHelper'
+import { useNavigation } from '../../router/navigation'
+import { usePhoneHelper } from '@/helpers/phoneHelper'
 import NavigationItem from './NavigationItem.vue'
 import { defineComponent, ref } from 'vue'
-import { useNavigation } from '../../router/navigation'
 import { useRoute } from 'vue-router'
+
 
 export default defineComponent({
   components: { NavigationItem },
@@ -62,7 +64,8 @@ export default defineComponent({
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
     const { campsByGroup } = useCampHelper()
-    const sidebar = ref<Sidebar>({ state: SidebarState.OPEN })
+    const { checkIfIsMobileSize } = usePhoneHelper()
+    const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
     const { navigateTowardsCategory } = useNavigation()
     const route = useRoute()
 

@@ -15,7 +15,7 @@
     </div>
     
     <div class="h-screen" :class="{ 'd-flex p-3 flex-column': sidebar.state === SidebarState.OPEN, 'd-none fixed': sidebar.state === SidebarState.CLOSED }">
-      <div class="w-100 flex justify-between cursor-pointer xs:mt-16 md:mt-0" @click="closeSideBar()">
+      <div class="w-100 flex justify-between cursor-pointer xs:mt-20 md:mt-0" @click="closeSideBar()">
         <div class="flex gap-3">
           <h2>
             Deadlines

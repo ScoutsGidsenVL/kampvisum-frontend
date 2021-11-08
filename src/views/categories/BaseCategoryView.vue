@@ -5,8 +5,8 @@
         <page-header :title="route.name" :subTitle="getSectionsTitle(camp)" />
       </div>
 
-      <div class="w-100 flex pt-3">
-          <div v-if="camp" class="w-100">
+      <div v-if="camp" class="w-100 flex pt-3">
+          <div class="w-100">
             <base-subcategory-card :camp="camp" class="mb-3" title="Datum" titleTextfield="Opmerkingen" :concerns="['Message', 'SimpleCheck', 'InputCheck', 'FileUploadCheck', 'DateCheck']" @openSidebar="openSidebar()" />
             <base-subcategory-card :camp="camp" class="mb-3" title="Datum" titleTextfield="Opmerkingen" :concerns="['InputCheck']"  @openSidebar="openSidebar()" />
           </div>
@@ -23,6 +23,7 @@ import PageHeader from '../../components/semantics/PageHeader.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { useCampHelper } from '../../helpers/campHelper'
+import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { Camp } from '../../serializer/Camp'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -40,14 +41,14 @@ export default defineComponent({
     const { getCampByRouteParam } = useCampHelper()
     const { getSectionsTitle } = useSectionsHelper()
     const { setCategoryInfo } = useInfoBarHelper()
+    const { checkIfIsMobileSize } = usePhoneHelper()
 
     setCategoryInfo("Ga verder met de planning van je kamp. In het Kampvisum vind je alles terug dat je zeker in orde moet brengen.​<br><br>Je bent niet alleen. Kom eens buiten samen volgens de huidige maatregelen om bepaalde zaken samen verder uit te werken.<br><br>Of vraag hulp aan de districtcommissarissen bij twijfel. Tip: geef al wat meer aandacht aan spelletjes en inkleding. Als dit nu al klaar is kan je in juni meer tijd vrij maken voor praktische aanpassingen naargelang de maatregelen.")
 
     getCampByRouteParam().then((c) => {
       camp.value = c
     })
-
-    const sidebar = ref<Sidebar>({state: SidebarState.OPEN})
+    const sidebar = ref<Sidebar>({state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
 
     const closeSidebar = () => {
       sidebar.value.state = SidebarState.CLOSED

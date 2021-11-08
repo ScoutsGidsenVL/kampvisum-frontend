@@ -15,7 +15,7 @@
       </div>
     </div>
     
-    <div class="h-screen" :class="{ 'd-flex p-3 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
+    <div class="h-screen" :class="{ 'd-flex p-3 xs:mt-6 md:mt-0 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
       <div class="w-100 pt-3 flex xs:pt-20 justify-between cursor-pointer" @click="closeSideBar()">
         <div class="flex gap-3">
           <strong>
@@ -36,8 +36,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
 import { useInfoBarHelper } from '@/helpers/infoBarHelper'
+import { defineComponent, PropType } from 'vue'
 
 export enum SidebarState {
   OPEN = 'OPEN',

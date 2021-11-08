@@ -9,7 +9,7 @@
     <hr />
 
     <div class="w-100 flex">
-      <div class="w-100 grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+      <div class="w-100 grid xl:grid-cols-2 sm:grid-cols-1 gap-4">
         <div v-for="category in camp.categories" :key="category">
             <category-info-card :camp="camp" :category="category" />
         </div>
@@ -20,32 +20,33 @@
 </template>
 
 <script lang="ts">
+import { Sidebar, SidebarState } from '@/components/sideBars/InformationSideBar.vue'
+import DeadlinesSideBar from '@/components/sideBars/DeadlinesSidebar.vue'
 import CategoryInfoCard from '../components/cards/CategoryInfoCard.vue'
 import { useSectionsHelper } from '../helpers/sectionsHelper'
+import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { useCampHelper } from '../helpers/campHelper'
 import { defineComponent, ref } from 'vue'
 import { Camp } from '../serializer/Camp'
-import { Sidebar, SidebarState } from '@/components/sideBars/InformationSideBar.vue'
-import DeadlinesSideBar from '@/components/sideBars/DeadlinesSidebar.vue'
-import InformationSidebar from '@/components/sideBars/InformationSideBar.vue'
+
 
 export default defineComponent({
   name: 'CampOverview',
   components: {
     'category-info-card': CategoryInfoCard,
     'deadlines-sidebar': DeadlinesSideBar,
-    'information-sidebar': InformationSidebar
   },
   setup() {
     const camp = ref<Camp>()
     const { getCampByRouteParam } = useCampHelper()
     const { getSectionsTitle } = useSectionsHelper()
+    const { checkIfIsMobileSize } = usePhoneHelper()
 
     getCampByRouteParam().then((c: Camp) => {
       camp.value = c
     })
 
-    const sidebar = ref<Sidebar>({state: SidebarState.CLOSED})
+    const sidebar = ref<Sidebar>({state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN})
 
     const closeSidebar = () => {
       sidebar.value.state = SidebarState.CLOSED
