@@ -15,7 +15,7 @@
       </div>
     </div>
     
-    <div class="h-screen" :class="{ 'd-flex p-3 xs:mt-6 md:mt-0 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
+    <div class="h-screen" :class="{ 'd-flex p-3 xs:mt-16 md:mt-0 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
       <div class="w-100 pt-3 flex xs:pt-20 justify-between cursor-pointer" @click="closeSideBar()">
         <div class="flex gap-3">
           <strong>
@@ -29,7 +29,7 @@
         </svg>
       </div>
       <slot />
-      <div v-html="info" class="break-all mt-4">
+      <div v-html="info" class="break-words mt-4">
       </div>
     </div>
   </div>

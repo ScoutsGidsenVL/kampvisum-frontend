@@ -12,11 +12,7 @@ export const CategoryDeserializer = (input: any): Category => {
     name: input.name,
     status: input.status,
     uuid: input.uuid,
-    subCategories: input.sub_categories ? input.sub_categories.map((subCategory: any) => SubCategoryDeserializer(subCategory)) : [
-      {name: 'Planning', status: false, uuid: 'UUID123456789'},
-      {name: 'Logistiek', status: false, uuid: 'UUID123456789'},
-      {name: 'Veiligheid', status: false, uuid: 'UUID123456789'}
-    ]
+    subCategories: input.sub_categories ? input.sub_categories.map((subCategory: any) => SubCategoryDeserializer(subCategory)) : []
   }
 
   return single

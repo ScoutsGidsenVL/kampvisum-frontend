@@ -65,11 +65,7 @@ import { useForm, ErrorMessage } from 'vee-validate'
 import DateField from '@/components/semantics/DateField.vue'
 import { Camp } from '../../serializer/Camp'
 import { useI18n } from 'vue-i18n'
-
-export interface DeadlineItem {
-  categorie: string
-  label: string
-}
+import { DeadlineItem } from '@/serializer/DeadlineItem'
 
 export default defineComponent({
   name: 'CampSideBar',
