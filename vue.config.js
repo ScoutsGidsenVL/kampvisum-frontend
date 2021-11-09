@@ -22,6 +22,7 @@ module.exports = {
         '@vee-validate/i18n': path.resolve('./node_modules/@vee-validate/i18n'),
         '@vee-validate/rules': path.resolve('./node_modules/@vee-validate/rules'),
         '@vee-validate/rules': path.resolve('./node_modules/@vee-validate/rules'),
+        '@vue-leaflet/vue-leaflet': path.resolve('./node_modules/@vue-leaflet/vue-leaflet'),
       },
     },
   },

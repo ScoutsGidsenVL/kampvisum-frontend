@@ -1,7 +1,11 @@
 <template>
   <div>
     <v-switch :case="concernType">
+      
+
       <template #Message>
+        LEAFLET:
+        <leaflet-map />
         <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{state: ColorState.DANGER}" />
       </template>
 
@@ -38,14 +42,15 @@
 </template>
 
 <script lang="ts">
-import Check from './checks/check.vue'
-import VSwitch from '@lmiller1990/v-switch'
-import { defineComponent, PropType, ref } from 'vue'
-import DateField from '@/components/semantics/DateField.vue'
-import Message, { ColorState } from '../semantics/message.vue'
+import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import { InputTypes, CustomInput } from 'vue-3-component-library'
 import OverviewFiles from '@/components/upload/overviewFiles.vue'
+import Message, { ColorState } from '../semantics/message.vue'
+import DateField from '@/components/semantics/DateField.vue'
+import { defineComponent, PropType, ref } from 'vue'
+import VSwitch from '@lmiller1990/v-switch'
 import { Camp } from '@/serializer/Camp'
+import Check from './checks/check.vue'
 
 export enum ConcernType {
   INFORMATION_CHECK = 'InformationCheck',
@@ -64,6 +69,7 @@ export default defineComponent({
     VSwitch,
     Message,
     DateField,
+    LeafletMap,
     InputTypes,
     CustomInput,
     OverviewFiles
