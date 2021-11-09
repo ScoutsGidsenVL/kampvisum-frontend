@@ -33,14 +33,22 @@
         <deadline-card />
         <deadline-card :isImportant="true" />
       </div>
+
+      <div class="mt-3">
+        <custom-button @click="openDeadlineCreateSidebar()" class="w-100" extraStyle="w-100" :isSubmitting="false" text="+ nieuwe deadline maken" />
+      </div>
     </div>
+    <deadline-create-sidebar title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
 import DeadlineInfoCard from '@/components/cards/DeadlineInfoCard.vue'
+import DeadlineCreateSidebar from './DeadlineCreateSidebar.vue'
 import DeadlineCard from '@/components/cards/DeadlineCard.vue'
+import { CustomButton } from 'vue-3-component-library'
+import { defineComponent, PropType, ref } from 'vue'
+
 
 export enum SidebarState {
   OPEN = 'OPEN',
@@ -55,7 +63,9 @@ export default defineComponent({
   name: 'DeadlinesSideBar',
   components: {
     'deadline-info-card': DeadlineInfoCard,
-    'deadline-card': DeadlineCard
+    'deadline-card': DeadlineCard,
+    DeadlineCreateSidebar,
+    CustomButton
   },
   props: {
     sidebar: {
@@ -66,18 +76,37 @@ export default defineComponent({
   },
   setup(props, context) {
 
-    const closeSideBar: () => void = () => {
+    const closeSideBar= (): void => {
       context.emit('closeSidebar')
     }
 
-    const openSideBar: () => void = () => {
+    const openSideBar= (): void => {
       context.emit('openSidebar')
     }
 
+    const createSidebar = ref<any>({state: 'hide'})
+
+    const openDeadlineCreateSidebar = (): void => {
+      createSidebar.value = {state: 'new'}
+    }
+
+    const actionSuccess = (action: string) => {
+      if (action === 'POST') {
+        console.log('Kamp is succesvol aangemaakt')
+      }
+      if (action === 'UPDATE') {
+        console.log('Kamp is succesvol bewerkt')
+      }
+      // get deadlines again to update the data in the sidebar
+    }
+
     return {
+      openDeadlineCreateSidebar,
+      createSidebar,
+      actionSuccess,
       closeSideBar,
       SidebarState,
-      openSideBar
+      openSideBar,
     }
   }
 })
