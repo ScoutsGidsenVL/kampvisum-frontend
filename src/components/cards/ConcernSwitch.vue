@@ -4,8 +4,9 @@
       
 
       <template #Message>
-        LEAFLET:
-        <leaflet-map />
+        <div class="pb-5">
+          <leaflet-map />
+        </div>
         <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{state: ColorState.DANGER}" />
       </template>
 
@@ -15,7 +16,7 @@
       </template>
 
       <template #DateCheck>
-          <!-- <date-field class="my-2" v-for="(section) in camp.sections" :key="section" :title="section.name" /> -->
+          <date-field class="my-2" v-for="(section) in camp.sections" :key="section" :title="section.name" />
       </template>
 
       <template #LocationCheck>
