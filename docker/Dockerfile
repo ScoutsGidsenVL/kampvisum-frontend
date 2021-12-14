@@ -1,4 +1,3 @@
-### Development stage - Node v16.13.0
 FROM node:14-alpine as development-stage
 RUN apk add --no-cache git
 

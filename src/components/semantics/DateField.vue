@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-const LitepieDatepicker = require('litepie-datepicker').default
+const LitepieDatepicker = require('litepie-datepicker')
 
 export default defineComponent({
   name: 'HeaderSubcategoryCard',
@@ -54,11 +54,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss">
-.custom-pad {
-  .pr-12 {
-    padding-right: 1rem !important;
-  }
-}
-</style>

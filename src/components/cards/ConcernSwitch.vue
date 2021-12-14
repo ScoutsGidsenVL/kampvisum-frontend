@@ -15,7 +15,7 @@
       </template>
 
       <template #DateCheck>
-          <date-field class="my-2" v-for="(section) in camp.sections" :key="section" :title="section.name" />
+          <!-- <date-field class="my-2" v-for="(section) in camp.sections" :key="section" :title="section.name" /> -->
       </template>
 
       <template #LocationCheck>

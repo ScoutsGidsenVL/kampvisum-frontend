@@ -22,7 +22,7 @@
           </div>
 
           <div class="w-100">
-            <date-field title="Deadline" :isWithRange="false" />
+            <!-- <date-field title="Deadline" :isWithRange="false" /> -->
           </div>
 
           <div class="w-100">
@@ -170,7 +170,7 @@ export default defineComponent({
 
     const removeItemFromArray = (index: string) => {
       console.log('INDEX TO SPLICE: ', index)
-      items.value.splice(index, 1);
+      items.value.splice(Number(index), 1);
     }
 
     return {
