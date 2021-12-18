@@ -7,8 +7,8 @@
 
       <div v-if="camp" class="w-100 flex pt-3">
           <div class="w-100">
-            <base-subcategory-card :camp="camp" class="mb-3" title="Datum" titleTextfield="Opmerkingen" :concerns="['Message', 'SimpleCheck', 'InputCheck', 'FileUploadCheck', 'DateCheck']" @openSidebar="openSidebar()" />
-            <base-subcategory-card :camp="camp" class="mb-3" title="Datum" titleTextfield="Opmerkingen" :concerns="['InputCheck']"  @openSidebar="openSidebar()" />
+            <base-subcategory-card :camp="camp" class="mb-3" title="Locatie(s)" titleTextfield="Opmerkingen" :concerns="['DateCheck', 'Message', 'SimpleCheck', 'InputCheck', 'LocationCheck', 'FileUploadCheck']" @openSidebar="openSidebar()" />
+            <!-- <base-subcategory-card :camp="camp" class="mb-3" title="Datum" titleTextfield="Opmerkingen" :concerns="['InputCheck']"  @openSidebar="openSidebar()" /> -->
           </div>
           <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
       </div>

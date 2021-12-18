@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-const LitepieDatepicker = require('litepie-datepicker')
+const LitepieDatepicker = require('litepie-datepicker').default
 
 export default defineComponent({
   name: 'HeaderSubcategoryCard',

@@ -1,49 +1,44 @@
 <template>
   <div>
-    <v-switch :case="concernType">
-      
-
-      <template #Message>
-        <div class="pb-5">
-          <leaflet-map />
-        </div>
+      <div v-if="concernType === 'Message'">
         <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{state: ColorState.DANGER}" />
-      </template>
+      </div>
 
-      <template #SimpleCheck>
+      <div v-if="concernType === 'SimpleCheck'">
         <check text="totemisatie" />
         <check text="nachtspel" />
-      </template>
+      </div>
 
-      <template #DateCheck>
+      <div v-if="concernType === 'DateCheck'">
           <date-field class="my-2" v-for="(section) in camp.sections" :key="section" :title="section.name" />
-      </template>
+      </div>
 
-      <template #LocationCheck>
-        LocationCheck component
-      </template>
+      <div v-if="concernType === 'LocationCheck'">
+        <div class="pb-5">
+          <location-component />
+        </div>
+      </div>
 
-      <template #ContactCheck>
+      <div v-if="concernType === 'ContactCheck'">
         ContactCheck component
-      </template>
+      </div>
 
-      <template #FileUploadCheck>
+      <div v-if="concernType === 'FileUploadCheck'">
         <overview-files />
-      </template>
+      </div>
 
-      <template #InputCheck>
-        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="'Opmerkingen'" />
-      </template>
+      <div v-if="concernType === 'InputCheck'">
+        <!-- <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="'Opmerkingen'" /> -->
+      </div>
 
-      <template #InformationCheck>
+      <div v-if="concernType === 'InformationCheck'">
         InformationCheck component
-      </template>
-    </v-switch>
+      </div>
   </div>
 </template>
 
 <script lang="ts">
-import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
+import LocationComponent from '../semantics/LocationComponent.vue'
 import { InputTypes, CustomInput } from 'vue-3-component-library'
 import OverviewFiles from '@/components/upload/overviewFiles.vue'
 import Message, { ColorState } from '../semantics/message.vue'
@@ -70,10 +65,10 @@ export default defineComponent({
     VSwitch,
     Message,
     DateField,
-    LeafletMap,
     InputTypes,
     CustomInput,
-    OverviewFiles
+    OverviewFiles,
+    LocationComponent
   },
   props: {
     concernType: String,

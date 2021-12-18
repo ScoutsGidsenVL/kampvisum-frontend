@@ -1,28 +1,97 @@
 <template>
   <div class="h-96 w-full">
     <l-map
-      v-model="zoom"
-      v-model:zoom="zoom"
-      :center="[51.20923, 4.43815]"
+      class="z-0 border-2 border-black"
+      v-model="z"
+      v-model:zoom="z"
+      :center="center"
     >
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       ></l-tile-layer>
 
-      <div v-for="(latLng, index) in fakeDataLatLng" :key="latLng">
-        <l-marker @update:latLng="patchLatLng($event, index)" draggable :lat-lng="latLng">
-          <l-popup>
-            <custom-popup />
+      <div v-for="(location, index) in locations" :key="location">
+        <l-marker @update:latLng="patchLatLng($event, index)" draggable :lat-lng="location.latLng">
+          <l-icon>
+              <svg width="30" height="30" style="margin-left: -14px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
+              </svg>
+            </l-icon>
+          <l-popup class="w-60" >
+            
+            <custom-popup :location="location" />
           </l-popup>
         </l-marker>
       </div>
 
+
+      <div v-if="searchedLocation.latLon">
+        <l-marker id="searchedMarker" draggable :lat-lng="searchedLocation.latLon">
+          <l-icon>
+              <svg width="30" height="30" style="margin-left: -14px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#000"/>
+              </svg>
+            </l-icon>
+          <l-popup class="w-56" >
+            <div class="flex flex-col gap-4">
+              
+              <div>
+                <label for="">Naam</label>
+                <input type="text" id="name" name="name" v-model="searchedLocation.name" class="bg-lightGray p-2 min-w-0 w-100">
+              </div>
+
+              <div>
+                {{searchedLocation.address}}
+              </div>
+
+              <div class="flex justify-between">
+                <div @click="addLocationPoint()" class="flex gap-3 text-lightGreen cursor-pointer">
+                  <div class="underline">Voeg toe</div>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+
+                <div @click="cancelLocationPoint(index)" class="text-lightGreen underline cursor-pointer">
+                  Annuleer
+                </div>
+              </div>
+            </div>
+          </l-popup>
+        </l-marker>
+      </div>
+
+      <div v-for="(sL, index) in searchedLocations" :key="sL">
+        <l-marker id="searchedMarker" draggable :lat-lng="sL.latLon">
+          <l-icon>
+              <svg width="30" height="30" style="margin-left: -14px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
+              </svg>
+            </l-icon>
+          <l-popup class="w-56" >
+            <div class="flex flex-col">
+              
+              <div>
+                <strong v-if="sL.name.length > 0">{{sL.name}}</strong>
+              </div>
+
+              <div class="flex items-center gap-1">
+                <input :disabled="sL.isHeadLocation" @click="checkMainLocation(index)" class="cursor-pointer" :value="true" v-model="sL.isHeadLocation" type="checkbox" id="name" name="name">
+                <label @click="checkMainLocation(index)" class="cursor-pointer mt-2.5" for="name">Hoofdlocatie</label>
+              </div>
+
+              <div>
+                {{ sL.address }}
+              </div>
+
+              <div class="text-red underline mt-3">
+                <span class="cursor-pointer" @click="deleteLocationPoint(index)">Verwijder</span>
+              </div>
+            </div>
+          </l-popup>
+        </l-marker>
+      </div>
     </l-map>
-  </div>
-  <div>
-    <p class="text-sm">P1: {{toPatch[0]}}</p>
-    <p class="text-sm">P2: {{toPatch[1]}}</p>
-    <p class="text-sm">P3: {{toPatch[2]}}</p>
   </div>
 </template>
 
@@ -35,9 +104,12 @@ import {
   LPopup,
 } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, PropType, toRefs } from 'vue'
 import { latLng } from '../../../interfaces/latLng'
 import CustomPopup from './CustomPopup.vue'
+import { Location } from '../../../serializer/Location'
+import { SearchedLocation } from '../../../serializer/SearchedLocation'
+import { CustomInput, InputTypes } from 'vue-3-component-library'
 
 export default defineComponent ({
   components: {
@@ -46,22 +118,36 @@ export default defineComponent ({
     LTileLayer,
     LMarker,
     LIcon,
-    LPopup
+    LPopup,
+    CustomInput
   },
-  data() {
-    return {
-      zoom: 18,
-    };
+  props: {
+    zoom: {
+      type: Number,
+      default: 11
+    },
+    center: Object as PropType<Array<number>>,
+    locations: {
+      type: Object as PropType<Array<Location>>,
+      required: false,
+      default: () => { return [] }
+    },
+    isCreating: Boolean,
+    searchedLocation: {
+      type: Object as PropType<SearchedLocation>,
+      default: () => { return {} }
+    },
+    searchedLocations: {
+      type: Object as PropType<Array<SearchedLocation>>,
+      default: () => { return {} }
+    }
   },
-  setup () {
+  setup (props, { emit }) {
     // THIS APPLICATION USES VUE3-LEAFLET BUT DOCUMENTATION IS ALMOST THE SAME AS VUE2-LEAFLET
     // https://vue2-leaflet.netlify.app/quickstart/
 
-    const fakeDataLatLng = ref<Array<Array<number>>>([
-       [ 51.2092493812891, 4.4381600681856845 ],
-       [ 51.20936364460192, 4.436100217379919 ],
-       [ 51.20939053004611, 4.439447539227542 ]
-    ])
+    const { searchedLocation, searchedLocations } = toRefs(props)
+    const z = ref<number>(11)
 
     const toPatch = ref<Array<Array<number>>>([[],[],[]])
 
@@ -73,13 +159,45 @@ export default defineComponent ({
       //PATCH NEW VALUES TO ENDPOINT...
     }
 
+    const addLocationPoint = () => {
+      emit('addLocationPoint', searchedLocation.value)
+    }
+
+    const cancelLocationPoint = () => {
+      emit('cancelLocationPoint', true)
+    }
+
+    const deleteLocationPoint = (index: number) => {
+      emit('deleteLocationPoint', index)
+    }
+
+    const checkMainLocation = (i: number) => {
+      searchedLocations.value.forEach((s, index) => {
+        if (index !== i) {
+          s.isHeadLocation = false
+        }
+      })
+
+    }
+
     return {
       iconUrl,
       patchLatLng,
       iconWidthAndHeight,
-      fakeDataLatLng,
-      toPatch
+      toPatch,
+      InputTypes,
+      addLocationPoint,
+      cancelLocationPoint,
+      deleteLocationPoint,
+      checkMainLocation,
+      z
     }
   }
 })
 </script>
+
+<style>
+  .leaflet-popup-content-wrapper {
+      border-radius: 0px !important;
+  }
+</style>
