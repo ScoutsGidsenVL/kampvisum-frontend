@@ -17,6 +17,7 @@ module.exports = {
       symlinks: false,
       alias: {
         vue: path.resolve('./node_modules/vue'),
+        'dropzone': path.resolve('./node_modules/dropzone'),
         'vue-router': path.resolve('./node_modules/vue-router'),
         'vee-validate': path.resolve('./node_modules/vee-validate'),
         '@vee-validate/i18n': path.resolve('./node_modules/@vee-validate/i18n'),

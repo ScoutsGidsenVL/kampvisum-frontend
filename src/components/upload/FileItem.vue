@@ -17,11 +17,23 @@
               </svg>
             </div>
 
-            <div class="flex gap-2 cursor-pointer">
+            <div v-if="!canBeChecked" class="flex gap-2 cursor-pointer">
               <p class="underline text-xs text-darkGray hover:text-black" >Verwijder</p>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 stroke-current text-red" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
+            </div>
+            <div v-if="canBeChecked" class="flex text-xs gap-2 cursor-pointer">
+              <p>selecteer</p>
+              <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.5 14.25C10.9518 14.25 13.75 11.4518 13.75 8C13.75 4.54822 10.9518 1.75 7.5 1.75C4.04822 1.75 1.25 4.54822 1.25 8C1.25 11.4518 4.04822 14.25 7.5 14.25Z" stroke="#6C757D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+
+              <!-- <p class="text-green underline">geselecteerd</p>
+              <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.75 7.42498V7.99998C13.7492 9.34774 13.3128 10.6591 12.5058 11.7386C11.6989 12.8181 10.5646 13.6078 9.2721 13.9899C7.97964 14.3721 6.59829 14.3262 5.33404 13.8591C4.0698 13.392 2.99041 12.5288 2.25685 11.3981C1.52329 10.2675 1.17487 8.93002 1.26355 7.58517C1.35223 6.24033 1.87325 4.96018 2.74892 3.93565C3.6246 2.91111 4.80799 2.19709 6.12262 1.90007C7.43725 1.60304 8.81267 1.73894 10.0438 2.28748" stroke="#7B8F1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M13.75 3L7.5 9.25625L5.625 7.38125" stroke="#7B8F1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg> -->
             </div>
           </div>
         </div>
@@ -33,6 +45,9 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'FileItem'
+  name: 'FileItem',
+  props: {
+    canBeChecked: Boolean
+  }
 })
 </script>

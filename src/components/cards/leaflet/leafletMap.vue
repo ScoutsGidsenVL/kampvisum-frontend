@@ -150,9 +150,7 @@ export default defineComponent ({
     const z = ref<number>(11)
 
     const toPatch = ref<Array<Array<number>>>([[],[],[]])
-
     const iconWidthAndHeight = [25, 40]
-    const iconUrl = `https://placekitten.com/${iconWidthAndHeight[0]}/${iconWidthAndHeight[1]}`
 
     const patchLatLng = (latLng: latLng, id: number) => {
       toPatch.value[id] = [latLng.lat, latLng.lng]
@@ -181,7 +179,6 @@ export default defineComponent ({
     }
 
     return {
-      iconUrl,
       patchLatLng,
       iconWidthAndHeight,
       toPatch,
