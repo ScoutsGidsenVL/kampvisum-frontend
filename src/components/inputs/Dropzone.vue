@@ -14,7 +14,7 @@
         class="inline-block w-9/12 text-center"
         @click="() => dropzoneDiv && dropzoneDiv.click()"
       >
-        <span class="w-full inline-block mb-2">
+        <span class="w-full inline-block mb-2 fill-green">
           <svg
             width="27"
             height="33"
@@ -25,7 +25,7 @@
           >
             <path
               d="M16.875 0H3.375C1.51875 0 0.0168754 1.485 0.0168754 3.3L0 29.7C0 31.515 1.50187 33 3.35812 33H23.625C25.4813 33 27 31.515 27 29.7V9.9L16.875 0ZM20.25 26.4H6.75V23.1H20.25V26.4ZM20.25 19.8H6.75V16.5H20.25V19.8ZM15.1875 11.55V2.475L24.4688 11.55H15.1875Z"
-              fill="#74D7F4"
+              fill="#7b8f1c"
               fill-opacity="0.7"
             />
           </svg>
