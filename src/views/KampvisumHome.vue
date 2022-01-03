@@ -2,7 +2,7 @@
   <div class="home p-3">
     <warning v-if="campToBeDeleted.name" :title="campToBeDeleted.name" :isLoading="isDeletingCamp" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
     <div>
-      <camp-side-bar v-if="selectedGroup.uuid" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.uuid"/>
+      <camp-side-bar v-if="selectedGroup.groupAdminId" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.groupAdminId"/>
     </div>
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
@@ -12,8 +12,8 @@
         :object="true"
         placeholder="Kies een groep"
         @addSelection="selectFilter($event, 'group')"
-        track-by="fullInfo"
-        value-prop="id"
+        track-by="fullName"
+        value-prop="groupAdminId"
         :options="myGroups"
         :value="myGroups[0]"
         :canClear="false"
@@ -100,7 +100,7 @@ export default defineComponent({
     const { setCampsByGroup, campsByGroup } = useCampHelper()
     const isWarningDisplayed = ref<Boolean>(false)
     const campToBeDeleted = ref<Camp>({ uuid: ''})
-    const selectedGroup = ref<Group>({ uuid: ''})
+    const selectedGroup = ref<Group>({ groupAdminId: ''})
     const isDeletingCamp = ref<Boolean>(false)
     const selectedYear = ref<string>('')
     const groupYears = ref<string[]>([])
@@ -154,7 +154,7 @@ export default defineComponent({
         RepositoryFactory.get(CampRepository)
         .removeById(campToBeDeleted.value.uuid)
         .then(() => {
-          getCamps(selectedGroup.value.uuid, selectedYear.value).then(() => {
+          getCamps(selectedGroup.value.groupAdminId, selectedYear.value).then(() => {
             isDeletingCamp.value = false
             isWarningDisplayed.value = false
             toastState.value.visible = true
@@ -196,7 +196,7 @@ export default defineComponent({
         toastState.value.label = 'Kamp is succesvol bewerkt'
       }
       toastState.value.visible = true
-      getCamps(selectedGroup.value.uuid, selectedYear.value)
+      getCamps(selectedGroup.value.groupAdminId, selectedYear.value)
     }
 
     const setSelectedYear = (year: string) => {
@@ -205,11 +205,11 @@ export default defineComponent({
 
     const selectFilter = (event: any, filter: string) => {
       filter === 'group' ? setSelectedGroup(event) : event !== null ? setSelectedYear(event) : setSelectedYear('')
-      getCamps(selectedGroup.value.uuid, selectedYear.value)
+      getCamps(selectedGroup.value.groupAdminId, selectedYear.value)
     }
 
-    getUserGroups().then(() => getGroupYears(selectedGroup.value.uuid))
-    .then(() => getCamps(selectedGroup.value.uuid, selectedYear.value))
+    getUserGroups().then(() => getGroupYears(selectedGroup.value.groupAdminId))
+    .then(() => getCamps(selectedGroup.value.groupAdminId, selectedYear.value))
 
     return { 
       isWarningDisplayed, 
