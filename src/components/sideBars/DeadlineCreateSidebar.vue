@@ -169,7 +169,6 @@ export default defineComponent({
     }
 
     const removeItemFromArray = (index: string) => {
-      console.log('INDEX TO SPLICE: ', index)
       items.value.splice(Number(index), 1);
     }
 

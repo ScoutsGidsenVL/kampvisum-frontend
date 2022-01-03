@@ -166,7 +166,6 @@ export default defineComponent({
     const displayWarning = (camp: Camp) => {
       isWarningDisplayed.value = true
       campToBeDeleted.value = camp
-      console.log('CAMP TO BE DELETED: ', campToBeDeleted.value)
     }
 
     const openCampSideBar = () => {
