@@ -51,14 +51,6 @@ export default defineComponent({
       }
     ])
 
-    const closeSideBar= (): void => {
-      context.emit('closeSidebar')
-    }
-
-    const openSideBar= (): void => {
-      context.emit('openSidebar')
-    }
-
     const createSidebar = ref<any>({state: 'hide'})
 
     const openLocationCreateSidebar = (): void => {
@@ -78,9 +70,7 @@ export default defineComponent({
     return {
       openLocationCreateSidebar,
       createSidebar,
-      closeSideBar,
       actionSuccess,
-      openSideBar,
       fakeCenter,
       fakeData,
     }

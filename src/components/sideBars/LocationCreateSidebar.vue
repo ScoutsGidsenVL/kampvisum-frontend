@@ -1,6 +1,7 @@
 <template>
   <div>
     <base-side-bar
+      maxWidth="max-w-2xl"
       :isOverflowHidden="isOverflowHidden"
       :selection="selected"
       :is-display="sideBarState.state !== 'hide'"
@@ -31,8 +32,20 @@
         <div class="pb-4 flex flex-col gap-3">
           <strong class="m-0 text-lg">Adres(sen)</strong>
           <div class="bg-lighterGreen p-2">Zoek een adres of duid het aan op de kaart.</div>
-          <search-input v-model:loading="loading" name="search" placeholder="Zoek adres" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResult($event)" />
-          <leaflet-map @deleteLocationPoint="deleteLocationPoint($event)" @cancelLocationPoint="cancelLocationPoint()" @addLocationPoint="addLocationPoint($event)" v-if="sideBarState.state !== 'hide'" :searchedLocations="searchedLocations"  :searchedLocation="searchedLocation" :center="fakeCenter" />
+          <search-input v-model:loading="loading" name="search" placeholder="Zoek adres" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
+          
+          <div v-if="fetchedLocationsToSelect.length > 0" class="border-r-2 border-l-2 border-b-2 border-gray">
+            <div v-for="(fetchedLocation) in fetchedLocationsToSelect" :key="fetchedLocation" class="hover:bg-lightGray p-2 pl-3 cursor-pointer border-b-2 border-gray">
+              <div class="flex flex-col" @click="addLocationPoint(fetchedLocation)">
+                <strong>
+                 {{fetchedLocation.properties.name}} 
+                </strong>
+                {{fetchedLocation.address}}
+              </div>
+            </div>
+          </div>
+
+          <leaflet-map @addOnClick="addOnClick($event)" @deleteLocationPoint="deleteLocationPoint($event)" @cancelLocationPoint="cancelLocationPoint()" @addLocationPoint="addLocationPoint($event)" v-if="sideBarState.state !== 'hide'" :searchedLocations="searchedLocations"  :searchedLocation="searchedLocation" :center="fakeCenter" />
         </div>
 
         <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
@@ -57,17 +70,15 @@ import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrol
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
-import RepositoryFactory from '@/repositories/repositoryFactory'
-import { CampRepository } from '@/repositories/campRepository'
 import DateField from '@/components/semantics/DateField.vue'
 import { DeadlineItem } from '@/serializer/DeadlineItem'
 import { useForm, ErrorMessage } from 'vee-validate'
-import { Camp } from '../../serializer/Camp'
 import { useI18n } from 'vue-i18n'
 import SearchInput from '../inputs/SearchInput.vue'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
-import { SearchedLocation } from '../../serializer/SearchedLocation'
+import { SearchedLocation, SearchedLocationDeserializer } from '../../serializer/SearchedLocation'
 import { PostLocation } from '../../serializer/PostLocation'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -122,7 +133,7 @@ export default defineComponent({
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>()
     const { sideBarState } = toRefs(props)
     const fakeCenter = ref<Array<number>>([50.6402809, 4.6667145])
-
+    const fetchedLocationsToSelect = ref<any>([])
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -176,9 +187,10 @@ export default defineComponent({
     const searchedLocations = ref<Array<SearchedLocation>>([])
     const searchedLocation = ref<SearchedLocation>({})
 
-    const fetchedSearchResult = (result: SearchedLocation ) => {
-      searchedLocation.value = result
-      fakeCenter.value = result.latLon ? result.latLon : fakeCenter.value
+    const fetchedSearchResults = (results: SearchedLocation[] ) => {
+      fetchedLocationsToSelect.value = results
+      // searchedLocation.value = results[0]
+      // fakeCenter.value = results[0].latLon ? results[0].latLon : fakeCenter.value
       loading.value = false
     }
 
@@ -186,13 +198,17 @@ export default defineComponent({
       searchedLocation.value = {}
     }
 
+    const emptySearchResults = () => {
+      fetchedLocationsToSelect.value = []
+    }
+
     const addLocationPoint = (location: SearchedLocation) => {
+      emptySearchResults()
+      fakeCenter.value = location.latLon ? location.latLon : fakeCenter.value
       if (searchedLocations.value.length === 0) {
         location.isHeadLocation = true
-        searchedLocations.value.push(location)
-      } else {
-        searchedLocations.value.push(location)
       }
+      searchedLocations.value.push(location)
       resetSearchedLocation()
       values.locationAddresses = searchedLocations.value
     }
@@ -212,6 +228,17 @@ export default defineComponent({
 
     const loading = ref<boolean>(false)
 
+    const addOnClick = (latLng: any) => {
+      // search based on clicked coords latLng
+      RepositoryFactory.get(LocationSearchRepository)
+            .reverseSearch(latLng)
+            .then((result: any) => {
+              console.log('reverse search geo: ', result)
+              searchedLocation.value = result 
+              searchedLocation.value.latLon = latLng
+            })      
+    }
+
     return {
       isSubmitting,
       sideBarState,
@@ -226,13 +253,15 @@ export default defineComponent({
       removeItemFromArray,
       fakeCenter,
       LocationSearchRepository,
-      fetchedSearchResult,
+      fetchedSearchResults,
       searchedLocation,
       loading,
       searchedLocations,
       addLocationPoint,
       cancelLocationPoint,
-      deleteLocationPoint
+      deleteLocationPoint,
+      fetchedLocationsToSelect,
+      addOnClick
     }
   },
 })

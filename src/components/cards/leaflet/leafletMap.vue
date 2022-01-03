@@ -5,13 +5,14 @@
       v-model="z"
       v-model:zoom="z"
       :center="center"
+      @click="addOnClick($event)"
     >
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       ></l-tile-layer>
 
       <div v-for="(location, index) in locations" :key="location">
-        <l-marker @update:latLng="patchLatLng($event, index)" draggable :lat-lng="location.latLng">
+        <l-marker @update:latLng="patchLatLng($event, index)" :lat-lng="location.latLng">
           <l-icon>
               <svg width="30" height="30" style="margin-left: -14px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
@@ -26,7 +27,7 @@
 
 
       <div v-if="searchedLocation.latLon">
-        <l-marker id="searchedMarker" draggable :lat-lng="searchedLocation.latLon">
+        <l-marker id="searchedMarker" :lat-lng="searchedLocation.latLon">
           <l-icon>
               <svg width="30" height="30" style="margin-left: -14px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#000"/>
@@ -62,7 +63,7 @@
       </div>
 
       <div v-for="(sL, index) in searchedLocations" :key="sL">
-        <l-marker id="searchedMarker" draggable :lat-lng="sL.latLon">
+        <l-marker id="searchedMarker" :lat-lng="sL.latLon">
           <l-icon>
               <svg width="30" height="30" style="margin-left: -14px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
@@ -72,7 +73,8 @@
             <div class="flex flex-col">
               
               <div>
-                <strong v-if="sL.name.length > 0">{{sL.name}}</strong>
+                <label for="">Naam</label>
+                <input type="text" id="sLname" name="sLname" v-model="sL.name" class="bg-lightGray p-2 min-w-0 w-100">
               </div>
 
               <div class="flex items-center gap-1">
@@ -178,6 +180,12 @@ export default defineComponent ({
 
     }
 
+    const addOnClick = (p: any) => {
+      if (p.latlng) {
+        emit('addOnClick', p.latlng)
+      }
+    }
+
     return {
       patchLatLng,
       iconWidthAndHeight,
@@ -187,6 +195,7 @@ export default defineComponent ({
       cancelLocationPoint,
       deleteLocationPoint,
       checkMainLocation,
+      addOnClick,
       z
     }
   }

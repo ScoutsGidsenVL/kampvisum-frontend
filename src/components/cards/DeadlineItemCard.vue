@@ -27,7 +27,6 @@ export default defineComponent({
   },
   setup (props, context) {
     const removeItemFromArray = () => {
-      console.log('INDEX: ', props.index)
       context.emit('removeItemFromArray', props.index)
     }
     return {

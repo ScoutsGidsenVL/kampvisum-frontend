@@ -30,11 +30,22 @@ export class LocationSearchRepository extends BaseRepository {
 
   private processErrorLoc(error: any): void {}
 
-  search(query: string): Promise<SearchedLocation> {
-    return this.searchLocation(this.endpoint + query + '&limit=5', {}).then((response: { features:Array<any> }) => {
-      const searchedResult  = SearchedLocationDeserializer(response.features[0])
-      return searchedResult
+  search(query: string): Promise<SearchedLocation[]> {
+    return this.searchLocation(this.endpoint + query + '&limit=4', {}).then((response: { features:Array<any> }) => {
+      return response.features.map( x => SearchedLocationDeserializer(x))
     })
+  }
+
+  reverseSearch(latLng: { lat: number, lng: number}, config: AxiosRequestConfig = {}): Promise<any> {
+    return this.axiosInstanceLocation
+      .get(`/reverse?lon=${latLng.lng}&lat=${latLng.lat}`, {})
+      .then(function (result: AxiosResponse) {
+        // Only return the data of response
+        return SearchedLocationDeserializer(result.data.features[0])
+      })
+      .catch((error: any) => {
+        return this.processErrorLoc(error)
+      })
   }
 
 }

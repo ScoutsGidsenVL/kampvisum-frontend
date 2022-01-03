@@ -34,6 +34,10 @@
       <div v-if="concernType === 'InformationCheck'">
         InformationCheck component
       </div>
+
+      <div v-if="concernType === 'MembersCheck'">
+        <members-overview />
+      </div>
   </div>
 </template>
 
@@ -42,6 +46,7 @@ import LocationComponent from '../semantics/LocationComponent.vue'
 import { InputTypes, CustomInput } from 'vue-3-component-library'
 import OverviewFiles from '@/components/upload/overviewFiles.vue'
 import Message, { ColorState } from '../semantics/message.vue'
+import MembersOverview from '../semantics/MembersOverview.vue'
 import DateField from '@/components/semantics/DateField.vue'
 import { defineComponent, PropType, ref } from 'vue'
 import VSwitch from '@lmiller1990/v-switch'
@@ -68,7 +73,8 @@ export default defineComponent({
     InputTypes,
     CustomInput,
     OverviewFiles,
-    LocationComponent
+    LocationComponent,
+    MembersOverview
   },
   props: {
     concernType: String,
