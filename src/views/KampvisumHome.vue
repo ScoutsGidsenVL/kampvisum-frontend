@@ -189,6 +189,7 @@ export default defineComponent({
 
 
     const actionSuccess = (action: string) => {
+      console.log('FEEDBACK: ', action)
       if (action === 'POST') {
         toastState.value.label = 'Kamp is succesvol aangemaakt'
       }

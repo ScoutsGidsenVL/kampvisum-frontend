@@ -18,8 +18,8 @@ export const CampDeserializer = (input: any): Camp => {
     name: input.name,
     startDate: input.start_date,
     endDate: input.end_date,
-    sections: input.sections.map((section: any) => SectionDeserializer(section)),
-    categories: input.categories.map((category: any) => CategoryDeserializer(category))
+    sections: input.sections ? input.sections.map((section: any) => SectionDeserializer(section)) : undefined,
+    categories: input.categories ? input.categories.map((category: any) => CategoryDeserializer(category)) : undefined,
   }
 
   return single

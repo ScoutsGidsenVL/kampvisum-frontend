@@ -233,7 +233,6 @@ export default defineComponent({
       RepositoryFactory.get(LocationSearchRepository)
             .reverseSearch(latLng)
             .then((result: any) => {
-              console.log('reverse search geo: ', result)
               searchedLocation.value = result 
               searchedLocation.value.latLon = latLng
             })      

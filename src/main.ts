@@ -9,11 +9,24 @@ import './registerServiceWorker'
 import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
-import i18n from './i18n'
-// import LitepieDatepicker from 'litepie-datepicker'
+import { createI18n } from "vue-i18n";
 
+// import LitepieDatepicker from 'litepie-datepicker'
+const nl = require("./locales/nl.json")
 new StaticFileRepository().getFile('config.json').then((result: any) => {
-  const app = createApp(App)
+  const i18n = createI18n({
+    legacy: false,
+    locale: "nl",
+    fallbackLocale: 'nl',
+    globalInjection: true,
+    fallbackWarn: false,
+    missingWarn: false,
+    messages: {
+      nl: nl.default
+    }
+  });
+
+  const app = createApp(App).use(i18n)
 
   let configFile = result
 
@@ -60,5 +73,5 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
     }
   })
 
-  app.use(router).use(i18n).use(store).mount('#app')
+  app.use(router).use(store).mount('#app')
 })

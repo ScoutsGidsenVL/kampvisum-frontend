@@ -8,6 +8,7 @@
       name="Camp"
       :title="title"
       @hideSidebar="closeSideBar"
+      width="max-w-xl"
     >
       <form
         id="addNewCamp"
@@ -21,13 +22,6 @@
             <custom-input :isSubmitting="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
           </div>
 
-          <!-- <div class="w-100 mt-4">
-            <custom-input :isSubmitting="isSubmitting" :type="InputTypes.DATE" name="startDate" :label="t('sidebars.kampvisum-sidebar.input-fields.start-date')" />
-          </div>
-
-          <div class="w-100 mt-4">
-            <custom-input :isSubmitting="isSubmitting" :type="InputTypes.DATE" name="endDate" :label="t('sidebars.kampvisum-sidebar.input-fields.end-date')" />
-          </div> -->
           <div v-if="sideBarState.state !== 'hide'">
             <custom-header text="Takken die meegaan" type="h3" />
 
@@ -51,13 +45,13 @@
 
 <script lang="ts">
 import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
+import { Section, SectionObjectsToSectionStrings } from '@/serializer/Section'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { GroupRepository } from '@/repositories/groupRepository'
 import { CampRepository } from '@/repositories/campRepository'
-import { Section, SectionObjectsToSectionStrings } from '@/serializer/Section'
-import { Camp } from '../../serializer/Camp'
 import { useForm, useField, ErrorMessage } from 'vee-validate'
+import { Camp } from '../../serializer/Camp'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({

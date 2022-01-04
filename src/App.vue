@@ -9,7 +9,7 @@
       <div class="d-flex">
         <navigation-side-bar class="xs:mr-4 md:mr-0" />
         <div class="w-100 md:px-5 md:mx-3 mt-3">
-          <h1 class="ml-3 w-full h1">{{ $route.meta.titleKey ? t($route.meta.titleKey) : '' }}</h1>
+          <h1 class="ml-3 w-full h1">{{ $route.meta.titleKey ? $t($route.meta.titleKey) : '' }}</h1>
           <router-view />
         </div>
       </div>
@@ -38,11 +38,6 @@ export default defineComponent({
 
     const { checkIfInternetActive, isInternetActive } = useInternetHelper()
 
-    const { t } = useI18n({
-      inheritLocale: true,
-      useScope: 'local',
-    })
-
     const route = useRoute()
 
     checkIfInternetActive()
@@ -53,7 +48,6 @@ export default defineComponent({
       isInternetActive,
       router,
       route,
-      t,
     }
   },
 })
