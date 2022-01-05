@@ -4,7 +4,7 @@ import { ArrayResult } from '@/interfaces/ArrayResult'
 
 export class CampRepository extends BaseRepository {
   id = '/camps/'
-  endpoint = '/camps/'
+  endpoint = '/visums/'
   deserializer = CampDeserializer
   serializer = CampSerializer
 
