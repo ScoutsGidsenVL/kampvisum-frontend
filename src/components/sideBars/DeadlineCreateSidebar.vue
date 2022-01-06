@@ -145,9 +145,9 @@ export default defineComponent({
     }
 
     const updateCamp = async (data: Camp) => {
-      if (data.uuid) {
+      if (data.id) {
         await RepositoryFactory.get(CampRepository)
-          .update(data.uuid, data)
+          .update(data.id, data)
           .then(() => {
             context.emit('actionSuccess', 'UPDATE')
           })

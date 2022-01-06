@@ -99,7 +99,7 @@ export default defineComponent({
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })
     const { setCampsByGroup, campsByGroup } = useCampHelper()
     const isWarningDisplayed = ref<Boolean>(false)
-    const campToBeDeleted = ref<Camp>({ uuid: ''})
+    const campToBeDeleted = ref<Camp>({ id: ''})
     const selectedGroup = ref<Group>({ groupAdminId: ''})
     const isDeletingCamp = ref<Boolean>(false)
     const selectedYear = ref<string>('')
@@ -152,7 +152,7 @@ export default defineComponent({
     const deleteCamp = () => {
         isDeletingCamp.value = true
         RepositoryFactory.get(CampRepository)
-        .removeById(campToBeDeleted.value.uuid)
+        .removeById(campToBeDeleted.value.id)
         .then(() => {
           getCamps(selectedGroup.value.groupAdminId, selectedYear.value).then(() => {
             isDeletingCamp.value = false

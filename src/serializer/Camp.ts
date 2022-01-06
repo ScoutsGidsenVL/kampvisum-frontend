@@ -1,26 +1,37 @@
 import { Category, CategoryDeserializer } from "./Category"
 import { Section, SectionDeserializer } from "./Section"
+import { YearDeserializer } from "./Year"
 
 export interface Camp {
-  id?: string
-  uuid: string
-  name?: string
+  createdBy?: string
+  createdOn?: string
   endDate?: string
-  startDate?: string
+  id: string
+  name?: string
   sections?: Array<string> | Array<Section>
+  startDate?: string
+  updatedBy?: string
+  updatedOn?: string
+  year?: any
   categories?: Array<Category>
 }
 
 export const CampDeserializer = (input: any): Camp => {
+  console.log('kamp fetched: ', input)
   const single: Camp = {
-    id: input.id,
-    uuid: input.uuid,
-    name: input.name,
-    startDate: input.start_date,
+    createdBy: input.created_by ? input.created_by : undefined,
+    createdOn: input.created_on ? input.created_on : undefined,
     endDate: input.end_date,
+    id: input.id,
+    name: input.name,
     sections: input.sections ? input.sections.map((section: any) => SectionDeserializer(section)) : undefined,
+    startDate: input.start_date,
+    updatedBy: input.updated_by ? input.updated_by : undefined,
+    updatedOn: input.updated_on ? input.updated_on : undefined,
+    year: input.year ? YearDeserializer(input.year) : undefined,
     categories: input.categories ? input.categories.map((category: any) => CategoryDeserializer(category)) : undefined,
   }
+  console.log('kamp single: ', single)
 
   return single
 }

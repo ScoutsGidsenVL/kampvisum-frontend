@@ -1,4 +1,4 @@
-import { CampDeserializer, CampSerializer } from '@/serializer/Camp'
+import { CampDeserializer, CampSerializer, Camp } from '@/serializer/Camp'
 import { BaseRepository } from '@/repositories/baseRepository'
 import { ArrayResult } from '@/interfaces/ArrayResult'
 
@@ -11,8 +11,8 @@ export class CampRepository extends BaseRepository {
   getArray(pagination?: string): Promise<any> {
     return this.get(this.endpoint + pagination, {}).then((response: ArrayResult) => {
       const array: any[] = []
-      response.results.forEach((result: any) => {
-        array.push(this.deserializer(result))
+      response.results.forEach((result: { camp: Camp }) => {
+        array.push(this.deserializer(result.camp))
       })
       return array
     })

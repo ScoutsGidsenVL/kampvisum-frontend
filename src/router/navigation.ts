@@ -7,7 +7,7 @@ export const useNavigation = (): {
 
   const navigateTowardsCategory = (name: string, camp: Camp,categoryUuid: string, route: any) => {
     const navigate = (name: string) => {
-      router.push('/kamp/' + camp.uuid.toString() + '/' + name + '/' + categoryUuid)
+      router.push('/kamp/' + camp.id.toString() + '/' + name + '/' + categoryUuid)
     }
 
     navigate(name.toLowerCase())
