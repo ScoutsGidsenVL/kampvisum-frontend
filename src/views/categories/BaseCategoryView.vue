@@ -1,14 +1,16 @@
 <template>
-  <div class="flex w-100 -mt-3">
+  <div v-if="visum"  class="flex w-100 -mt-3">
     <div class="w-100">
       <div>
-        <page-header :title="route.name" :subTitle="getSectionsTitle(camp)" />
+        <page-header :title="route.name" :subTitle="getSectionsTitle(visum.camp)" />
       </div>
 
-      <div v-if="camp" class="w-100 flex pt-3">
+      <div v-if="visum" class="w-100 flex pt-3">
           <div class="w-100">
-            <base-subcategory-card :camp="camp" class="mb-3" title="Locatie(s)" titleTextfield="Opmerkingen" :concerns="['DateCheck', 'Message', 'SimpleCheck', 'InputCheck', 'LocationCheck', 'FileUploadCheck', 'MembersCheck', 'FourageCheck', 'LeadersCheck']" @openSidebar="openSidebar()" />
-            <!-- <base-subcategory-card :camp="camp" class="mb-3" title="Datum" titleTextfield="Opmerkingen" :concerns="['InputCheck']"  @openSidebar="openSidebar()" /> -->
+            <div v-for="(subCategory) in category.subCategories" :key="subCategory" >
+              <base-subcategory-card :visum="visum" class="mb-3" :title="subCategory.subCategoryParent.name" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
+              <!-- <base-subcategory-card :camp="camp" class="mb-3" :title="subCategory.subCategoryParent.name" titleTextfield="Opmerkingen" :checks="['SimpleCheck']" @openSidebar="openSidebar()" /> -->
+            </div>
           </div>
           <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
       </div>
@@ -24,9 +26,10 @@ import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { useCampHelper } from '../../helpers/campHelper'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
-import { Camp } from '../../serializer/Camp'
+import { Visum } from '../../serializer/Visum'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { Category } from '@/serializer/Category'
 
 export default defineComponent({
   name: 'BaseCategoryView',
@@ -37,7 +40,8 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute()
-    const camp = ref<Camp>()
+    const visum = ref<Visum>()
+    const category = ref<Category>()
     const { getCampByRouteParam } = useCampHelper()
     const { getSectionsTitle } = useSectionsHelper()
     const { setCategoryInfo } = useInfoBarHelper()
@@ -45,8 +49,9 @@ export default defineComponent({
 
     setCategoryInfo("Ga verder met de planning van je kamp. In het Kampvisum vind je alles terug dat je zeker in orde moet brengen.​<br><br>Je bent niet alleen. Kom eens buiten samen volgens de huidige maatregelen om bepaalde zaken samen verder uit te werken.<br><br>Of vraag hulp aan de districtcommissarissen bij twijfel. Tip: geef al wat meer aandacht aan spelletjes en inkleding. Als dit nu al klaar is kan je in juni meer tijd vrij maken voor praktische aanpassingen naargelang de maatregelen.")
 
-    getCampByRouteParam().then((c) => {
-      camp.value = c
+    getCampByRouteParam().then((v: Visum) => {
+      visum.value = v
+      category.value = visum.value.categorySet.categories.find((c: Category) => c.id === route.params.id)
     })
     const sidebar = ref<Sidebar>({state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
 
@@ -62,9 +67,10 @@ export default defineComponent({
       getSectionsTitle,
       closeSidebar,
       openSidebar,
+      category,
       sidebar,
       route,
-      camp,
+      visum,
     }
   },
 })

@@ -1,13 +1,14 @@
 import router from '@/router'
 import { Camp } from '@/serializer/Camp'
+import { Visum } from '@/serializer/Visum'
 
 export const useNavigation = (): {
-  navigateTowardsCategory: (name: string, camp: Camp, categoryUuid: string, route: any) => void
+  navigateTowardsCategory: (name: string, visum: Visum, categoryUuid: string, route: any) => void
 } => {
 
-  const navigateTowardsCategory = (name: string, camp: Camp,categoryUuid: string, route: any) => {
+  const navigateTowardsCategory = (name: string, visum: Visum, categoryUuid: string, route: any) => {
     const navigate = (name: string) => {
-      router.push('/kamp/' + camp.id.toString() + '/' + name + '/' + categoryUuid)
+      router.push('/kamp/' + visum.id.toString() + '/' + name + '/' + categoryUuid)
     }
 
     navigate(name.toLowerCase())

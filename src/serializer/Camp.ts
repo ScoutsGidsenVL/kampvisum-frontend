@@ -17,7 +17,6 @@ export interface Camp {
 }
 
 export const CampDeserializer = (input: any): Camp => {
-  console.log('kamp fetched: ', input)
   const single: Camp = {
     createdBy: input.created_by ? input.created_by : undefined,
     createdOn: input.created_on ? input.created_on : undefined,
@@ -31,7 +30,6 @@ export const CampDeserializer = (input: any): Camp => {
     year: input.year ? YearDeserializer(input.year) : undefined,
     categories: input.categories ? input.categories.map((category: any) => CategoryDeserializer(category)) : undefined,
   }
-  console.log('kamp single: ', single)
 
   return single
 }

@@ -12,9 +12,9 @@ export const useSectionsHelper = (): {
     if (camp && camp.sections) {
       camp.sections.forEach((section: any, index: any) => {
         if (camp.sections && (camp.sections.length - 1) > (index)) {
-          sectionsTitle.value += section.name + ' & '
+          sectionsTitle.value += section.name.name + ' & '
         } else {
-          sectionsTitle.value += section.name
+          sectionsTitle.value += section.name.name
         }
       })
     }

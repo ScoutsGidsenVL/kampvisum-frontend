@@ -1,16 +1,17 @@
 <template>
   <div>
+      <span class="bg-red">{{concernType}}</span>
+
       <div v-if="concernType === 'Message'">
         <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{state: ColorState.DANGER}" />
       </div>
 
       <div v-if="concernType === 'SimpleCheck'">
-        <check text="totemisatie" />
-        <check text="nachtspel" />
+        <check-component :text="check.checkParent.label" />
       </div>
 
       <div v-if="concernType === 'DateCheck'">
-          <date-field class="my-2" v-for="(section) in camp.sections" :key="section" :title="section.name" />
+          <date-field class="my-2" :key="section" :title="check.checkParent.label" />
       </div>
 
       <div v-if="concernType === 'LocationCheck'">
@@ -20,7 +21,7 @@
       </div>
 
       <div v-if="concernType === 'ContactCheck'">
-        ContactCheck component
+        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
       </div>
 
       <div v-if="concernType === 'FileUploadCheck'">
@@ -28,11 +29,11 @@
       </div>
 
       <div v-if="concernType === 'InputCheck'">
-        <!-- <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="'Opmerkingen'" /> -->
+        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
       </div>
 
       <div v-if="concernType === 'InformationCheck'">
-        InformationCheck component
+        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
       </div>
 
       <div v-if="concernType === 'LeadersCheck'">
@@ -61,7 +62,8 @@ import DateField from '@/components/semantics/DateField.vue'
 import { defineComponent, PropType, ref } from 'vue'
 import VSwitch from '@lmiller1990/v-switch'
 import { Camp } from '@/serializer/Camp'
-import Check from './checks/check.vue'
+import CheckComponent from './checks/check.vue'
+import { Check } from '../../serializer/Check'
 
 export enum ConcernType {
   INFORMATION_CHECK = 'InformationCheck',
@@ -76,7 +78,7 @@ export enum ConcernType {
 export default defineComponent({
   name: 'ConcernSwitch',
   components: {
-    Check,
+    CheckComponent,
     VSwitch,
     Message,
     DateField,
@@ -93,6 +95,10 @@ export default defineComponent({
     camp: {
       type: Object as PropType<Camp>,
       required: true,
+    },
+    check: {
+      type: Object as PropType<Check>,
+      required: true
     }
   },
   setup () {

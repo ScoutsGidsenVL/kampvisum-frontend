@@ -1,17 +1,17 @@
 <template>
-  <div v-if="camp" class="p-3">
-    <h1>{{ camp.name }}</h1>
+  <div v-if="visum" class="p-3">
+    <h1>{{ visum.camp.name }}</h1>
 
     <h4 class="text-green inline">
-      {{ getSectionsTitle(camp) }}
+      {{ getSectionsTitle(visum.camp) }}
     </h4>
     
     <hr />
 
     <div class="w-100 flex">
       <div class="w-100 grid xl:grid-cols-2 sm:grid-cols-1 gap-4">
-        <div v-for="category in camp.categories" :key="category">
-            <category-info-card :camp="camp" :category="category" />
+        <div v-for="category in visum.categorySet.categories" :key="category">
+            <category-info-card :visum="visum" :category="category" />
         </div>
       </div>
       <deadlines-sidebar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
@@ -28,6 +28,7 @@ import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { useCampHelper } from '../helpers/campHelper'
 import { defineComponent, ref } from 'vue'
 import { Camp } from '../serializer/Camp'
+import { Visum } from '@/serializer/Visum'
 
 
 export default defineComponent({
@@ -37,13 +38,13 @@ export default defineComponent({
     'deadlines-sidebar': DeadlinesSideBar,
   },
   setup() {
-    const camp = ref<Camp>()
+    const visum = ref<Visum>()
     const { getCampByRouteParam } = useCampHelper()
     const { getSectionsTitle } = useSectionsHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
 
-    getCampByRouteParam().then((c: Camp) => {
-      camp.value = c
+    getCampByRouteParam().then((v: Visum) => {
+      visum.value = v
     })
 
     const sidebar = ref<Sidebar>({state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN})
@@ -61,7 +62,7 @@ export default defineComponent({
       closeSidebar,
       openSidebar,
       sidebar,
-      camp
+      visum
     }
   },
 })

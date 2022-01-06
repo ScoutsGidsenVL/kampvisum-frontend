@@ -1,14 +1,16 @@
+import { CheckDeserializer } from "./Check"
+import { SubCategoryParent, SubCategoryParentDeserializer } from "./SubCategoryParent"
 export interface SubCategory {
-  name?: string
-  status?: boolean
-  uuid?: string
+  checks?: []
+  id?: string
+  subCategoryParent?: SubCategoryParent
 }
 
 export const SubCategoryDeserializer = (input: any): SubCategory => {
   const single: SubCategory = {
-    name: input.name,
-    status: input.status,
-    uuid: input.uuid,
+    checks: input.checks ? input.checks.map((c: any) => CheckDeserializer(c)) : undefined,
+    id: input.id,
+    subCategoryParent: input.parent ? SubCategoryParentDeserializer(input.parent) : undefined
   }
 
   return single

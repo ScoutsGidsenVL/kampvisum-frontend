@@ -1,18 +1,19 @@
 import { CampDeserializer, CampSerializer, Camp } from '@/serializer/Camp'
 import { BaseRepository } from '@/repositories/baseRepository'
 import { ArrayResult } from '@/interfaces/ArrayResult'
+import { Visum, VisumDeserializer } from '@/serializer/Visum'
 
 export class CampRepository extends BaseRepository {
   id = '/camps/'
   endpoint = '/visums/'
-  deserializer = CampDeserializer
+  deserializer = VisumDeserializer
   serializer = CampSerializer
 
   getArray(pagination?: string): Promise<any> {
     return this.get(this.endpoint + pagination, {}).then((response: ArrayResult) => {
       const array: any[] = []
-      response.results.forEach((result: { camp: Camp }) => {
-        array.push(this.deserializer(result.camp))
+      response.results.forEach((result: Visum) => {
+        array.push(this.deserializer(result))
       })
       return array
     })
