@@ -1,6 +1,6 @@
 <template>
   <div class="custom-pad max-w-sm">
-    <strong>{{title}}</strong>
+    <strong>{{check.checkParent.label}}</strong>
     <div v-if="isWithRange">
       <litepie-datepicker
         as-single
@@ -10,7 +10,6 @@
         separator=" - "
         placeholder=" "
       ></litepie-datepicker>
-      {{dateValues}}
     </div>
     <div v-else>
       <litepie-datepicker
@@ -24,13 +23,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { DurationDateCheckRepository } from '@/repositories/DurationDateCheckRepository'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 const LitepieDatepicker = require('litepie-datepicker').default
+import { defineComponent, ref, PropType, watch } from 'vue'
+import { Check } from '@/serializer/Check'
 
 export default defineComponent({
   name: 'HeaderSubcategoryCard',
   props: {
-    title: String,
+    check: {
+      type: Object as PropType<Check>,
+      required: true
+    },
     isWithRange: {
       type: Boolean,
       default: true,
@@ -40,17 +45,30 @@ export default defineComponent({
   components: {
     'litepie-datepicker': LitepieDatepicker
   },
-  setup () {
+  setup (props) {    
     const dateValues = ref([])
     const dateValue = ref('')
-    // const formatter = ref({
-    //   date: 'DD-MM-YYYY'
-    // })
 
     const formatter = ref({
       date: 'DD MMM YYYY',
       month: 'MMM'
     })
+
+    const patchDurationDateCheck = async (dates: Array<string>) => {
+      await RepositoryFactory.get(DurationDateCheckRepository)
+        .update(props.check.endpoint, dates)
+        .then((p: any) => {
+          console.log('PATCH RESPONSE: ', p)
+        })
+    }
+
+    watch(
+      () => dateValues.value,
+      () => {
+        patchDurationDateCheck(dateValues.value)
+      }
+    )
+
     return {
       dateValues,
       dateValue,

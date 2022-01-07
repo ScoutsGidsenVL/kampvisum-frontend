@@ -23,6 +23,7 @@
     "is-online": "^9.0.1",
     "leaflet": "^1.7.1",
     "litepie-datepicker": "^1.0.14",
+    "luxon": "^2.3.0",
     "postcss": "^7",
     "register-service-worker": "^1.7.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
@@ -30,6 +31,7 @@
     "vue": "^3.0.0",
     "vue-3-component-library": "git+https://github.com/ScoutsGidsenVL/vue-3-component-library#master",
     "vue-i18n": "^9.2.0-beta.26",
+    "vue-luxon": "^0.10.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
   },

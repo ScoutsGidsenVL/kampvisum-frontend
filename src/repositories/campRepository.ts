@@ -21,7 +21,7 @@ export class CampRepository extends BaseRepository {
 
   getGroupYears(groupId: string): Promise<any> {
     // return this.get(this.endpoint + groupId + '/years', {}).then((response: []) => {
-    return this.get(this.id + groupId + '/years', {}).then((response: []) => {
+    return this.get(this.id + groupId + '/years/', {}).then((response: []) => {
       return response
     })
   }

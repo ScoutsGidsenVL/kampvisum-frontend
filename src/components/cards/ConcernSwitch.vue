@@ -11,7 +11,7 @@
       </div>
 
       <div v-if="checkType === 'DurationCheck'">
-          <date-field class="my-2" :key="section" :title="check.checkParent.label" />
+          <date-field class="my-2" :key="section" :check="check" />
       </div>
 
       <div v-if="checkType === 'LocationCheck'">

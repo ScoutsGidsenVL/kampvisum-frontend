@@ -20,7 +20,7 @@ export class GroupRepository extends BaseRepository {
   }
 
   getGroupSections(groupId: string): Promise<any> {
-    return this.get(`/sections/${groupId}`, {}).then((response: ArrayResult) => {
+    return this.get(`/sections/${groupId}/`, {}).then((response: ArrayResult) => {
       const array: any[] = []
       response.results.forEach((result: Section) => {
         array.push(SectionDeserializer(result))

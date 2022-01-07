@@ -7,4 +7,4 @@ declare module '*.vue' {
 
 declare module '@vue-leaflet/vue-leaflet';
 declare module 'dropzone';
-
+declare module 'vue-luxon';

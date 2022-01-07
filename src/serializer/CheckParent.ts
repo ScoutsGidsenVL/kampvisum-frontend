@@ -12,7 +12,7 @@ export interface CheckParent {
 export const CheckParentDeserializer = (input: any): CheckParent => {
   const single: CheckParent = {
     checkType: input.check_type ? CheckTypeDeserializer(input.check_type) : undefined,
-    explanation: input.explanation ? input.explanation : undefined,
+    explanation: input.explanation ? input.explanation : 'explanation',
     id: input.id,
     label: input.label ? input.label : undefined,
     link: input.link ? input.link : undefined,
