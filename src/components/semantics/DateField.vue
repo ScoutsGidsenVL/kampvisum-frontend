@@ -10,6 +10,7 @@
         separator=" - "
         placeholder=" "
       ></litepie-datepicker>
+      {{dateValues}}
     </div>
     <div v-else>
       <litepie-datepicker
@@ -42,6 +43,10 @@ export default defineComponent({
   setup () {
     const dateValues = ref([])
     const dateValue = ref('')
+    // const formatter = ref({
+    //   date: 'DD-MM-YYYY'
+    // })
+
     const formatter = ref({
       date: 'DD MMM YYYY',
       month: 'MMM'

@@ -8,7 +8,7 @@
       <div v-if="visum" class="w-100 flex pt-3">
           <div class="w-100">
             <div v-for="(subCategory) in category.subCategories" :key="subCategory" >
-              <base-subcategory-card :visum="visum" class="mb-3" :title="subCategory.subCategoryParent.name" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
+              <base-subcategory-card :visum="visum" class="mb-3" :subCategory="subCategory" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
               <!-- <base-subcategory-card :camp="camp" class="mb-3" :title="subCategory.subCategoryParent.name" titleTextfield="Opmerkingen" :checks="['SimpleCheck']" @openSidebar="openSidebar()" /> -->
             </div>
           </div>
@@ -47,11 +47,13 @@ export default defineComponent({
     const { setCategoryInfo } = useInfoBarHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
 
-    setCategoryInfo("Ga verder met de planning van je kamp. In het Kampvisum vind je alles terug dat je zeker in orde moet brengen.​<br><br>Je bent niet alleen. Kom eens buiten samen volgens de huidige maatregelen om bepaalde zaken samen verder uit te werken.<br><br>Of vraag hulp aan de districtcommissarissen bij twijfel. Tip: geef al wat meer aandacht aan spelletjes en inkleding. Als dit nu al klaar is kan je in juni meer tijd vrij maken voor praktische aanpassingen naargelang de maatregelen.")
-
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
+      //NEEDS TO BE REFACTORED AND ONLY RETRIEVE A CATEGORY BASED ON THE SELECTED ID
       category.value = visum.value.categorySet.categories.find((c: Category) => c.id === route.params.id)
+      if (category.value) {
+        setCategoryInfo(category.value.categoryParent.description)
+      }
     })
     const sidebar = ref<Sidebar>({state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
 

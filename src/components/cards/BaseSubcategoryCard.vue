@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="p-3 border border-lightGray flex gap-6 flex-col">
-      <header-subcategory-card :hasInfo="true" :title="title" @openSidebar="openSidebar()" />
+      <header-subcategory-card :subCategory="subCategory" @openSidebar="openSidebar()" />
 
       <!-- LOOP TROUGH ALL CONCERNS AND DISPLAY DEPENDING ON THE GIVEN TYPE-->
       <div v-for="(check) in checks" :key="check" >
-        <concern-switch :camp="visum.camp" :check="check" :concernType="check.checkParent.checkType.checkType" />
+        <concern-switch :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
       </div>
 
     </div>
@@ -20,6 +20,7 @@ import HeaderSubcategoryCard from '../semantics/HeaderSubcategoryCard.vue'
 import { Camp } from '@/serializer/Camp'
 import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
+import { SubCategory } from '@/serializer/SubCategory'
 
 export default defineComponent({
   name: 'BaseSubcategoryCard',
@@ -29,8 +30,8 @@ export default defineComponent({
     'litepie-datepicker': LitepieDatepicker
   },
   props: {
-    title: {
-      type: String,
+    subCategory: {
+      type: Object as PropType<SubCategory>,
       required: true,
     },
     titleTextfield: {

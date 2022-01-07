@@ -16,7 +16,7 @@ export const useCampHelper = (): {
 
   const getCampByRouteParam = async (): Promise<Camp> => {
     return RepositoryFactory.get(CampRepository)
-      .getById(route.params.campId.toString())
+      .getById(route.params.campId.toString() + "/")
       .then((c: Camp) => { return c})
   }
 

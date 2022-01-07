@@ -1,50 +1,51 @@
 <template>
   <div>
-      <span class="bg-red">{{concernType}}</span>
+    {{check}}
+      <span class="bg-red">{{checkType}}</span>
 
-      <div v-if="concernType === 'Message'">
+      <div v-if="checkType === 'Message'">
         <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{state: ColorState.DANGER}" />
       </div>
 
-      <div v-if="concernType === 'SimpleCheck'">
-        <check-component :text="check.checkParent.label" />
+      <div v-if="checkType === 'SimpleCheck'">
+        <check-component :check="check" />
       </div>
 
-      <div v-if="concernType === 'DateCheck'">
+      <div v-if="checkType === 'DateCheck'">
           <date-field class="my-2" :key="section" :title="check.checkParent.label" />
       </div>
 
-      <div v-if="concernType === 'LocationCheck'">
+      <div v-if="checkType === 'LocationCheck'">
         <div class="pb-5">
           <location-component />
         </div>
       </div>
 
-      <div v-if="concernType === 'ContactCheck'">
+      <div v-if="checkType === 'ContactCheck'">
         <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
       </div>
 
-      <div v-if="concernType === 'FileUploadCheck'">
+      <div v-if="checkType === 'FileUploadCheck'">
         <overview-files />
       </div>
 
-      <div v-if="concernType === 'InputCheck'">
+      <div v-if="checkType === 'InputCheck'">
         <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
       </div>
 
-      <div v-if="concernType === 'InformationCheck'">
+      <div v-if="checkType === 'InformationCheck'">
         <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
       </div>
 
-      <div v-if="concernType === 'LeadersCheck'">
+      <div v-if="checkType === 'LeadersCheck'">
         <leaders-overview />
       </div>
 
-      <div v-if="concernType === 'FourageCheck'">
+      <div v-if="checkType === 'FourageCheck'">
         <fourage-overview />
       </div>
 
-      <div v-if="concernType === 'MembersCheck'">
+      <div v-if="checkType === 'MembersCheck'">
         <members-overview />
       </div>
   </div>
@@ -91,7 +92,7 @@ export default defineComponent({
     LeadersOverview
   },
   props: {
-    concernType: String,
+    checkType: String,
     camp: {
       type: Object as PropType<Camp>,
       required: true,

@@ -4,14 +4,14 @@ import { SubCategory, SubCategoryDeserializer } from "./SubCategory"
 export interface Category {
   id?: string
   subCategories?: SubCategory
-  categoryParent?: CategoryParent
+  categoryParent: CategoryParent
 }
 
 export const CategoryDeserializer = (input: any): Category => {
   const single: Category = {
     id: input.id,
     subCategories: input.sub_categories ? input.sub_categories.map((subCategory: any) => SubCategoryDeserializer(subCategory)) : [],
-    categoryParent: input.parent ? CategoryParentDeserializer(input.parent) : undefined
+    categoryParent: CategoryParentDeserializer(input.parent)
   }
 
   return single

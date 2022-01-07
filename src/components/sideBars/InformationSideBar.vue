@@ -16,13 +16,14 @@
     </div>
     
     <div class="h-screen" :class="{ 'd-flex p-3 xs:mt-16 md:mt-0 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
-      <div class="w-100 pt-3 flex xs:pt-20 justify-between cursor-pointer" @click="closeSideBar()">
+      <div class="w-100 pt-3 flex xs:pt-20 justify-between">
         <div class="flex gap-3">
-          <strong>
+          <i-info-green :info="'setting the info in the information sidebar and open the information sidebar'" />
+          <strong class="text-lg">
             Info
           </strong>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-x-lg stroke-current stroke-1 text-black" viewBox="0 0 16 16">
+        <svg @click="closeSideBar()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="cursor-pointer bi bi-x-lg stroke-current stroke-1 text-black" viewBox="0 0 16 16">
           <path
             d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"
           />
@@ -38,6 +39,7 @@
 <script lang="ts">
 import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { defineComponent, PropType } from 'vue'
+import IInfoGreen from '../icons/IInfoGreen.vue'
 
 export enum SidebarState {
   OPEN = 'OPEN',
@@ -50,6 +52,9 @@ export type Sidebar = {
 
 export default defineComponent({
   name: 'InformationSideBar',
+  components: {
+    IInfoGreen
+  },
   props: {
     sidebar: {
       type: Object as PropType<Sidebar>,

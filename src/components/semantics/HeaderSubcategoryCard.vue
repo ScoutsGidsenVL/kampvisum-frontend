@@ -2,8 +2,9 @@
   <div class="flex justify-between items-center">
     <div class="flex items-center gap-3">
       <div>
-        <h4 class="font-semibold font-sans m-0">{{title}}</h4>
+        <h4 class="font-semibold font-sans m-0">{{subCategory.subCategoryParent.name}}</h4>
       </div>
+      {{subCategory.subCategoryParent}}
       <div v-if="hasInfo" class="cursor-pointer">
         <i-info :info="'setting the info in the information sidebar and open the information sidebar'" />
       </div>
@@ -19,16 +20,16 @@
 
 <script lang="ts">
 import IInfo from '../icons/IInfo.vue'
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+import { SubCategory } from '@/serializer/SubCategory'
 
 export default defineComponent({
   name: 'HeaderSubcategoryCard',
   props: {
-    title: {
-      type: String,
+    subCategory: {
+      type: Object as PropType<SubCategory>,
       required: true,
-    },
-    hasInfo: Boolean
+    }
   },
   components: {
     IInfo
