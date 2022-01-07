@@ -4,9 +4,8 @@
       <div>
         <h4 class="font-semibold font-sans m-0">{{subCategory.subCategoryParent.name}}</h4>
       </div>
-      {{subCategory.subCategoryParent}}
-      <div v-if="hasInfo" class="cursor-pointer">
-        <i-info :info="'setting the info in the information sidebar and open the information sidebar'" />
+      <div class="cursor-pointer">
+        <i-info :info="subCategory.subCategoryParent.explanation" />
       </div>
     </div>
     <div class="mt-3 cursor-pointer flex gap-3 text-darkGray hover:text-black stroke-current text-darkGray">

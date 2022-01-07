@@ -1,12 +1,14 @@
 export interface CategoryParent {
   name?: string
   description: string
+  explanation: string
 }
 
 export const CategoryParentDeserializer = (input: any): CategoryParent => {
   const single: CategoryParent = {
     name: input.name ? input.name : undefined,
-    description: input.description ? input.description : "Here comes the info of an category (still needs to be in fixture)"
+    description: input.description ? input.description : "Description",
+    explanation: input.explanation ? input.explanation : "Explanation"
   }
   return single
 }

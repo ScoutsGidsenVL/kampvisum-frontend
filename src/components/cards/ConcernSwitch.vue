@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{check}}
       <span class="bg-red">{{checkType}}</span>
 
       <div v-if="checkType === 'Message'">
@@ -11,7 +10,7 @@
         <check-component :check="check" />
       </div>
 
-      <div v-if="checkType === 'DateCheck'">
+      <div v-if="checkType === 'DurationCheck'">
           <date-field class="my-2" :key="section" :title="check.checkParent.label" />
       </div>
 
@@ -73,7 +72,7 @@ export enum ConcernType {
   CONTACT_CHECK = 'ContactCheck',
   SIMPLE_CHECK = 'SimpleCheck',
   INPUT_CHECK = 'InputCheck',
-  DATE_CHECK = 'DateCheck',
+  DURATION_CHECK = 'DurationCheck',
 }
 
 export default defineComponent({

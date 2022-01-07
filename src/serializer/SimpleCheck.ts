@@ -3,12 +3,14 @@ import { CheckParent, CheckParentDeserializer } from "./CheckParent"
 export interface SimpleCheck {
   id?: string
   value?: string
+  endpoint: string
 }
 
 export const SimpleCheckDeserializer = (input: any): SimpleCheck => {
   const single: SimpleCheck = {
     id: input.id,
-    value: input.value ? input.value : undefined
+    value: input.value ? input.value : undefined,
+    endpoint: input.endpoint ? input.endpoint : undefined
   }
   return single
 }
