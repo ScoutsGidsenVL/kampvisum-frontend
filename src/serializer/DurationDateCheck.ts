@@ -19,7 +19,8 @@ export const DurationDateCheckDeserializer = (input: any): DurationDateCheck => 
 
 export const DurationDateCheckSerializer = (dates: Array<string>): any => {
   const single: any = {
-    value: dates ? formatDatesToString(dates) : undefined
+    start_date: DateTime.fromFormat(dates[0],'dd MMM yyyy').toFormat('yyyy-MM-dd'),
+    end_date: DateTime.fromFormat(dates[1],'dd MMM yyyy').toFormat('yyyy-MM-dd')
   }
   return single
 }
