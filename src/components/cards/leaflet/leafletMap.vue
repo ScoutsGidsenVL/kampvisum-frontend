@@ -3,7 +3,7 @@
     <l-map
       class="z-0 border-2 border-black"
       v-model="z"
-      v-model:zoom="z"
+      v-model:zoom="check.value.zoom"
       :center="center"
       @click="addOnClick($event)"
     >
@@ -12,7 +12,7 @@
       ></l-tile-layer>
 
       <div v-for="(location, index) in locations" :key="location">
-        <l-marker @update:latLng="patchLatLng($event, index)" :lat-lng="location.latLng">
+        <l-marker @update:latLng="patchLatLng($event, index)" :lat-lng="location.latLon">
           <l-icon>
               <svg width="30" height="30" style="margin-left: -14px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
@@ -20,7 +20,7 @@
             </l-icon>
           <l-popup class="w-60" >
             
-            <custom-popup :location="location" />
+            <custom-popup :location="location" :check="check" />
           </l-popup>
         </l-marker>
       </div>
@@ -78,7 +78,7 @@
               </div>
 
               <div class="flex items-center gap-1">
-                <input :disabled="sL.isHeadLocation" @click="checkMainLocation(index)" class="cursor-pointer" :value="true" v-model="sL.isHeadLocation" type="checkbox" id="name" name="name">
+                <input :disabled="sL.isMainLocation" @click="checkMainLocation(index)" class="cursor-pointer" :value="true" v-model="sL.isMainLocation" type="checkbox" id="name" name="name">
                 <label @click="checkMainLocation(index)" class="cursor-pointer mt-2.5" for="name">Hoofdlocatie</label>
               </div>
 
@@ -109,9 +109,9 @@ import "leaflet/dist/leaflet.css";
 import { defineComponent, ref, PropType, toRefs } from 'vue'
 import { latLng } from '../../../interfaces/latLng'
 import CustomPopup from './CustomPopup.vue'
-import { Location } from '../../../serializer/Location'
 import { SearchedLocation } from '../../../serializer/SearchedLocation'
 import { CustomInput, InputTypes } from 'vue-3-component-library'
+import { Check } from "@/serializer/Check";
 
 export default defineComponent ({
   components: {
@@ -124,13 +124,9 @@ export default defineComponent ({
     CustomInput
   },
   props: {
-    zoom: {
-      type: Number,
-      default: 11
-    },
     center: Object as PropType<Array<number>>,
     locations: {
-      type: Object as PropType<Array<Location>>,
+      type: Object as PropType<Array<SearchedLocation>>,
       required: false,
       default: () => { return [] }
     },
@@ -138,6 +134,10 @@ export default defineComponent ({
     searchedLocation: {
       type: Object as PropType<SearchedLocation>,
       default: () => { return {} }
+    },
+    check: {
+      type: Object as PropType<Array<Check>>,
+      required: true,
     },
     searchedLocations: {
       type: Object as PropType<Array<SearchedLocation>>,
@@ -149,7 +149,6 @@ export default defineComponent ({
     // https://vue2-leaflet.netlify.app/quickstart/
 
     const { searchedLocation, searchedLocations } = toRefs(props)
-    const z = ref<number>(11)
 
     const toPatch = ref<Array<Array<number>>>([[],[],[]])
     const iconWidthAndHeight = [25, 40]
@@ -174,7 +173,7 @@ export default defineComponent ({
     const checkMainLocation = (i: number) => {
       searchedLocations.value.forEach((s, index) => {
         if (index !== i) {
-          s.isHeadLocation = false
+          s.isMainLocation = false
         }
       })
 
@@ -196,7 +195,6 @@ export default defineComponent ({
       deleteLocationPoint,
       checkMainLocation,
       addOnClick,
-      z
     }
   }
 })

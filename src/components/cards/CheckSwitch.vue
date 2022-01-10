@@ -18,9 +18,9 @@
         <comment-check :check="check" />
       </div>
 
-      <div v-if="checkType === 'LocationCheck'">
+      <div v-if="checkType === 'CampLocationCheck'">
         <div class="pb-5">
-          <location-component />
+          <location-component :check="check" />
         </div>
       </div>
 

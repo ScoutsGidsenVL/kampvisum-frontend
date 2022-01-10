@@ -1,7 +1,9 @@
 export interface LocationAddress {
   name?: string
-  displayName?: string
-  isMainLocation?: boolean
+  address?: string
+  isMainLocation?: boolean,
+  latitude?: string
+  longitude?: string
 }
 
 export const LocationAddressDeserializer = (input: any): LocationAddress => {
@@ -14,8 +16,11 @@ export const LocationAddressDeserializer = (input: any): LocationAddress => {
 export const LocationAddressSerializer = (input: any): any => {
   const single: any = {
     name: input.name,
-    displayName: input.displayName,
-    isMainLocation: input.isMainLocation
+    address: input.address,
+    isMainLocation: input.isMainLocation,
+    latitude: input.latLon[0],
+    longitude: input.latLon[1]
+
   }
   return single
 }

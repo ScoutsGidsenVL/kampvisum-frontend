@@ -20,12 +20,12 @@
 </template>
 
 <script lang="ts">
+import { SimpleCheckRepository } from '../../../repositories/SimpleCheckRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { Check, CheckDeserializer } from '@/serializer/Check'
 import { SimpleCheck } from '@/serializer/SimpleCheck'
 import { defineComponent, ref, PropType } from 'vue'
-import { SimpleCheckRepository } from '../../../repositories/SimpleCheckRepository'
-// import IInfo from '../icons/IInfo.vue'
+import IInfo from '../../icons/IInfo.vue'
 
 export enum StatusState {
   CHECKED = 'CHECKED',
@@ -40,7 +40,7 @@ export type Status = {
 export default defineComponent({
   name: 'Check',
   components: {
-    // IInfo
+    IInfo
   },
   props: {
     check: {

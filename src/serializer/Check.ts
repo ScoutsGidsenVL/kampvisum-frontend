@@ -3,6 +3,7 @@ import { CommentCheckDeserializer } from "./CommentCheck"
 
 //VALUE DESERIALIZERS (make it more dynamic MAYBE?)
 import { Value, ValueDeserializer } from "./DurationDateCheck"
+import { PostLocationDeserializer } from "./PostLocation"
 export interface Check {
   id?: string
   checkParent?: CheckParent
@@ -23,6 +24,9 @@ export const CheckDeserializer = (input: any): Check => {
   } else if (single.checkParent?.checkType?.checkType === 'CommentCheck') 
   {
     single.value = CommentCheckDeserializer(input)
+  } else if (single.checkParent?.checkType?.checkType === 'CampLocationCheck') 
+  {
+    single.value = PostLocationDeserializer(input.value)
   } else {
     single.value = input.value
   }

@@ -9,6 +9,7 @@
       name="Camp"
       :title="title"
       @hideSidebar="closeSideBar"
+      width="max-w-2xl"
     >
       <form
         id="addNewLocation"
@@ -25,8 +26,9 @@
 
         <div class="py-4">
           <strong class="m-0 text-lg">Contactpersoon</strong>
-          <custom-input :type="InputTypes.TEXT" rules="" name="contactPerson.name" label="Naam" />
-          <custom-input :type="InputTypes.TEXT" rules="" name="contactPerson.phoneNumber" label="Gsm nummer" />
+          <custom-input :type="InputTypes.TEXT" rules="" name="contactName" label="Naam" />
+          <custom-input :type="InputTypes.TEXT" rules="" name="contactPhone" label="Gsm nummer" />
+          <custom-input :type="InputTypes.TEXT" rules="" name="contactEmail" label="Email" />
         </div>
 
         <div class="pb-4 flex flex-col gap-3">
@@ -44,12 +46,11 @@
               </div>
             </div>
           </div>
-
-          <leaflet-map @addOnClick="addOnClick($event)" @deleteLocationPoint="deleteLocationPoint($event)" @cancelLocationPoint="cancelLocationPoint()" @addLocationPoint="addLocationPoint($event)" v-if="sideBarState.state !== 'hide'" :searchedLocations="searchedLocations"  :searchedLocation="searchedLocation" :center="fakeCenter" />
+          <leaflet-map @addOnClick="addOnClick($event)" @deleteLocationPoint="deleteLocationPoint($event)" @cancelLocationPoint="cancelLocationPoint()" @addLocationPoint="addLocationPoint($event)" v-if="sideBarState.state !== 'hide'" :searchedLocations="searchedLocations"  :searchedLocation="searchedLocation" :center="[check.value.centerLatitude, check.value.centerLongitude]" :check="check" />
         </div>
 
         <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
-          <custom-button text="">
+          <custom-button :isSubmitting="patchLoading" text="">
             <template v-slot:icon>
               <div class="flex gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -77,8 +78,10 @@ import { useI18n } from 'vue-i18n'
 import SearchInput from '../inputs/SearchInput.vue'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { SearchedLocation, SearchedLocationDeserializer } from '../../serializer/SearchedLocation'
-import { PostLocation } from '../../serializer/PostLocation'
+import { PostLocation, PostLocationDeserializer, PostLocationSerializer } from '../../serializer/PostLocation'
 import RepositoryFactory from '@/repositories/repositoryFactory'
+import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
+import { Check } from '@/serializer/Check'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -125,15 +128,23 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true,
-    }
+    },
+    check: {
+      type: Object as PropType<Check>,
+      required: true
+    },
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
+    const check = ref<Check>({ value: PostLocationDeserializer(PostLocationSerializer(props.check.value)), endpoint: props.check.endpoint })
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
-    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>()
+    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>({
+      initialValues: props.check.value
+    })
     const { sideBarState } = toRefs(props)
-    const fakeCenter = ref<Array<number>>([50.6402809, 4.6667145])
     const fetchedLocationsToSelect = ref<any>([])
+    const patchLoading = ref<boolean>(false)
+
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -147,50 +158,30 @@ export default defineComponent({
     const onSubmit = async () => {
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
       handleSubmit(async (values: PostLocation) => {
-        if (props.sideBarState.state === 'edit') {
-          // await updateCamp(values)
-        } else {
-          await postLocation(values)
-        }
+        patchLoading.value = true
+        await patchLocation(values)
         closeSideBar()
       })()
     }
 
-    // const updateLocation = async (data: Camp) => {
-    //   if (data.uuid) {
-    //     await RepositoryFactory.get(CampRepository)
-    //       .update(data.uuid, data)
-    //       .then(() => {
-    //         context.emit('actionSuccess', 'UPDATE')
-    //       })
-    //   }
-    // }
-
-    const postLocation = async (data: PostLocation) => {
-      console.log('DATA TOT POST: ', data)
-      // await RepositoryFactory.get(CampRepository)
-      //   .create(data)
-      //   .then(() => {
-      //     context.emit('actionSuccess', 'POST')
-      //   })
+    const patchLocation = async (location: PostLocation) => {
+      await RepositoryFactory.get(LocationCheckRepository)
+        .update(props.check.endpoint, location)
+        .then((p: any) => {
+          context.emit('actionSuccess', {data: p, action: 'PATCH'})
+          patchLoading.value = false
+        })
     }
 
-    const items = ref<Array<DeadlineItem>>([{ category: '', label: ''}])
-
-    const addItem = () => {
-      items.value.push({category: '', label: ''})
-    }
-
-    const removeItemFromArray = (index: string) => {
-      items.value.splice(Number(index), 1);
-    }
     const searchedLocations = ref<Array<SearchedLocation>>([])
     const searchedLocation = ref<SearchedLocation>({})
 
+    if (values.locations) {
+      searchedLocations.value = values.locations
+    }
+
     const fetchedSearchResults = (results: SearchedLocation[] ) => {
       fetchedLocationsToSelect.value = results
-      // searchedLocation.value = results[0]
-      // fakeCenter.value = results[0].latLon ? results[0].latLon : fakeCenter.value
       loading.value = false
     }
 
@@ -204,13 +195,21 @@ export default defineComponent({
 
     const addLocationPoint = (location: SearchedLocation) => {
       emptySearchResults()
-      fakeCenter.value = location.latLon ? location.latLon : fakeCenter.value
+      if (location.latLon) {
+        check.value.value.centerLatitude = location.latLon[0] ? location.latLon[0] : check.value.value.centerLatitude
+        check.value.value.centerLongitude = location.latLon[1] ? location.latLon[1] : check.value.value.centerLongitude
+      }
+      //ZOOM IS BUGGY SO DELAY OF 1000MS
+      setTimeout(() => {
+       check.value.value.zoom = 13
+      }, 1000)
+
       if (searchedLocations.value.length === 0) {
-        location.isHeadLocation = true
+        location.isMainLocation = true
       }
       searchedLocations.value.push(location)
       resetSearchedLocation()
-      values.locationAddresses = searchedLocations.value
+      values.locations = searchedLocations.value
     }
 
     const cancelLocationPoint = () => {
@@ -220,10 +219,10 @@ export default defineComponent({
     const deleteLocationPoint = (index: number) => {
       const deletedLocationPoint = searchedLocations.value[index]
       searchedLocations.value.splice(index, 1)
-      if (searchedLocations.value.length > 0 && deletedLocationPoint.isHeadLocation) {
-        searchedLocations.value[0].isHeadLocation = true
+      if (searchedLocations.value.length > 0 && deletedLocationPoint.isMainLocation) {
+        searchedLocations.value[0].isMainLocation = true
       }
-      values.locationAddresses = searchedLocations.value
+      values.locations = searchedLocations.value
     }
 
     const loading = ref<boolean>(false)
@@ -247,10 +246,6 @@ export default defineComponent({
       InputTypes,
       values,
       t,
-      addItem,
-      items,
-      removeItemFromArray,
-      fakeCenter,
       LocationSearchRepository,
       fetchedSearchResults,
       searchedLocation,
@@ -260,7 +255,9 @@ export default defineComponent({
       cancelLocationPoint,
       deleteLocationPoint,
       fetchedLocationsToSelect,
-      addOnClick
+      addOnClick,
+      patchLoading,
+      check
     }
   },
 })

@@ -1,8 +1,11 @@
 export interface SearchedLocation {
+  id?: string
   name?: string,
-  isHeadLocation?: boolean,
+  isMainLocation?: boolean,
   address?: string,
   latLon?: Array<number>
+  latitude?: string
+  longitude?: string
   properties?: Properties
 }
 
@@ -24,12 +27,28 @@ export interface Properties {
   state?: string;
 }
 
+export const LocationDeserializer = (input: any): SearchedLocation => {
+  const single: SearchedLocation = {
+    id: input.id ? input.id : undefined,
+    name: input.name ? input.name : '',
+    isMainLocation: input.is_main_location ? input.is_main_location : false,
+    latLon: [input.latitude, input.longitude],
+    latitude: input.latitude ? input.latitude : undefined,
+    longitude: input.longitude ? input.longitude : undefined,
+    address: input.address ? input.address : undefined
+  }
+
+  return single
+}
+
 export const SearchedLocationDeserializer = (input: any): SearchedLocation => {
   const single: SearchedLocation = {
     name: input.name ? input.name : '',
-    isHeadLocation: input.isHeadLocation ? input.isHeadLocation : false,
+    isMainLocation: input.isMainLocation ? input.isMainLocation : false,
     properties: input.properties,
     latLon: [input.geometry.coordinates[1], input.geometry.coordinates[0]],
+    latitude: input.geometry.coordinates[1],
+    longitude: input.geometry.coordinates[0],
     address:
     //TYPE
     // (input.properties.osm_value ? input.properties.osm_value + ', ' : '') +
@@ -50,12 +69,14 @@ export const SearchedLocationDeserializer = (input: any): SearchedLocation => {
   return single
 }
 
-export const SearchedLocationSerializer = (input: any): any => {
+export const SearchedLocationSerializer = (input: SearchedLocation): any => {
   const single: any = {
+    id: input.id ? input.id : undefined,
     name: input.name,
-    start_date: input.startDate,
-    end_date: input.startDate,
-    sections: input.sections
+    address: input.address,
+    is_main_location: input.isMainLocation,
+    latitude: input.latitude,
+    longitude: input.longitude,
   }
   return single
 }
