@@ -11,7 +11,6 @@ import router from './router'
 import App from './App.vue'
 import { createI18n } from "vue-i18n";
 const VueLuxon = require('vue-luxon')
-import vueDebounce from 'vue-debounce'
 
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require("./locales/nl.json")
@@ -32,7 +31,7 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
     output: {
       locale: 'nl',
     }
-  }).use(vueDebounce)
+  })
 
   let configFile = result
 
