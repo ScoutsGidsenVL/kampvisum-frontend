@@ -12,7 +12,7 @@
         :object="true"
         placeholder="Kies een groep"
         @addSelection="selectFilter($event, 'group')"
-        track-by="fullName"
+        track-by="name"
         value-prop="groupAdminId"
         :options="myGroups"
         :value="myGroups[0]"
@@ -79,6 +79,7 @@ import { defineComponent, ref } from 'vue'
 import { Camp } from '../serializer/Camp'
 import { useI18n } from 'vue-i18n'
 import { Visum } from '@/serializer/Visum'
+import store from '../store/store'
 
 export interface ToastState {
   visible: boolean,
@@ -106,7 +107,7 @@ export default defineComponent({
     const groupYears = ref<string[]>([])
     const myGroups = ref<any>([])  
     const visums = ref<any>([])
-
+    console.log('USER: ', )
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -126,12 +127,8 @@ export default defineComponent({
     }
 
     const getUserGroups = async () => {
-      await RepositoryFactory.get(GroupRepository)
-        .getArray()
-        .then((c: ArrayResult) => {
-          myGroups.value = c
-          setSelectedGroup(myGroups.value[0])
-        })
+      myGroups.value = store.getters.user.scoutsGroups
+      setSelectedGroup(myGroups.value[0])
     }
 
     const getGroupYears = async (groupId: string) => {
@@ -235,4 +232,8 @@ export default defineComponent({
     }
   },
 })
+
+function useStore() {
+  throw new Error('Function not implemented.')
+}
 </script>
