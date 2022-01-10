@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 const LitepieDatepicker = require('litepie-datepicker')
-import ConcernSwitch from '@/components/cards/ConcernSwitch.vue'
+import ConcernSwitch from '@/components/cards/CheckSwitch.vue'
 import HeaderSubcategoryCard from '../semantics/HeaderSubcategoryCard.vue'
 import { Camp } from '@/serializer/Camp'
 import { Check } from '@/serializer/Check'

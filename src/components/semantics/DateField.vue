@@ -28,6 +28,8 @@ import RepositoryFactory from '@/repositories/repositoryFactory'
 const LitepieDatepicker = require('litepie-datepicker').default
 import { defineComponent, ref, PropType, watch } from 'vue'
 import { Check } from '@/serializer/Check'
+import { DurationDateCheck, DurationDateCheckDeserializer } from '@/serializer/DurationDateCheck'
+const { DateTime } = require("luxon");
 
 export default defineComponent({
   name: 'HeaderSubcategoryCard',
@@ -45,9 +47,18 @@ export default defineComponent({
   components: {
     'litepie-datepicker': LitepieDatepicker
   },
-  setup (props) {    
-    const dateValues = ref([])
+  setup (props) {
+    const dateValues = ref<Array<string>>([])
     const dateValue = ref('')
+
+
+    const initializeDateValues = () => {
+      if (props.check?.value.startDate) {
+        dateValues.value.push(DateTime.fromFormat(props.check.value.startDate,'yyyy-MM-dd').toFormat('dd MMM yyyy'))
+        dateValues.value.push(DateTime.fromFormat(props.check.value.endDate,'yyyy-MM-dd').toFormat('dd MMM yyyy'))
+      }
+    }
+    initializeDateValues()
 
     const formatter = ref({
       date: 'DD MMM YYYY',

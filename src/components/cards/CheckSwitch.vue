@@ -14,26 +14,18 @@
           <date-field class="my-2" :key="section" :check="check" />
       </div>
 
+      <div v-if="checkType === 'CommentCheck'">
+        <comment-check :check="check" />
+      </div>
+
       <div v-if="checkType === 'LocationCheck'">
         <div class="pb-5">
           <location-component />
         </div>
       </div>
 
-      <div v-if="checkType === 'ContactCheck'">
-        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
-      </div>
-
       <div v-if="checkType === 'FileUploadCheck'">
         <overview-files />
-      </div>
-
-      <div v-if="checkType === 'InputCheck'">
-        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
-      </div>
-
-      <div v-if="checkType === 'InformationCheck'">
-        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
       </div>
 
       <div v-if="checkType === 'LeadersCheck'">
@@ -47,6 +39,14 @@
       <div v-if="checkType === 'MembersCheck'">
         <members-overview />
       </div>
+
+      <!-- <div v-if="checkType === 'InformationCheck'">
+        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
+      </div> -->
+
+      <!-- <div v-if="checkType === 'ContactCheck'">
+        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
+      </div> -->
   </div>
 </template>
 
@@ -64,6 +64,7 @@ import VSwitch from '@lmiller1990/v-switch'
 import { Camp } from '@/serializer/Camp'
 import CheckComponent from './checks/check.vue'
 import { Check } from '../../serializer/Check'
+import CommentCheck from '../semantics/CommentCheck.vue'
 
 export enum ConcernType {
   INFORMATION_CHECK = 'InformationCheck',
@@ -71,7 +72,7 @@ export enum ConcernType {
   LOCATION_CHECK = 'LocationCheck',
   CONTACT_CHECK = 'ContactCheck',
   SIMPLE_CHECK = 'SimpleCheck',
-  INPUT_CHECK = 'InputCheck',
+  COMMENT_CHECK = ' CommentCheck',
   DURATION_CHECK = 'DurationCheck',
 }
 
@@ -88,7 +89,8 @@ export default defineComponent({
     LocationComponent,
     MembersOverview,
     FourageOverview,
-    LeadersOverview
+    LeadersOverview,
+    CommentCheck
   },
   props: {
     checkType: String,

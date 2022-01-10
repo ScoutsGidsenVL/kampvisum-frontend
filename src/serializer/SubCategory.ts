@@ -12,7 +12,6 @@ export const SubCategoryDeserializer = (input: any): SubCategory => {
     id: input.id,
     subCategoryParent: input.parent ? SubCategoryParentDeserializer(input.parent) : undefined
   }
-
   return single
 }
 
