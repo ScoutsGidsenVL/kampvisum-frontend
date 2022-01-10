@@ -1,4 +1,5 @@
 import { CheckParent, CheckParentDeserializer } from "./CheckParent"
+import { CommentCheckDeserializer } from "./CommentCheck"
 
 //VALUE DESERIALIZERS (make it more dynamic MAYBE?)
 import { Value, ValueDeserializer } from "./DurationDateCheck"
@@ -19,6 +20,9 @@ export const CheckDeserializer = (input: any): Check => {
 
   if (single.checkParent?.checkType?.checkType === 'DurationCheck') {
     single.value = ValueDeserializer(input.value)
+  } else if (single.checkParent?.checkType?.checkType === 'CommentCheck') 
+  {
+    single.value = CommentCheckDeserializer(input)
   } else {
     single.value = input.value
   }

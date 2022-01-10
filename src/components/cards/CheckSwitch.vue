@@ -66,16 +66,6 @@ import CheckComponent from './checks/check.vue'
 import { Check } from '../../serializer/Check'
 import CommentCheck from '../semantics/CommentCheck.vue'
 
-export enum ConcernType {
-  INFORMATION_CHECK = 'InformationCheck',
-  FILE_UPLOAD_CHECK = 'FileUploadCheck',
-  LOCATION_CHECK = 'LocationCheck',
-  CONTACT_CHECK = 'ContactCheck',
-  SIMPLE_CHECK = 'SimpleCheck',
-  COMMENT_CHECK = ' CommentCheck',
-  DURATION_CHECK = 'DurationCheck',
-}
-
 export default defineComponent({
   name: 'ConcernSwitch',
   components: {

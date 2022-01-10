@@ -1,7 +1,7 @@
 import { CheckType, CheckTypeDeserializer } from "./CheckType"
 
 export interface CheckParent {
-  checkType?: CheckType
+  checkType: CheckType
   explanation?: string
   id?: string
   label?: string
@@ -11,7 +11,7 @@ export interface CheckParent {
 
 export const CheckParentDeserializer = (input: any): CheckParent => {
   const single: CheckParent = {
-    checkType: input.check_type ? CheckTypeDeserializer(input.check_type) : undefined,
+    checkType: CheckTypeDeserializer(input.check_type),
     explanation: input.explanation ? input.explanation : 'explanation',
     id: input.id,
     label: input.label ? input.label : undefined,

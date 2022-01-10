@@ -4,8 +4,8 @@ import { ArrayResult } from '@/interfaces/ArrayResult'
 export abstract class BaseRepository extends BaseApiRepository {
   abstract id: string
   abstract endpoint: string
-  abstract deserializer: any
-  abstract serializer: any
+  public abstract deserializer: any
+  public abstract serializer: any
 
   private previous: string | null = null
   private next: string | null = ''

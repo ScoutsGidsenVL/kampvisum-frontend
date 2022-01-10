@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts">
+import { CommentCheckRepository } from '@/repositories/CommentCheckRepository'
 import { InputTypes, CustomInput } from 'vue-3-component-library'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 import { defineComponent, PropType, watch } from 'vue'
 import { Check } from '@/serializer/Check'
 import { useForm } from 'vee-validate'
-import RepositoryFactory from '@/repositories/repositoryFactory'
-import { CommentCheckRepository } from '@/repositories/CommentCheckRepository'
 
 export default defineComponent({
   name: 'CommentCheck',
@@ -27,7 +27,7 @@ export default defineComponent({
     let debounce: any
 
     const { values } = useForm({
-      initialValues: { comment: '' },
+      initialValues: { comment: props.check.value.value },
     })
 
     const patchCommentCheck = async (comment: string) => {
