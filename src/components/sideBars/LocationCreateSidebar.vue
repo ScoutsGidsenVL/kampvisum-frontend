@@ -206,15 +206,12 @@ export default defineComponent({
     }
 
     const addLocationPoint = (location: SearchedLocation) => {
+      console.log('CLICK LOCATION SEARCH: ', location)
       emptySearchResults()
       if (location.latLon) {
         check.value.value.centerLatitude = location.latLon[0] ? location.latLon[0] : check.value.value.centerLatitude
         check.value.value.centerLongitude = location.latLon[1] ? location.latLon[1] : check.value.value.centerLongitude
       }
-      //ZOOM IS BUGGY SO DELAY OF 1000MS
-      // setTimeout(() => {
-      //  check.value.value.zoom = 13
-      // }, 1000)
 
       if (searchedLocations.value.length === 0) {
         location.isMainLocation = true

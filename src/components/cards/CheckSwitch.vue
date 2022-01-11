@@ -1,6 +1,6 @@
 <template>
   <div>
-      <span class="bg-red">{{checkType}}</span>
+      <!-- <span class="bg-red">{{checkType}}</span> -->
 
       <div v-if="checkType === 'Message'">
         <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{state: ColorState.DANGER}" />
