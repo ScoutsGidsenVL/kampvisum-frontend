@@ -24,6 +24,12 @@
         </div>
       </div>
 
+      <div v-if="checkType === 'LocationCheck'">
+        <div class="pb-5">
+          <location-component :check="check" />
+        </div>
+      </div>
+
       <div v-if="checkType === 'FileUploadCheck'">
         <overview-files />
       </div>

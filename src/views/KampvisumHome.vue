@@ -12,7 +12,7 @@
         :object="true"
         placeholder="Kies een groep"
         @addSelection="selectFilter($event, 'group')"
-        track-by="name"
+        track-by="fullName"
         value-prop="groupAdminId"
         :options="myGroups"
         :value="myGroups[0]"

@@ -27,7 +27,11 @@ export const CheckDeserializer = (input: any): Check => {
   } else if (single.checkParent?.checkType?.checkType === 'CampLocationCheck') 
   {
     single.value = PostLocationDeserializer(input.value)
-  } else {
+  } else if (single.checkParent?.checkType?.checkType === 'LocationCheck') 
+  {
+    single.value = PostLocationDeserializer(input.value)
+  }
+  else {
     single.value = input.value
   }
   // console.log('SINGLE: ', single)

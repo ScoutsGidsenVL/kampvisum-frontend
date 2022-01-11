@@ -77,20 +77,19 @@
 
 <script lang="ts">
 import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
+import { PostLocation, PostLocationDeserializer, PostLocationSerializer } from '../../serializer/PostLocation'
+import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
+import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
+import { SearchedLocation } from '../../serializer/SearchedLocation'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
-import DateField from '@/components/semantics/DateField.vue'
-import { DeadlineItem } from '@/serializer/DeadlineItem'
-import { useForm, ErrorMessage } from 'vee-validate'
-import { useI18n } from 'vue-i18n'
-import SearchInput from '../inputs/SearchInput.vue'
-import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
-import { SearchedLocation, SearchedLocationDeserializer } from '../../serializer/SearchedLocation'
-import { PostLocation, PostLocationDeserializer, PostLocationSerializer } from '../../serializer/PostLocation'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
+import DateField from '@/components/semantics/DateField.vue'
+import { useForm, ErrorMessage } from 'vee-validate'
+import SearchInput from '../inputs/SearchInput.vue'
 import { Check } from '@/serializer/Check'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -251,26 +250,26 @@ export default defineComponent({
     }
 
     return {
+      LocationSearchRepository,
+      fetchedLocationsToSelect,
+      fetchedSearchResults,
+      cancelLocationPoint,
+      deleteLocationPoint,
+      searchedLocations,
+      searchedLocation,
+      addLocationPoint,
       isSubmitting,
       sideBarState,
       closeSideBar,
+      patchLoading,
+      InputTypes,
+      addOnClick,
       selected,
       onSubmit,
-      InputTypes,
-      values,
-      t,
-      LocationSearchRepository,
-      fetchedSearchResults,
-      searchedLocation,
       loading,
-      searchedLocations,
-      addLocationPoint,
-      cancelLocationPoint,
-      deleteLocationPoint,
-      fetchedLocationsToSelect,
-      addOnClick,
-      patchLoading,
-      check
+      values,
+      check,
+      t,
     }
   },
 })
