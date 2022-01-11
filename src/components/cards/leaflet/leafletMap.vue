@@ -5,6 +5,7 @@
       v-model="z"
       v-model:zoom="check.value.zoom"
       :center="center"
+      @update:center="centerUpdated"
       @click="addOnClick($event)"
     >
       <l-tile-layer
@@ -185,6 +186,10 @@ export default defineComponent ({
       }
     }
 
+    const centerUpdated = (center: any) => {
+      emit('update:center', [center.lat,center.lng])
+    }
+
     return {
       patchLatLng,
       iconWidthAndHeight,
@@ -195,6 +200,7 @@ export default defineComponent ({
       deleteLocationPoint,
       checkMainLocation,
       addOnClick,
+      centerUpdated
     }
   }
 })

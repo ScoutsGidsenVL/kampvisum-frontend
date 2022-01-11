@@ -10,6 +10,7 @@ export interface PostLocation {
   zoom: number
   centerLatitude: number
   centerLongitude: number
+  centerLatLon: Array<number>
 }
 
 export const PostLocationDeserializer = (input: any): PostLocation => {
@@ -21,8 +22,8 @@ export const PostLocationDeserializer = (input: any): PostLocation => {
     locations: input.locations ? input.locations.map((l: any) => LocationDeserializer(l)) : undefined,
     zoom: input.zoom ? input.zoom : 7,
     centerLatitude: input.center_latitude ? input.center_latitude : 50.4956754,
-    centerLongitude: input.center_longitude ? input.center_longitude : 3.3452037
-
+    centerLongitude: input.center_longitude ? input.center_longitude : 3.3452037,
+    centerLatLon: [input.center_latitude ? input.center_latitude : 50.4956754, input.center_longitude ? input.center_longitude : 3.3452037]
   }
   return single
 }

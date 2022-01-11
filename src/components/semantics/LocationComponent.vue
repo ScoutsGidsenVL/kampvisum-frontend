@@ -1,7 +1,8 @@
 <template>
   <div>
+    <strong>{{check.checkParent.label}}</strong>
     <leaflet-map :locations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" />
-    <custom-button @click="openLocationCreateSidebar()" class="mt-4" text="+ voeg locatie toe" />
+    <custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="check.value.locations.lenth > 0 ? 'wijzig locatie' : '+ voeg locatie toe'" />
     <location-create-sidebar :check="check" title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
   </div>
 </template>
@@ -38,7 +39,7 @@ export default defineComponent({
     const actionSuccess = (action: {data: any, action: string}) => {
       if (action.action === 'PATCH') {
         console.log('PATCH: ', action.data)
-        check.value = action.data
+        check.value.value = action.data
         console.log('AFTER PATCH: ', check.value)
         // patchLocation(action.data)
       }

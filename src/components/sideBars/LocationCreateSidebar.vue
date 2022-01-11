@@ -20,7 +20,7 @@
       >
         <div class="mt-1flex flex-col gap-3">
           <div class="w-100">
-            <custom-input :type="InputTypes.TEXT" rules="" name="name" label="Naam lokalen / kampplaats" />
+            <custom-input :type="InputTypes.TEXT" rules="" name="name" label="Naam locatie" />
           </div>
         </div>
 
@@ -46,7 +46,16 @@
               </div>
             </div>
           </div>
-          <leaflet-map @addOnClick="addOnClick($event)" @deleteLocationPoint="deleteLocationPoint($event)" @cancelLocationPoint="cancelLocationPoint()" @addLocationPoint="addLocationPoint($event)" v-if="sideBarState.state !== 'hide'" :searchedLocations="searchedLocations"  :searchedLocation="searchedLocation" :center="[check.value.centerLatitude, check.value.centerLongitude]" :check="check" />
+          <leaflet-map 
+          @addOnClick="addOnClick($event)" 
+          @deleteLocationPoint="deleteLocationPoint($event)" 
+          @cancelLocationPoint="cancelLocationPoint()" 
+          @addLocationPoint="addLocationPoint($event)" 
+          v-if="sideBarState.state !== 'hide'" 
+          :searchedLocations="searchedLocations"  
+          :searchedLocation="searchedLocation" 
+          v-model:center="check.value.centerLatLon"
+          :check="check" />
         </div>
 
         <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
@@ -159,6 +168,10 @@ export default defineComponent({
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
       handleSubmit(async (values: PostLocation) => {
         patchLoading.value = true
+        values.zoom = check.value.value.zoom
+        values.centerLatLon = check.value.value.centerLatLon
+        values.centerLatitude = check.value.value.centerLatLon[0]
+        values.centerLongitude = check.value.value.centerLatLon[1]
         await patchLocation(values)
         closeSideBar()
       })()
@@ -200,9 +213,9 @@ export default defineComponent({
         check.value.value.centerLongitude = location.latLon[1] ? location.latLon[1] : check.value.value.centerLongitude
       }
       //ZOOM IS BUGGY SO DELAY OF 1000MS
-      setTimeout(() => {
-       check.value.value.zoom = 13
-      }, 1000)
+      // setTimeout(() => {
+      //  check.value.value.zoom = 13
+      // }, 1000)
 
       if (searchedLocations.value.length === 0) {
         location.isMainLocation = true
