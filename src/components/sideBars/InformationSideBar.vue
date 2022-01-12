@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-lighterGreen z-30" :class="{ 'md:w-96 xs:w-11/12 xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }">
+  <div class="bg-lighterGreen z-30" :class="{ 'md:w-99 xs:w-11/12 xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }">
 
     <!-- WHEN CLOSED -->
     <div @click="openSideBar()" class="w-8 h-screen fixed flex-column pt-3 cursor-pointer" :class="{ 'd-none': sidebar.state === SidebarState.OPEN, 'd-flex': sidebar.state === SidebarState.CLOSED }">
@@ -15,7 +15,7 @@
       </div>
     </div>
     
-    <div class="h-screen" :class="{ 'd-flex p-3 xs:mt-16 md:mt-0 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
+    <div class="h-screen" :class="{ 'd-flex md:w-98 p-3 xs:mt-16 md:mt-0 md:sticky md:top-20 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
       <div class="w-100 pt-3 flex xs:pt-20 justify-between">
         <div class="flex gap-3">
           <i-info-green :info="'setting the info in the information sidebar and open the information sidebar'" />
@@ -30,25 +30,16 @@
         </svg>
       </div>
       <slot />
-      <div v-html="info" class="break-words mt-4">
+      <div v-html="info" class="break-words mt-4 text-justify">
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { useInfoBarHelper } from '@/helpers/infoBarHelper'
-import { defineComponent, PropType } from 'vue'
+import { SidebarState, useInfoBarHelper } from '@/helpers/infoBarHelper'
+import { defineComponent } from 'vue'
 import IInfoGreen from '../icons/IInfoGreen.vue'
-
-export enum SidebarState {
-  OPEN = 'OPEN',
-  CLOSED = 'CLOSED'
-}
-
-export type Sidebar = {
-  state: SidebarState
-}
 
 export default defineComponent({
   name: 'InformationSideBar',
@@ -56,29 +47,26 @@ export default defineComponent({
     IInfoGreen
   },
   props: {
-    sidebar: {
-      type: Object as PropType<Sidebar>,
-      required: true,
-    },
     isOverflowHidden: Boolean
   },
   setup(props, context) {
 
-    const { info, setInfo } = useInfoBarHelper()
+    const { info, setInfo, sidebar } = useInfoBarHelper()
 
     const closeSideBar: () => void = () => {
       setInfo()
-      context.emit('closeSidebar')
+      sidebar.value.state = SidebarState.CLOSED
     }
 
     const openSideBar: () => void = () => {
-      context.emit('openSidebar')
+      sidebar.value.state = SidebarState.OPEN
     }
 
     return {
       closeSideBar,
       SidebarState,
       openSideBar,
+      sidebar,
       info
     }
   }

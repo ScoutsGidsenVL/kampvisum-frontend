@@ -48,7 +48,6 @@
 </template>
 
 <script lang="ts">
-import { Sidebar, SidebarState } from './InformationSideBar.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { useCampHelper } from '../../helpers/campHelper'
 import { useNavigation } from '../../router/navigation'
@@ -56,6 +55,7 @@ import { usePhoneHelper } from '@/helpers/phoneHelper'
 import NavigationItem from './NavigationItem.vue'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { Sidebar, SidebarState } from '@/helpers/infoBarHelper'
 
 
 export default defineComponent({

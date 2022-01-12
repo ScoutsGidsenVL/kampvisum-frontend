@@ -1,19 +1,19 @@
 <template>
   <div>
     <strong>{{check.checkParent.label}}</strong>
-    <leaflet-map :locations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" />
-    <custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="check.value.locations.lenth > 0 ? 'wijzig locatie' : '+ voeg locatie toe'" />
-    <location-create-sidebar :check="check" title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
+    <leaflet-map v-if="!isReloading" :locations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" />
+    <custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="check.value.locations.length > 0 ? 'wijzig locatie' : '+ voeg locatie toe'" />
+    <location-create-sidebar v-if="createSidebar.state === 'new'" :check="check" title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
   </div>
 </template>
 
 <script lang="ts">
 import LocationCreateSidebar from '../sideBars/LocationCreateSidebar.vue'
+import { defineComponent, ref, PropType, toRefs, watch } from 'vue'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
+import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { CustomButton } from 'vue-3-component-library'
-import { defineComponent, ref, PropType, toRefs } from 'vue'
 import { Check } from '@/serializer/Check'
-
 
 export default defineComponent({
   name: 'LocationComponent',
@@ -29,8 +29,10 @@ export default defineComponent({
     },
   },
   setup (props, context) {
+    const isReloading = ref<boolean>(false)
     const { check } = toRefs(props)
     const createSidebar = ref<any>({state: 'hide'})
+    const { sidebar } = useInfoBarHelper()
 
     const openLocationCreateSidebar = (): void => {
       createSidebar.value = {state: 'new'}
@@ -38,18 +40,31 @@ export default defineComponent({
 
     const actionSuccess = (action: {data: any, action: string}) => {
       if (action.action === 'PATCH') {
-        console.log('PATCH: ', action.data)
         check.value.value = action.data
-        console.log('AFTER PATCH: ', check.value)
-        // patchLocation(action.data)
+        reloadMapComponent()
       }
     }
+
+    const reloadMapComponent = () => {
+      isReloading.value = true
+      setTimeout(() => {
+       isReloading.value = false
+      }, 20)
+    }
+
+    watch(
+      () => sidebar.value.state,
+      () => {
+        reloadMapComponent()
+      }
+    )
 
     return {
       openLocationCreateSidebar,
       createSidebar,
       actionSuccess,
-      check
+      isReloading,
+      check,
     }
   }
 })

@@ -188,18 +188,17 @@ export default defineComponent ({
     const centerUpdated = (center: any) => {
       emit('update:center', [center.lat,center.lng])
     }
-
     return {
-      patchLatLng,
-      iconWidthAndHeight,
-      toPatch,
-      InputTypes,
-      addLocationPoint,
       cancelLocationPoint,
       deleteLocationPoint,
+      iconWidthAndHeight,
       checkMainLocation,
+      addLocationPoint,
+      centerUpdated,
+      patchLatLng,
+      InputTypes,
       addOnClick,
-      centerUpdated
+      toPatch,
     }
   }
 })

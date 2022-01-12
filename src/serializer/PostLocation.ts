@@ -15,6 +15,7 @@ export interface PostLocation {
 
 export const PostLocationDeserializer = (input: any): PostLocation => {
   const single: PostLocation = {
+    id: input.id ? input.id : undefined,
     name: input.name ? input.name : undefined,
     contactName: input.contact_name ? input.contact_name : undefined,
     contactPhone: input.contact_phone ? input.contact_phone : undefined,

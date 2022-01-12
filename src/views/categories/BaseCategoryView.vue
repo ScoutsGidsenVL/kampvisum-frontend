@@ -19,11 +19,11 @@
 </template>
 
 <script lang="ts">
-import InformationSideBar, { Sidebar, SidebarState } from '@/components/sideBars/InformationSideBar.vue'
+import InformationSideBar from '@/components/sideBars/InformationSideBar.vue'
 import BaseSubcategoryCard from '../../components/cards/BaseSubcategoryCard.vue'
 import PageHeader from '../../components/semantics/PageHeader.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
-import { useInfoBarHelper } from '@/helpers/infoBarHelper'
+import { Sidebar, SidebarState, useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { useCampHelper } from '../../helpers/campHelper'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { Visum } from '../../serializer/Visum'

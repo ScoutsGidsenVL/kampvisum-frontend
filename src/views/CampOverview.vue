@@ -20,8 +20,7 @@
 </template>
 
 <script lang="ts">
-import { Sidebar, SidebarState } from '@/components/sideBars/InformationSideBar.vue'
-import DeadlinesSideBar from '@/components/sideBars/DeadlinesSidebar.vue'
+import DeadlinesSideBar, { Sidebar, SidebarState } from '@/components/sideBars/DeadlinesSidebar.vue'
 import CategoryInfoCard from '../components/cards/CategoryInfoCard.vue'
 import { useSectionsHelper } from '../helpers/sectionsHelper'
 import { usePhoneHelper } from '@/helpers/phoneHelper'

@@ -60,7 +60,6 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
 
   router.beforeEach((to: any, from: any, next: any) => {
     if (to.matched.some((record: any) => record.meta.requiresOpenIdAuth)) {
-      if (store.getters.isLoggedIn) {
         !store.getters.loaded
           ? RepositoryFactory.get(AuthRepository)
               .me()
@@ -70,9 +69,6 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
                 })
               })
           : next()
-      } else {
-        next()
-      }
     } else {
       next()
     }

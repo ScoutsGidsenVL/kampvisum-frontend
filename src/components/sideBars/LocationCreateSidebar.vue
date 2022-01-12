@@ -80,7 +80,7 @@ import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrol
 import { PostLocation, PostLocationDeserializer, PostLocationSerializer } from '../../serializer/PostLocation'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
-import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
+import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
 import { SearchedLocation } from '../../serializer/SearchedLocation'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
@@ -171,6 +171,7 @@ export default defineComponent({
         values.centerLatLon = check.value.value.centerLatLon
         values.centerLatitude = check.value.value.centerLatLon[0]
         values.centerLongitude = check.value.value.centerLatLon[1]
+        console.log('VALUES: ', values)
         await patchLocation(values)
         closeSideBar()
       })()
@@ -206,11 +207,11 @@ export default defineComponent({
     }
 
     const addLocationPoint = (location: SearchedLocation) => {
-      console.log('CLICK LOCATION SEARCH: ', location)
       emptySearchResults()
       if (location.latLon) {
         check.value.value.centerLatitude = location.latLon[0] ? location.latLon[0] : check.value.value.centerLatitude
         check.value.value.centerLongitude = location.latLon[1] ? location.latLon[1] : check.value.value.centerLongitude
+        check.value.value.centerLatLon = location.latLon
       }
 
       if (searchedLocations.value.length === 0) {
