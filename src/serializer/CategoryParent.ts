@@ -7,8 +7,8 @@ export interface CategoryParent {
 export const CategoryParentDeserializer = (input: any): CategoryParent => {
   const single: CategoryParent = {
     name: input.name ? input.name : undefined,
-    description: input.description ? input.description : "Description",
-    explanation: input.explanation ? input.explanation : "Explanation"
+    description: input.description ? input.description : undefined,
+    explanation: input.explanation ? input.explanation : undefined
   }
   return single
 }

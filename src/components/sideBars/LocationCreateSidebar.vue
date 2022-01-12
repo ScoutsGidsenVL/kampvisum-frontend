@@ -20,15 +20,15 @@
       >
         <div class="mt-1flex flex-col gap-3">
           <div class="w-100">
-            <custom-input :type="InputTypes.TEXT" rules="" name="name" label="Naam locatie" />
+            <custom-input :type="InputTypes.TEXT" rules="required" name="name" label="Naam locatie" />
           </div>
         </div>
 
         <div class="py-4">
           <strong class="m-0 text-lg">Contactpersoon</strong>
-          <custom-input :type="InputTypes.TEXT" rules="" name="contactName" label="Naam" />
-          <custom-input :type="InputTypes.TEXT" rules="" name="contactPhone" label="Gsm nummer" />
-          <custom-input :type="InputTypes.TEXT" rules="" name="contactEmail" label="Email" />
+          <custom-input :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactName" label="Naam" />
+          <custom-input :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactPhone" label="Gsm nummer" />
+          <custom-input :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactEmail" label="Email" />
         </div>
 
         <div class="pb-4 flex flex-col gap-3">
@@ -144,7 +144,7 @@ export default defineComponent({
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
-    const check = ref<Check>({ value: PostLocationDeserializer(PostLocationSerializer(props.check.value)), endpoint: props.check.endpoint })
+    const check = ref<Check>({ value: PostLocationDeserializer(PostLocationSerializer(props.check.value)), endpoint: props.check.endpoint, checkParent: props.check.checkParent })
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>({
       initialValues: props.check.value
@@ -171,7 +171,6 @@ export default defineComponent({
         values.centerLatLon = check.value.value.centerLatLon
         values.centerLatitude = check.value.value.centerLatLon[0]
         values.centerLongitude = check.value.value.centerLatLon[1]
-        console.log('VALUES: ', values)
         await patchLocation(values)
         closeSideBar()
       })()
@@ -214,7 +213,7 @@ export default defineComponent({
         check.value.value.centerLatLon = location.latLon
       }
 
-      if (searchedLocations.value.length === 0) {
+      if (searchedLocations.value.length === 0 && check?.value?.checkParent?.checkType?.checkType === 'CampLocationCheck') {
         location.isMainLocation = true
       }
       searchedLocations.value.push(location)
@@ -229,7 +228,7 @@ export default defineComponent({
     const deleteLocationPoint = (index: number) => {
       const deletedLocationPoint = searchedLocations.value[index]
       searchedLocations.value.splice(index, 1)
-      if (searchedLocations.value.length > 0 && deletedLocationPoint.isMainLocation) {
+      if (searchedLocations.value.length > 0 && deletedLocationPoint.isMainLocation && check?.value?.checkParent?.checkType?.checkType === 'CampLocationCheck') {
         searchedLocations.value[0].isMainLocation = true
       }
       values.locations = searchedLocations.value

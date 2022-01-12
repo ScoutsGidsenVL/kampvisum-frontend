@@ -106,6 +106,16 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/kamp/:campId?/communicatie%20&%20afspraken/:id?',
+    name: 'Communicatie & afspraken ',
+    // component: CommunicationAppointments,
+    component: BaseCategoryView,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
     path: '/kamp/:campId?/veiligheid/:id?',
     name: 'Veiligheid',
     // component: Safety,
@@ -118,6 +128,16 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/kamp/:campId?/leden & leiding/:id?',
     name: 'Leden & leiding',
+    // component: MembersLeadership,
+    component: BaseCategoryView,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/leden%20&%20leiding/:id?',
+    name: 'Leden & leiding ',
     // component: MembersLeadership,
     component: BaseCategoryView,
     meta: {

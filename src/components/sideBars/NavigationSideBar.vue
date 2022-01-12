@@ -12,14 +12,14 @@
             </svg>
             <h1 class="text-2xl mt-1.5">Kampkaft</h1>
           </div>
-
           <div class="top-44 w-auto">
+            
             <div v-if="campsByGroup && campsByGroup.length > 0">
-              <div v-for="(camp) in campsByGroup" :key="camp">
-                <navigation-item :text="getSectionsTitle(camp)">
-                  <div v-for="(category) in camp.categories" :key="category">
-                    <a @click="navigateTowardsCategory(category.name, camp, category.uuid, route)" class="xs:text-sm md:text-md block cursor-pointer py-1">
-                      {{category.name}}
+              <div v-for="(visum) in campsByGroup" :key="visum">
+                <navigation-item :text="getSectionsTitle(visum.camp)">
+                  <div v-for="(category) in visum.categorySet.categories" :key="category">
+                    <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id, route)" class="xs:text-sm md:text-md block cursor-pointer py-1">
+                      {{category.categoryParent.name}}
                     </a>
                   </div>
                 </navigation-item>
@@ -49,25 +49,25 @@
 
 <script lang="ts">
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
+import { Sidebar, SidebarState } from '@/helpers/infoBarHelper'
 import { useCampHelper } from '../../helpers/campHelper'
 import { useNavigation } from '../../router/navigation'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import NavigationItem from './NavigationItem.vue'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { Sidebar, SidebarState } from '@/helpers/infoBarHelper'
 
 
 export default defineComponent({
   components: { NavigationItem },
   name: 'NavigationSideBar',
   setup() {
-    const { getSectionsTitle } = useSectionsHelper()
+    const route = useRoute()
     const { campsByGroup } = useCampHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
-    const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
+    const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsCategory } = useNavigation()
-    const route = useRoute()
+    const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
 
     const toggleSideBar: () => void = () => {
       if (sidebar.value.state === SidebarState.OPEN) {

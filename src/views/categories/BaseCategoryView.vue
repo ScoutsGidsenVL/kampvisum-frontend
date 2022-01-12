@@ -9,7 +9,6 @@
           <div class="w-100">
             <div v-for="(subCategory) in category.subCategories" :key="subCategory" >
               <base-subcategory-card :visum="visum" class="mb-3" :subCategory="subCategory" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
-              <!-- <base-subcategory-card :camp="camp" class="mb-3" :title="subCategory.subCategoryParent.name" titleTextfield="Opmerkingen" :checks="['SimpleCheck']" @openSidebar="openSidebar()" /> -->
             </div>
           </div>
           <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
@@ -19,17 +18,17 @@
 </template>
 
 <script lang="ts">
-import InformationSideBar from '@/components/sideBars/InformationSideBar.vue'
+import { Sidebar, SidebarState, useInfoBarHelper } from '@/helpers/infoBarHelper'
 import BaseSubcategoryCard from '../../components/cards/BaseSubcategoryCard.vue'
+import InformationSideBar from '@/components/sideBars/InformationSideBar.vue'
 import PageHeader from '../../components/semantics/PageHeader.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
-import { Sidebar, SidebarState, useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { useCampHelper } from '../../helpers/campHelper'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
+import { Category } from '@/serializer/Category'
 import { Visum } from '../../serializer/Visum'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { Category } from '@/serializer/Category'
 
 export default defineComponent({
   name: 'BaseCategoryView',
@@ -46,7 +45,7 @@ export default defineComponent({
     const { getSectionsTitle } = useSectionsHelper()
     const { setCategoryInfo } = useInfoBarHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
-
+    console.log('CHECKKKKKKK')
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
       //NEEDS TO BE REFACTORED AND ONLY RETRIEVE A CATEGORY BASED ON THE SELECTED ID

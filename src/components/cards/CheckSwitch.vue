@@ -1,7 +1,4 @@
 <template>
-  <div>
-      <!-- <span class="bg-red">{{checkType}}</span> -->
-
       <div v-if="checkType === 'Message'">
         <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{state: ColorState.DANGER}" />
       </div>
@@ -34,17 +31,17 @@
         <overview-files />
       </div>
 
-      <div v-if="checkType === 'LeadersCheck'">
+      <!-- <div v-if="checkType === 'LeadersCheck'">
         <leaders-overview />
       </div>
 
       <div v-if="checkType === 'FourageCheck'">
         <fourage-overview />
-      </div>
+      </div> -->
 
-      <div v-if="checkType === 'MembersCheck'">
+      <!-- <div v-if="checkType === 'MembersCheck'">
         <members-overview />
-      </div>
+      </div> -->
 
       <!-- <div v-if="checkType === 'InformationCheck'">
         <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
@@ -53,7 +50,6 @@
       <!-- <div v-if="checkType === 'ContactCheck'">
         <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
       </div> -->
-  </div>
 </template>
 
 <script lang="ts">
@@ -65,28 +61,28 @@ import MembersOverview from '../semantics/MembersOverview.vue'
 import FourageOverview from '../semantics/FourageOverview.vue'
 import LeadersOverview from '../semantics/LeadersOverview.vue'
 import DateField from '@/components/semantics/DateField.vue'
+import CommentCheck from '../semantics/CommentCheck.vue'
 import { defineComponent, PropType, ref } from 'vue'
-import VSwitch from '@lmiller1990/v-switch'
-import { Camp } from '@/serializer/Camp'
 import CheckComponent from './checks/check.vue'
 import { Check } from '../../serializer/Check'
-import CommentCheck from '../semantics/CommentCheck.vue'
+import VSwitch from '@lmiller1990/v-switch'
+import { Camp } from '@/serializer/Camp'
 
 export default defineComponent({
   name: 'ConcernSwitch',
   components: {
-    CheckComponent,
-    VSwitch,
-    Message,
-    DateField,
-    InputTypes,
-    CustomInput,
-    OverviewFiles,
     LocationComponent,
     MembersOverview,
     FourageOverview,
     LeadersOverview,
-    CommentCheck
+    CheckComponent,
+    OverviewFiles,
+    CustomInput,
+    CommentCheck,
+    InputTypes,
+    DateField,
+    VSwitch,
+    Message,
   },
   props: {
     checkType: String,

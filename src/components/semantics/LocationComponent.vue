@@ -49,7 +49,7 @@ export default defineComponent({
       isReloading.value = true
       setTimeout(() => {
        isReloading.value = false
-      }, 20)
+      }, 50)
     }
 
     watch(

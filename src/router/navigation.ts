@@ -1,5 +1,4 @@
 import router from '@/router'
-import { Camp } from '@/serializer/Camp'
 import { Visum } from '@/serializer/Visum'
 
 export const useNavigation = (): {

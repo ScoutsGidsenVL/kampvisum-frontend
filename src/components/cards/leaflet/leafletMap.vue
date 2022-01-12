@@ -15,7 +15,7 @@
       <div v-for="(location, index) in locations" :key="location">
         <l-marker @update:latLng="patchLatLng($event, index)" :lat-lng="location.latLon">
           <l-icon>
-            <svg width="30" height="30" style="margin-left: -14px;margin-top: -30px !important" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="30" height="30" style="margin-left: -14px;margin-top: -30px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
             </svg>
           </l-icon>
@@ -77,12 +77,13 @@
                 <input type="text" id="sLname" name="sLname" v-model="sL.name" class="bg-lightGray p-2 min-w-0 w-100">
               </div>
 
-              <div class="flex items-center gap-1">
+
+              <div v-if="check.checkParent.checkType.checkType === 'CampLocationCheck'" class="flex items-center gap-1">
                 <input :disabled="sL.isMainLocation" @click="checkMainLocation(index)" class="cursor-pointer" :value="true" v-model="sL.isMainLocation" type="checkbox" id="name" name="name">
                 <label @click="checkMainLocation(index)" class="cursor-pointer mt-2.5" for="name">Hoofdlocatie</label>
               </div>
 
-              <div>
+              <div class="mt-2">
                 {{ sL.address }}
               </div>
 
@@ -105,23 +106,23 @@ import {
   LIcon,
   LPopup,
 } from "@vue-leaflet/vue-leaflet";
-import "leaflet/dist/leaflet.css";
+import { SearchedLocation } from '../../../serializer/SearchedLocation'
+import { CustomInput, InputTypes } from 'vue-3-component-library'
 import { defineComponent, ref, PropType, toRefs } from 'vue'
 import { latLng } from '../../../interfaces/latLng'
 import CustomPopup from './CustomPopup.vue'
-import { SearchedLocation } from '../../../serializer/SearchedLocation'
-import { CustomInput, InputTypes } from 'vue-3-component-library'
 import { Check } from "@/serializer/Check";
+import "leaflet/dist/leaflet.css";
 
 export default defineComponent ({
   components: {
     CustomPopup,
-    LMap,
     LTileLayer,
+    CustomInput,
     LMarker,
-    LIcon,
     LPopup,
-    CustomInput
+    LIcon,
+    LMap,
   },
   props: {
     center: Object as PropType<Array<number>>,
@@ -136,7 +137,7 @@ export default defineComponent ({
       default: () => { return {} }
     },
     check: {
-      type: Object as PropType<Array<Check>>,
+      type: Object as PropType<Check>,
       required: true,
     },
     searchedLocations: {
