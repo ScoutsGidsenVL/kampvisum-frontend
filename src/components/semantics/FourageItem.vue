@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Member } from '../../serializer/Member'
+import { FourageMember } from '../../serializer/FourageMember'
 import { defineComponent, PropType } from 'vue'
 import IPerson from '../icons/IPerson.vue'
 import IInfo from '../icons/IInfo.vue'
@@ -29,7 +29,7 @@ export default defineComponent({
   },
   props: {
     fourage: {
-      type: Object as PropType<Member>,
+      type: Object as PropType<FourageMember>,
       required: true,
       default: () => { return {} }
     }

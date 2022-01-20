@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import { CommentCheckRepository } from '@/repositories/CommentCheckRepository'
+import { useNotification } from '../../composable/useNotification'
 import { InputTypes, CustomInput } from 'vue-3-component-library'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { defineComponent, PropType, watch } from 'vue'
@@ -24,6 +25,7 @@ export default defineComponent({
     },
   },
   setup (props) {
+    const { triggerNotification } = useNotification()
     let debounce: any
 
     const { values } = useForm({
@@ -35,6 +37,7 @@ export default defineComponent({
         .update(props.check.endpoint, comment)
         .then((p: any) => {
           console.log('PATCH RESPONSE: ', p)
+          triggerNotification()
         })
     }
 
@@ -44,7 +47,7 @@ export default defineComponent({
         clearTimeout(debounce)
         debounce = setTimeout(() => {
           patchCommentCheck(values.comment)
-        }, 1500)
+        }, 1000)
       }
     )
 

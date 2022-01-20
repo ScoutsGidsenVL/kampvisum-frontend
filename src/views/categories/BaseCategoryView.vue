@@ -45,7 +45,6 @@ export default defineComponent({
     const { getSectionsTitle } = useSectionsHelper()
     const { setCategoryInfo } = useInfoBarHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
-    console.log('CHECKKKKKKK')
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
       //NEEDS TO BE REFACTORED AND ONLY RETRIEVE A CATEGORY BASED ON THE SELECTED ID

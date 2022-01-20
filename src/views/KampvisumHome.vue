@@ -65,10 +65,9 @@
 </template>
 
 <script lang="ts">
-import { CustomButton, sideBarState, Warning, SuccessToast } from 'vue-3-component-library'
+import { CustomButton, Warning, SuccessToast } from 'vue-3-component-library'
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { GroupRepository } from '@/repositories/groupRepository'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
@@ -159,14 +158,14 @@ export default defineComponent({
           })
         })
     }
+    
+    const openCampSideBar = () => {
+      campSideBarState.value = { state: 'new' }
+    }
 
     const displayWarning = (visum: Visum) => {
       isWarningDisplayed.value = true
       visumToBeDeleted.value = visum
-    }
-
-    const openCampSideBar = () => {
-      campSideBarState.value = { state: 'new' }
     }
 
     const hideWarning = () => {

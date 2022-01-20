@@ -88,13 +88,14 @@
               </div>
 
               <div class="text-red underline mt-3">
-                <span class="cursor-pointer" @click="deleteLocationPoint(index)">Verwijder</span>
+                <span class="cursor-pointer" @click="sL.isMainLocation ? displayWarning() : deleteLocationPoint(index)">Verwijder</span>
               </div>
             </div>
           </l-popup>
         </l-marker>
       </div>
     </l-map>
+    <warning title="Hoofdlocatie" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker de hoofdlocatie te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteMainLocationPoint()" />
   </div>
 </template>
 
@@ -107,7 +108,7 @@ import {
   LPopup,
 } from "@vue-leaflet/vue-leaflet";
 import { SearchedLocation } from '../../../serializer/SearchedLocation'
-import { CustomInput, InputTypes } from 'vue-3-component-library'
+import { CustomInput, InputTypes, Warning } from 'vue-3-component-library'
 import { defineComponent, ref, PropType, toRefs } from 'vue'
 import { latLng } from '../../../interfaces/latLng'
 import CustomPopup from './CustomPopup.vue'
@@ -123,6 +124,7 @@ export default defineComponent ({
     LPopup,
     LIcon,
     LMap,
+    Warning
   },
   props: {
     center: Object as PropType<Array<number>>,
@@ -148,7 +150,15 @@ export default defineComponent ({
   setup (props, { emit }) {
     // THIS APPLICATION USES VUE3-LEAFLET BUT DOCUMENTATION IS ALMOST THE SAME AS VUE2-LEAFLET
     // https://vue2-leaflet.netlify.app/quickstart/
+    const isWarningDisplayed = ref<Boolean>(false)
 
+    const displayWarning = () => {
+      isWarningDisplayed.value = true
+    }
+
+    const hideWarning = () => {
+      isWarningDisplayed.value = false
+    }
     const { searchedLocation, searchedLocations } = toRefs(props)
 
     const toPatch = ref<Array<Array<number>>>([[],[],[]])
@@ -167,8 +177,17 @@ export default defineComponent ({
       emit('cancelLocationPoint', true)
     }
 
-    const deleteLocationPoint = (index: number) => {
+    const deleteLocationPoint = (index: any) => {
       emit('deleteLocationPoint', index)
+    }
+
+    const deleteMainLocationPoint = () => {
+      searchedLocations.value.forEach((x: SearchedLocation, index: any) => {
+        if (x.isMainLocation) {
+          emit('deleteLocationPoint', index)
+          hideWarning()
+        }
+      })
     }
 
     const checkMainLocation = (i: number) => {
@@ -200,6 +219,10 @@ export default defineComponent ({
       InputTypes,
       addOnClick,
       toPatch,
+      displayWarning,
+      hideWarning,
+      isWarningDisplayed,
+      deleteMainLocationPoint
     }
   }
 })

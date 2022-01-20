@@ -26,7 +26,6 @@ import { useSectionsHelper } from '../helpers/sectionsHelper'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { useCampHelper } from '../helpers/campHelper'
 import { defineComponent, ref } from 'vue'
-import { Camp } from '../serializer/Camp'
 import { Visum } from '@/serializer/Visum'
 
 
@@ -37,6 +36,7 @@ export default defineComponent({
     'deadlines-sidebar': DeadlinesSideBar,
   },
   setup() {
+    window.scrollTo({ top: 0, behavior: 'auto' })
     const visum = ref<Visum>()
     const { getCampByRouteParam } = useCampHelper()
     const { getSectionsTitle } = useSectionsHelper()

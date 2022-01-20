@@ -14,16 +14,17 @@
         </div>
       </div>
     </base-page>
+    <notification />
   </div>
 </template>
 
 <script lang="ts">
 import { BasePage, ScoutsDummyBar, defineRules, Breadcrumb } from 'vue-3-component-library'
 import NavigationSideBar from './components/sideBars/NavigationSideBar.vue'
+import Notification from './components/semantics/Notification.vue'
 import { useInternetHelper } from './helpers/internetHelper'
 import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import router from '@/router'
 
 export default defineComponent({
@@ -33,6 +34,7 @@ export default defineComponent({
     'scouts-dummy-bar': ScoutsDummyBar,
     'bread-crumb': Breadcrumb,
     NavigationSideBar,
+    Notification,
   },
   setup() {
 

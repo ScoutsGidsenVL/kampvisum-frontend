@@ -33,11 +33,11 @@
 
       <!-- <div v-if="checkType === 'LeadersCheck'">
         <leaders-overview />
-      </div>
-
-      <div v-if="checkType === 'FourageCheck'">
-        <fourage-overview />
       </div> -->
+
+      <div v-if="checkType === 'MemberCheck'">
+        <fourage-overview />
+      </div>
 
       <!-- <div v-if="checkType === 'MembersCheck'">
         <members-overview />

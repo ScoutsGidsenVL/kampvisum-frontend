@@ -33,9 +33,9 @@
 
         <div class="pb-4 flex flex-col gap-3">
           <strong class="m-0 text-lg">Adres(sen)</strong>
+
           <div class="bg-lighterGreen p-2">Zoek een adres of duid het aan op de kaart.</div>
           <search-input v-model:loading="loading" name="search" placeholder="Zoek adres" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
-          
           <div v-if="fetchedLocationsToSelect.length > 0" class="border-r-2 border-l-2 border-b-2 border-gray">
             <div v-for="(fetchedLocation) in fetchedLocationsToSelect" :key="fetchedLocation" class="hover:bg-lightGray p-2 pl-3 cursor-pointer border-b-2 border-gray">
               <div class="flex flex-col" @click="addLocationPoint(fetchedLocation)">
@@ -46,6 +46,17 @@
               </div>
             </div>
           </div>
+
+          <div class="bg-lighterGreen p-3" >
+            <h4 class="">Hoofdlocatie</h4>
+            <div v-for="(searchedLocation) in searchedLocations" :key="searchedLocation">
+              <div v-if="searchedLocation.isMainLocation">
+                <p class="mb-0 italic">{{searchedLocation.name}}</p>
+                <a class="text-sm italic" target="_blank" :href="'https://www.google.com/maps?q=' + searchedLocation.address">{{ searchedLocation.address }}</a>  
+              </div>
+            </div>
+          </div>
+
           <leaflet-map 
           @addOnClick="addOnClick($event)" 
           @deleteLocationPoint="deleteLocationPoint($event)" 
@@ -80,8 +91,9 @@ import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrol
 import { PostLocation, PostLocationDeserializer, PostLocationSerializer } from '../../serializer/PostLocation'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
-import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
+import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
+import { useNotification } from '../../composable/useNotification'
 import { SearchedLocation } from '../../serializer/SearchedLocation'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
@@ -152,6 +164,7 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const fetchedLocationsToSelect = ref<any>([])
     const patchLoading = ref<boolean>(false)
+    const { triggerNotification } = useNotification()
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -182,6 +195,7 @@ export default defineComponent({
         .then((p: any) => {
           context.emit('actionSuccess', {data: p, action: 'PATCH'})
           patchLoading.value = false
+          triggerNotification()
         })
     }
 
