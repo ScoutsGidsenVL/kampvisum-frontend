@@ -47,8 +47,10 @@ export const BaseMemberSerializer = (input: any): any => {
     number: input.number,
     letter_box: input.letterBox,
     comment: input.comment,
-    postal_code: LocationSerializer(input.postCodeCity).postal_code,
-    city: LocationSerializer(input.postCodeCity).city,
+    // postal_code: LocationSerializer(input.postCodeCity).postal_code,
+    // city: LocationSerializer(input.postCodeCity).city,
+    postal_code: input.postalCode,
+    city: input.city,
     group_group_admin_id: input.group ? input.group : null,
   }
 

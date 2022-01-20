@@ -1,5 +1,5 @@
 <template>
-  <div class=" flex flex-col md:flex-row gap-3 md:gap-0 justify-between p-2.5">
+  <div class="xs:rounded-md xs:shadow-md md:border-b-2 flex flex-col md:flex-row gap-3 md:gap-0 justify-between p-2.5">
     <div class="flex gap-3 items-center">
       <i-person />
       <div>
@@ -7,7 +7,10 @@
       </div>
     </div>
 
-    <div class="flex justify-between md:gap-3 items-center">
+    <div class="flex justify-between md:gap-10 items-center">
+      <div class="hover:text-orange underline cursor-pointer">
+        bewerk
+      </div>
       <div class="hover:text-red underline cursor-pointer">
         verwijder
       </div>

@@ -29,6 +29,14 @@
           </div>
 
           <div class="w-100 mt-4">
+            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="city" label="Stad" />
+          </div>
+
+          <div class="w-100 mt-4">
+            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="postalCode" label="Postcode" />
+          </div>
+
+          <div class="w-100 mt-4">
             <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="street" label="Straat" />
           </div>
 
@@ -59,7 +67,7 @@
           <search-input v-model:loading="loading" name="FourageMemberSearch" placeholder="Zoek op naam" :repository="NonMemberRepository" @fetchedOptions="fetchedOptions($event)" />
         </div>
 
-        <div class="h-full overflow-y-scroll mt-4 pb-36">
+        <div class="h-full overflow-y-auto mt-4 pb-36">
           <!-- <hr v-if="selectedNonMembers.length > 0" class="mt-4 border-t-2 w-100 border-black" /> -->
           <!-- <div v-for="nonMember in selectedNonMembers" :key="nonMember.id" class="w-100">
             <non-member-item :non-member="nonMember">
@@ -81,6 +89,8 @@ import { FourageMember } from '../../serializer/FourageMember'
 import SearchInput from '../inputs/SearchInput.vue'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import RepositoryFactory from '@/repositories/repositoryFactory'
+import { FourageRepository } from '@/repositories/FourageRepository'
 
 export default defineComponent({
   name: 'FourageSideBar',
@@ -122,7 +132,7 @@ export default defineComponent({
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'new' ? 'newFourageSidebar' : 'searchFourageSidebar'))
-    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<FourageMember>()
+    const { resetForm, handleSubmit, values, isSubmitting } = useForm<FourageMember>()
     const { sideBarState } = toRefs(props)
 
     const { t } = useI18n({
@@ -146,11 +156,19 @@ export default defineComponent({
         if (props.sideBarState.state === 'edit') {
           // await updateCamp(values)
         } else {
-          // await postLocation(values)
+          await postFourage(values)
           console.log('POSTING FOURAGE: ', values)
         }
         closeSideBar()
       })()
+    }
+
+    const postFourage = async (fourage: FourageMember) => {
+      await RepositoryFactory.get(FourageRepository)
+        .create(fourage)
+        .then(() => {
+          context.emit('actionSuccess', 'POST')
+        })
     }
     
     const fetchedSearchResults = (result: any ) => {

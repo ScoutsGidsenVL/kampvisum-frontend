@@ -1,10 +1,14 @@
 <template>
   <div>
     <message class="p-2" title="3 Fourage" :color="{state: ColorState.SUCCES}" />
-    <div>
+    <div class="mt-3">
       <fourage-item :fourage="{name: 'Alejandro Acosta Torres', fullAddress: 'Nieuwstraat 77 Bus 1, 2910 Essen', birthDate: '1997-12-23'}" />
     </div>
-    <custom-button @click="openMemberSidebar()" class="mt-4" text="+ voeg fourage toe" />
+
+    <div class="xs:w-100 md:w-56">
+      <custom-button @click="openMemberSidebar()" class="w-100 mt-4" :extraStyle="'w-100'" text="+ voeg fourage toe" />
+    </div>
+    
     <fourage-sidebar title="Fourage" v-model:sideBarState="sidebar" :existingList=[] @actionSuccess="actionSuccess($event)" />
   </div>
 </template>
