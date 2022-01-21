@@ -15,7 +15,7 @@ const { checkIfIsMobileSize } = usePhoneHelper()
 
 const categoryInfo =  ref<string>('')
 const info = ref<string>('')
-const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
+const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.CLOSED })
 
 export const useInfoBarHelper = (): {
   setInfo: (text?: string) => void,

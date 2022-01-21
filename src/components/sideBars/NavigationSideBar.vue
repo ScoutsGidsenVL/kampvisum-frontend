@@ -67,7 +67,7 @@ export default defineComponent({
     const { checkIfIsMobileSize } = usePhoneHelper()
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsCategory } = useNavigation()
-    const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
+    const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.CLOSED })
 
     const toggleSideBar: () => void = () => {
       if (sidebar.value.state === SidebarState.OPEN) {

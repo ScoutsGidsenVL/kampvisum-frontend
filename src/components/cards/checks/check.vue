@@ -89,9 +89,8 @@ export default defineComponent({
     const patchCheck = async (simpleCheck: SimpleCheck) => {
       await RepositoryFactory.get(SimpleCheckRepository)
         .update(simpleCheck.endpoint, simpleCheck)
-        .then((p: any) => {
-          console.log('PATCH RESPONSE: ', p)
-          triggerNotification()
+        .then(() => {
+          triggerNotification('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
         })
     }
 
@@ -104,7 +103,6 @@ export default defineComponent({
           case StatusState.CHECKED:
             simpleCheck.value.value = StatusState.UNCHECKED
             break;
-        
           default:
             simpleCheck.value.value = StatusState.UNCHECKED
             break;

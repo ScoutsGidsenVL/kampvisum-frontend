@@ -1,23 +1,7 @@
-export interface Member {
-  id?: string
-  uuid?: string
-  name?: string
-  hasPaid?: string
-}
+import { BaseMember, BaseMemberDeserializer, BaseMemberSerializer } from './BaseMember'
 
-export const NameDeserializer = (input: any): Member => {
-  const single: Member = {
-    id: input.id,
-    uuid: input.uuid,
-    name: input.name
-  }
+export interface Member extends BaseMember { }
 
-  return single
-}
+export const MemberDeserializer = BaseMemberDeserializer
 
-export const NameSerializer = (input: any): any => {
-  const single: any = {
-  }
-  return single
-}
-
+export const MemberSerializer = BaseMemberSerializer

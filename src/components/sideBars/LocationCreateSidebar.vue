@@ -195,7 +195,7 @@ export default defineComponent({
         .then((p: any) => {
           context.emit('actionSuccess', {data: p, action: 'PATCH'})
           patchLoading.value = false
-          triggerNotification()
+          triggerNotification('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
         })
     }
 

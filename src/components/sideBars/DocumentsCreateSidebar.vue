@@ -16,7 +16,6 @@
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
         @submit.prevent="onSubmit"
       >
-
         <div class="pb-4">
           <div class="w-full"><dropzone v-model:progress="progress" /></div>
         </div>

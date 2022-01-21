@@ -15,6 +15,7 @@ export interface BaseMember {
   readonly group?: string
   readonly fullAddress?: string
   readonly fullName?: string
+  readonly hasPaid?: string
 }
 
 export const BaseMemberDeserializer = (input: any): BaseMember => {

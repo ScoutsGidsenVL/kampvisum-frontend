@@ -36,8 +36,7 @@ export default defineComponent({
       await RepositoryFactory.get(CommentCheckRepository)
         .update(props.check.endpoint, comment)
         .then((p: any) => {
-          console.log('PATCH RESPONSE: ', p)
-          triggerNotification()
+          triggerNotification('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
         })
     }
 

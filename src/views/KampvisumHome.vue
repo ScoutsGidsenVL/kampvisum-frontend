@@ -38,10 +38,6 @@
       </custom-button>
     </div>
     
-    <div>
-      <success-toast v-show="toastState.visible" :label="toastState.label" @hideToast="hideToast()" />
-    </div>
-    
     <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
       <div v-for="visum in visums" :key="visum.id">
         <camp-info-card class="mt-5" :visum="visum" >
@@ -65,9 +61,9 @@
 </template>
 
 <script lang="ts">
-import { CustomButton, Warning, SuccessToast } from 'vue-3-component-library'
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
+import { CustomButton, Warning } from 'vue-3-component-library'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
@@ -75,22 +71,17 @@ import {ArrayResult} from '../interfaces/ArrayResult'
 import { useCampHelper } from '../helpers/campHelper'
 import { Group } from '../serializer/Group'
 import { defineComponent, ref } from 'vue'
+import { Visum } from '@/serializer/Visum'
 import { Camp } from '../serializer/Camp'
 import { useI18n } from 'vue-i18n'
-import { Visum } from '@/serializer/Visum'
 import store from '../store/store'
-
-export interface ToastState {
-  visible: boolean,
-  label: string
-}
+import { useNotification } from '@/composable/useNotification'
 
 export default defineComponent({
   name: 'KampvisumHome',
   components: {
     'camp-info-card': CampInfoCard,
     'custom-button': CustomButton,
-    'success-toast': SuccessToast,
     'camp-side-bar': CampSidebar,
     'multi-select': MultiSelect,
     'warning': Warning,
@@ -106,11 +97,13 @@ export default defineComponent({
     const groupYears = ref<string[]>([])
     const myGroups = ref<any>([])  
     const visums = ref<any>([])
-    console.log('USER: ', )
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
     })
+
+    const { triggerNotification } = useNotification()
+
 
     const getVisums = async (groupId: string, year: string) => {
       await RepositoryFactory.get(CampRepository)
@@ -153,8 +146,7 @@ export default defineComponent({
           getVisums(selectedGroup.value.groupAdminId, selectedYear.value).then(() => {
             isDeletingVisum.value = false
             isWarningDisplayed.value = false
-            toastState.value.visible = true
-            toastState.value.label = "Kamp is succesvol verwijderd"
+            triggerNotification('Kamp is succesvol verwijderd')
           })
         })
     }
@@ -172,27 +164,15 @@ export default defineComponent({
       isWarningDisplayed.value = false
     }
 
-    const toastState = ref<ToastState>(
-      {
-        visible: false,
-        label: 'hidden'
-      }
-    )
-
-    const hideToast = () => {
-      toastState.value.visible = false
-    }
-
 
     const actionSuccess = (action: string) => {
       console.log('FEEDBACK: ', action)
       if (action === 'POST') {
-        toastState.value.label = 'Kamp is succesvol aangemaakt'
+        triggerNotification('Kamp is succesvol aangemaakt')
       }
       if (action === 'UPDATE') {
-        toastState.value.label = 'Kamp is succesvol bewerkt'
+        triggerNotification('Kamp is succesvol bewerkt')
       }
-      toastState.value.visible = true
       getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
     }
 
@@ -221,9 +201,7 @@ export default defineComponent({
       hideWarning, 
       groupYears, 
       deleteCamp, 
-      toastState, 
       campsByGroup,
-      hideToast, 
       myGroups, 
       editCamp, 
       visums, 

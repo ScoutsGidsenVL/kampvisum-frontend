@@ -26,9 +26,9 @@
 import { DurationDateCheckRepository } from '@/repositories/DurationDateCheckRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 const LitepieDatepicker = require('litepie-datepicker').default
-import { defineComponent, ref, PropType, watch } from 'vue'
+import { useNotification } from '@/composable/useNotification'
+import { defineComponent, ref, watch, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
-import { DurationDateCheck, DurationDateCheckDeserializer } from '@/serializer/DurationDateCheck'
 const { DateTime } = require("luxon");
 
 export default defineComponent({
@@ -51,6 +51,7 @@ export default defineComponent({
     const dateValues = ref<Array<string>>([])
     const dateValue = ref('')
 
+    const { triggerNotification } = useNotification()
 
     const initializeDateValues = () => {
       if (props.check?.value.startDate) {
@@ -69,7 +70,7 @@ export default defineComponent({
       await RepositoryFactory.get(DurationDateCheckRepository)
         .update(props.check.endpoint, dates)
         .then((p: any) => {
-          console.log('PATCH RESPONSE: ', p)
+          triggerNotification('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
         })
     }
 
