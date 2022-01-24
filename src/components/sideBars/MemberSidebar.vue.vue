@@ -1,33 +1,60 @@
 <template>
   <div>
     <base-side-bar
-      maxWidth="max-w-2xl"
-      :isOverflowHidden="isOverflowHidden"
-      :selection="selected"
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
+      :isOverflowHidden="isOverflowHidden"
+      @hideSidebar="closeSideBar"
+      :selection="selected"
+      maxWidth="max-w-2xl"
       name="MemberSidebar"
       :title="title"
-      @hideSidebar="closeSideBar"
     >
-      <div class="p-4">
-        <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
+    <strong>member check:</strong>
+    {{check.endpoint}}
+      <div class="p-4 mx-1">
+        <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
       </div>
 
-      <div>
-        
+      <div class="mx-1 overflow-y-auto">
+        <div class="mx-4">
+          <div
+            v-for="(member, index) in fetchedMembers"
+            :key="member"
+            :class="{ 'border-t-2 border-black': index === 0 }"
+            class="py-4 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
+          >
+            <member-sidebar-item :member="member">
+              <div class="flex justify-end">
+                <custom-button
+                  type="button"
+                  :text="existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId) ? 'Toegevoegd' : 'Voeg toe'"
+                  :disabled="
+                    existingList && existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId)
+                    ? true
+                    : false
+                  "
+                  @click="addMember(member)"
+                />
+              </div>
+            </member-sidebar-item>
+          </div>
+        </div>
       </div>
     </base-side-bar>
   </div>
 </template>
 
 <script lang="ts">
-import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { BaseSideBar, sideBarState, InputTypes } from 'vue-3-component-library'
+import { MemberRepository } from '../../repositories/MemberRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
-import { SearchedLocation } from '../../serializer/SearchedLocation'
+import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
 import { PostLocation } from '../../serializer/PostLocation'
+import { CustomButton } from 'vue-3-component-library'
 import SearchInput from '../inputs/SearchInput.vue'
+import { Member } from '@/serializer/Member'
+import { Check } from '@/serializer/Check'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 
@@ -35,7 +62,9 @@ export default defineComponent({
   name: 'LocationCreateSideBar',
   components: {
     'base-side-bar': BaseSideBar,
-    SearchInput
+    SearchInput,
+    MemberSidebarItem,
+    CustomButton
   },
   props: {
     title: {
@@ -64,13 +93,19 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true,
+    },
+    check: {
+      type: Object as PropType<Check>,
+      required: true
     }
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
-    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>()
+    const { resetForm, handleSubmit, values, isSubmitting } = useForm<PostLocation>()
     const { sideBarState } = toRefs(props)
+    const loading = ref<boolean>(false)
+    const fetchedMembers = ref<Member[]>([])
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -83,7 +118,6 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
-      // await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
       handleSubmit(async (values: PostLocation) => {
         if (props.sideBarState.state === 'edit') {
           // await updateCamp(values)
@@ -93,16 +127,20 @@ export default defineComponent({
         closeSideBar()
       })()
     }
-    
-    const fetchedSearchResults = (result: SearchedLocation ) => {
+
+    const fetchedSearchResults = (results: any) => {
       loading.value = false
+      fetchedMembers.value = results
     }
 
-    const loading = ref<boolean>(false)
+    const addMember = (member: Member) => {
+      // context.emit('addMemberToList', member)
+      context.emit('update:sideBarState', { state: 'hide' })
+    }
 
     return {
-      LocationSearchRepository,
       fetchedSearchResults,
+      MemberRepository,
       isSubmitting,
       sideBarState,
       closeSideBar,
@@ -112,7 +150,34 @@ export default defineComponent({
       loading,
       values,
       t,
+      fetchedMembers,
+      addMember
     }
   },
 })
 </script>
+
+<style lang="scss" scoped>
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  margin-left: 20x;
+  padding-left: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #ececec;
+  border-radius: 10px;
+  margin-left: 20x;
+  padding-left: 20px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #212529;
+  border-radius: 10px;
+  margin-left: 20x;
+  padding-left: 20px;
+}
+</style>

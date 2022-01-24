@@ -7,15 +7,18 @@ export default abstract class BaseApiRepository {
   private axiosInstance: AxiosInstance
   private publicAxiosInstance: AxiosInstance
   abstract id: string
+  private baseUrl: string
 
   constructor() {
     // const config: MasterConfig = getModule(configModule, store).config
     const config: MasterConfig = store.getters.config
+    this.baseUrl = `${config.api.baseUrl}/${config.api.apiSuffix}`
+
     this.axiosInstance = axios.create({
-      baseURL: config.api.baseUrl + '/' + config.api.apiSuffix,
+      baseURL: this.baseUrl,
     })
     this.publicAxiosInstance = axios.create({
-      baseURL: config.api.baseUrl + '/' + config.api.apiSuffix,
+      baseURL: this.baseUrl,
     })
 
     // Add oidc interceptors

@@ -1,6 +1,7 @@
 <template>
   <div>
     <base-side-bar
+      width="max-w-2xl"
       :isOverflowHidden="isOverflowHidden"
       :selection="selected"
       :is-display="sideBarState.state !== 'hide'"
@@ -17,16 +18,18 @@
         @submit.prevent="onSubmit"
       >
         <div class="pb-4">
-          <div class="w-full"><dropzone v-model:progress="progress" /></div>
+          <div class="w-full">
+            <dropzone v-model:progress="progress" @uploadedFile="uploadedFile($event)" />
+          </div>
         </div>
 
-        <div class="pb-4 flex flex-col">
+        <!-- <div class="pb-4 flex flex-col">
           <span class="font-bold text-sm">Zoek door bestaande bestanden</span>
           <search-input v-model:loading="loading" name="search" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResult($event)" />
-        </div>
+        </div> -->
 
         <div>
-          <file-item :canBeChecked="true" />
+          <file-item v-for="(file) in filesToSelectFrom" :file="file" :key="file" :canBeChecked="true" />
         </div>
 
         <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
@@ -47,15 +50,15 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, CustomHeader } from 'vue-3-component-library'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
-import { useUpload, newProgress } from '../../composable/useUpload'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import DateField from '@/components/semantics/DateField.vue'
 import { PostLocation } from '../../serializer/PostLocation'
 import { DeadlineItem } from '@/serializer/DeadlineItem'
+import { useUpload } from '../../composable/useUpload'
 import { useForm, ErrorMessage } from 'vee-validate'
 import SearchInput from '../inputs/SearchInput.vue'
 import Dropzone from '../inputs/Dropzone.vue'
@@ -114,9 +117,11 @@ export default defineComponent({
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
-    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>()
+    const { resetForm, handleSubmit, values, isSubmitting } = useForm<PostLocation>()
+    const filesToSelectFrom = ref<Array<any>>([])
     const { sideBarState } = toRefs(props)
-
+    const loading = ref<boolean>(false)
+    const { progress } = useUpload()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -128,13 +133,7 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
-      await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
-      handleSubmit(async (values: PostLocation) => {
-        if (props.sideBarState.state === 'edit') {
-          // await updateCamp(values)
-        } else {
-          // await postLocation(values)
-        }
+      handleSubmit(async () => {
         closeSideBar()
       })()
     }
@@ -149,22 +148,24 @@ export default defineComponent({
       items.value.splice(Number(index), 1);
     }
 
-    const loading = ref<boolean>(false)
-
-    const { progress } = useUpload()
+    const uploadedFile = (file: any) => {
+      filesToSelectFrom.value.push(file)
+    }
 
     return {
       LocationSearchRepository,
       removeItemFromArray,
+      filesToSelectFrom,
       isSubmitting,
       sideBarState,
       closeSideBar,
+      uploadedFile,
       InputTypes,
       selected,
       onSubmit,
+      progress,
       addItem,
       loading,
-      progress,
       values,
       items,
       t,

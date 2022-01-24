@@ -36,7 +36,6 @@ export const SectionSerializer = (input: any): any => {
 
 export const SectionObjectsToSectionStrings = (sections: Section[]) => {
   const sectionsUuids: string[] = []
-  console.log('SECTION: ', sections)
   sections.forEach((section: Section) => {
     if (section.uuid) {
       sectionsUuids.push(section.uuid)

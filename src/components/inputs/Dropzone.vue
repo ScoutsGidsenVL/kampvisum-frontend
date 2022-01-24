@@ -41,7 +41,7 @@
       class="py-2 mt-3 px-4 w-full bg-black text-white font-semibold text-center shadow-sm hover:shadow-xl disabled:opacity-50"
       tabindex="-1"
       :disabled="fileCount === 0"
-      @click="doUpload"
+      @click="doUpload()"
     >
       BESTANDEN UPLOADEN
       <!-- {{ $tm('upload.button') }} -->
@@ -96,8 +96,13 @@
 </template>
 
 <script lang="ts">
-  import { inject, onMounted, ref, defineComponent, PropType, watch } from 'vue'
   import { progressType, useUpload } from '../../composable/useUpload'
+  import RepositoryFactory from '../../repositories/repositoryFactory'
+  import { FileRepository } from '../../repositories/FileRepository'
+  import { onMounted, ref, defineComponent, PropType } from 'vue'
+  import MasterConfig from '@/models/config/masterConfig'
+  import { FileItem } from '@/serializer/FileItem'
+  import store from '@/store/store'
   import Dropzone from 'dropzone'
 
   export default defineComponent({
@@ -111,7 +116,7 @@
         default: undefined,
       },
     },
-    emits: ['update:progress'],
+    emits: ['update:progress', 'uploadedFile'],
     setup({}, { emit }) {
       const dropzoneDiv = ref<HTMLDivElement | undefined>(undefined)
       const dropzonePreviewDiv = ref<HTMLDivElement | undefined>(undefined)
@@ -120,11 +125,13 @@
       const uploading = ref<boolean>(false)
       const doUpload = ref<() => void | undefined>()
       const fileCount = ref<number>(0)
+      const config: MasterConfig = store.getters.config
+      const baseUrl = `${config.api.baseUrl}/${config.api.apiSuffix}`
 
       onMounted(async () => {
         if (dropzoneDiv.value && dropzonePreviewDiv) {
           const myDropzone = new Dropzone(dropzoneDiv.value, {
-            url: 'backendUrl' + '/upload',
+            url: `${baseUrl}files/`,
             headers: {},
             autoProcessQueue: false,
             acceptedFiles: 'application/pdf,.csv',
@@ -177,12 +184,12 @@
                   progress.status = 'hasError'
                   progress.errorFiles = progress.errorFiles + 1
                 }
-
                 if (file.status === 'success') {
                   progress.status = 'success'
                   progress.successFiles = progress.successFiles + 1
                 }
               })
+
               emit('update:progress', progress)
               uploadIsComplete()
             }
@@ -190,7 +197,16 @@
 
           doUpload.value = () => {
             uploading.value = true
-            myDropzone.processQueue()
+            myDropzone.files.forEach((f: any) => {
+              uploadFile(f)
+            })
+            myDropzone.removeAllFiles()
+          }
+
+          const uploadFile = async (file: any) => {
+            await RepositoryFactory.get(FileRepository).uploadFile(file).then((responseFile: FileItem) => {
+              emit('uploadedFile', responseFile)
+            })
           }
         }
       })

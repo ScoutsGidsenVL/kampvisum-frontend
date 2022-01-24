@@ -2,6 +2,7 @@ import { Location, LocationDeserializer, LocationSerializer } from '@/serializer
 
 export interface BaseMember {
   readonly id?: string
+  readonly groupAdminId?: string
   readonly lastName: string
   readonly firstName: string
   readonly phoneNumber: string
@@ -13,6 +14,7 @@ export interface BaseMember {
   readonly city: Location
   readonly postalCode: string
   readonly group?: string
+  readonly email?: string
   readonly fullAddress?: string
   readonly fullName?: string
   readonly hasPaid?: string
@@ -21,6 +23,7 @@ export interface BaseMember {
 export const BaseMemberDeserializer = (input: any): BaseMember => {
   const single: BaseMember = {
     id: input.id ? input.id : undefined,
+    groupAdminId: input.group_admin_id ? input.group_admin_id : undefined,
     lastName: input.last_name,
     firstName: input.first_name,
     phoneNumber: input.phone_number ? input.phone_number.replace(/ /g, '') : undefined,
@@ -31,6 +34,8 @@ export const BaseMemberDeserializer = (input: any): BaseMember => {
     comment: input.comment,
     city: input.city,
     postalCode: input.postal_code,
+    email: input.email ? input.email : undefined,
+    fullName: `${input.first_name} ${input.last_name}`,
     fullAddress: `${input.street} ${input.number} ${(input.letter_box ? ' Bus ' + input.letter_box : '')}, ${input.postal_code} ${input.city}`
   }
 

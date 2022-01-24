@@ -166,7 +166,6 @@ export default defineComponent({
 
 
     const actionSuccess = (action: string) => {
-      console.log('FEEDBACK: ', action)
       if (action === 'POST') {
         triggerNotification('Kamp is succesvol aangemaakt')
       }

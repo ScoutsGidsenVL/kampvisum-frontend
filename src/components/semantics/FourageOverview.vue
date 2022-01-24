@@ -9,16 +9,17 @@
       <custom-button @click="openMemberSidebar()" class="w-100 mt-4" :extraStyle="'w-100'" text="+ voeg fourage toe" />
     </div>
     
-    <fourage-sidebar title="Fourage" v-model:sideBarState="sidebar" :existingList=[] @actionSuccess="actionSuccess($event)" />
+    <fourage-sidebar :check="check" title="Fourage" v-model:sideBarState="sidebar" :existingList="[]" @actionSuccess="actionSuccess($event)" />
   </div>
 </template>
 
 <script lang="ts">
-import FourageSidebar from '../sideBars/FourageSideBar.vue'
 import Message, { ColorState } from '../semantics/message.vue'
+import FourageSidebar from '../sideBars/FourageSideBar.vue'
 import { CustomButton } from 'vue-3-component-library'
 import FourageItem from '../semantics/FourageItem.vue'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, PropType } from 'vue'
+import { Check } from '@/serializer/Check'
 
 export default defineComponent({
   name: 'MembersOverview',
@@ -29,6 +30,10 @@ export default defineComponent({
     FourageSidebar
   },
   props: {
+    check: {
+      type: Object as PropType<Check>,
+      required: true
+    }
   },
   setup () {
 

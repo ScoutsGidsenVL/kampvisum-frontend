@@ -5,16 +5,17 @@
       <member-item :member="{name: 'Ricardo Acosta Torres', hasPaid: false}" />
     </div>
     <custom-button @click="openMemberSidebar()" class="mt-4" text="+ voeg leden toe" />
-    <member-sidebar title="Lid" v-model:sideBarState="sidebar" :existingList=[] @actionSuccess="actionSuccess($event)" />
+    <member-sidebar :check="check" title="Lid" v-model:sideBarState="sidebar" :existingList=[] @actionSuccess="actionSuccess($event)" />
   </div>
 </template>
 
 <script lang="ts">
-import MemberSidebar from '../sideBars/MemberSidebar.vue'
 import Message, { ColorState } from '../semantics/message.vue'
+import MemberSidebar from '../sideBars/MemberSidebar.vue'
 import { CustomButton } from 'vue-3-component-library'
 import MemberItem from '../semantics/MemberItem.vue'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, PropType } from 'vue'
+import { Check } from '@/serializer/Check'
 
 export default defineComponent({
   name: 'MembersOverview',
@@ -25,6 +26,10 @@ export default defineComponent({
     MemberSidebar
   },
   props: {
+    check: {
+      type: Object as PropType<Check>,
+      required: true
+    }
   },
   setup () {
 

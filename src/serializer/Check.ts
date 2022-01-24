@@ -12,7 +12,6 @@ export interface Check {
 }
 
 export const CheckDeserializer = (input: any): Check => {
-  // console.log('CHECK: ', input)
   const single: Check = {
     id: input.id,
     checkParent: input.parent ? CheckParentDeserializer(input.parent) : undefined,
@@ -34,7 +33,6 @@ export const CheckDeserializer = (input: any): Check => {
   else {
     single.value = input.value
   }
-  // console.log('SINGLE: ', single)
 
   return single
 }

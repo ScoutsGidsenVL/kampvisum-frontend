@@ -79,7 +79,7 @@ export abstract class BaseRepository extends BaseApiRepository {
   }
 
   public downloadFile(id: string): Promise<Blob> {
-    return this.getFile(this.endpoint + id).then((res) => {
+    return this.getFile(`${this.endpoint}${id}/`).then((res) => {
       return res
     })
   }

@@ -31,16 +31,12 @@
         <overview-files />
       </div>
 
-      <!-- <div v-if="checkType === 'LeadersCheck'">
-        <leaders-overview />
-      </div> -->
-
       <div v-if="checkType === 'MemberCheck'">
-        <fourage-overview />
+        <members-overview :check="check" />
       </div>
 
-      <!-- <div v-if="checkType === 'MembersCheck'">
-        <members-overview />
+      <!-- <div v-if="checkType === 'MemberCheck'">
+        <fourage-overview :check="check" />
       </div> -->
 
       <!-- <div v-if="checkType === 'InformationCheck'">
@@ -59,7 +55,6 @@ import OverviewFiles from '@/components/upload/overviewFiles.vue'
 import Message, { ColorState } from '../semantics/message.vue'
 import MembersOverview from '../semantics/MembersOverview.vue'
 import FourageOverview from '../semantics/FourageOverview.vue'
-import LeadersOverview from '../semantics/LeadersOverview.vue'
 import DateField from '@/components/semantics/DateField.vue'
 import CommentCheck from '../semantics/CommentCheck.vue'
 import { defineComponent, PropType, ref } from 'vue'
@@ -74,7 +69,6 @@ export default defineComponent({
     LocationComponent,
     MembersOverview,
     FourageOverview,
-    LeadersOverview,
     CheckComponent,
     OverviewFiles,
     CustomInput,

@@ -12,13 +12,16 @@
       @options="changeSideBar"
       @hideSidebar="closeSideBar"
     >
+      <strong>fourage endpoint: </strong>
+      {{check.endpoint}}
+      <!-- CREATE -->
       <form
         id="FourageForm"
         ref="formDiv"
         :class="{ 'd-flex': sideBarState.state === 'new' || sideBarState.state === 'edit', 'd-none': sideBarState.state === 'search' }"
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
         @submit.prevent="onSubmit"
-      >        
+      >
         <div class="mt-4">
           <div class="w-100">
             <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="firstName" label="Voornaam" />
@@ -62,20 +65,35 @@
         </div>
       </form>
 
-      <form :class="{ 'd-flex': sideBarState.state === 'search', 'd-none': sideBarState.state === 'new' || sideBarState.state === 'edit' }" class="flex-col h-full px-4 pt-3" @submit.prevent="onSubmit">
-        <div>
-          <search-input v-model:loading="loading" name="FourageMemberSearch" placeholder="Zoek op naam" :repository="NonMemberRepository" @fetchedOptions="fetchedOptions($event)" />
+      <!-- SEARCH -->
+      <form
+        :class="{ 'd-flex': sideBarState.state === 'search', 'd-none': sideBarState.state === 'new' || sideBarState.state === 'edit' }"
+        class="flex-col h-full pt-3"
+        @submit.prevent="onSubmit"
+      >
+        <div class="p-4 mx-1">
+          <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
-
-        <div class="h-full overflow-y-auto mt-4 pb-36">
-          <!-- <hr v-if="selectedNonMembers.length > 0" class="mt-4 border-t-2 w-100 border-black" /> -->
-          <!-- <div v-for="nonMember in selectedNonMembers" :key="nonMember.id" class="w-100">
-            <non-member-item :non-member="nonMember">
-              <div>
-                <div class="pt-3 pb-4 text-right"><custom-button type="button" :text="existingList.includes(nonMember) ? 'Toegevoegd' : 'Voeg toe'" @click="addNonMember(nonMember)" /></div>
-              </div>
-            </non-member-item>
-          </div> -->
+        <div class="mx-1 overflow-y-auto">
+          <div class="mx-4">
+            <div
+              v-for="(member, index) in fetchedMembers"
+              :key="member"
+              :class="{ 'border-t-2 border-black': index === 0 }"
+              class="py-4 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
+            >
+              <member-sidebar-item :member="member">
+                <div class="flex justify-end">
+                  <custom-button
+                    type="button"
+                    :text="existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId) ? 'Toegevoegd' : 'Voeg toe'"
+                    :disabled="existingList && existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId) ? true : false"
+                    @click="addMember(member)"
+                  />
+                </div>
+              </member-sidebar-item>
+            </div>
+          </div>
         </div>
       </form>
     </base-side-bar>
@@ -91,6 +109,10 @@ import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { FourageRepository } from '@/repositories/FourageRepository'
+import { Member } from '@/serializer/Member'
+import { MemberRepository } from '../../repositories/MemberRepository'
+import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
+import { Check } from '@/serializer/Check'
 
 export default defineComponent({
   name: 'FourageSideBar',
@@ -98,7 +120,8 @@ export default defineComponent({
     'base-side-bar': BaseSideBar,
     SearchInput,
     CustomInput,
-    CustomButton
+    CustomButton,
+    MemberSidebarItem,
   },
   props: {
     title: {
@@ -127,6 +150,10 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true,
+    },
+    check: {
+      type: Object as PropType<Check>,
+      required: true
     }
   },
   emits: ['update:sideBarState', 'actionSuccess'],
@@ -134,6 +161,7 @@ export default defineComponent({
     const selected = computed(() => (props.sideBarState.state === 'new' ? 'newFourageSidebar' : 'searchFourageSidebar'))
     const { resetForm, handleSubmit, values, isSubmitting } = useForm<FourageMember>()
     const { sideBarState } = toRefs(props)
+    const fetchedMembers = ref<Member[]>([])
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -157,7 +185,6 @@ export default defineComponent({
           // await updateCamp(values)
         } else {
           await postFourage(values)
-          console.log('POSTING FOURAGE: ', values)
         }
         closeSideBar()
       })()
@@ -170,9 +197,10 @@ export default defineComponent({
           context.emit('actionSuccess', 'POST')
         })
     }
-    
-    const fetchedSearchResults = (result: any ) => {
+
+    const fetchedSearchResults = (results: any) => {
       loading.value = false
+      fetchedMembers.value = results
     }
 
     const changeSideBar = (options: 'newFourageSidebar' | 'searchFourageSidebar') => {
@@ -183,6 +211,11 @@ export default defineComponent({
       if (options === 'searchFourageSidebar') {
         context.emit('update:sideBarState', { state: 'search' })
       }
+    }
+
+    const addMember = (member: Member) => {
+      // context.emit('addMemberToList', member)
+      context.emit('update:sideBarState', { state: 'hide' })
     }
 
     const loading = ref<boolean>(false)
@@ -199,8 +232,36 @@ export default defineComponent({
       loading,
       values,
       t,
-      options
+      options,
+      fetchedMembers,
+      addMember,
+      MemberRepository,
     }
   },
 })
 </script>
+
+<style lang="scss" scoped>
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  margin-left: 20x;
+  padding-left: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #ececec;
+  border-radius: 10px;
+  margin-left: 20x;
+  padding-left: 20px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #212529;
+  border-radius: 10px;
+  margin-left: 20x;
+  padding-left: 20px;
+}
+</style>
