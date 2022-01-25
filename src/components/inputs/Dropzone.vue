@@ -46,6 +46,11 @@
       BESTANDEN UPLOADEN
       <!-- {{ $tm('upload.button') }} -->
     </button>
+
+    <div v-if="uploading" class="mt-3 text-center">
+      <loader color="lightGreen" size="10" :isLoading="uploading" />
+    </div>
+
   </div>
   <!-- Template for the preview of files -->
   <div class="hidden">
@@ -104,10 +109,13 @@
   import { FileItem } from '@/serializer/FileItem'
   import store from '@/store/store'
   import Dropzone from 'dropzone'
+  import {Loader} from 'vue-3-component-library'
+
 
   export default defineComponent({
     name: 'Upload',
     components: {
+      Loader
     },
     props: {
       progress: {
@@ -198,8 +206,9 @@
           doUpload.value = () => {
             uploading.value = true
             myDropzone.files.forEach((f: any) => {
-              uploadFile(f)
+              uploadFile(f).then(() => uploading.value = false)
             })
+
             myDropzone.removeAllFiles()
           }
 
@@ -212,6 +221,7 @@
       })
 
       return {
+        uploading,
         doUpload,
         fileCount,
         dropzoneDiv,

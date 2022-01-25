@@ -130,6 +130,7 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const loading = ref<boolean>(false)
     const { progress } = useUpload()
+    const isUploading = ref<boolean>(false)
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -137,6 +138,7 @@ export default defineComponent({
 
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
+      filesToSelectFrom.value = []
       resetForm()
     }
 
@@ -150,7 +152,6 @@ export default defineComponent({
     const patchFilesToList = (files: Array<FileItem>) => {
       files.forEach((file: FileItem) => {
           if (file.isChecked) {
-            console.log('POST THIS: ', file)
             patchFileToList(file)
           }
         });
@@ -186,6 +187,7 @@ export default defineComponent({
       sideBarState,
       closeSideBar,
       uploadedFile,
+      isUploading,
       InputTypes,
       selected,
       onSubmit,
