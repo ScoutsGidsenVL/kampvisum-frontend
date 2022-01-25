@@ -9,17 +9,16 @@ pipeline {
     stage('build') {
       steps {
         sh "npm prune --ignore-scripts"
-        sh "rm -rf node_modules/inuits-* node_modules/vue-3-component-library"
         sh "npm install --ignore-scripts"
-        sh "rm -rf dist kampvisum.zip"
+        sh "rm -rf dist frontend.zip"
         sh "npm run build"
-        sh "zip -r kampvisum.zip dist/*"
+        sh "zip -r frontend.zip dist/*"
       }
     }
 
     stage('archive') {
       steps {
-        archiveArtifacts 'kampvisum.zip'
+        archiveArtifacts  'frontend.zip'
 
         script{
             def artifactory = Artifactory.server 'artifactory'
@@ -27,8 +26,8 @@ pipeline {
             def uploadSpec = '''{
               "files": [
                 {
-                  "pattern": "kampvisum.zip",
-                  "target": "kampvisum-frontend/${BRANCH_NAME}/${BUILD_ID}/"
+                  "pattern": "frontend.zip",
+                  "target": "groepsadmin-frontend/${BRANCH_NAME}/${BUILD_ID}/"
                 }
              ]
             }'''
@@ -42,7 +41,7 @@ pipeline {
 
     stage('deploy') {
       steps {
-        sh 'ssh lxc-deb-rundeck.vvksm.local sudo -u rundeck /opt/deploy-kamp.sh frontend ${BRANCH_NAME}'
+        sh 'ssh lxc-deb-rundeck.vvksm.local sudo -u rundeck /opt/deploy-ga.sh frontend ${BRANCH_NAME}'
       }
     }
   }
@@ -62,7 +61,7 @@ pipeline {
 
 def emailen() {
   mail(
-    to: "tvl@scoutsengidsenvlaanderen.be,${env.CHANGE_AUTHOR_EMAIL}",
+    to: "tvl@scoutsengidsenvlaanderen.be,${env.CHANGE_AUTHOR_EMAIL},jr@scoutsengidsenvlaanderen.be",
     subject: "[Jenkins] ${currentBuild.fullDisplayName} ${currentBuild.currentResult}",
     body: """${currentBuild.fullDisplayName} ${currentBuild.currentResult}
 
