@@ -3,8 +3,8 @@
       <div class="z-2">
         <div class="flex justify-between">
           <h3 class="text-sm text-green mb-0">
-            <span v-for="(section, index) in visum.camp.sections" :key="section">
-              {{visum.camp.sections.length > 1 && index != visum.camp.sections.length - 1 ? section.name.name + ' & ' : section.name.name}}
+            <span v-for="(section) in visum.camp.sections" :key="section">
+              {{ getSectionsTitle(visum.camp) }}
             </span>
           </h3>
           <div class="d-flex gap-3 mt-1">
@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts">
+import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { useNavigation } from '../../router/navigation'
 import { defineComponent, PropType } from 'vue'
 import { Visum } from '../../serializer/Visum'
@@ -43,17 +44,16 @@ export default defineComponent({
   setup () {
     const route = useRoute()
     const { navigateTowardsCategory } = useNavigation()
-
+    const { getSectionsTitle } = useSectionsHelper()
 
     const navigateTowardsVisum = (visum: Visum) => {
-      if (visum.camp) {
-        router.push('/kamp/' + visum.id)
-      }
+      router.push('/kamp/' + visum.id)
     }
 
     return {
-      navigateTowardsVisum,
       navigateTowardsCategory,
+      navigateTowardsVisum,
+      getSectionsTitle,
       route
     }
   }

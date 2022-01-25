@@ -8,7 +8,7 @@ export interface Camp {
   endDate?: string
   id: string
   name?: string
-  sections?: Array<string> | Array<Section>
+  sections: Array<string> | Array<Section>
   startDate?: string
   updatedBy?: string
   updatedOn?: string

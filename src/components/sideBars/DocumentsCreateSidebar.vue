@@ -29,7 +29,7 @@
         </div> -->
 
         <div>
-          <file-item v-for="(file) in filesToSelectFrom" :file="file" :key="file" :canBeChecked="true" />
+          <file-item-component v-for="(file) in filesToSelectFrom" :file="file" :key="file" :canBeChecked="true" />
         </div>
 
         <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
@@ -62,8 +62,12 @@ import { useUpload } from '../../composable/useUpload'
 import { useForm, ErrorMessage } from 'vee-validate'
 import SearchInput from '../inputs/SearchInput.vue'
 import Dropzone from '../inputs/Dropzone.vue'
-import FileItem from '../upload/FileItem.vue'
+import FileItemComponent from '../upload/FileItem.vue'
 import { useI18n } from 'vue-i18n'
+import { FileItem } from '@/serializer/FileItem'
+import RepositoryFactory from '@/repositories/repositoryFactory'
+import { FileCheckRepository } from '@/repositories/FileCheckRepository'
+import { Check } from '@/serializer/Check'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -78,7 +82,7 @@ export default defineComponent({
     LeafletMap,
     SearchInput,
     Dropzone,
-    FileItem
+    FileItemComponent
   },
   props: {
     title: {
@@ -112,7 +116,11 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true,
-    }
+    },
+    check: {
+      type: Object as PropType<Check>,
+      required: true
+    },
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
@@ -134,8 +142,26 @@ export default defineComponent({
 
     const onSubmit = async () => {
       handleSubmit(async () => {
+        patchFilesToList(filesToSelectFrom.value)
         closeSideBar()
       })()
+    }
+
+    const patchFilesToList = (files: Array<FileItem>) => {
+      files.forEach((file: FileItem) => {
+          if (file.isChecked) {
+            console.log('POST THIS: ', file)
+            patchFileToList(file)
+          }
+        });
+    }
+
+    const patchFileToList = async (file: FileItem) => {
+      await RepositoryFactory.get(FileCheckRepository)
+        .update(props.check.endpoint, file)
+        .then(() => {
+          context.emit('actionSuccess', 'POST')
+        })
     }
 
     const items = ref<Array<DeadlineItem>>([{ category: '', label: ''}])

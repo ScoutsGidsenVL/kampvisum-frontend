@@ -12,14 +12,12 @@
 </template>
 
 <script lang="ts">
-import { SubCategory } from '../../serializer/SubCategory'
 import { useNavigation } from '../../router/navigation'
 import { Category } from '../../serializer/Category'
 import { defineComponent, PropType } from 'vue'
+import { Visum } from '@/serializer/Visum'
 import { useRoute } from 'vue-router'
 import router from '@/router'
-import { Camp } from '@/serializer/Camp'
-import { Visum } from '@/serializer/Visum'
 
 export default defineComponent({
   name: 'CategoryInfoCard',
@@ -38,7 +36,7 @@ export default defineComponent({
     const { navigateTowardsCategory } = useNavigation()
     const route = useRoute()
 
-    const navigateTowardsSubCategory = (category: Category, subCategory: SubCategory) => {
+    const navigateTowardsSubCategory = (category: Category) => {
       router.push('/kamp/' + route.params.campId.toString() + '/' + category.categoryParent.name + '/' + category.id)
     }
 

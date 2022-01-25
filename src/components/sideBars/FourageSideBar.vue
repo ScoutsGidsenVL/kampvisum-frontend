@@ -12,8 +12,6 @@
       @options="changeSideBar"
       @hideSidebar="closeSideBar"
     >
-      <strong>fourage endpoint: </strong>
-      {{check.endpoint}}
       <!-- CREATE -->
       <form
         id="FourageForm"
@@ -113,6 +111,8 @@ import { Member } from '@/serializer/Member'
 import { MemberRepository } from '../../repositories/MemberRepository'
 import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
 import { Check } from '@/serializer/Check'
+import { MemberCheckRepository } from '@/repositories/MemberCheckRepository'
+import { Visum } from '@/serializer/Visum'
 
 export default defineComponent({
   name: 'FourageSideBar',
@@ -154,7 +154,11 @@ export default defineComponent({
     check: {
       type: Object as PropType<Check>,
       required: true
-    }
+    },
+    visum: {
+      type: Object as PropType<Visum>,
+      required: true,
+    },
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
@@ -213,8 +217,16 @@ export default defineComponent({
       }
     }
 
+    const postMemberToList = async (data: Member) => {
+      await RepositoryFactory.get(MemberCheckRepository)
+        .update(props.check.endpoint, data)
+        .then(() => {
+          context.emit('actionSuccess', 'POST')
+        })
+    }
+
     const addMember = (member: Member) => {
-      // context.emit('addMemberToList', member)
+      postMemberToList(member)
       context.emit('update:sideBarState', { state: 'hide' })
     }
 

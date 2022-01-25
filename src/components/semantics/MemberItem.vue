@@ -1,5 +1,5 @@
 <template>
-  <div class=" flex flex-col md:flex-row gap-3 md:gap-0 justify-between p-2.5">
+  <div class="xs:rounded-md xs:shadow-md md:border-b-2 flex flex-col md:flex-row gap-3 md:gap-0 justify-between p-2.5">
     <div class="flex gap-3 items-center">
       <i-person />
       <div>

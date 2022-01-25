@@ -36,11 +36,11 @@ export default defineComponent({
     'deadlines-sidebar': DeadlinesSideBar,
   },
   setup() {
-    window.scrollTo({ top: 0, behavior: 'auto' })
-    const visum = ref<Visum>()
-    const { getCampByRouteParam } = useCampHelper()
     const { getSectionsTitle } = useSectionsHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
+    const { getCampByRouteParam } = useCampHelper()
+    window.scrollTo({ top: 0, behavior: 'auto' })
+    const visum = ref<Visum>()
 
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v

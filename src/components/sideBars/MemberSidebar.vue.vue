@@ -10,8 +10,7 @@
       name="MemberSidebar"
       :title="title"
     >
-    <strong>member check:</strong>
-    {{check.endpoint}}
+    {{visum}}
       <div class="p-4 mx-1">
         <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
       </div>
@@ -57,6 +56,9 @@ import { Member } from '@/serializer/Member'
 import { Check } from '@/serializer/Check'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import RepositoryFactory from '@/repositories/repositoryFactory'
+import { MemberCheckRepository } from '@/repositories/MemberCheckRepository'
+import { Visum } from '@/serializer/Visum'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -97,7 +99,11 @@ export default defineComponent({
     check: {
       type: Object as PropType<Check>,
       required: true
-    }
+    },
+    visum: {
+      type: Object as PropType<Visum>,
+      required: true,
+    },
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
@@ -118,7 +124,7 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
-      handleSubmit(async (values: PostLocation) => {
+      handleSubmit(async () => {
         if (props.sideBarState.state === 'edit') {
           // await updateCamp(values)
         } else {
@@ -128,13 +134,21 @@ export default defineComponent({
       })()
     }
 
+    const postMemberToList = async (data: Member) => {
+      await RepositoryFactory.get(MemberCheckRepository)
+        .update(props.check.endpoint, data)
+        .then(() => {
+          context.emit('actionSuccess', 'POST')
+        })
+    }
+
     const fetchedSearchResults = (results: any) => {
       loading.value = false
       fetchedMembers.value = results
     }
 
-    const addMember = (member: Member) => {
-      // context.emit('addMemberToList', member)
+    const addMember = async (member: Member) => {
+      await postMemberToList(member)
       context.emit('update:sideBarState', { state: 'hide' })
     }
 

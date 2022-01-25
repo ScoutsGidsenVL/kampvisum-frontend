@@ -1,6 +1,6 @@
 <template>
       <div v-if="checkType === 'Message'">
-        <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{state: ColorState.DANGER}" />
+        <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{ state: ColorState.DANGER }" />
       </div>
 
       <div v-if="checkType === 'SimpleCheck'">
@@ -28,24 +28,16 @@
       </div>
 
       <div v-if="checkType === 'FileUploadCheck'">
-        <overview-files />
+        <overview-files :check="check" />
       </div>
 
-      <div v-if="checkType === 'MemberCheck'">
-        <members-overview :check="check" />
+      <div class="my-4" v-if="checkType === 'MemberCheck'">
+        <members-overview :visum="visum" :check="check" />
       </div>
 
-      <!-- <div v-if="checkType === 'MemberCheck'">
-        <fourage-overview :check="check" />
-      </div> -->
-
-      <!-- <div v-if="checkType === 'InformationCheck'">
-        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
-      </div> -->
-
-      <!-- <div v-if="checkType === 'ContactCheck'">
-        <custom-input v-model="textField" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="titleTextfield" :label="check.checkParent.label" />
-      </div> -->
+      <div class="my-4" v-if="checkType === 'ParticipantCheck'">
+        <fourage-overview :visum="visum" :check="check" />
+      </div>
 </template>
 
 <script lang="ts">
@@ -57,11 +49,12 @@ import MembersOverview from '../semantics/MembersOverview.vue'
 import FourageOverview from '../semantics/FourageOverview.vue'
 import DateField from '@/components/semantics/DateField.vue'
 import CommentCheck from '../semantics/CommentCheck.vue'
-import { defineComponent, PropType, ref } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import CheckComponent from './checks/check.vue'
 import { Check } from '../../serializer/Check'
 import VSwitch from '@lmiller1990/v-switch'
 import { Camp } from '@/serializer/Camp'
+import { Visum } from '@/serializer/Visum'
 
 export default defineComponent({
   name: 'ConcernSwitch',
@@ -80,6 +73,10 @@ export default defineComponent({
   },
   props: {
     checkType: String,
+    visum: {
+      type: Object as PropType<Visum>,
+      required: true,
+    },
     camp: {
       type: Object as PropType<Camp>,
       required: true,

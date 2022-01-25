@@ -1,8 +1,8 @@
 <template>
   <div class="home p-3">
-    <warning v-if="visumToBeDeleted.camp" :title="visumToBeDeleted.camp.name" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
+    <warning v-if="visumToBeDeleted && visumToBeDeleted.camp" :title="visumToBeDeleted.camp.name" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
     <div>
-      <camp-side-bar v-if="selectedGroup.groupAdminId" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.groupAdminId"/>
+      <camp-side-bar :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.groupAdminId"/>
     </div>
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
@@ -67,6 +67,7 @@ import { CustomButton, Warning } from 'vue-3-component-library'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
+import { useNotification } from '@/composable/useNotification'
 import {ArrayResult} from '../interfaces/ArrayResult'
 import { useCampHelper } from '../helpers/campHelper'
 import { Group } from '../serializer/Group'
@@ -75,7 +76,6 @@ import { Visum } from '@/serializer/Visum'
 import { Camp } from '../serializer/Camp'
 import { useI18n } from 'vue-i18n'
 import store from '../store/store'
-import { useNotification } from '@/composable/useNotification'
 
 export default defineComponent({
   name: 'KampvisumHome',
@@ -90,7 +90,7 @@ export default defineComponent({
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })
     const { setCampsByGroup, campsByGroup } = useCampHelper()
     const isWarningDisplayed = ref<Boolean>(false)
-    const visumToBeDeleted = ref<Camp>({ id: ''})
+    const visumToBeDeleted = ref<Visum>()
     const selectedGroup = ref<Group>({ groupAdminId: ''})
     const isDeletingVisum = ref<Boolean>(false)
     const selectedYear = ref<string>('')
@@ -139,7 +139,8 @@ export default defineComponent({
     }
 
     const deleteCamp = () => {
-        isDeletingVisum.value = true
+      isDeletingVisum.value = true
+      if (visumToBeDeleted.value) {
         RepositoryFactory.get(CampRepository)
         .removeById(visumToBeDeleted.value.id)
         .then(() => {
@@ -148,7 +149,8 @@ export default defineComponent({
             isWarningDisplayed.value = false
             triggerNotification('Kamp is succesvol verwijderd')
           })
-        })
+        })  
+      }
     }
     
     const openCampSideBar = () => {
@@ -163,7 +165,6 @@ export default defineComponent({
     const hideWarning = () => {
       isWarningDisplayed.value = false
     }
-
 
     const actionSuccess = (action: string) => {
       if (action === 'POST') {
@@ -190,17 +191,17 @@ export default defineComponent({
     return { 
       isWarningDisplayed, 
       campSideBarState, 
-      openCampSideBar, 
       visumToBeDeleted, 
-      displayWarning, 
+      openCampSideBar, 
       isDeletingVisum, 
+      displayWarning, 
       selectedGroup, 
       actionSuccess, 
       selectFilter, 
       hideWarning, 
+      campsByGroup,
       groupYears, 
       deleteCamp, 
-      campsByGroup,
       myGroups, 
       editCamp, 
       visums, 
@@ -208,8 +209,4 @@ export default defineComponent({
     }
   },
 })
-
-function useStore() {
-  throw new Error('Function not implemented.')
-}
 </script>
