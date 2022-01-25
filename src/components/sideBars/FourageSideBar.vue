@@ -70,7 +70,7 @@
         @submit.prevent="onSubmit"
       >
         <div class="p-4 mx-1">
-          <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
+          <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="FourageRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
         <div class="mx-1 overflow-y-auto">
           <div class="mx-4">
@@ -82,12 +82,12 @@
             >
               <member-sidebar-item :member="member">
                 <div class="flex justify-end">
-                  <custom-button
+                  <!-- <custom-button
                     type="button"
                     :text="existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId) ? 'Toegevoegd' : 'Voeg toe'"
                     :disabled="existingList && existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId) ? true : false"
                     @click="addMember(member)"
-                  />
+                  /> -->
                 </div>
               </member-sidebar-item>
             </div>
@@ -100,19 +100,19 @@
 
 <script lang="ts">
 import { BaseSideBar, sideBarState, InputTypes, CustomInput, CustomButton, option } from 'vue-3-component-library'
+import { MemberCheckRepository } from '@/repositories/MemberCheckRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
+import { MemberRepository } from '../../repositories/MemberRepository'
+import { FourageRepository } from '@/repositories/FourageRepository'
+import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 import { FourageMember } from '../../serializer/FourageMember'
 import SearchInput from '../inputs/SearchInput.vue'
+import { Member } from '@/serializer/Member'
+import { Check } from '@/serializer/Check'
+import { Visum } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
-import RepositoryFactory from '@/repositories/repositoryFactory'
-import { FourageRepository } from '@/repositories/FourageRepository'
-import { Member } from '@/serializer/Member'
-import { MemberRepository } from '../../repositories/MemberRepository'
-import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
-import { Check } from '@/serializer/Check'
-import { MemberCheckRepository } from '@/repositories/MemberCheckRepository'
-import { Visum } from '@/serializer/Visum'
 
 export default defineComponent({
   name: 'FourageSideBar',
@@ -234,20 +234,21 @@ export default defineComponent({
 
     return {
       fetchedSearchResults,
+      MemberRepository,
+      FourageRepository,
+      fetchedMembers,
+      changeSideBar,
       isSubmitting,
       sideBarState,
-      changeSideBar,
       closeSideBar,
       InputTypes,
+      addMember,
       selected,
       onSubmit,
       loading,
+      options,
       values,
       t,
-      options,
-      fetchedMembers,
-      addMember,
-      MemberRepository,
     }
   },
 })

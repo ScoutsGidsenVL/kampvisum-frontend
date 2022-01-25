@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-full">
     <base-side-bar
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
@@ -20,11 +20,11 @@
             v-for="(member, index) in fetchedMembers"
             :key="member"
             :class="{ 'border-t-2 border-black': index === 0 }"
-            class="py-4 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
+            class="py-2 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
           >
             <member-sidebar-item :member="member">
               <div class="flex justify-end">
-                <custom-button
+                <!-- <custom-button
                   type="button"
                   :text="existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId) ? 'Toegevoegd' : 'Voeg toe'"
                   :disabled="
@@ -33,11 +33,15 @@
                     : false
                   "
                   @click="addMember(member)"
-                />
+                /> -->
               </div>
             </member-sidebar-item>
           </div>
         </div>
+      </div>
+
+      <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3">
+        <custom-button :isSubmitting="isSubmitting" text="VOEG TOE" />
       </div>
     </base-side-bar>
   </div>

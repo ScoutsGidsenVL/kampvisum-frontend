@@ -1,7 +1,10 @@
 <template>
   <div>
-    <div>
+    <div class="flex justify-between">
       <strong>{{ member.fullName }}</strong>
+      <div class="flex gap-2 items-center font-bold">
+        <input class="cursor-pointer" :value="true" v-model="member.isChecked" type="checkbox" id="checked" name="checked">
+      </div>
     </div>
 
     <div v-if="member.email">
@@ -10,10 +13,6 @@
 
     <div v-if="member.phoneNumber">
       {{ member.phoneNumber }}
-    </div>
-
-    <div v-if="member.fullAddress">
-      {{ member.fullAddress }}
     </div>
 
     <div v-if="member.birthDate">

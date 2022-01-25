@@ -49,7 +49,7 @@ export default defineComponent({
     const sidebar = ref<any>({state: 'hide'})
 
     const openMemberSidebar = (): void => {
-      sidebar.value = {state: 'new'}
+      sidebar.value = {state: 'search'}
     }
 
     return {
