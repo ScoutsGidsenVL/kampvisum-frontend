@@ -17,6 +17,12 @@
       <deadlines-sidebar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
     </div>
   </div>
+
+  <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum">
+    <div class="text-center">
+      <loader color="lightGreen" size="20" :isLoading="isFetchingVisum" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -27,13 +33,14 @@ import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { useCampHelper } from '../helpers/campHelper'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
-
+import { Loader } from 'vue-3-component-library'
 
 export default defineComponent({
   name: 'CampOverview',
   components: {
     'category-info-card': CategoryInfoCard,
     'deadlines-sidebar': DeadlinesSideBar,
+    Loader
   },
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
@@ -41,9 +48,11 @@ export default defineComponent({
     const { getCampByRouteParam } = useCampHelper()
     window.scrollTo({ top: 0, behavior: 'auto' })
     const visum = ref<Visum>()
+    const isFetchingVisum = ref<boolean>(true)
 
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
+      isFetchingVisum.value = false
     })
 
     const sidebar = ref<Sidebar>({state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN})
@@ -58,6 +67,7 @@ export default defineComponent({
     
     return {
       getSectionsTitle,
+      isFetchingVisum,
       closeSidebar,
       openSidebar,
       sidebar,

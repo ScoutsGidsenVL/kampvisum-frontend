@@ -15,6 +15,12 @@
       </div>
     </div>
   </div>
+
+  <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum">
+    <div class="text-center">
+      <loader color="lightGreen" size="20" :isLoading="isFetchingVisum" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,13 +35,15 @@ import { Category } from '@/serializer/Category'
 import { Visum } from '../../serializer/Visum'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { Loader } from 'vue-3-component-library'
 
 export default defineComponent({
   name: 'BaseCategoryView',
   components: {
     BaseSubcategoryCard,
     PageHeader,
-    InformationSideBar
+    InformationSideBar,
+    Loader
   },
   setup() {
     const route = useRoute()
@@ -45,10 +53,14 @@ export default defineComponent({
     const { getSectionsTitle } = useSectionsHelper()
     const { setCategoryInfo } = useInfoBarHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
+    const isFetchingVisum = ref<boolean>(true)
+
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
       //NEEDS TO BE REFACTORED AND ONLY RETRIEVE A CATEGORY BASED ON THE SELECTED ID
       category.value = visum.value.categorySet.categories.find((c: Category) => c.id === route.params.id)
+      isFetchingVisum.value = false
+
       if (category.value) {
         setCategoryInfo(category.value.categoryParent.description)
       }
@@ -65,6 +77,7 @@ export default defineComponent({
 
     return {
       getSectionsTitle,
+      isFetchingVisum,
       closeSidebar,
       openSidebar,
       category,

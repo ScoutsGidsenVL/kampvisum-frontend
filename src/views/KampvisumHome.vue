@@ -57,13 +57,19 @@
         </camp-info-card>
       </div>
     </div>
+
+    <div class="h-screen -m-56 grid content-center" v-if="isFetchingVisums">
+      <div class="text-center">
+        <loader color="lightGreen" size="20" :isLoading="isFetchingVisums" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { CustomButton, Warning } from 'vue-3-component-library'
+import { CustomButton, Warning, Loader } from 'vue-3-component-library'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
@@ -85,6 +91,7 @@ export default defineComponent({
     'camp-side-bar': CampSidebar,
     'multi-select': MultiSelect,
     'warning': Warning,
+    Loader
   },
   setup() {
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })
@@ -103,7 +110,7 @@ export default defineComponent({
     })
 
     const { triggerNotification } = useNotification()
-
+    const isFetchingVisums = ref<boolean>(true)
 
     const getVisums = async (groupId: string, year: string) => {
       await RepositoryFactory.get(CampRepository)
@@ -111,6 +118,7 @@ export default defineComponent({
         .then((c: ArrayResult) => {
           visums.value = c
           setCampsByGroup(visums.value)
+          isFetchingVisums.value = false
         })
     }
 
@@ -188,7 +196,8 @@ export default defineComponent({
     getUserGroups().then(() => getGroupYears(selectedGroup.value.groupAdminId))
     .then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
 
-    return { 
+    return {
+      isFetchingVisums,
       isWarningDisplayed, 
       campSideBarState, 
       visumToBeDeleted, 
