@@ -10,7 +10,6 @@
       name="MemberSidebar"
       :title="title"
     >
-    {{visum}}
       <div class="p-4 mx-1">
         <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
       </div>
