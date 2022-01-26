@@ -217,7 +217,7 @@ export default defineComponent({
       }
     }
 
-    const postMemberToList = async (data: Member) => {
+    const postMemberToList = async (data: Member[]) => {
       await RepositoryFactory.get(MemberCheckRepository)
         .update(props.check.endpoint, data)
         .then(() => {
@@ -225,8 +225,8 @@ export default defineComponent({
         })
     }
 
-    const addMember = (member: Member) => {
-      postMemberToList(member)
+    const addMember = (members: Member[]) => {
+      postMemberToList(members)
       context.emit('update:sideBarState', { state: 'hide' })
     }
 

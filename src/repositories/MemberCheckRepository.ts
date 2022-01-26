@@ -9,9 +9,9 @@ export class MemberCheckRepository extends BaseRepository {
   public deserializer = MemberCheckDeserializer
   public serializer = MemberCheckSerializer
 
-  update(url: string, data: Member) {
+  update(url: string, data: Member[]) {
     return this.patch(url, this.serializer(data)).then((response: any) => {
-      return this.deserializer(response)
+      return this.deserializer(response.value)
     })
   }
 }

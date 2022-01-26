@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full">
+  <div>
     <base-side-bar
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
@@ -10,58 +10,52 @@
       name="MemberSidebar"
       :title="title"
     >
-      <div class="p-4 mx-1">
-        <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
-      </div>
+    <form
+        class="flex flex-col h-full"
+        id="memberForm"
+        ref="formDiv"
+        @submit.prevent="onSubmit"
+      >
+        <div class="p-4 mx-1">
+          <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
+        </div>
 
-      <div class="mx-1 overflow-y-auto">
-        <div class="mx-4">
-          <div
-            v-for="(member, index) in fetchedMembers"
-            :key="member"
-            :class="{ 'border-t-2 border-black': index === 0 }"
-            class="py-2 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
-          >
-            <member-sidebar-item :member="member">
-              <div class="flex justify-end">
-                <!-- <custom-button
-                  type="button"
-                  :text="existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId) ? 'Toegevoegd' : 'Voeg toe'"
-                  :disabled="
-                    existingList && existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId)
-                    ? true
-                    : false
-                  "
-                  @click="addMember(member)"
-                /> -->
-              </div>
-            </member-sidebar-item>
+        <div class="mx-1 mb-72 overflow-y-auto">
+          <div class="mx-4">
+            <div
+              v-for="(member, index) in fetchedMembers"
+              :key="member"
+              :class="{ 'border-t-2 border-black': index === 0 }"
+              class="py-2 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
+            >
+              <member-sidebar-item :displayCheck="displayCheck(check.checkParent.isMultiple, member)" :member="member" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3">
-        <custom-button :isSubmitting="isSubmitting" text="VOEG TOE" />
-      </div>
+        <div class="mt-5 py-4 px-4 absolute bottom-0 bg-white w-full">
+          <custom-button :isSubmitting="isPatching" text="VOEG TOE" />
+        </div>
+    </form>
     </base-side-bar>
   </div>
 </template>
 
 <script lang="ts">
 import { BaseSideBar, sideBarState, InputTypes } from 'vue-3-component-library'
+import { MemberCheckRepository } from '@/repositories/MemberCheckRepository'
 import { MemberRepository } from '../../repositories/MemberRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 import { PostLocation } from '../../serializer/PostLocation'
 import { CustomButton } from 'vue-3-component-library'
 import SearchInput from '../inputs/SearchInput.vue'
 import { Member } from '@/serializer/Member'
 import { Check } from '@/serializer/Check'
+import { Visum } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
-import RepositoryFactory from '@/repositories/repositoryFactory'
-import { MemberCheckRepository } from '@/repositories/MemberCheckRepository'
-import { Visum } from '@/serializer/Visum'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -111,10 +105,11 @@ export default defineComponent({
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
-    const { resetForm, handleSubmit, values, isSubmitting } = useForm<PostLocation>()
-    const { sideBarState } = toRefs(props)
-    const loading = ref<boolean>(false)
     const fetchedMembers = ref<Member[]>([])
+    const { sideBarState } = toRefs(props)
+    const isPatching = ref<boolean>(false)
+    const loading = ref<boolean>(false)
+    const { handleSubmit} = useForm()
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -123,52 +118,82 @@ export default defineComponent({
 
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
-      resetForm()
     }
 
     const onSubmit = async () => {
       handleSubmit(async () => {
-        if (props.sideBarState.state === 'edit') {
-          // await updateCamp(values)
-        } else {
-          // await postLocation(values)
-        }
-        closeSideBar()
+        addMembers(fetchedMembers.value)
       })()
     }
 
-    const postMemberToList = async (data: Member) => {
+    const postMembers = async (data: Member[]) => {
       await RepositoryFactory.get(MemberCheckRepository)
         .update(props.check.endpoint, data)
         .then(() => {
-          context.emit('actionSuccess', 'POST')
+          context.emit('actionSuccess', 'UPDATE')
         })
     }
 
-    const fetchedSearchResults = (results: any) => {
+    const fetchedSearchResults = (results: Member[]) => {
       loading.value = false
-      fetchedMembers.value = results
+      //KEEP THE CHECKED MEMBERS
+      let checkedMembers: Member[] = []
+
+      fetchedMembers.value.forEach((fetchedMember: Member) => {
+        if (fetchedMember.isChecked) {
+          checkedMembers.push(fetchedMember)
+        }
+      })
+
+      //SET CHECKED MEMBERS
+      fetchedMembers.value = checkedMembers
+
+
+      //  --> first check adminId then id because id changes?
+      const checkForId = (memb1: Member, memb2: Member): boolean => {
+        if (memb1.groupAdminId && memb1.groupAdminId === memb2.groupAdminId) {
+          return true
+        } else if (memb1.id && memb1.id === memb2.id) {
+          return true
+        } else return false
+      }
+
+      //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
+      results.forEach((r: Member) => {
+        if (!(fetchedMembers.value.some((f: Member) => checkForId(f,r)))) {
+          fetchedMembers.value.push(r)
+        }
+      })
     }
 
-    const addMember = async (member: Member) => {
-      await postMemberToList(member)
-      context.emit('update:sideBarState', { state: 'hide' })
+    const addMembers = async (members: Member[]) => {
+      isPatching.value = true
+      await postMembers(members)
+      isPatching.value = false
+      closeSideBar()
+    }
+
+    const displayCheck = (isMultiple: boolean, member: Member) => {
+      if (!isMultiple && fetchedMembers.value.some((f: Member) => f.isChecked == true) && !member.isChecked) {
+          return false
+      } else {
+        return true
+      }
     }
 
     return {
       fetchedSearchResults,
       MemberRepository,
-      isSubmitting,
+      fetchedMembers,
       sideBarState,
       closeSideBar,
+      displayCheck,
       InputTypes,
+      isPatching,
       selected,
       onSubmit,
       loading,
-      values,
       t,
-      fetchedMembers,
-      addMember
     }
   },
 })

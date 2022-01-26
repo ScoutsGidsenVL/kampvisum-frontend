@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 bg-lightGray">
+  <div class="p-2 bg-white shadow-md">
     <message class="p-2" :title="check.checkParent.label" :color="{state: ColorState.SUCCES}" />
     <div>
       <member-item v-for="(member) in check.value" :key="member" :member="member" />
@@ -10,7 +10,7 @@
     </div>
 
     <div class="xs:w-100 md:w-40">
-      <custom-button @click="openMemberSidebar()" class="w-100 mt-4" :extraStyle="'w-100'" :text="check.checkParent.isMultiple ? '+ voeg toe' : '+ voeg toe'" />
+      <custom-button @click="openMemberSidebar()" class="w-100 mt-4" :extraStyle="'w-100'" :text="!check.checkParent.isMultiple ? (check.value.length > 0) ? '+ VERANDER' :  '+ VOEG TOE' : '+ VOEG TOE'" />
     </div>
     <member-sidebar :visum="visum" :check="check" title="Lid" v-model:sideBarState="sidebar" :existingList=[] @actionSuccess="actionSuccess($event)" />
   </div>
@@ -24,6 +24,7 @@ import MemberItem from '../semantics/MemberItem.vue'
 import { defineComponent, ref, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
+import { useNotification } from '@/composable/useNotification'
 
 export default defineComponent({
   name: 'MembersOverview',
@@ -43,18 +44,26 @@ export default defineComponent({
       required: true,
     },
   },
-  setup () {
-
+  setup (props, { emit }) {
+    const { triggerNotification } = useNotification()
     const sidebar = ref<any>({state: 'hide'})
 
     const openMemberSidebar = (): void => {
       sidebar.value = {state: 'new'}
     }
 
+    const actionSuccess = (action: string) => {
+      if (action === 'UPDATE') {
+        triggerNotification('Lid/leden succesvol toegevoegd')
+        emit('rl', true)
+      }
+    }
+
     return {
       ColorState,
       openMemberSidebar,
-      sidebar
+      sidebar,
+      actionSuccess
     }
   }
 })

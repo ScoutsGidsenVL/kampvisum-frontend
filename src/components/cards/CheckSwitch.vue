@@ -32,7 +32,7 @@
       </div>
 
       <div class="my-4" v-if="checkType === 'MemberCheck'">
-        <members-overview :visum="visum" :check="check" />
+        <members-overview @rl="rl($event)" :visum="visum" :check="check" />
       </div>
 
       <div class="my-4" v-if="checkType === 'ParticipantCheck'">
@@ -86,10 +86,16 @@ export default defineComponent({
       required: true
     }
   },
-  setup () {
+  setup (props, { emit }) {
+
+    const rl = () => {
+      emit('rl', true)
+    }
+
     return {
       ColorState,
       InputTypes,
+      rl
     }
   }
 })

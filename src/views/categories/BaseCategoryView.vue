@@ -8,7 +8,7 @@
       <div v-if="visum" class="w-100 flex pt-3">
           <div class="w-100">
             <div v-for="(subCategory) in category.subCategories" :key="subCategory" >
-              <base-subcategory-card :visum="visum" class="mb-3" :subCategory="subCategory" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
+              <base-subcategory-card @rl="rl($event)" :visum="visum" class="mb-3" :subCategory="subCategory" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
             </div>
           </div>
           <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
@@ -32,10 +32,10 @@ import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { useCampHelper } from '../../helpers/campHelper'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { Category } from '@/serializer/Category'
+import { Loader } from 'vue-3-component-library'
 import { Visum } from '../../serializer/Visum'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { Loader } from 'vue-3-component-library'
 
 export default defineComponent({
   name: 'BaseCategoryView',
@@ -55,16 +55,19 @@ export default defineComponent({
     const { checkIfIsMobileSize } = usePhoneHelper()
     const isFetchingVisum = ref<boolean>(true)
 
-    getCampByRouteParam().then((v: Visum) => {
-      visum.value = v
-      //NEEDS TO BE REFACTORED AND ONLY RETRIEVE A CATEGORY BASED ON THE SELECTED ID
-      category.value = visum.value.categorySet.categories.find((c: Category) => c.id === route.params.id)
-      isFetchingVisum.value = false
+    const fetchVisum = () => {
+      getCampByRouteParam().then((v: Visum) => {
+        visum.value = v
+        //NEEDS TO BE REFACTORED AND ONLY RETRIEVE A CATEGORY BASED ON THE SELECTED ID
+        category.value = visum.value.categorySet.categories.find((c: Category) => c.id === route.params.id)
+        isFetchingVisum.value = false
 
-      if (category.value) {
-        setCategoryInfo(category.value.categoryParent.description)
-      }
-    })
+        if (category.value) {
+          setCategoryInfo(category.value.categoryParent.description)
+        }
+      })
+    }
+        
     const sidebar = ref<Sidebar>({state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
 
     const closeSidebar = () => {
@@ -75,6 +78,12 @@ export default defineComponent({
       sidebar.value.state = SidebarState.OPEN
     }
 
+    const rl = () => {
+      fetchVisum()
+    }
+
+    fetchVisum()
+
     return {
       getSectionsTitle,
       isFetchingVisum,
@@ -84,6 +93,7 @@ export default defineComponent({
       sidebar,
       route,
       visum,
+      rl
     }
   },
 })

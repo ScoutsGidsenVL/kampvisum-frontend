@@ -3,7 +3,7 @@
     <div class="flex gap-3 items-center">
       <i-person />
       <div>
-        {{ member.name }}
+        {{ member.fullName }}
       </div>
     </div>
 

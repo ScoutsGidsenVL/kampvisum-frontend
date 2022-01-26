@@ -2,7 +2,7 @@
   <div>
     <div class="p-3 border border-lightGray flex gap-6 flex-col">
       <header-subcategory-card :subCategory="subCategory" @openSidebar="openSidebar()" />
-      <check-switch v-for="(check) in checks" :key="check" :visum="visum" :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
+      <check-switch @rl="rl($event)" v-for="(check) in checks" :key="check" :visum="visum" :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
     </div>
   </div>
 </template>
@@ -34,12 +34,18 @@ export default defineComponent({
     },
     checks: Array as PropType<Check[]>
   },
-  setup(props, context) {
+  setup(props, {emit}) {
     const openSidebar = () => {
-      context.emit('openSidebar')
+      emit('openSidebar')
     }
+
+    const rl = () => {
+      emit('rl', true)
+    }
+
     return {
-      openSidebar
+      openSidebar,
+      rl
     }
   },
 })

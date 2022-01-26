@@ -1,4 +1,4 @@
-import { Member } from "./Member"
+import { Member, MemberDeserializer } from "./Member"
 
 export interface MemberCheck {
   id?: string
@@ -6,18 +6,23 @@ export interface MemberCheck {
   endpoint: string
 }
 
-export const MemberCheckDeserializer = (input: any): MemberCheck => {
-  const single: MemberCheck = {
-    id: input.id,
-    value: input.value ? input.value : undefined,
-    endpoint: input.endpoint ? input.endpoint : undefined
-  }
-  return single
+export const MemberCheckDeserializer = (input: any[]): Member[] => {
+  const array: Member[] = input.map((m: any) => MemberDeserializer(m))
+  return array
 }
 
-export const MemberCheckSerializer = (input: Member): any => {
+export const MemberCheckSerializer = (input: Member[]): any => {
+
+  let membersToPost: {'group_admin_id': string}[] = []
+
+  input.forEach(member => {
+    if (member.groupAdminId && member.isChecked) {
+      membersToPost.push({group_admin_id: member.groupAdminId})
+    }
+  })
+
   const single: any = {
-    value: input.groupAdminId ? input.groupAdminId : input.id
+    value: membersToPost
   }
   return single
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 bg-lightGray">
+  <div class="p-2 bg-white shadow-md">
     <message class="p-2" :title="check.checkParent.label" :color="{state: ColorState.SUCCES}" />
     <div>
       <member-item v-for="(member) in check.value" :key="member" :member="member" />

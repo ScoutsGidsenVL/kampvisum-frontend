@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div @click="toggle(member)" :class="displayCheck ? 'cursor-pointer' : ''">
     <div class="flex justify-between">
       <strong>{{ member.fullName }}</strong>
-      <div class="flex gap-2 items-center font-bold">
+      <div v-show="displayCheck" class="flex gap-2 items-center font-bold">
         <input class="cursor-pointer" :value="true" v-model="member.isChecked" type="checkbox" id="checked" name="checked">
       </div>
     </div>
@@ -35,10 +35,21 @@ export default defineComponent({
     member: {
       type: Object as PropType<Member>,
       required: true
+    },
+    displayCheck: {
+      type: Boolean,
+      default: true
     }
   },
-  setup() {
+  setup(props) {
+    const toggle = (member: Member) => {
+      if (props.displayCheck) {
+        member.isChecked = !member.isChecked
+      }
+    }
+
     return {
+      toggle
     }
   },
 })
