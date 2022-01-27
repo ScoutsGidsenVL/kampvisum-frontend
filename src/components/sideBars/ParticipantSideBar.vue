@@ -2,12 +2,12 @@
   <div>
     <base-side-bar
       maxWidth="max-w-2xl"
-      :isOverflowHidden="isOverflowHidden"
+      :isOverflowHidden="true"
       :selection="selected"
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
       name="ParticipantSidebar"
-      :title="title"
+      title="Lid"
       :options="options"
       @options="changeSideBar"
       @hideSidebar="closeSideBar"
@@ -127,32 +127,12 @@ export default defineComponent({
     MemberSidebarItem,
   },
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    existingList: {
-      type: Array,
-      default: () => {
-        return []
-      },
-    },
-    closeOnAdd: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
     sideBarState: {
       type: Object as PropType<sideBarState<any>>,
       required: true,
       default: () => {
         'hide'
       },
-    },
-    isOverflowHidden: {
-      type: Boolean,
-      required: false,
-      default: true,
     },
     check: {
       type: Object as PropType<Check>,
@@ -192,32 +172,31 @@ export default defineComponent({
       // await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
       if (props.sideBarState.state === 'search') {
         console.log('fetchedMembers', fetchedMembers.value)
-        addMembers(fetchedMembers.value)
+        patchMembers(fetchedMembers.value)
       }
 
       handleSubmit(async (values: Member) => {
         if (props.sideBarState.state === 'edit') {
           // await updateCamp(values)
-        } else if (props.sideBarState.state === 'new') {
+        } 
+        
+        if (props.sideBarState.state === 'new') {
+          values.groupGroupAdminId = props.visum.groupGroupAdminId
           await postParticipant(values)
         }
         closeSideBar()
       })()
     }
 
-    const postMembers = async (data: Member[]) => {
+    const patchMembers = async (data: Member[]) => {
+      isPatching.value = true
       await RepositoryFactory.get(ParticipantCheckRepository)
         .update(props.check.endpoint, data)
         .then(() => {
           context.emit('actionSuccess', 'PATCH')
+          isPatching.value = false
+          closeSideBar()
         })
-    }
-
-    const addMembers = async (members: Member[]) => {
-      isPatching.value = true
-      await postMembers(members)
-      isPatching.value = false
-      closeSideBar()
     }
 
     const postParticipant = async (participant: Member) => {

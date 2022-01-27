@@ -121,28 +121,12 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    existingList: {
-      type: Array,
-      default: () => {
-        return []
-      },
-    },
-    closeOnAdd: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
     sideBarState: {
       type: Object as PropType<sideBarState<Location>>,
       required: true,
       default: () => {
         'hide'
       },
-    },
-    isExtraInformationComment: {
-      type: Boolean,
-      required: false,
-      default: false,
     },
     isOverflowHidden: {
       type: Boolean,
@@ -158,14 +142,16 @@ export default defineComponent({
   setup(props, context) {
     const check = ref<Check>({ value: PostLocationDeserializer(PostLocationSerializer(props.check.value)), endpoint: props.check.endpoint, checkParent: props.check.checkParent })
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
+    const searchedLocations = ref<Array<SearchedLocation>>([])
+    const searchedLocation = ref<SearchedLocation>({})
+    const { triggerNotification } = useNotification()
+    const fetchedLocationsToSelect = ref<any>([])
+    const patchLoading = ref<boolean>(false)
+    const { sideBarState } = toRefs(props)
+    const loading = ref<boolean>(false)
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>({
       initialValues: props.check.value
     })
-    const { sideBarState } = toRefs(props)
-    const fetchedLocationsToSelect = ref<any>([])
-    const patchLoading = ref<boolean>(false)
-    const { triggerNotification } = useNotification()
-
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -198,9 +184,6 @@ export default defineComponent({
           triggerNotification('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
         })
     }
-
-    const searchedLocations = ref<Array<SearchedLocation>>([])
-    const searchedLocation = ref<SearchedLocation>({})
 
     if (values.locations) {
       searchedLocations.value = values.locations
@@ -247,8 +230,6 @@ export default defineComponent({
       }
       values.locations = searchedLocations.value
     }
-
-    const loading = ref<boolean>(false)
 
     const addOnClick = (latLng: any) => {
       // search based on clicked coords latLng

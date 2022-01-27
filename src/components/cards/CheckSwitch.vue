@@ -1,41 +1,41 @@
 <template>
-  <div v-if="checkType === 'Message'">
+  <!-- <div v-if="checkType === 'Message'">
     <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{ state: ColorState.DANGER }" />
-  </div>
+  </div> -->
 
-  <div v-if="checkType === 'SimpleCheck'">
+  <div v-if="checkType === CheckTypes.SimpleCheck">
     <check-component :check="check" />
   </div>
 
-  <div v-if="checkType === 'DurationCheck'">
+  <div v-if="checkType === CheckTypes.DurationCheck">
       <date-field class="my-2" :key="section" :check="check" />
   </div>
 
-  <div v-if="checkType === 'CommentCheck'">
+  <div v-if="checkType === CheckTypes.CommentCheck">
     <comment-check :check="check" />
   </div>
 
-  <div v-if="checkType === 'CampLocationCheck'">
+  <div v-if="checkType === CheckTypes.CampLocationCheck">
     <div class="pb-5">
       <location-component :check="check" @rl="rl($event)" />
     </div>
   </div>
 
-  <div v-if="checkType === 'LocationCheck'">
+  <div v-if="checkType === CheckTypes.LocationCheck">
     <div class="pb-5">
       <location-component :check="check" @rl="rl($event)" />
     </div>
   </div>
 
-  <div v-if="checkType === 'FileUploadCheck'">
+  <div v-if="checkType === CheckTypes.FileUploadCheck">
     <overview-files :check="check" @rl="rl($event)" />
   </div>
 
-  <div class="my-4" v-if="checkType === 'MemberCheck'">
+  <div class="my-4" v-if="checkType === CheckTypes.MemberCheck">
     <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
   </div>
 
-  <div class="my-4" v-if="checkType === 'ParticipantCheck'">
+  <div class="my-4" v-if="checkType === CheckTypes.ParticipantCheck">
     <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
   </div>
 </template>
@@ -50,7 +50,7 @@ import DateField from '@/components/semantics/DateField.vue'
 import CommentCheck from '../semantics/CommentCheck.vue'
 import { defineComponent, PropType } from 'vue'
 import CheckComponent from './checks/check.vue'
-import { Check } from '../../serializer/Check'
+import { Check, CheckTypes } from '../../serializer/Check'
 import VSwitch from '@lmiller1990/v-switch'
 import { Visum } from '@/serializer/Visum'
 import { Camp } from '@/serializer/Camp'
@@ -91,6 +91,7 @@ export default defineComponent({
     }
 
     return {
+      CheckTypes,
       ColorState,
       InputTypes,
       rl

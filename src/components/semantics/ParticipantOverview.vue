@@ -15,8 +15,8 @@
       </div>
     </div>
         
-    <member-sidebar v-if="check.checkParent.isMember" :visum="visum" :check="check" title="Lid" v-model:sideBarState="sidebar" :existingList=[] @actionSuccess="actionSuccess($event)" />
-    <participant-sidebar v-if="!check.checkParent.isMember" :visum="visum" :check="check" title="Lid" v-model:sideBarState="sidebar" :existingList="[]" @actionSuccess="actionSuccess($event)" />
+    <member-sidebar v-if="check.checkParent.isMember" :visum="visum" :check="check" v-model:sideBarState="sidebar" @actionSuccess="actionSuccess($event)" />
+    <participant-sidebar v-if="!check.checkParent.isMember" :visum="visum" :check="check" v-model:sideBarState="sidebar" @actionSuccess="actionSuccess($event)" />
 
   </div>
 </template>
@@ -62,6 +62,10 @@ export default defineComponent({
     const actionSuccess = (action: string) => {
       if (action === 'PATCH') {
         triggerNotification('Lid/leden succesvol toegevoegd')
+        emit('rl', true)
+      }
+      if (action === 'DELETE') {
+        triggerNotification('Lid succesvol verwijderd uit de lijst')
         emit('rl', true)
       }
     }

@@ -1,4 +1,4 @@
-import { Location, LocationDeserializer, LocationSerializer } from '@/serializer/Location'
+import { Location } from '@/serializer/Location'
 
 export interface BaseMember {
   readonly id: string
@@ -13,7 +13,7 @@ export interface BaseMember {
   readonly comment: string
   readonly city: Location
   readonly postalCode: string
-  readonly group?: string
+  groupGroupAdminId?: string
   readonly email?: string
   readonly fullAddress?: string
   readonly fullName?: string
@@ -44,7 +44,7 @@ export const BaseMemberDeserializer = (input: any): BaseMember => {
   return single
 }
 
-export const BaseMemberSerializer = (input: any): any => {
+export const BaseMemberSerializer = (input: BaseMember): any => {
   const single: any = {
     id: input.id ? input.id : undefined,
     last_name: input.lastName,
@@ -58,7 +58,8 @@ export const BaseMemberSerializer = (input: any): any => {
     comment: input.comment,
     postal_code: Number(input.postalCode),
     city: input.city,
-    group_group_admin_id: input.group ? input.group : null,
+    group_group_admin_id: input.groupGroupAdminId ? input.groupGroupAdminId : null,
+    email: input.email ? input.email : undefined
   }
 
   return single

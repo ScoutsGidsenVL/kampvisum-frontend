@@ -68,28 +68,12 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    existingList: {
-      type: Array,
-      default: () => {
-        return []
-      },
-    },
-    closeOnAdd: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
     sideBarState: {
       type: Object as PropType<sideBarState<Camp>>,
       required: true,
       default: () => {
         'hide'
       },
-    },
-    isExtraInformationComment: {
-      type: Boolean,
-      required: false,
-      default: false,
     },
     isOverflowHidden: {
       type: Boolean,
@@ -190,16 +174,16 @@ export default defineComponent({
     )
 
     return {
+      selectedGroupSections,
+      groupSections,
       isSubmitting,
       sideBarState,
       closeSideBar,
+      InputTypes,
       selected,
       onSubmit,
-      InputTypes,
       values,
       t,
-      groupSections,
-      selectedGroupSections,
     }
   },
 })

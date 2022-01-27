@@ -38,8 +38,8 @@
 
 <script lang="ts">
 import { SidebarState, useInfoBarHelper } from '@/helpers/infoBarHelper'
-import { defineComponent } from 'vue'
 import IInfoGreen from '../icons/IInfoGreen.vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'InformationSideBar',
@@ -49,7 +49,7 @@ export default defineComponent({
   props: {
     isOverflowHidden: Boolean
   },
-  setup(props, context) {
+  setup() {
 
     const { info, setInfo, sidebar } = useInfoBarHelper()
 

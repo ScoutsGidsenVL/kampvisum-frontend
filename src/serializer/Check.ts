@@ -2,10 +2,20 @@ import { CheckParent, CheckParentDeserializer } from "./CheckParent"
 import { CommentCheckDeserializer } from "./CommentCheck"
 
 //VALUE DESERIALIZERS (make it more dynamic MAYBE?)
-import { Value, ValueDeserializer } from "./DurationDateCheck"
-import { MemberCheckDeserializer } from "./MemberCheck"
+import { ValueDeserializer } from "./DurationDateCheck"
 import { ParticipantCheckDeserializer } from "./ParticipitantCheck"
 import { PostLocationDeserializer } from "./PostLocation"
+
+export enum CheckTypes {
+  SimpleCheck = 'SimpleCheck',
+  DurationCheck = 'DurationCheck',
+  CommentCheck = 'CommentCheck',
+  CampLocationCheck = 'CampLocationCheck',
+  LocationCheck = 'LocationCheck',
+  FileUploadCheck = 'FileUploadCheck',
+  MemberCheck = 'MemberCheck',
+  ParticipantCheck = 'ParticipantCheck'
+}
 export interface Check {
   id?: string
   checkParent?: CheckParent
@@ -20,18 +30,18 @@ export const CheckDeserializer = (input: any): Check => {
     endpoint: input.endpoint ? input.endpoint : undefined
   }
 
-  if (single.checkParent?.checkType?.checkType === 'DurationCheck') {
+  if (single.checkParent?.checkType?.checkType === CheckTypes.SimpleCheck) {
     single.value = ValueDeserializer(input.value)
-  } else if (single.checkParent?.checkType?.checkType === 'CommentCheck') 
+  } else if (single.checkParent?.checkType?.checkType === CheckTypes.CommentCheck) 
   {
     single.value = CommentCheckDeserializer(input)
-  } else if (single.checkParent?.checkType?.checkType === 'CampLocationCheck') 
+  } else if (single.checkParent?.checkType?.checkType === CheckTypes.CommentCheck) 
   {
     single.value = PostLocationDeserializer(input.value)
-  } else if (single.checkParent?.checkType?.checkType === 'LocationCheck') 
+  } else if (single.checkParent?.checkType?.checkType === CheckTypes.LocationCheck) 
   {
     single.value = PostLocationDeserializer(input.value)
-  } else if (single.checkParent?.checkType?.checkType === 'ParticipantCheck') 
+  } else if (single.checkParent?.checkType?.checkType === CheckTypes.ParticipantCheck) 
   {
     single.value = ParticipantCheckDeserializer(input.value)
   } else {

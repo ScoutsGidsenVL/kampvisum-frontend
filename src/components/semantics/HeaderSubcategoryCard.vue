@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts">
-import IInfo from '../icons/IInfo.vue'
-import { defineComponent, PropType } from 'vue'
 import { SubCategory } from '@/serializer/SubCategory'
+import { defineComponent, PropType } from 'vue'
+import IInfo from '../icons/IInfo.vue'
 
 export default defineComponent({
   name: 'HeaderSubcategoryCard',
@@ -32,10 +32,6 @@ export default defineComponent({
   },
   components: {
     IInfo
-  },
-  setup (props, context) {
-    return {
-    }
   }
 })
 </script>

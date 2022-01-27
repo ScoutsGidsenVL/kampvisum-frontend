@@ -3,7 +3,7 @@ import { Member, MemberDeserializer, MemberSerializer } from '@/serializer/Membe
 
 export class ParticipantRepository extends BaseRepository {
   id = '/participant/'
-  endpoint = '/non_members/'
+  endpoint = '/participants/'
   searchEndpoint = '/people/'
   deserializer = MemberDeserializer
   serializer = MemberSerializer

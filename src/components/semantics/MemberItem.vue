@@ -33,6 +33,7 @@ import { Member } from '../../serializer/Member'
 import { defineComponent, PropType } from 'vue'
 import IPerson from '../icons/IPerson.vue'
 import IInfo from '../icons/IInfo.vue'
+import { ParticipantRepository } from '@/repositories/ParticipantRepository'
 
 export default defineComponent({
   name: 'MemberItem',
@@ -50,10 +51,10 @@ export default defineComponent({
   setup (props, { emit }) {
 
     const deleteFromList = async (member: Member) => {
-      await RepositoryFactory.get(MemberCheckRepository)
-        .create(member)
+      await RepositoryFactory.get(ParticipantRepository)
+        .removeById(member.id)
         .then(() => {
-          emit('actionSuccess', 'POST')
+          emit('actionSuccess', 'DELETE')
         })
     }
 

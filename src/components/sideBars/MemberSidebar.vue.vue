@@ -3,12 +3,12 @@
     <base-side-bar
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
-      :isOverflowHidden="isOverflowHidden"
+      :isOverflowHidden="true"
       @hideSidebar="closeSideBar"
       :selection="selected"
       maxWidth="max-w-2xl"
       name="MemberSidebar"
-      :title="title"
+      title="Lid"
     >
     <form
         class="flex flex-col h-full"
@@ -66,32 +66,12 @@ export default defineComponent({
     CustomButton
   },
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    existingList: {
-      type: Array,
-      default: () => {
-        return []
-      },
-    },
-    closeOnAdd: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
     sideBarState: {
-      type: Object as PropType<sideBarState<Location>>,
+      type: Object as PropType<sideBarState<any>>,
       required: true,
       default: () => {
         'hide'
       },
-    },
-    isOverflowHidden: {
-      type: Boolean,
-      required: false,
-      default: true,
     },
     check: {
       type: Object as PropType<Check>,
@@ -177,11 +157,10 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
-  margin-left: 20x;
   padding-left: 20px;
 }
 
@@ -189,7 +168,6 @@ export default defineComponent({
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px #ececec;
   border-radius: 10px;
-  margin-left: 20x;
   padding-left: 20px;
 }
 
@@ -197,7 +175,6 @@ export default defineComponent({
 ::-webkit-scrollbar-thumb {
   background: #212529;
   border-radius: 10px;
-  margin-left: 20x;
   padding-left: 20px;
 }
 </style>
