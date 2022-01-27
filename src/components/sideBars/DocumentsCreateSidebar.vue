@@ -149,17 +149,9 @@ export default defineComponent({
       })()
     }
 
-    const patchFilesToList = (files: Array<FileItem>) => {
-      files.forEach((file: FileItem) => {
-          if (file.isChecked) {
-            patchFileToList(file)
-          }
-        });
-    }
-
-    const patchFileToList = async (file: FileItem) => {
+    const patchFilesToList = async (files: FileItem[]) => {
       await RepositoryFactory.get(FileCheckRepository)
-        .update(props.check.endpoint, file)
+        .update(props.check.endpoint, files)
         .then(() => {
           context.emit('actionSuccess', 'POST')
         })

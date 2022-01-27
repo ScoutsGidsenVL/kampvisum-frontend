@@ -28,7 +28,7 @@ export default defineComponent({
       required: true
     },
   },
-  setup (props, context) {
+  setup (props, { emit }) {
     const isReloading = ref<boolean>(false)
     const { check } = toRefs(props)
     const createSidebar = ref<any>({state: 'hide'})
@@ -42,6 +42,7 @@ export default defineComponent({
       if (action.action === 'PATCH') {
         check.value.value = action.data
         reloadMapComponent()
+        emit('rl', true)
       }
     }
 

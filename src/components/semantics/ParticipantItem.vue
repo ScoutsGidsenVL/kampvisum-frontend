@@ -27,12 +27,12 @@
 </template>
 
 <script lang="ts">
-import { MemberCheckRepository } from '@/repositories/MemberCheckRepository'
-import RepositoryFactory from '@/repositories/repositoryFactory'
 import { Member } from '../../serializer/Member'
 import { defineComponent, PropType } from 'vue'
 import IPerson from '../icons/IPerson.vue'
 import IInfo from '../icons/IInfo.vue'
+import RepositoryFactory from '@/repositories/repositoryFactory'
+import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
 
 export default defineComponent({
   name: 'MemberItem',
@@ -50,8 +50,8 @@ export default defineComponent({
   setup (props, { emit }) {
 
     const deleteFromList = async (member: Member) => {
-      await RepositoryFactory.get(MemberCheckRepository)
-        .create(member)
+      await RepositoryFactory.get(ParticipantCheckRepository)
+        .softRemove('', member)
         .then(() => {
           emit('actionSuccess', 'POST')
         })

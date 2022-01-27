@@ -78,6 +78,12 @@ export abstract class BaseRepository extends BaseApiRepository {
     return this.delete(this.endpoint + id)
   }
 
+  softRemove(url: string, data: any) {
+    return this.softDelete(url, this.serializer(data)).then((response: any) => {
+      return this.deserializer(response)
+    })
+  }
+
   public downloadFile(id: string): Promise<Blob> {
     return this.getFile(`${this.endpoint}${id}/`).then((res) => {
       return res

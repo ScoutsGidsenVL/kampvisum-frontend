@@ -15,10 +15,19 @@ export const FileCheckDeserializer = (input: any): FileCheck => {
   return single
 }
 
-export const FileCheckSerializer = (input: FileItem): any => {
-  const single: any = {
-    value: input.id
+export const FileCheckSerializer = (input: FileItem[]): any => {
+  let filesToPost: {'id': string}[] = []
+
+  input.forEach((file: FileItem) => {
+    if (file.isChecked && file.id) {
+      filesToPost.push({id: file.id})
+    }
+  })
+
+  const array: any = {
+    value: filesToPost
   }
-  return single
+  
+  return array
 }
 

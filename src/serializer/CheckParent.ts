@@ -8,6 +8,7 @@ export interface CheckParent {
   link?: string
   name?: string
   isMultiple?: Boolean
+  isMember?: Boolean
 }
 
 export const CheckParentDeserializer = (input: any): CheckParent => {
@@ -18,7 +19,8 @@ export const CheckParentDeserializer = (input: any): CheckParent => {
     label: input.label ? input.label : undefined,
     link: input.link ? input.link : undefined,
     name: input.name ? input.name : undefined,
-    isMultiple: input.is_multiple ? input.is_multiple : false
+    isMultiple: input.is_multiple ? input.is_multiple : false,
+    isMember: input.is_member ? input.is_member : false
   }
 
   return single

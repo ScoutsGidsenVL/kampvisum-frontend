@@ -1,19 +1,18 @@
 import { BaseRepository } from '@/repositories/baseRepository'
-import { FourageMember, FourageMemberDeserializer, FourageMemberSerializer } from '@/serializer/FourageMember'
+import { Member, MemberDeserializer, MemberSerializer } from '@/serializer/Member'
 
-export class FourageRepository extends BaseRepository {
-  id = '/fourage/'
+export class ParticipantRepository extends BaseRepository {
+  id = '/participant/'
   endpoint = '/non_members/'
   searchEndpoint = '/people/'
-  deserializer = FourageMemberDeserializer
-  serializer = FourageMemberSerializer
-
+  deserializer = MemberDeserializer
+  serializer = MemberSerializer
 
   search(query: string, group?: string): Promise<any> {
     return this.get(`${this.searchEndpoint}?term=${query}${(group ? `/${group}` : '')}`, {}).then((response: Array<any>) => {
       const array: any[] = []
-      response.forEach((result: FourageMember) => {
-        result = FourageMemberDeserializer(result)
+      response.forEach((result: Member) => {
+        result = MemberDeserializer(result)
         array.push(result)
       })
       return array

@@ -98,6 +98,20 @@ export default abstract class BaseApiRepository {
       })
   }
 
+  protected softDelete(endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
+    config.data = data
+    
+    return this.axiosInstance
+      .delete(endpoint, config)
+      .then(function (result: AxiosResponse) {
+        // Only return the data of response
+        return result.data
+      })
+      .catch((error: any) => {
+        return this.processError(error)
+      })
+  }
+
   protected getFile(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
     config = {
       ...config,

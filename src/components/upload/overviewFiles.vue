@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 bg-lightGray">
+  <div class="p-2 bg-white shadow-md border-2 border-gray">
     <div v-for="(file) in check.value" :key="file">
       <file-item :file="file" />
     </div>
@@ -9,7 +9,7 @@
     </div>
 
     <div>
-      <div class="mt-2">
+      <div class="mt-2 text-center">
         <custom-button @click="openLocationCreateSidebar()" class="mt-4" text="+ voeg document(en) toe" />
       </div>
     </div>
@@ -19,6 +19,7 @@
 
 <script lang="ts">
 import FileItem from './FileItem.vue'
+import { useNotification } from '@/composable/useNotification'
 import { defineComponent, ref, PropType } from 'vue'
 import { CustomButton } from 'vue-3-component-library'
 import DocumentsCreateSidebar from '../sideBars/DocumentsCreateSidebar.vue'
@@ -37,14 +38,8 @@ export default defineComponent({
       required: true
     },
   },
-  setup () {
-    // const { value: selectedFile } = useField<any>('file', 'fileSize', {})
-    // const selectedFile = ref<any>()
-
-    // const selectFile = (data: any) => {
-    //   selectedFile.value = data.target.files[0]
-    // }
-
+  setup (props, { emit }) {
+    const { triggerNotification } = useNotification()
     const createSidebar = ref<any>({state: 'hide'})
 
     const openLocationCreateSidebar = (): void => {
@@ -52,18 +47,16 @@ export default defineComponent({
     }
 
     const actionSuccess = (action: string) => {
-      if (action === 'POST') {
-        console.log('Kamp is succesvol aangemaakt')
-      }
       if (action === 'UPDATE') {
-        console.log('Kamp is succesvol bewerkt')
+        triggerNotification('Bestand(en) succesvol toegevoegd')
+        emit('rl', true)
       }
-      // get locations again to update the data in the map
     }
 
     return {
       openLocationCreateSidebar,
-      createSidebar
+      createSidebar,
+      actionSuccess
     }
   }
 })

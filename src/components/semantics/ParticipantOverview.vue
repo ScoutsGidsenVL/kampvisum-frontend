@@ -9,22 +9,28 @@
       <p class="italic">Niets om te weergeven</p>
     </div>
 
-    <div class="xs:w-100 md:w-40">
-      <custom-button @click="openMemberSidebar()" class="w-100 mt-4" :extraStyle="'w-100'" :text="!check.checkParent.isMultiple ? (check.value.length > 0) ? '+ VERANDER' :  '+ VOEG TOE' : '+ VOEG TOE'" />
+    <div class="flex justify-center">
+      <div class="xs:w-100 md:w-40">
+        <custom-button @click="openMemberSidebar()" class="w-100 mt-4" :extraStyle="'w-100'" text="+ voeg toe" />
+      </div>
     </div>
-    <member-sidebar :visum="visum" :check="check" title="Lid" v-model:sideBarState="sidebar" :existingList=[] @actionSuccess="actionSuccess($event)" />
+        
+    <member-sidebar v-if="check.checkParent.isMember" :visum="visum" :check="check" title="Lid" v-model:sideBarState="sidebar" :existingList=[] @actionSuccess="actionSuccess($event)" />
+    <participant-sidebar v-if="!check.checkParent.isMember" :visum="visum" :check="check" title="Lid" v-model:sideBarState="sidebar" :existingList="[]" @actionSuccess="actionSuccess($event)" />
+
   </div>
 </template>
 
 <script lang="ts">
-import Message, { ColorState } from '../semantics/message.vue'
+import ParticipantSidebar from '../sideBars/ParticipantSideBar.vue'
+import { useNotification } from '@/composable/useNotification'
 import MemberSidebar from '../sideBars/MemberSidebar.vue'
 import { CustomButton } from 'vue-3-component-library'
-import MemberItem from '../semantics/MemberItem.vue'
 import { defineComponent, ref, PropType } from 'vue'
+import Message, { ColorState } from './message.vue'
 import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
-import { useNotification } from '@/composable/useNotification'
+import MemberItem from './MemberItem.vue'
 
 export default defineComponent({
   name: 'MembersOverview',
@@ -32,6 +38,7 @@ export default defineComponent({
     Message,
     MemberItem,
     CustomButton,
+    ParticipantSidebar,
     MemberSidebar
   },
   props: {
@@ -49,21 +56,21 @@ export default defineComponent({
     const sidebar = ref<any>({state: 'hide'})
 
     const openMemberSidebar = (): void => {
-      sidebar.value = {state: 'new'}
+      sidebar.value = {state: 'search'}
     }
 
     const actionSuccess = (action: string) => {
-      if (action === 'UPDATE') {
+      if (action === 'PATCH') {
         triggerNotification('Lid/leden succesvol toegevoegd')
         emit('rl', true)
       }
     }
 
     return {
-      ColorState,
       openMemberSidebar,
-      sidebar,
-      actionSuccess
+      actionSuccess,
+      ColorState,
+      sidebar
     }
   }
 })

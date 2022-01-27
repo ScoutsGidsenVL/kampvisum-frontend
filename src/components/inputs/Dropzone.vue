@@ -107,10 +107,10 @@
   import { onMounted, ref, defineComponent, PropType } from 'vue'
   import MasterConfig from '@/models/config/masterConfig'
   import { FileItem } from '@/serializer/FileItem'
+  import {Loader} from 'vue-3-component-library'
   import store from '@/store/store'
   import Dropzone from 'dropzone'
-  import {Loader} from 'vue-3-component-library'
-
+  const delay = require('delay');
 
   export default defineComponent({
     name: 'Upload',
@@ -126,15 +126,14 @@
     },
     emits: ['update:progress', 'uploadedFile'],
     setup({}, { emit }) {
-      const dropzoneDiv = ref<HTMLDivElement | undefined>(undefined)
-      const dropzonePreviewDiv = ref<HTMLDivElement | undefined>(undefined)
-      // const auth = inject<authPluginType | undefined>('Auth')
-      const { uploadIsComplete } = useUpload()
-      const uploading = ref<boolean>(false)
-      const doUpload = ref<() => void | undefined>()
       const fileCount = ref<number>(0)
+      const uploading = ref<boolean>(false)
+      const { uploadIsComplete } = useUpload()
+      const doUpload = ref<() => void | undefined>()
       const config: MasterConfig = store.getters.config
+      const dropzoneDiv = ref<HTMLDivElement | undefined>(undefined)
       const baseUrl = `${config.api.baseUrl}/${config.api.apiSuffix}`
+      const dropzonePreviewDiv = ref<HTMLDivElement | undefined>(undefined)
 
       onMounted(async () => {
         if (dropzoneDiv.value && dropzonePreviewDiv) {
@@ -205,7 +204,8 @@
 
           doUpload.value = () => {
             uploading.value = true
-            myDropzone.files.forEach((f: any) => {
+            myDropzone.files.forEach(async (f: any) => {
+              await delay(100)
               uploadFile(f).then(() => uploading.value = false)
             })
 
@@ -221,11 +221,11 @@
       })
 
       return {
-        uploading,
-        doUpload,
-        fileCount,
-        dropzoneDiv,
         dropzonePreviewDiv,
+        dropzoneDiv,
+        uploading,
+        fileCount,
+        doUpload,
       }
     },
   })

@@ -6,7 +6,7 @@
       :selection="selected"
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
-      name="FourageSidebar"
+      name="ParticipantSidebar"
       :title="title"
       :options="options"
       @options="changeSideBar"
@@ -14,7 +14,7 @@
     >
       <!-- CREATE -->
       <form
-        id="FourageForm"
+        id="ParticipantForm"
         ref="formDiv"
         :class="{ 'd-flex': sideBarState.state === 'new' || sideBarState.state === 'edit', 'd-none': sideBarState.state === 'search' }"
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
@@ -27,6 +27,14 @@
 
           <div class="w-100 mt-4">
             <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="lastName" label="Achternaam" />
+          </div>
+
+          <div class="w-100 mt-4">
+            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="email" label="Email" />
+          </div>
+
+          <div class="w-100 mt-4">
+            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="phoneNumber" label="Gsm" />
           </div>
 
           <div class="w-100 mt-4">
@@ -50,7 +58,7 @@
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.DATE" name="birthDate" label="Geboortedatum" />
+            <custom-input :loading-submit="isSubmitting" :type="InputTypes.DATE" rules="required" name="birthDate" label="Geboortedatum" />
           </div>
 
           <div class="w-100 mt-4">
@@ -62,17 +70,18 @@
           <custom-button :loading-submit="isSubmitting" :text="sideBarState.state === 'edit' ? 'Bewerk' : 'Voeg toe'" />
         </div>
       </form>
-
       <!-- SEARCH -->
       <form
-        :class="{ 'd-flex': sideBarState.state === 'search', 'd-none': sideBarState.state === 'new' || sideBarState.state === 'edit' }"
-        class="flex-col h-full pt-3"
+        id="SearchForm"
+        ref="searchFormDiv"
+        :class="{ 'd-none': sideBarState.state === 'new' || sideBarState.state === 'edit', 'd-flex': sideBarState.state === 'search' }"
+        class="flex-col h-full"
         @submit.prevent="onSubmit"
       >
         <div class="p-4 mx-1">
-          <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="FourageRepository" @fetchedOptions="fetchedSearchResults($event)" />
+          <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="ParticipantRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
-        <div class="mx-1 overflow-y-auto">
+        <div class="mx-1 mb-72 overflow-y-auto">
           <div class="mx-4">
             <div
               v-for="(member, index) in fetchedMembers"
@@ -80,18 +89,12 @@
               :class="{ 'border-t-2 border-black': index === 0 }"
               class="py-4 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
             >
-              <member-sidebar-item :member="member">
-                <div class="flex justify-end">
-                  <!-- <custom-button
-                    type="button"
-                    :text="existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId) ? 'Toegevoegd' : 'Voeg toe'"
-                    :disabled="existingList && existingList.some((m) => m.id === member.id || m.groupAdminId === member.groupAdminId) ? true : false"
-                    @click="addMember(member)"
-                  /> -->
-                </div>
-              </member-sidebar-item>
+              <member-sidebar-item :displayCheck="displayCheck(check.checkParent.isMultiple, member, fetchedMembers)" :member="member" />
             </div>
           </div>
+        </div>
+        <div class="mt-5 py-4 px-4 absolute bottom-0 bg-white w-full">
+          <custom-button :isSubmitting="isPatching" text="VOEG TOE" />
         </div>
       </form>
     </base-side-bar>
@@ -100,13 +103,13 @@
 
 <script lang="ts">
 import { BaseSideBar, sideBarState, InputTypes, CustomInput, CustomButton, option } from 'vue-3-component-library'
-import { MemberCheckRepository } from '@/repositories/MemberCheckRepository'
+import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
+import { ParticipantRepository } from '@/repositories/ParticipantRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import { MemberRepository } from '../../repositories/MemberRepository'
-import { FourageRepository } from '@/repositories/FourageRepository'
 import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
+import { useSelectionHelper } from '../../helpers/selectionHelper'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { FourageMember } from '../../serializer/FourageMember'
 import SearchInput from '../inputs/SearchInput.vue'
 import { Member } from '@/serializer/Member'
 import { Check } from '@/serializer/Check'
@@ -115,7 +118,7 @@ import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
-  name: 'FourageSideBar',
+  name: 'ParticipantSideBar',
   components: {
     'base-side-bar': BaseSideBar,
     SearchInput,
@@ -140,7 +143,7 @@ export default defineComponent({
       required: false,
     },
     sideBarState: {
-      type: Object as PropType<sideBarState<Location>>,
+      type: Object as PropType<sideBarState<any>>,
       required: true,
       default: () => {
         'hide'
@@ -162,10 +165,13 @@ export default defineComponent({
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
-    const selected = computed(() => (props.sideBarState.state === 'new' ? 'newFourageSidebar' : 'searchFourageSidebar'))
-    const { resetForm, handleSubmit, values, isSubmitting } = useForm<FourageMember>()
-    const { sideBarState } = toRefs(props)
+    const selected = computed(() => (props.sideBarState.state === 'new' ? 'newParticipantSidebar' : 'searchParticipantSidebar'))
+    const { resetForm, values, isSubmitting, handleSubmit } = useForm<Member>()
+    const { displayCheck, checkForIdMatch } = useSelectionHelper()
     const fetchedMembers = ref<Member[]>([])
+    const { sideBarState } = toRefs(props)
+    const isPatching = ref<boolean>(false)
+    const loading = ref<boolean>(false)
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -183,66 +189,89 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
-      // await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
-      handleSubmit(async (values: FourageMember) => {
+      // await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
+      if (props.sideBarState.state === 'search') {
+        console.log('fetchedMembers', fetchedMembers.value)
+        addMembers(fetchedMembers.value)
+      }
+
+      handleSubmit(async (values: Member) => {
         if (props.sideBarState.state === 'edit') {
           // await updateCamp(values)
-        } else {
-          await postFourage(values)
+        } else if (props.sideBarState.state === 'new') {
+          await postParticipant(values)
         }
         closeSideBar()
       })()
     }
 
-    const postFourage = async (fourage: FourageMember) => {
-      await RepositoryFactory.get(FourageRepository)
-        .create(fourage)
+    const postMembers = async (data: Member[]) => {
+      await RepositoryFactory.get(ParticipantCheckRepository)
+        .update(props.check.endpoint, data)
+        .then(() => {
+          context.emit('actionSuccess', 'PATCH')
+        })
+    }
+
+    const addMembers = async (members: Member[]) => {
+      isPatching.value = true
+      await postMembers(members)
+      isPatching.value = false
+      closeSideBar()
+    }
+
+    const postParticipant = async (participant: Member) => {
+      await RepositoryFactory.get(ParticipantRepository)
+        .create(participant)
         .then(() => {
           context.emit('actionSuccess', 'POST')
         })
     }
 
-    const fetchedSearchResults = (results: any) => {
+    const fetchedSearchResults = (results: Member[]) => {
       loading.value = false
-      fetchedMembers.value = results
+      //KEEP THE CHECKED MEMBERS
+      let checkedMembers: Member[] = []
+
+      fetchedMembers.value.forEach((fetchedMember: Member) => {
+        if (fetchedMember.isChecked) {
+          checkedMembers.push(fetchedMember)
+        }
+      })
+
+      //SET CHECKED MEMBERS
+      fetchedMembers.value = checkedMembers
+
+      //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
+      results.forEach((r: Member) => {
+        if (!(fetchedMembers.value.some((f: Member) => checkForIdMatch(f,r)))) {
+          fetchedMembers.value.push(r)
+        }
+      })
     }
 
-    const changeSideBar = (options: 'newFourageSidebar' | 'searchFourageSidebar') => {
-      if (options === 'newFourageSidebar') {
+    const changeSideBar = (options: 'newParticipantSidebar' | 'searchParticipantSidebar') => {
+      if (options === 'newParticipantSidebar') {
         context.emit('update:sideBarState', { state: 'new' })
       }
 
-      if (options === 'searchFourageSidebar') {
+      if (options === 'searchParticipantSidebar') {
         context.emit('update:sideBarState', { state: 'search' })
       }
     }
 
-    const postMemberToList = async (data: Member[]) => {
-      await RepositoryFactory.get(MemberCheckRepository)
-        .update(props.check.endpoint, data)
-        .then(() => {
-          context.emit('actionSuccess', 'POST')
-        })
-    }
-
-    const addMember = (members: Member[]) => {
-      postMemberToList(members)
-      context.emit('update:sideBarState', { state: 'hide' })
-    }
-
-    const loading = ref<boolean>(false)
-
     return {
+      ParticipantRepository,
       fetchedSearchResults,
       MemberRepository,
-      FourageRepository,
       fetchedMembers,
       changeSideBar,
       isSubmitting,
       sideBarState,
       closeSideBar,
+      displayCheck,
       InputTypes,
-      addMember,
+      isPatching,
       selected,
       onSubmit,
       loading,

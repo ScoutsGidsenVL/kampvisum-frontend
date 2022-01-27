@@ -28,7 +28,7 @@
               :class="{ 'border-t-2 border-black': index === 0 }"
               class="py-2 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
             >
-              <member-sidebar-item :displayCheck="displayCheck(check.checkParent.isMultiple, member)" :member="member" />
+              <member-sidebar-item :displayCheck="displayCheck(check.checkParent.isMultiple, member, fetchedMembers)" :member="member" />
             </div>
           </div>
         </div>
@@ -42,13 +42,13 @@
 </template>
 
 <script lang="ts">
+import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
 import { BaseSideBar, sideBarState, InputTypes } from 'vue-3-component-library'
-import { MemberCheckRepository } from '@/repositories/MemberCheckRepository'
 import { MemberRepository } from '../../repositories/MemberRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
+import { useSelectionHelper } from '../../helpers/selectionHelper'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { PostLocation } from '../../serializer/PostLocation'
 import { CustomButton } from 'vue-3-component-library'
 import SearchInput from '../inputs/SearchInput.vue'
 import { Member } from '@/serializer/Member'
@@ -105,12 +105,12 @@ export default defineComponent({
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
+    const { displayCheck, checkForIdMatch } = useSelectionHelper()
     const fetchedMembers = ref<Member[]>([])
     const { sideBarState } = toRefs(props)
     const isPatching = ref<boolean>(false)
     const loading = ref<boolean>(false)
     const { handleSubmit} = useForm()
-
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -122,15 +122,18 @@ export default defineComponent({
 
     const onSubmit = async () => {
       handleSubmit(async () => {
-        addMembers(fetchedMembers.value)
+        patchMembers(fetchedMembers.value)
       })()
     }
 
-    const postMembers = async (data: Member[]) => {
-      await RepositoryFactory.get(MemberCheckRepository)
+    const patchMembers = async (data: Member[]) => {
+      isPatching.value = true
+      await RepositoryFactory.get(ParticipantCheckRepository)
         .update(props.check.endpoint, data)
         .then(() => {
-          context.emit('actionSuccess', 'UPDATE')
+          context.emit('actionSuccess', 'PATCH')
+          isPatching.value = false
+          closeSideBar()
         })
     }
 
@@ -148,37 +151,12 @@ export default defineComponent({
       //SET CHECKED MEMBERS
       fetchedMembers.value = checkedMembers
 
-
-      //  --> first check adminId then id because id changes?
-      const checkForId = (memb1: Member, memb2: Member): boolean => {
-        if (memb1.groupAdminId && memb1.groupAdminId === memb2.groupAdminId) {
-          return true
-        } else if (memb1.id && memb1.id === memb2.id) {
-          return true
-        } else return false
-      }
-
       //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
       results.forEach((r: Member) => {
-        if (!(fetchedMembers.value.some((f: Member) => checkForId(f,r)))) {
+        if (!(fetchedMembers.value.some((f: Member) => checkForIdMatch(f,r)))) {
           fetchedMembers.value.push(r)
         }
       })
-    }
-
-    const addMembers = async (members: Member[]) => {
-      isPatching.value = true
-      await postMembers(members)
-      isPatching.value = false
-      closeSideBar()
-    }
-
-    const displayCheck = (isMultiple: boolean, member: Member) => {
-      if (!isMultiple && fetchedMembers.value.some((f: Member) => f.isChecked == true) && !member.isChecked) {
-          return false
-      } else {
-        return true
-      }
     }
 
     return {
