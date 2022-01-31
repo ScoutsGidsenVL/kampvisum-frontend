@@ -7,7 +7,8 @@ export interface ParticipitantCheck {
 }
 
 interface participantToPatch {
-  id: string
+  id?: string
+  group_admin_id?: string
 }
 
 export const ParticipantCheckDeserializer = (input: any[]): Member[] => {
@@ -20,7 +21,12 @@ export const ParticipantCheckSerializer = (input: Member[]): any => {
   let membersToPatch: Array<participantToPatch> = []
   input.forEach(member => {
     if (member.isChecked) {
-        membersToPatch.push({ id: member.id })
+        if (member.isMember) {
+          membersToPatch.push({ group_admin_id: member.id })
+        }
+        if (!member.isMember) {
+          membersToPatch.push({ id: member.id })
+        }
     }
   })
 

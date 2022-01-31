@@ -24,7 +24,7 @@ export interface BaseMember {
 
 export const BaseMemberDeserializer = (input: any): BaseMember => {
   const single: BaseMember = {
-    id: input.id ? input.id : undefined,
+    id: input.id ? input.id : input.group_admin_id,
     groupAdminId: input.group_admin_id ? input.group_admin_id : undefined,
     lastName: input.last_name,
     firstName: input.first_name,

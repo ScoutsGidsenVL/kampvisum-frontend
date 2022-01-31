@@ -20,6 +20,7 @@
     "dayjs": "^1.10.7",
     "delay": "^5.0.0",
     "dropzone": "^5.9.3",
+    "file-saver": "^2.0.5",
     "inuits-vuejs-oidc": "git+https://github.com/inuits/inuits-vuejs-oidc.git#next",
     "is-online": "^9.0.1",
     "leaflet": "^1.7.1",

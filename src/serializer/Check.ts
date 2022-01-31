@@ -30,15 +30,15 @@ export const CheckDeserializer = (input: any): Check => {
     endpoint: input.endpoint ? input.endpoint : undefined
   }
 
-  if (single.checkParent?.checkType?.checkType === CheckTypes.SimpleCheck) {
+  if (single.checkParent?.checkType?.checkType === CheckTypes.DurationCheck) {
     single.value = ValueDeserializer(input.value)
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.CommentCheck) 
   {
     single.value = CommentCheckDeserializer(input)
-  } else if (single.checkParent?.checkType?.checkType === CheckTypes.CommentCheck) 
+  } else if (single.checkParent?.checkType?.checkType === CheckTypes.LocationCheck) 
   {
     single.value = PostLocationDeserializer(input.value)
-  } else if (single.checkParent?.checkType?.checkType === CheckTypes.LocationCheck) 
+  } else if (single.checkParent?.checkType?.checkType === CheckTypes.CampLocationCheck) 
   {
     single.value = PostLocationDeserializer(input.value)
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.ParticipantCheck) 

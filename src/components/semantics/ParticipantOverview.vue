@@ -2,7 +2,7 @@
   <div class="p-2 bg-white shadow-md">
     <message class="p-2" :title="check.checkParent.label" :color="{state: ColorState.SUCCES}" />
     <div>
-      <member-item v-for="(member) in check.value" :key="member" :member="member" />
+      <member-item v-for="(participant) in check.value" :key="participant" :check="check" :participant="participant" @actionSuccess="actionSuccess($event)"/>
     </div>
 
     <div class="text-center mt-3" v-if="check.value.length === 0">
@@ -62,12 +62,11 @@ export default defineComponent({
     const actionSuccess = (action: string) => {
       if (action === 'PATCH') {
         triggerNotification('Lid/leden succesvol toegevoegd')
-        emit('rl', true)
       }
       if (action === 'DELETE') {
         triggerNotification('Lid succesvol verwijderd uit de lijst')
-        emit('rl', true)
       }
+      emit('rl', true)
     }
 
     return {

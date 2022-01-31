@@ -3,7 +3,7 @@ import { BaseRepository } from '../repositories/baseRepository'
 
 export class MemberRepository extends BaseRepository {
   id = '/member/'
-  endpoint = '/members/ga/'
+  endpoint = '/participants/members/'
   deserializer = MemberDeserializer
   serializer = MemberSerializer
 

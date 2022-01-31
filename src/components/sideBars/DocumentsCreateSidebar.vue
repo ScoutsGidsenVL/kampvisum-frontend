@@ -52,22 +52,22 @@
 <script lang="ts">
 import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, CustomHeader } from 'vue-3-component-library'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
+import { FileCheckRepository } from '@/repositories/FileCheckRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 import DateField from '@/components/semantics/DateField.vue'
 import { PostLocation } from '../../serializer/PostLocation'
 import { DeadlineItem } from '@/serializer/DeadlineItem'
 import { useUpload } from '../../composable/useUpload'
+import FileItemComponent from '../upload/FileItem.vue'
 import { useForm, ErrorMessage } from 'vee-validate'
 import SearchInput from '../inputs/SearchInput.vue'
-import Dropzone from '../inputs/Dropzone.vue'
-import FileItemComponent from '../upload/FileItem.vue'
-import { useI18n } from 'vue-i18n'
 import { FileItem } from '@/serializer/FileItem'
-import RepositoryFactory from '@/repositories/repositoryFactory'
-import { FileCheckRepository } from '@/repositories/FileCheckRepository'
+import Dropzone from '../inputs/Dropzone.vue'
 import { Check } from '@/serializer/Check'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',

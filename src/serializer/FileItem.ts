@@ -1,5 +1,5 @@
 export interface FileItem {
-  readonly id?: string
+  readonly id: string
   contentType?: string
   url?: string
   name?: string

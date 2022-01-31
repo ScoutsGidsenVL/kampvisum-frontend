@@ -17,7 +17,7 @@
               </svg>
             </div>
 
-            <div v-if="!canBeChecked" class="flex gap-2 cursor-pointer">
+            <div v-if="!canBeChecked" @click="deleteFromList(file)" class="flex gap-2 cursor-pointer">
               <p class="underline text-xs text-darkGray hover:text-black" >Verwijder</p>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 stroke-current text-red" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -46,10 +46,14 @@
 </template>
 
 <script lang="ts">
-import { FileRepository } from '@/repositories/FileRepository'
+import { FileCheckRepository } from '@/repositories/FileCheckRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
+import { FileRepository } from '@/repositories/FileRepository'
 import { FileItem } from '@/serializer/FileItem'
 import { defineComponent, PropType } from 'vue'
+import { Check } from '@/serializer/Check'
+const { saveAs } = require('file-saver')
+
 
 export default defineComponent({
   name: 'FileItem',
@@ -58,20 +62,37 @@ export default defineComponent({
     file: {
       type: Object as PropType<FileItem>,
       required: true
-    }
+    },
+    check: {
+      type: Object as PropType<Check>,
+      required: true
+    },
   },
-  setup () {
+  setup (props, { emit }) {
     const downloadFile = (id: string) => {
-      RepositoryFactory.get(FileRepository).downloadFile(id)
+      RepositoryFactory.get(FileRepository).downloadFile(id).then((downloadedFile) => {
+        const savedAsFile = saveAs(downloadedFile, 'ricardo - debug')
+      })
     }
 
     const toggleCheck = (file: FileItem) => {
       file.isChecked = !file.isChecked
     }
 
+    const deleteFromList = async (file: FileItem) => {
+      if (props.check.id) {
+        await RepositoryFactory.get(FileCheckRepository)
+        .removeFileFromList(props.check.id, file.id)
+        .then(() => {
+          emit('actionSuccess', 'DELETE')
+        })
+      }
+    }
+
     return {
       downloadFile,
-      toggleCheck
+      toggleCheck,
+      deleteFromList
     }
   }
 })

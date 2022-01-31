@@ -5,7 +5,7 @@ import { BaseRepository } from "./baseRepository"
 
 export class FileCheckRepository extends BaseRepository {
   id = '/FileCheck/'
-  endpoint = '/checks/'
+  endpoint = '/checks/file/'
   public deserializer = FileCheckDeserializer
   public serializer = FileCheckSerializer
 
@@ -13,5 +13,9 @@ export class FileCheckRepository extends BaseRepository {
     return this.patch(url, this.serializer(data)).then((response: any) => {
       return this.deserializer(response)
     })
+  }
+
+  removeFileFromList(checkId: string, participantId: string): Promise<any> {
+    return this.delete(`${this.endpoint}${checkId}/${participantId}`)
   }
 }
