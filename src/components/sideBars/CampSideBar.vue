@@ -18,8 +18,9 @@
         @submit.prevent="onSubmit"
       >
         <div class="mt-4">
+          {{values}}
           <div class="w-100">
-            <custom-input :isSubmitting="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
+            <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
           </div>
 
           <div v-if="sideBarState.state !== 'hide'">
@@ -30,7 +31,7 @@
             </span>
 
             <div v-for="groupSection in groupSections" :key="groupSection.id">
-              <custom-input v-model="selectedGroupSections" :isSubmitting="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="groupSection.id" :label="groupSection.name.name" />
+              <custom-input v-model="selectedGroupSections" :disabled="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="groupSection.id" :label="groupSection.name.name" />
             </div>
           </div>
         </div>
@@ -104,6 +105,7 @@ export default defineComponent({
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
       resetForm()
+      selectedGroupSections.value = []
     }
 
     const onSubmit = async () => {
