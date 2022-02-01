@@ -153,7 +153,7 @@ export default defineComponent({
       await RepositoryFactory.get(FileCheckRepository)
         .update(props.check.endpoint, files)
         .then(() => {
-          context.emit('actionSuccess', 'POST')
+          context.emit('actionSuccess', 'PATCH')
         })
     }
 

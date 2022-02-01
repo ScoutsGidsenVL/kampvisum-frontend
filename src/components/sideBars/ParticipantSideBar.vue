@@ -171,7 +171,6 @@ export default defineComponent({
     const onSubmit = async () => {
       // await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
       if (props.sideBarState.state === 'search') {
-        console.log('fetchedMembers', fetchedMembers.value)
         patchMembers(fetchedMembers.value)
       }
 
@@ -188,10 +187,10 @@ export default defineComponent({
       })()
     }
 
-    const patchMembers = async (data: Member[]) => {
+    const patchMembers = async (members: Member[]) => {
       isPatching.value = true
       await RepositoryFactory.get(ParticipantCheckRepository)
-        .update(props.check.endpoint, data)
+        .update(props.check.endpoint, members)
         .then(() => {
           context.emit('actionSuccess', 'PATCH')
           isPatching.value = false

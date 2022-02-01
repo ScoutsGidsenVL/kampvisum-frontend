@@ -23,8 +23,7 @@ export const ParticipantCheckSerializer = (input: Member[]): any => {
     if (member.isChecked) {
         if (member.isMember) {
           membersToPatch.push({ group_admin_id: member.id })
-        }
-        if (!member.isMember) {
+        } else {
           membersToPatch.push({ id: member.id })
         }
     }

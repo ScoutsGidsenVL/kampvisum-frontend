@@ -2,11 +2,11 @@
   <div>
     <base-side-bar
       maxWidth="max-w-2xl"
-      :isOverflowHidden="isOverflowHidden"
+      :isOverflowHidden="true"
       :selection="selected"
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
-      name="Camp"
+      name="LocationCreateSidebar"
       :title="title"
       @hideSidebar="closeSideBar"
       width="max-w-2xl"
@@ -20,24 +20,24 @@
       >
         <div class="mt-1flex flex-col gap-3">
           <div class="w-100">
-            <custom-input :type="InputTypes.TEXT" rules="required" name="name" label="Naam locatie" />
+            <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" rules="required" name="name" label="Naam locatie" />
           </div>
         </div>
 
         <div class="py-4">
           <strong class="m-0 text-lg">Contactpersoon</strong>
-          <custom-input :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactName" label="Naam" />
-          <custom-input :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactPhone" label="Gsm nummer" />
-          <custom-input :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactEmail" label="Email" />
+          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactName" label="Naam" />
+          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactPhone" label="Gsm nummer" />
+          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactEmail" label="Email" />
         </div>
 
-        <div class="pb-4 flex flex-col gap-3">
+        <div class="pb-4 flex flex-col gap-3 relative">
           <strong class="m-0 text-lg">Adres(sen)</strong>
 
           <div class="bg-lighterGreen p-2">Zoek een adres of duid het aan op de kaart.</div>
-          <search-input v-model:loading="loading" name="search" placeholder="Zoek adres" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
-          <div v-if="fetchedLocationsToSelect.length > 0" class="border-r-2 border-l-2 border-b-2 border-gray">
-            <div v-for="(fetchedLocation) in fetchedLocationsToSelect" :key="fetchedLocation" class="hover:bg-lightGray p-2 pl-3 cursor-pointer border-b-2 border-gray">
+          <search-input :loadingSubmit="patchLoading" v-model:loading="loading" name="search" placeholder="Zoek adres" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
+          <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-10 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
+            <div v-for="(fetchedLocation, index) in fetchedLocationsToSelect" :key="fetchedLocation" :class="index === 1 ? 'border-t-10': ''" class="border-ligtGray hover:bg-lightGray p-2 pl-3 cursor-pointer border-b-2">
               <div class="flex flex-col" @click="addLocationPoint(fetchedLocation)">
                 <strong>
                  {{fetchedLocation.properties.name}} 
@@ -128,11 +128,6 @@ export default defineComponent({
         'hide'
       },
     },
-    isOverflowHidden: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
     check: {
       type: Object as PropType<Check>,
       required: true
@@ -200,6 +195,10 @@ export default defineComponent({
 
     const emptySearchResults = () => {
       fetchedLocationsToSelect.value = []
+      // values.search = ''
+      const e = document.getElementById('search')
+      // @ts-ignore
+      e.value = ""
     }
 
     const addLocationPoint = (location: SearchedLocation) => {

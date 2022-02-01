@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center">
     <div class="flex items-center gap-3">
       <div>
-        <h4 class="font-semibold font-sans m-0">{{subCategory.subCategoryParent.name}}</h4>
+        <h4 class="font-semibold font-sans m-0">{{subCategory.subCategoryParent.label}}</h4>
       </div>
       <div class="cursor-pointer">
         <i-info :info="subCategory.subCategoryParent.explanation" />

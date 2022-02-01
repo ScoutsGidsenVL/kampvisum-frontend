@@ -6,6 +6,8 @@
     }"
   >
     <input
+      :id="name"
+      :name="name"
       v-model="query"
       :placeholder="placeholder"
       type="text"

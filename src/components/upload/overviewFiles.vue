@@ -10,7 +10,7 @@
 
     <div>
       <div class="mt-2">
-        <custom-button @click="openLocationCreateSidebar()" class="mt-4" text="+ voeg document(en) toe" />
+        <custom-button @click="openCreateSidebar()" class="mt-4" text="+ voeg document(en) toe" />
       </div>
     </div>
   </div>
@@ -42,12 +42,12 @@ export default defineComponent({
     const { triggerNotification } = useNotification()
     const createSidebar = ref<any>({state: 'hide'})
 
-    const openLocationCreateSidebar = (): void => {
+    const openCreateSidebar = (): void => {
       createSidebar.value = {state: 'new'}
     }
 
     const actionSuccess = (action: string) => {
-      if (action === 'UPDATE') {
+      if (action === 'PATCH') {
         triggerNotification('Bestand(en) succesvol toegevoegd')
       }
       if (action === 'DELETE') {
@@ -57,7 +57,7 @@ export default defineComponent({
     }
 
     return {
-      openLocationCreateSidebar,
+      openCreateSidebar,
       createSidebar,
       actionSuccess
     }
