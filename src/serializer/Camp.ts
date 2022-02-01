@@ -41,6 +41,7 @@ export const CampSerializer = (input: any): any => {
     end_date: input.startDate,
     sections: input.sections
   }
-  return single
+  
+  return {camp: single}
 }
 
