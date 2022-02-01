@@ -7,7 +7,7 @@
     </h4>
     <hr />
     <div class="w-100 flex">
-      <div class="w-100 grid xl:grid-cols-2 sm:grid-cols-1 gap-4">
+      <div class="w-100 grid xl:grid-cols-2 gap-4" style="height: fit-content !important">
         <div v-for="category in visum.categorySet.categories" :key="category">
             <category-info-card :visum="visum" :category="category" />
         </div>
