@@ -5,7 +5,7 @@
     </div>
 
     <div class="text-center mt-3" v-if="check.value.length === 0">
-      <p class="italic">Leeg</p>
+      <p class="italic">Geen document</p>
     </div>
 
     <div>
