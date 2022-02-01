@@ -17,6 +17,7 @@
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
         @submit.prevent="onSubmit"
       >
+      <!-- {{sideBarState.entity}} -->
         <div class="mt-4">
           <div class="w-100">
             <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
@@ -53,6 +54,7 @@ import { CampRepository } from '@/repositories/campRepository'
 import { useForm, useField, ErrorMessage } from 'vee-validate'
 import { Camp } from '../../serializer/Camp'
 import { useI18n } from 'vue-i18n'
+import { Visum } from '@/serializer/Visum'
 
 export default defineComponent({
   name: 'CampSideBar',
@@ -69,7 +71,7 @@ export default defineComponent({
       required: true,
     },
     sideBarState: {
-      type: Object as PropType<sideBarState<Camp>>,
+      type: Object as PropType<any>,
       required: true,
       default: () => {
         'hide'
@@ -83,7 +85,7 @@ export default defineComponent({
     selectedGroupId: {
       type: String,
       required: true,
-    },
+    }
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
@@ -121,9 +123,11 @@ export default defineComponent({
     }
 
     const updateCamp = async (data: Camp) => {
-      if (data.id) {
+      if (data.id && props.sideBarState) {
+        console.log('CAMP: ', data)
+        console.log('VISUM: ', props.sideBarState.entity)
         await RepositoryFactory.get(CampRepository)
-          .update(data.id, data)
+          .update(props.sideBarState.entity.id, data)
           .then(() => {
             context.emit('actionSuccess', 'UPDATE')
           })
@@ -160,14 +164,14 @@ export default defineComponent({
       (value: sideBarState<any>) => {
         if (value.state === 'edit') {
           const camp = ref<Camp>({
-            id: value.entity.id,
-            name: value.entity.name,
-            endDate: value.entity.endDate,
-            startDate: value.entity.startDate,
-            sections: value.entity.sections,
+            id: value.entity.camp.id,
+            name: value.entity.camp.name,
+            endDate: value.entity.camp.endDate,
+            startDate: value.entity.camp.startDate,
+            sections: value.entity.camp.sections,
           })
-          camp.value.sections = SectionObjectsToSectionStrings(value.entity.sections)
-          selectedGroupSections.value = SectionObjectsToSectionStrings(value.entity.sections)
+          camp.value.sections = SectionObjectsToSectionStrings(value.entity.camp.sections)
+          selectedGroupSections.value = SectionObjectsToSectionStrings(value.entity.camp.sections)
 
           resetForm({
             values: camp.value,
@@ -181,8 +185,6 @@ export default defineComponent({
               });
             }, 50
           )
-
-          
         }
       }
     )
