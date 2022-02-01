@@ -33,7 +33,7 @@
         </div>
 
         <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
-          <custom-button text="">
+          <custom-button text="" :isSubmitting="isPatching">
             <template v-slot:icon>
               <div class="flex gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -131,6 +131,7 @@ export default defineComponent({
     const loading = ref<boolean>(false)
     const { progress } = useUpload()
     const isUploading = ref<boolean>(false)
+    const isPatching = ref<boolean>(false)
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -145,15 +146,17 @@ export default defineComponent({
     const onSubmit = async () => {
       handleSubmit(async () => {
         patchFilesToList(filesToSelectFrom.value)
-        closeSideBar()
       })()
     }
 
     const patchFilesToList = async (files: FileItem[]) => {
+      isPatching.value = true
       await RepositoryFactory.get(FileCheckRepository)
         .update(props.check.endpoint, files)
         .then(() => {
           context.emit('actionSuccess', 'PATCH')
+          isPatching.value = false
+          closeSideBar()
         })
     }
 
@@ -181,6 +184,7 @@ export default defineComponent({
       closeSideBar,
       uploadedFile,
       isUploading,
+      isPatching,
       InputTypes,
       selected,
       onSubmit,
