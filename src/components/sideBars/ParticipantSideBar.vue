@@ -160,8 +160,8 @@ export default defineComponent({
     })
 
     const options = ref<option[]>([
-      { text: 'Nieuw', value: 'new' },
       { text: 'Zoek', value: 'search' },
+      { text: 'Nieuw', value: 'new' },
     ])
 
     const closeSideBar = () => {
