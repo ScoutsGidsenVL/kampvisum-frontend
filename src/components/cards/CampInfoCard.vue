@@ -3,7 +3,7 @@
       <div class="z-2">
         <div class="flex justify-between">
           <h3 class="text-sm text-green mb-0">
-            <span v-for="(section) in visum.camp.sections" :key="section">
+            <span>
               {{ getSectionsTitle(visum.camp) }}
             </span>
           </h3>
