@@ -26,7 +26,7 @@
               v-for="(member, index) in fetchedMembers"
               :key="member"
               :class="{ 'border-t-2 border-black': index === 0 }"
-              class="py-2 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
+              class="py-1 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
             >
               <member-sidebar-item :displayCheck="displayCheck(check.checkParent.isMultiple, member, fetchedMembers)" :member="member" />
             </div>

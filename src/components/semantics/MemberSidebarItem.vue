@@ -1,25 +1,17 @@
 <template>
   <div @click="toggle(member)" :class="displayCheck ? 'cursor-pointer' : ''">
     <div class="flex justify-between">
-      <strong>{{ member.fullName }}</strong>
-      <div v-show="displayCheck" class="flex gap-2 items-center font-bold">
-        <input class="cursor-pointer" :value="true" v-model="member.isChecked" type="checkbox" id="checked" name="checked">
+      <div class="w-100 grid grid-cols-2">
+      <div>
+        <strong>{{ member.fullName }}</strong>
       </div>
-    </div>
-
-    <div v-if="member.email">
-      {{ member.email }}
-    </div>
-
-    <div v-if="member.phoneNumber">
-      {{ member.phoneNumber }}
-    </div>
-
-    <div v-if="member.birthDate">
-      {{ member.birthDate }}
-    </div>
-
-    <div>
+        <div v-if="member.birthDate">
+          {{ member.birthDate }}
+        </div>
+      </div>
+      <div class="flex gap-2 items-center font-bold">
+        <input :disabled="!displayCheck" :class="displayCheck ? 'cursor-pointer' : '' " :value="true" v-model="member.isChecked" type="checkbox" id="checked" name="checked">
+      </div>
       <slot />
     </div>
   </div>
