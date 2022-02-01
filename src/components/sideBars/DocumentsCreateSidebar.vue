@@ -167,7 +167,8 @@ export default defineComponent({
       items.value.splice(Number(index), 1);
     }
 
-    const uploadedFile = (file: any) => {
+    const uploadedFile = (file: FileItem) => {
+      file.isChecked = true
       filesToSelectFrom.value.push(file)
     }
 

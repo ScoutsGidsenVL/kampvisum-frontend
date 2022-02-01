@@ -5,9 +5,7 @@
     <h4 class="text-green inline">
       {{ getSectionsTitle(visum.camp) }}
     </h4>
-    
     <hr />
-
     <div class="w-100 flex">
       <div class="w-100 grid xl:grid-cols-2 sm:grid-cols-1 gap-4">
         <div v-for="category in visum.categorySet.categories" :key="category">
@@ -17,7 +15,6 @@
       <deadlines-sidebar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
     </div>
   </div>
-
   <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum">
     <div class="text-center">
       <loader color="lightGreen" size="20" :isLoading="isFetchingVisum" />

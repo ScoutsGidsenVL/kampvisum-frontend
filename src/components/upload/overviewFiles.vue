@@ -5,11 +5,11 @@
     </div>
 
     <div class="text-center mt-3" v-if="check.value.length === 0">
-      <p class="italic">Niets om te weergeven</p>
+      <p class="italic">Leeg</p>
     </div>
 
     <div>
-      <div class="mt-2 text-center">
+      <div class="mt-2">
         <custom-button @click="openLocationCreateSidebar()" class="mt-4" text="+ voeg document(en) toe" />
       </div>
     </div>

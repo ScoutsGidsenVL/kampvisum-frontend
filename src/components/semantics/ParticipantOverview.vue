@@ -6,12 +6,12 @@
     </div>
 
     <div class="text-center mt-3" v-if="check.value.length === 0">
-      <p class="italic">Niets om te weergeven</p>
+      <p class="italic">Leeg</p>
     </div>
 
-    <div class="flex justify-center">
+    <div class="flex">
       <div class="xs:w-100 md:w-40">
-        <custom-button @click="openMemberSidebar()" class="w-100 mt-4" :extraStyle="'w-100'" text="+ voeg toe" />
+        <custom-button @click="openMemberSidebar()" class="w-100 mt-4" :extraStyle="'w-100'" :text="check.value.length > 0 ? check.checkParent.isMultiple ? '+ VOEG TOE' : '+ VERANDER' : '+ VOEG TOE'" />
       </div>
     </div>
         

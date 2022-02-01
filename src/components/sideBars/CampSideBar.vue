@@ -18,7 +18,6 @@
         @submit.prevent="onSubmit"
       >
         <div class="mt-4">
-          {{values}}
           <div class="w-100">
             <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
           </div>
