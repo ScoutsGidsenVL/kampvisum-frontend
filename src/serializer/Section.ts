@@ -37,8 +37,8 @@ export const SectionSerializer = (input: any): any => {
 export const SectionObjectsToSectionStrings = (sections: Section[]) => {
   const sectionsUuids: string[] = []
   sections.forEach((section: Section) => {
-    if (section.uuid) {
-      sectionsUuids.push(section.uuid)
+    if (section.id) {
+      sectionsUuids.push(section.id)
     }
   })
 

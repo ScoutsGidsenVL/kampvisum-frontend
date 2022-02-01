@@ -104,6 +104,7 @@ export default defineComponent({
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
       resetForm()
+      values.name = ''
       selectedGroupSections.value = []
     }
 
@@ -167,9 +168,21 @@ export default defineComponent({
           })
           camp.value.sections = SectionObjectsToSectionStrings(value.entity.sections)
           selectedGroupSections.value = SectionObjectsToSectionStrings(value.entity.sections)
+
           resetForm({
             values: camp.value,
           })
+
+          setTimeout(
+            () => {
+              selectedGroupSections.value.forEach((s: any) => {
+                // @ts-ignore
+                document.getElementById('checkbox-'+s).checked = true;
+              });
+            }, 50
+          )
+
+          
         }
       }
     )
