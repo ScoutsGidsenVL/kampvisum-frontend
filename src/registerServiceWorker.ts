@@ -4,7 +4,6 @@ import StaticFileRepository from './repositories/staticFileRepository'
 import { register } from 'register-service-worker'
 import MasterConfig from './models/config/masterConfig'
 
-
 let configFile
 
 new StaticFileRepository().getFile('config.json').then((result: any) => {
