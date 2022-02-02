@@ -1,10 +1,11 @@
 <template>
-  <div class="xs:rounded-md xs:shadow-md md:border-b-2 flex flex-col md:flex-row gap-3 md:gap-0 justify-between p-2.5">
+  <div class="hover-edit xs:rounded-md xs:shadow-md md:border-b-2 flex flex-col md:flex-row gap-3 md:gap-0 justify-between p-2.5">
     <div class="flex gap-3 items-center">
       <i-person />
       <div>
         {{ participant.fullName }}
       </div>
+      <i-pencil @click="openEditForm(participant)" v-if="!participant.isMember" class="pencil" />
     </div>
 
     <div class="flex justify-between md:gap-16 items-center">
@@ -31,6 +32,7 @@ import RepositoryFactory from '@/repositories/repositoryFactory'
 import { Member } from '../../serializer/Member'
 import { defineComponent, PropType } from 'vue'
 import IPerson from '../icons/IPerson.vue'
+import IPencil from '../icons/IPencil.vue'
 import { Check } from '@/serializer/Check'
 import IInfo from '../icons/IInfo.vue'
 
@@ -38,7 +40,8 @@ export default defineComponent({
   name: 'MemberItem',
   components: {
     IPerson,
-    IInfo
+    IInfo,
+    IPencil
   },
   props: {
     participant: {
@@ -54,7 +57,6 @@ export default defineComponent({
   setup (props, { emit }) {
 
     const deleteFromList = async (p: Member) => {
-      console.log('P: ', p, props.check)
       if (props.check.id) {
         await RepositoryFactory.get(ParticipantCheckRepository)
           .removeParticipantFromList(props.check.id, p.id)
@@ -64,9 +66,28 @@ export default defineComponent({
       }
     }
 
+    const openEditForm = (m: Member) => {
+      console.log("mmmmmmmm: ", m)
+      emit('openSidebarToEdit', m)
+    } 
+
     return {
-      deleteFromList
+      deleteFromList,
+      openEditForm
     }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+  .pencil {
+      visibility: hidden;
+      cursor: pointer;
+  }
+
+  .hover-edit:hover {
+    .pencil {
+      visibility: visible;
+    }
+  }
+</style>

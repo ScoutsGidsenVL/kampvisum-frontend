@@ -2,7 +2,7 @@
   <div class="p-2 bg-white shadow-md">
     <message class="p-2" :title="check.checkParent.label" :color="{state: ColorState.SUCCES}" />
     <div>
-      <member-item v-for="(participant) in check.value" :key="participant" :check="check" :participant="participant" @actionSuccess="actionSuccess($event)"/>
+      <member-item v-for="(participant) in check.value" :key="participant" :check="check" :participant="participant" @actionSuccess="actionSuccess($event)" @openSidebarToEdit="openSidebarToEdit($event)"/>
     </div>
 
     <div class="text-center mt-3" v-if="check.value.length === 0">
@@ -31,6 +31,7 @@ import Message, { ColorState } from './message.vue'
 import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
 import MemberItem from './MemberItem.vue'
+import { Member } from '@/serializer/Member'
 
 export default defineComponent({
   name: 'MembersOverview',
@@ -69,7 +70,12 @@ export default defineComponent({
       emit('rl', true)
     }
 
+    const openSidebarToEdit = (m: Member) => {
+      sidebar.value = { state: 'edit', entity: m}
+    }
+
     return {
+      openSidebarToEdit,
       openMemberSidebar,
       actionSuccess,
       ColorState,

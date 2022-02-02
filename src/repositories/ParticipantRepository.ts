@@ -3,16 +3,15 @@ import { Member, MemberDeserializer, MemberSerializer } from '@/serializer/Membe
 
 export class ParticipantRepository extends BaseRepository {
   id = '/participant/'
-  endpoint = '/participant/'
-  searchEndpoint = '/participants/'
+  endpoint = '/participants/'
   deserializer = MemberDeserializer
   serializer = MemberSerializer
 
   search(query: string, group?: string): Promise<any> {
-    return this.get(`${this.searchEndpoint}?term=${query}${(group ? `/${group}` : '')}`, {}).then((response: Array<any>) => {
+    return this.get(`${this.endpoint}?term=${query}${(group ? `/${group}` : '')}`, {}).then((response: any) => {
       const array: any[] = []
 
-      response.forEach((result: Member) => {
+      response.results.forEach((result: Member) => {
         result = MemberDeserializer(result)
         array.push(result)
       })

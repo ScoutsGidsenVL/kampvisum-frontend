@@ -1,24 +1,24 @@
 import { Location } from '@/serializer/Location'
 
 export interface BaseMember {
-  readonly id: string
-  readonly groupAdminId?: string
-  readonly lastName: string
-  readonly firstName: string
-  readonly phoneNumber: string
-  readonly birthDate: string
-  readonly street: string
-  readonly number: string
-  readonly letterBox: string
-  readonly comment: string
-  readonly city: Location
-  readonly postalCode: string
+  id: string
+  groupAdminId?: string
+  lastName: string
+  firstName: string
+  phoneNumber: string
+  birthDate: string
+  street: string
+  number: string
+  letterBox: string
+  comment: string
+  city: Location
+  postalCode: string
   groupGroupAdminId?: string
-  readonly email?: string
-  readonly fullAddress?: string
-  readonly fullName?: string
-  readonly hasPaid?: string
-  readonly isMember?: boolean
+  email?: string
+  fullAddress?: string
+  fullName?: string
+  hasPaid?: string
+  isMember?: boolean
   isChecked?: boolean
 }
 
@@ -39,7 +39,8 @@ export const BaseMemberDeserializer = (input: any): BaseMember => {
     email: input.email ? input.email : undefined,
     fullName: `${input.first_name} ${input.last_name}`,
     fullAddress: `${input.street} ${input.number} ${(input.letter_box ? ' Bus ' + input.letter_box : '')}, ${input.postal_code} ${input.city}`,
-    isMember: input.is_member ? input.is_member : false
+    isMember: input.is_member ? input.is_member : false,
+    isChecked: false
   }
   return single
 }

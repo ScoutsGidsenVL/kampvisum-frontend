@@ -23,52 +23,52 @@
       >
         <div class="mt-4">
           <div class="w-100">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="firstName" label="Voornaam" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="firstName" label="Voornaam" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="lastName" label="Achternaam" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="lastName" label="Achternaam" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="email" label="Email" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="email" label="Email" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="phoneNumber" label="Gsm" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="phoneNumber" label="Gsm" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="city" label="Stad" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="city" label="Stad" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="postalCode" label="Postcode" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="postalCode" label="Postcode" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" rules="required" name="street" label="Straat" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="street" label="Straat" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" maxlength="5" rules="required" name="number" label="Nr" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" maxlength="5" rules="required" name="number" label="Nr" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT" maxlength="5" name="letterBox" label="Bus" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" maxlength="5" name="letterBox" label="Bus" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.DATE" rules="required" name="birthDate" label="Geboortedatum" />
+            <custom-input :disabled="isPatching" :type="InputTypes.DATE" rules="required" name="birthDate" label="Geboortedatum" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :loading-submit="isSubmitting" :type="InputTypes.TEXT_AREA" name="comment" label="Opmerking" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT_AREA" name="comment" label="Opmerking" />
           </div>
         </div>
 
         <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
-          <custom-button :loading-submit="isSubmitting" :text="sideBarState.state === 'edit' ? 'Bewerk' : 'Voeg toe'" />
+          <custom-button :isSubmitting="isPatching" :text="sideBarState.state === 'edit' ? 'Bewerk' : 'Voeg toe'" />
         </div>
       </form>
       <!-- SEARCH -->
@@ -106,7 +106,7 @@
 import { BaseSideBar, sideBarState, InputTypes, CustomInput, CustomButton, option } from 'vue-3-component-library'
 import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
 import { ParticipantRepository } from '@/repositories/ParticipantRepository'
-import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
+import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { MemberRepository } from '../../repositories/MemberRepository'
 import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
 import { useSelectionHelper } from '../../helpers/selectionHelper'
@@ -129,7 +129,7 @@ export default defineComponent({
   },
   props: {
     sideBarState: {
-      type: Object as PropType<sideBarState<any>>,
+      type: Object as PropType<any>,
       required: true,
       default: () => {
         'hide'
@@ -175,17 +175,29 @@ export default defineComponent({
         patchMembers(fetchedMembers.value)
       }
 
+      if (props.sideBarState.state === 'edit') {
+          await updateParticipant(values)
+      }
+
       handleSubmit(async (values: Member) => {
-        if (props.sideBarState.state === 'edit') {
-          // await updateCamp(values)
-        } 
-        
         if (props.sideBarState.state === 'new') {
           values.groupGroupAdminId = props.visum.groupGroupAdminId
           await postParticipant(values)
         }
-        closeSideBar()
       })()
+    }
+
+    const updateParticipant = async (member: Member) => {
+      if (member.id && props.sideBarState) {
+        isPatching.value = true
+        await RepositoryFactory.get(ParticipantRepository)
+          .update(member.id, member)
+          .then(() => {
+            context.emit('actionSuccess', 'UPDATE')
+            isPatching.value = false
+            closeSideBar()
+          })
+      }
     }
 
     const patchMembers = async (members: Member[]) => {
@@ -202,8 +214,10 @@ export default defineComponent({
     const postParticipant = async (participant: Member) => {
       await RepositoryFactory.get(ParticipantRepository)
         .create(participant)
-        .then(() => {
+        .then((m: Member) => {
           context.emit('actionSuccess', 'POST')
+          m.isChecked = true
+          patchMembers([m])
         })
     }
 
@@ -239,6 +253,24 @@ export default defineComponent({
         context.emit('update:sideBarState', { state: 'search' })
       }
     }
+
+    watch(() => props.sideBarState, () => {
+      if (props.sideBarState.entity) {
+      let m: Member = props.sideBarState.entity
+      values.id = m.id
+      values.firstName = m.firstName
+      values.lastName = m.lastName
+      values.email = m.email
+      values.phoneNumber = m.phoneNumber
+      values.city = m.city
+      values.postalCode = m.postalCode
+      values.street = m.street
+      values.number = m.number
+      values.letterBox = m.letterBox
+      values.birthDate = m.birthDate
+      values.comment = m.comment
+      }
+    })
 
     return {
       ParticipantRepository,

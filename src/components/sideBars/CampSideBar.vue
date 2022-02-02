@@ -124,8 +124,6 @@ export default defineComponent({
 
     const updateCamp = async (data: Camp) => {
       if (data.id && props.sideBarState) {
-        console.log('CAMP: ', data)
-        console.log('VISUM: ', props.sideBarState.entity)
         await RepositoryFactory.get(CampRepository)
           .update(props.sideBarState.entity.id, data)
           .then(() => {
