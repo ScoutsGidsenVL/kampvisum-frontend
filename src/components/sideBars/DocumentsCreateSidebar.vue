@@ -23,17 +23,17 @@
           </div>
         </div>
 
-        <!-- <div class="pb-4 flex flex-col">
+        <div class="pb-4 flex flex-col">
           <span class="font-bold text-sm">Zoek door bestaande bestanden</span>
-          <search-input v-model:loading="loading" name="search" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResult($event)" />
-        </div> -->
+          <search-input v-model:loading="loading" name="search" :repository="FileRepository" :group="visum.groupGroupAdminId" @fetchedOptions="fetchedSearchResult($event)" />
+        </div>
 
         <div>
           <file-item-component v-for="(file) in filesToSelectFrom" :file="file" :key="file" :canBeChecked="true" />
         </div>
 
         <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
-          <custom-button text="" :isSubmitting="isPatching">
+          <custom-button :disabled="!(filesToSelectFrom.some((f) => f.isChecked === true))" :isSubmitting="isPatching">
             <template v-slot:icon>
               <div class="flex gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -53,6 +53,7 @@
 import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, CustomHeader } from 'vue-3-component-library'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { FileCheckRepository } from '@/repositories/FileCheckRepository'
+import { FileRepository } from '@/repositories/FileRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
@@ -68,6 +69,8 @@ import { FileItem } from '@/serializer/FileItem'
 import Dropzone from '../inputs/Dropzone.vue'
 import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
+import { Visum } from '@/serializer/Visum'
+import { useSelectionHelper } from '@/helpers/selectionHelper'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -120,6 +123,10 @@ export default defineComponent({
     check: {
       type: Object as PropType<Check>,
       required: true
+    },
+    visum: {
+      type: Object as PropType<Visum>,
+      required: true,
     },
   },
   emits: ['update:sideBarState', 'actionSuccess'],
@@ -175,6 +182,31 @@ export default defineComponent({
       filesToSelectFrom.value.push(file)
     }
 
+    const { displayCheckFile, checkForIdMatch } = useSelectionHelper()
+
+    const fetchedSearchResult = (results: FileItem[]) => {
+      loading.value = false
+      //KEEP THE CHECKED MEMBERS
+      let checkedMembers: FileItem[] = []
+
+      filesToSelectFrom.value.forEach((fetchedMember: FileItem) => {
+        if (fetchedMember.isChecked) {
+          checkedMembers.push(fetchedMember)
+        }
+      })
+
+      //SET CHECKED MEMBERS
+      filesToSelectFrom.value = checkedMembers
+
+      //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
+      results.forEach((r: FileItem) => {
+        console.log('r: ', r)
+        if (!(filesToSelectFrom.value.some((f: FileItem) => checkForIdMatch(f,r)))) {
+          filesToSelectFrom.value.push(r)
+        }
+      })
+    }
+
     return {
       LocationSearchRepository,
       removeItemFromArray,
@@ -194,6 +226,8 @@ export default defineComponent({
       values,
       items,
       t,
+      FileRepository,
+      fetchedSearchResult
     }
   },
 })

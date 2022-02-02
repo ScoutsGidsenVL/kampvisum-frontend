@@ -14,7 +14,7 @@
       </div>
     </div>
   </div>
-  <documents-create-sidebar :check="check" title="Documenten" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
+  <documents-create-sidebar :visum="visum" :check="check" title="Documenten" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
 </template>
 
 <script lang="ts">
@@ -24,6 +24,7 @@ import { CustomButton } from 'vue-3-component-library'
 import { defineComponent, ref, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
 import FileItem from './FileItem.vue'
+import { Visum } from '@/serializer/Visum'
 
 export default defineComponent({
   name: 'OverviewFiles',
@@ -36,6 +37,10 @@ export default defineComponent({
     check: {
       type: Object as PropType<Check>,
       required: true
+    },
+    visum: {
+      type: Object as PropType<Visum>,
+      required: true,
     },
   },
   setup (props, { emit }) {

@@ -1,8 +1,10 @@
+import { FileItem } from "@/serializer/FileItem"
 import { Member } from "@/serializer/Member"
 
 export const useSelectionHelper = (): {
   displayCheck: (isMultiple: boolean, member: Member, members: Member[]) => Boolean,
-  checkForIdMatch: (memb1: Member, memb2: Member) => Boolean
+  checkForIdMatch: (obj1: any, obj2: any) => Boolean,
+  displayCheckFile: (file: FileItem, files: FileItem[]) => Boolean
 } => {
 
 
@@ -14,8 +16,16 @@ export const useSelectionHelper = (): {
     }
   }
 
-  const checkForIdMatch = (memb1: Member, memb2: Member): boolean => {
-    if (memb1.id === memb2.id) {
+  const displayCheckFile = (file: FileItem, files: FileItem[]) => {
+    if (files.some((f: FileItem) => f.isChecked == true) && !file.isChecked) {
+        return false
+    } else {
+      return true
+    }
+  }
+
+  const checkForIdMatch = (obj1: any, obj2: any): boolean => {
+    if (obj1.id === obj2.id) {
       return true
     }  else {
       return false
@@ -24,6 +34,7 @@ export const useSelectionHelper = (): {
 
   return {
     displayCheck,
-    checkForIdMatch
+    checkForIdMatch,
+    displayCheckFile
   }
 }

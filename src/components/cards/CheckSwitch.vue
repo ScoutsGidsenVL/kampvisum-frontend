@@ -28,7 +28,7 @@
   </div>
 
   <div v-if="checkType === CheckTypes.FileUploadCheck">
-    <overview-files :check="check" @rl="rl($event)" />
+    <overview-files :visum="visum" :check="check" @rl="rl($event)" />
   </div>
 
   <div class="my-4" v-if="checkType === CheckTypes.MemberCheck">

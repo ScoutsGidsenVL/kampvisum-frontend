@@ -67,7 +67,7 @@ export default defineComponent({
       debounce = setTimeout(() => {
         if (query.value) {
           RepositoryFactory.get(props.repository)
-            .search(query.value)
+            .search(query.value, props.group ? props.group : '')
             .then((results: any) => {
               options.value = results
               context.emit('fetchedOptions', options.value)
