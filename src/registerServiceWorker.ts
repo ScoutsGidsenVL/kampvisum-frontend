@@ -10,6 +10,7 @@ let configFile
 new StaticFileRepository().getFile('config.json').then((result: any) => {
   configFile = new MasterConfig().deserialize(result)
   if (true) {
+    console.log('register: ', `${configFile.frontend.baseUrl}/service-worker.js`)
     register(`${configFile.frontend.baseUrl}/service-worker.js`, {
       ready () {
         console.log(
