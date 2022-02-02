@@ -4,13 +4,13 @@ import AuthRepository from './repositories/authRepository'
 import MasterConfig from './models/config/masterConfig'
 import { OpenIdConnectPlugin } from 'inuits-vuejs-oidc'
 import 'vue-3-component-library/lib/index.css'
+import { createI18n } from "vue-i18n";
+const VueLuxon = require('vue-luxon')
 import store from './store/store'
 import './registerServiceWorker'
 import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
-import { createI18n } from "vue-i18n";
-const VueLuxon = require('vue-luxon')
 
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require("./locales/nl.json")
