@@ -1,6 +1,7 @@
 <template>
   <div>
     <base-side-bar
+      width="max-w-2xl"
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
       :isOverflowHidden="true"
@@ -16,8 +17,12 @@
         ref="formDiv"
         @submit.prevent="onSubmit"
       >
+        <div class="px-4 pt-4 pb-1">
+          <participant-filter @changedFilters="changedFilters($event)" />
+        </div>
+        
         <div class="p-4 mx-1">
-          <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
+          <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
 
         <div class="mx-1 mb-72 overflow-y-auto">
@@ -34,7 +39,7 @@
         </div>
 
         <div class="mt-5 py-4 px-4 absolute bottom-0 bg-white w-full">
-          <custom-button :isSubmitting="isPatching" text="VOEG TOE" />
+          <custom-button :disabled="!(fetchedMembers.some((f) => f.isChecked === true))" :isSubmitting="isPatching" text="VOEG TOE" />
         </div>
     </form>
     </base-side-bar>
@@ -56,6 +61,8 @@ import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import ParticipantFilter from '../semantics/ParticipantFilter.vue'
+import { Filter } from '../../serializer/Filter'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -63,7 +70,8 @@ export default defineComponent({
     'base-side-bar': BaseSideBar,
     SearchInput,
     MemberSidebarItem,
-    CustomButton
+    CustomButton,
+    ParticipantFilter
   },
   props: {
     sideBarState: {
@@ -95,6 +103,11 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
+    const filter = ref<Filter>()
+
+    const changedFilters = (f: Filter) => {
+      filter.value = f
+    }
 
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
@@ -152,6 +165,8 @@ export default defineComponent({
       onSubmit,
       loading,
       t,
+      changedFilters,
+      filter
     }
   },
 })

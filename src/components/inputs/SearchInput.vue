@@ -87,15 +87,15 @@ export default defineComponent({
     }
 
     watch(() => props.filter.gender, () => {
-      doCall()
+      search()
     })
 
     watch(() => props.filter.ageMin, () => {
-      doCall()
+      search()
     })
 
     watch(() => props.filter.ageMax, () => {
-      doCall()
+      search()
     })
 
     return {
