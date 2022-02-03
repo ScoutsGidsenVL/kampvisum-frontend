@@ -15,7 +15,6 @@ export class ParticipantRepository extends BaseRepository {
         result = MemberDeserializer(result)
         array.push(result)
       })
-      console.log('arr: ', array)
       return array
     })
   }

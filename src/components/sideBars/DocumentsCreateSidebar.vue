@@ -200,7 +200,6 @@ export default defineComponent({
 
       //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
       results.forEach((r: FileItem) => {
-        console.log('r: ', r)
         if (!(filesToSelectFrom.value.some((f: FileItem) => checkForIdMatch(f,r)))) {
           filesToSelectFrom.value.push(r)
         }

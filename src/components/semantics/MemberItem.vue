@@ -67,7 +67,6 @@ export default defineComponent({
     }
 
     const openEditForm = (m: Member) => {
-      console.log("mmmmmmmm: ", m)
       emit('openSidebarToEdit', m)
     } 
 

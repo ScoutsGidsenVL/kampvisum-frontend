@@ -244,7 +244,6 @@ export default defineComponent({
 
       //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
       results.forEach((r: Member) => {
-        console.log('r: ', r)
         if (!(fetchedMembers.value.some((f: Member) => checkForIdMatch(f,r)))) {
           fetchedMembers.value.push(r)
         }
