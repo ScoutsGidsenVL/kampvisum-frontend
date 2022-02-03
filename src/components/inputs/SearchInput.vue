@@ -27,7 +27,8 @@
 <script lang="ts">
 import { BaseRepository } from '@/repositories/baseRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { defineComponent, PropType, ref } from 'vue'
+import { Filter } from '@/serializer/Filter'
+import { defineComponent, PropType, ref, watch } from 'vue'
 
 export default defineComponent({
   name: 'SearchInput',
@@ -45,6 +46,11 @@ export default defineComponent({
       type: Function as unknown as PropType<new () => BaseRepository>,
       required: false,
       default: Function as unknown as PropType<new () => BaseRepository>,
+    },
+    filter: {
+      type: Object as PropType<Filter>,
+      required: false,
+      default: () => { return { gender: '', ageMin: '', ageMax: '' } },
     },
     loading: Boolean,
     loadingSubmit: {
@@ -65,16 +71,32 @@ export default defineComponent({
       context.emit('update:loading', true)
       clearTimeout(debounce)
       debounce = setTimeout(() => {
-        if (query.value) {
-          RepositoryFactory.get(props.repository)
-            .search(query.value, props.group ? props.group : '')
-            .then((results: any) => {
-              options.value = results
-              context.emit('fetchedOptions', options.value)
-            })
-        }
+        doCall()
       }, 1500)
     }
+
+    const doCall = () => {
+      if (query.value) {
+        RepositoryFactory.get(props.repository)
+          .search(query.value, props.group ? props.group : '', props.filter ? props.filter : undefined)
+          .then((results: any) => {
+            options.value = results
+            context.emit('fetchedOptions', options.value)
+          })
+      }
+    }
+
+    watch(() => props.filter.gender, () => {
+      doCall()
+    })
+
+    watch(() => props.filter.ageMin, () => {
+      doCall()
+    })
+
+    watch(() => props.filter.ageMax, () => {
+      doCall()
+    })
 
     return {
       options,

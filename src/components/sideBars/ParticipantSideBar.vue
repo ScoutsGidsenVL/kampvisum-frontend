@@ -79,8 +79,11 @@
         class="flex-col h-full"
         @submit.prevent="onSubmit"
       >
-        <div class="p-4 mx-1">
-          <search-input v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="ParticipantRepository" @fetchedOptions="fetchedSearchResults($event)" />
+        <div class="px-4 pt-4 pb-1">
+          <participant-filter @changedFilters="changedFilters($event)" />
+        </div>
+        <div class="p-4">
+          <search-input :filter="filter" v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="ParticipantRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
         <div class="mx-1 mb-72 overflow-y-auto">
           <div class="mx-4">
@@ -95,7 +98,7 @@
           </div>
         </div>
         <div class="mt-5 py-4 px-4 absolute bottom-0 bg-white w-full">
-          <custom-button :isSubmitting="isPatching" text="VOEG TOE" />
+          <custom-button :disabled="!(fetchedMembers.some((f) => f.isChecked === true))" :isSubmitting="isPatching" text="VOEG TOE" />
         </div>
       </form>
     </base-side-bar>
@@ -117,6 +120,8 @@ import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import ParticipantFilter from '../semantics/ParticipantFilter.vue'
+import { Filter } from '../../serializer/Filter'
 
 export default defineComponent({
   name: 'ParticipantSideBar',
@@ -126,6 +131,7 @@ export default defineComponent({
     CustomInput,
     CustomButton,
     MemberSidebarItem,
+    ParticipantFilter,
   },
   props: {
     sideBarState: {
@@ -153,6 +159,7 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const isPatching = ref<boolean>(false)
     const loading = ref<boolean>(false)
+    const filter = ref<Filter>()
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -254,6 +261,10 @@ export default defineComponent({
       }
     }
 
+    const changedFilters = (f: Filter) => {
+      filter.value = f
+    }
+
     watch(() => props.sideBarState, () => {
       if (props.sideBarState.entity) {
       let m: Member = props.sideBarState.entity
@@ -290,6 +301,8 @@ export default defineComponent({
       options,
       values,
       t,
+      changedFilters,
+      filter
     }
   },
 })

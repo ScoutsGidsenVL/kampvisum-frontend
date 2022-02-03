@@ -1,5 +1,6 @@
 import BaseApiRepository from '@/repositories/baseApiRepository'
 import { ArrayResult } from '@/interfaces/ArrayResult'
+import { Filter } from '@/serializer/Filter'
 
 export abstract class BaseRepository extends BaseApiRepository {
   abstract id: string
@@ -48,7 +49,7 @@ export abstract class BaseRepository extends BaseApiRepository {
     })
   }
 
-  search(query: string, group?: string): Promise<any> {
+  search(query: string, group?: string, filter?: Filter): Promise<any> {
     return this.get(this.endpoint + '?term=' + query, {}).then((response: any[]) => {
       const array: any[] = []
       response.forEach((result: any) => {
