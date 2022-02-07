@@ -17,10 +17,34 @@
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
         @submit.prevent="onSubmit"
       >
-      <!-- {{sideBarState.entity}} -->
         <div class="mt-4">
           <div class="w-100">
             <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
+          </div>
+
+          <div class="w-100 mt-4">
+            <span class="font-bold">
+              Camp Type
+            </span>
+            <div>
+              <input class="cursor-pointer mr-2" id="inter" name="inter" v-model="isInternational" type="checkbox">
+              <label class="cursor-pointer" for="inter">Internationaal kamp</label>
+            </div>
+
+            <multi-select
+              class="mt-2"
+              v-if="campTypes.length > 0 && !isReload"
+              id="campType"
+              :object="true"
+              placeholder="Kies een kamp type"
+              track-by="label"
+              value-prop="id"
+              :options="campTypes"
+              :value="campTypes[0]"
+              :canClear="false"
+              :canDeselect="false"
+              @addSelection="selectedValue($event)"
+            />
           </div>
 
           <div v-if="sideBarState.state !== 'hide'">
@@ -50,11 +74,13 @@ import { Section, SectionObjectsToSectionStrings } from '@/serializer/Section'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { GroupRepository } from '@/repositories/groupRepository'
+import { CampTypeRepository } from '@/repositories/CampTypeRepository'
 import { CampRepository } from '@/repositories/campRepository'
 import { useForm, useField, ErrorMessage } from 'vee-validate'
 import { Camp } from '../../serializer/Camp'
 import { useI18n } from 'vue-i18n'
-import { Visum } from '@/serializer/Visum'
+import { CampType } from '@/serializer/CampType'
+import MultiSelect from '../inputs/MultiSelect.vue'
 
 export default defineComponent({
   name: 'CampSideBar',
@@ -64,6 +90,7 @@ export default defineComponent({
     'custom-button': CustomButton,
     'custom-header': CustomHeader,
     ErrorMessage,
+    MultiSelect
   },
   props: {
     title: {
@@ -93,6 +120,10 @@ export default defineComponent({
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Camp>()
     const { sideBarState } = toRefs(props)
     const groupSections = ref<Section[]>([])
+    const campTypes = ref<CampType[]>([])
+    const campTypesOriginal = ref<CampType[]>([])
+    const isInternational = ref<boolean>(false)
+    const isReload = ref<boolean>(false)
 
     const { value: selectedGroupSections } = useField('sections', 'minimumOneSection', {
       initialValue: Array<String>(),
@@ -107,6 +138,7 @@ export default defineComponent({
       context.emit('update:sideBarState', { state: 'hide' })
       resetForm()
       values.name = ''
+      isInternational.value = false
       selectedGroupSections.value = []
     }
 
@@ -133,6 +165,7 @@ export default defineComponent({
     }
 
     const postCamp = async (data: Camp) => {
+      data.campType = selectedCampType.value
       await RepositoryFactory.get(CampRepository)
         .create(data)
         .then(() => {
@@ -148,7 +181,38 @@ export default defineComponent({
         })
     }
 
+    const getCampTypes = async () => {
+      await RepositoryFactory.get(CampTypeRepository)
+      .getArray()
+      .then((results: CampType[]) => {
+          campTypesOriginal.value = results
+          filterOutCampTypes()
+        })
+    }
+
+    const selectedCampType = ref<CampType>()
+
+    const selectedValue = (event: any) => {
+      selectedCampType.value = event
+    }
+
+    const filterOutCampTypes = () => {
+      isReload.value = true
+      if (isInternational.value) {
+        campTypes.value = campTypesOriginal.value.filter((x: CampType) => x.isBase === false)
+      } else {
+        campTypes.value = campTypesOriginal.value.filter((x: CampType) => x.isBase === true)
+      }
+
+      selectedCampType.value = campTypes.value[0]
+
+      setTimeout(() => {
+        isReload.value = false
+      }, 1)
+    }
+
     getGroupSections(props.selectedGroupId)
+    getCampTypes()
 
     watch(
       () => props.selectedGroupId,
@@ -187,6 +251,10 @@ export default defineComponent({
       }
     )
 
+    watch(() => isInternational.value, () => {
+      filterOutCampTypes()
+    })
+
     return {
       selectedGroupSections,
       groupSections,
@@ -198,6 +266,11 @@ export default defineComponent({
       onSubmit,
       values,
       t,
+      campTypes,
+      isInternational,
+      isReload,
+      selectedValue,
+      selectedCampType
     }
   },
 })

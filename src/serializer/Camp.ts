@@ -1,3 +1,4 @@
+import { CampType } from "./CampType"
 import { Category, CategoryDeserializer } from "./Category"
 import { Section, SectionDeserializer } from "./Section"
 import { YearDeserializer } from "./Year"
@@ -14,6 +15,7 @@ export interface Camp {
   updatedOn?: string
   year?: any
   categories?: Array<Category>
+  campType?: CampType
 }
 
 export const CampDeserializer = (input: any): Camp => {
@@ -39,7 +41,8 @@ export const CampSerializer = (input: any): any => {
     name: input.name,
     start_date: input.startDate,
     end_date: input.startDate,
-    sections: input.sections
+    sections: input.sections,
+    camp_type: { id: input.campType.id }
   }
   
   return {camp: single}
