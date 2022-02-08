@@ -32,7 +32,7 @@ import { Check } from '@/serializer/Check'
 const { DateTime } = require("luxon");
 
 export default defineComponent({
-  name: 'HeaderSubcategoryCard',
+  name: 'DateField',
   props: {
     check: {
       type: Object as PropType<Check>,

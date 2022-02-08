@@ -23,8 +23,8 @@ export const CampTypeDeserializer = (input: any): CampType => {
     campType: input.camp_type,
     isBase: input.is_base,
     isDefault: input.is_default,
-    createdBy: input.created_by,
-    updatedBy: input.updated_by
+    createdBy: input.created_by ? input.created_by : undefined,
+    updatedBy: input.updated_by ? input.updated_by : undefined
   }
 
   return single

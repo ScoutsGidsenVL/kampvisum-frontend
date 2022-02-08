@@ -1,13 +1,9 @@
 <template>
   <div class="bg-white shadow-md">
     <div v-if="isImportant" class="border-l-4 border-red p-2 flex items-center gap-3">
-      <svg class="ml-1.5" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9.99984 18.3332C14.6022 18.3332 18.3332 14.6022 18.3332 9.99984C18.3332 5.39746 14.6022 1.6665 9.99984 1.6665C5.39746 1.6665 1.6665 5.39746 1.6665 9.99984C1.6665 14.6022 5.39746 18.3332 9.99984 18.3332Z" stroke="#C63024" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M10 6.6665V9.99984" stroke="#C63024" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M10 13.3335H10.0083" stroke="#C63024" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <i-important />
       <div>
-        <h1 class="text-lg m-0">test</h1>
+        <h1 class="text-lg m-0">Belangerijk</h1>
       </div>
     </div>
     <div class="flex justify-between p-3">
@@ -20,30 +16,49 @@
 
         <div>
           <strong class="xs:text-sm">
-            Kampplaats
+            {{deadline.label}}
           </strong>
           <p>
-            september
+            {{deadline.dueDate.dateDay}}/{{deadline.dueDate.dateMonth}}/{{deadline.dueDate.dateYear}}
           </p>
         </div>
       </div>
       <!-- ARROW ICON -->
-      <div class="flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-        </svg>
+      <div @click="arrowClick()" class="flex items-center cursor-pointer">
+        <i-right-Arrow />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { Deadline } from '@/serializer/Deadline'
+import { defineComponent, PropType } from 'vue'
+import IImportant from '../icons/IImportant.vue'
+import IRightArrow from '../icons/IRightArrow.vue'
 
 export default defineComponent({
   name: 'DeadlineInfoCard',
+  components: {
+    IRightArrow,
+    IImportant
+  },
   props: {
-    isImportant: Boolean
+    isImportant: Boolean,
+    deadline: {
+      type: Object as PropType<Deadline>,
+      required: true
+    }
+  },
+  setup (props, { emit }) {
+
+    const arrowClick = () => {
+      emit('openDeadline', props.deadline)
+    }
+
+    return {
+      arrowClick
+    }
   }
 })
 </script>

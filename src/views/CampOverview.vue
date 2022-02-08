@@ -12,7 +12,7 @@
             <category-info-card :visum="visum" :category="category" />
         </div>
       </div>
-      <deadlines-sidebar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
+      <deadlines-sidebar :visum="visum" :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
     </div>
   </div>
   <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum">

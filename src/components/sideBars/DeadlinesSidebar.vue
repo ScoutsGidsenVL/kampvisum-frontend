@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-lightGray ml-3 rounded-md" :class="{ 'md:w-96 xs:w-11/12 xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }">
+  <div class="z-50 bg-lightGray ml-3 rounded-md" :class="{ 'md:max-w-md w-100 xs:w-11/12 xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }">
     <!-- WHEN CLOSED -->
     <div @click="openSideBar()" class="w-8 h-screen fixed flex-column pt-3 cursor-pointer" :class="{ 'd-none': sidebar.state === SidebarState.OPEN, 'd-flex': sidebar.state === SidebarState.CLOSED }">
       <div class="flex justify-center items-center w-100 stroke-current text-red" >
@@ -8,46 +8,49 @@
         </svg>  
       </div>
       <div class="flex h-screen justify-center items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="-mt-80 h-6 w-6 stroke-current text-black" fill="none" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-        </svg>
+        <i-vertical-dots />
       </div>
     </div>
     
     <div class="h-screen" :class="{ 'd-flex p-3 flex-column': sidebar.state === SidebarState.OPEN, 'd-none fixed': sidebar.state === SidebarState.CLOSED }">
-      <div class="w-100 flex justify-between cursor-pointer xs:mt-20 md:mt-0" @click="closeSideBar()">
-        <div class="flex gap-3">
-          <h2>
-            Deadlines
-          </h2>
+      <!-- LIST -->
+      <div v-if="!isDeadlineDetail">
+          <div class="w-100 flex justify-between cursor-pointer xs:mt-20 md:mt-0" @click="closeSideBar()">
+            <div class="flex gap-3">
+              <h2>
+                Deadlines
+              </h2>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-x-lg stroke-current stroke-1 text-black" viewBox="0 0 16 16">
+              <path
+                d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"
+              />
+            </svg>
+          </div>
+
+          <div class="pt-3 flex flex-column gap-5">
+            <deadline-info-card />
+            <deadline-card v-for="deadline in deadlines" :key="deadline" :deadline="deadline" :isImportant="true" @openDeadline="openDeadline($event)"/>
+          </div>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-x-lg stroke-current stroke-1 text-black" viewBox="0 0 16 16">
-          <path
-            d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"
-          />
-        </svg>
       </div>
+      <!-- DETAIL -->
+      <div v-if="isDeadlineDetail">
 
-      <div class="pt-3 flex flex-column gap-5">
-        <deadline-info-card />
-        <deadline-card />
-        <deadline-card :isImportant="true" />
       </div>
-
-      <div class="mt-3">
-        <custom-button @click="openDeadlineCreateSidebar()" class="w-100" extraStyle="w-100" :isSubmitting="false" text="+ nieuwe deadline maken" />
-      </div>
-    </div>
-    <deadline-create-sidebar title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
   </div>
 </template>
 
 <script lang="ts">
 import DeadlineInfoCard from '@/components/cards/DeadlineInfoCard.vue'
-import DeadlineCreateSidebar from './DeadlineCreateSidebar.vue'
+import { DeadlineRepository } from '@/repositories/DeadlineRepository'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 import DeadlineCard from '@/components/cards/DeadlineCard.vue'
 import { CustomButton } from 'vue-3-component-library'
 import { defineComponent, PropType, ref } from 'vue'
+import { Visum } from '@/serializer/Visum'
+import IVerticalDots from '../icons/IVerticalDots.vue'
+import { Deadline } from '@/serializer/Deadline'
 
 
 export enum SidebarState {
@@ -64,17 +67,23 @@ export default defineComponent({
   components: {
     'deadline-info-card': DeadlineInfoCard,
     'deadline-card': DeadlineCard,
-    DeadlineCreateSidebar,
-    CustomButton
+    CustomButton,
+    IVerticalDots
   },
   props: {
     sidebar: {
       type: Object as PropType<Sidebar>,
       required: true,
     },
-    isOverflowHidden: Boolean
+    visum: {
+      type: Object as PropType<Visum>,
+      required: true,
+    }
   },
   setup(props, context) {
+    const deadlines = ref<any>([])
+    const isDeadlineDetail = ref<boolean>(false)
+    const selectedDeadline = ref<Deadline>()
 
     const closeSideBar= (): void => {
       context.emit('closeSidebar')
@@ -84,29 +93,29 @@ export default defineComponent({
       context.emit('openSidebar')
     }
 
-    const createSidebar = ref<any>({state: 'hide'})
-
-    const openDeadlineCreateSidebar = (): void => {
-      createSidebar.value = {state: 'new'}
+    const openDeadline = (event: any) => {
+      selectedDeadline.value = event
+      isDeadlineDetail.value = true
     }
 
-    const actionSuccess = (action: string) => {
-      if (action === 'POST') {
-        console.log('Kamp is succesvol aangemaakt')
-      }
-      if (action === 'UPDATE') {
-        console.log('Kamp is succesvol bewerkt')
-      }
-      // get deadlines again to update the data in the sidebar
+    const getDeadlines = async () => {
+      await RepositoryFactory.get(DeadlineRepository)
+        .getArray(props.visum.id)
+        .then((d: Array<any>) => {
+          deadlines.value = d
+        })
     }
+
+    getDeadlines()
 
     return {
-      openDeadlineCreateSidebar,
-      createSidebar,
-      actionSuccess,
       closeSideBar,
       SidebarState,
       openSideBar,
+      deadlines,
+      openDeadline,
+      isDeadlineDetail,
+      selectedDeadline
     }
   }
 })
