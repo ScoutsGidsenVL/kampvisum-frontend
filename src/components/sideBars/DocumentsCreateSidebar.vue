@@ -41,7 +41,7 @@
         </div>
 
         <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
-          <custom-button :disabled="!(filesToSelectFrom.some((f) => f.isChecked === true))" :isSubmitting="isPatching">
+          <custom-button :disabled="!(filesToSelectFrom.some((f) => f.isChecked === true) || filesUploaded.some((f) => f.isChecked === true))" :isSubmitting="isPatching">
             <template v-slot:icon>
               <div class="flex gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
