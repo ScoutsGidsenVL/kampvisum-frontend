@@ -4,12 +4,7 @@
       <div class="z-20 flex">
         <div class="rounded-full bg-white h-6 w-6 -mr-6"></div>
         <svg v-if="simpleCheck.value === StatusState.CHECKED" class="fill-current text-green" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.393 7.5l-5.643 5.784-2.644-2.506-1.856 1.858 4.5 4.364 7.5-7.643-1.857-1.857z"/></svg>
-        <svg v-if="simpleCheck.value === StatusState.UNCHECKED" width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9.99996 18.3333C14.6023 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39762 14.6023 1.66666 9.99996 1.66666C5.39759 1.66666 1.66663 5.39762 1.66663 10C1.66663 14.6024 5.39759 18.3333 9.99996 18.3333Z" stroke="#C63024" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12.5 7.5L7.5 12.5" stroke="#C63024" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M7.5 7.5L12.5 12.5" stroke="#C63024" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-
+        <i-empty-check v-if="simpleCheck.value === StatusState.EMPTY" />
         <svg v-if="simpleCheck.value === StatusState.NOT_APPLICABLE" width="24" height="24" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="51.5" cy="51.5" r="46" stroke="#DC7700" stroke-width="11"/>
           <line x1="19" y1="51.5" x2="84" y2="51.5" stroke="#DC7700" stroke-width="11"/>
@@ -27,12 +22,8 @@
               <line x1="19" y1="51.5" x2="84" y2="51.5" stroke="#DC7700" stroke-width="11"/>
             </svg>
           </tooltip>
-          <tooltip tip="Niet checked">
-            <svg @click="select(StatusState.UNCHECKED)" class="iconSize" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9.99996 18.3333C14.6023 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39762 14.6023 1.66666 9.99996 1.66666C5.39759 1.66666 1.66663 5.39762 1.66663 10C1.66663 14.6024 5.39759 18.3333 9.99996 18.3333Z" stroke="#C63024" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12.5 7.5L7.5 12.5" stroke="#C63024" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>          
-              <path d="M7.5 7.5L12.5 12.5" stroke="#C63024" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+          <tooltip tip="Leeg">
+            <i-empty-check @click="select(StatusState.EMPTY)" class="iconSize" />
           </tooltip>
         </div>
       </div>
@@ -57,10 +48,11 @@ import Tooltip from '@/components/semantics/Tooltip.vue'
 import { SimpleCheck } from '@/serializer/SimpleCheck'
 import { defineComponent, ref, PropType } from 'vue'
 import IInfo from '../../icons/IInfo.vue'
+import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
 
 export enum StatusState {
   CHECKED = 'CHECKED',
-  UNCHECKED = 'UNCHECKED',
+  EMPTY = 'EMPTY',
   NOT_APPLICABLE = 'NOT_APPLICABLE'
 }
 
@@ -72,7 +64,8 @@ export default defineComponent({
   name: 'Check',
   components: {
     IInfo,
-    Tooltip
+    Tooltip,
+    IEmptyCheck
   },
   props: {
     check: {
@@ -97,14 +90,14 @@ export default defineComponent({
     const toggle = () => {
       if (props.isSimpleCheck) {
         switch (simpleCheck.value.value) {
-          case StatusState.UNCHECKED:
+          case StatusState.EMPTY:
             simpleCheck.value.value = StatusState.CHECKED
             break;
           case StatusState.CHECKED:
-            simpleCheck.value.value = StatusState.UNCHECKED
+            simpleCheck.value.value = StatusState.EMPTY
             break;
           default:
-            simpleCheck.value.value = StatusState.UNCHECKED
+            simpleCheck.value.value = StatusState.EMPTY
             break;
         }
       }

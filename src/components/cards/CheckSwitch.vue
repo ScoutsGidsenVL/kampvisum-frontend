@@ -4,7 +4,9 @@
   </div> -->
 
   <div v-if="checkType === CheckTypes.SimpleCheck">
+    <!-- {{check}} -->
     <check-component :check="check" />
+
   </div>
 
   <div v-if="checkType === CheckTypes.DurationCheck">
@@ -47,10 +49,10 @@ import { InputTypes, CustomInput } from 'vue-3-component-library'
 import OverviewFiles from '@/components/upload/overviewFiles.vue'
 import Message, { ColorState } from '../semantics/message.vue'
 import DateField from '@/components/semantics/DateField.vue'
+import { Check, CheckTypes } from '../../serializer/Check'
 import CommentCheck from '../semantics/CommentCheck.vue'
 import { defineComponent, PropType } from 'vue'
 import CheckComponent from './checks/check.vue'
-import { Check, CheckTypes } from '../../serializer/Check'
 import VSwitch from '@lmiller1990/v-switch'
 import { Visum } from '@/serializer/Visum'
 import { Camp } from '@/serializer/Camp'
