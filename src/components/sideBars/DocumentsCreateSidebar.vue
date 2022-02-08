@@ -17,16 +17,24 @@
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
         @submit.prevent="onSubmit"
       >
-        <div class="pb-4">
+        <div class="pb-2">
           <div class="w-full">
             <dropzone v-model:progress="progress" @uploadedFile="uploadedFile($event)" />
           </div>
+        </div>
+        <div class="flex flex-col mb-1">
+          <span class="font-bold text-sm">Geüploade bestanden</span>
+        </div>
+        <div class="pb-4">
+          <span v-show="filesUploaded.length === 0 && !isUploading">Geen bestanden geüpload</span>
+          <file-item-component v-for="(file) in filesUploaded" :file="file" :key="file" :canBeChecked="true" />
         </div>
 
         <div class="pb-4 flex flex-col">
           <span class="font-bold text-sm">Zoek door bestaande bestanden</span>
           <search-input v-model:loading="loading" name="search" :repository="FileRepository" :group="visum.groupGroupAdminId" @fetchedOptions="fetchedSearchResult($event)" />
         </div>
+
 
         <div>
           <file-item-component v-for="(file) in filesToSelectFrom" :file="file" :key="file" :canBeChecked="true" />
@@ -134,6 +142,7 @@ export default defineComponent({
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const { resetForm, handleSubmit, values, isSubmitting } = useForm<PostLocation>()
     const filesToSelectFrom = ref<Array<any>>([])
+    const filesUploaded = ref<Array<any>>([])
     const { sideBarState } = toRefs(props)
     const loading = ref<boolean>(false)
     const { progress } = useUpload()
@@ -147,12 +156,13 @@ export default defineComponent({
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
       filesToSelectFrom.value = []
+      filesUploaded.value = []
       resetForm()
     }
 
     const onSubmit = async () => {
       handleSubmit(async () => {
-        patchFilesToList(filesToSelectFrom.value)
+        patchFilesToList(filesToSelectFrom.value.concat(filesUploaded.value))
       })()
     }
 
@@ -179,7 +189,7 @@ export default defineComponent({
 
     const uploadedFile = (file: FileItem) => {
       file.isChecked = true
-      filesToSelectFrom.value.push(file)
+      filesUploaded.value.push(file)
     }
 
     const { displayCheckFile, checkForIdMatch } = useSelectionHelper()
@@ -214,6 +224,7 @@ export default defineComponent({
       sideBarState,
       closeSideBar,
       uploadedFile,
+      filesUploaded,
       isUploading,
       isPatching,
       InputTypes,
