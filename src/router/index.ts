@@ -78,9 +78,9 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/kamp/:campId?/planning/:id?',
     name: 'Planning',
-    // component: Planning,
     component: BaseCategoryView,
     meta: {
+      title: 'Planning',
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
     },
@@ -88,19 +88,19 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/kamp/:campId?/logistiek/:id?',
     name: 'Logistiek',
-    // component: Logistics,
     component: BaseCategoryView,
     meta: {
+      title: 'Logistiek',
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
-    },
+    }
   },
   {
     path: '/kamp/:campId?/communicatie & afspraken/:id?',
     name: 'Communicatie & afspraken',
-    // component: CommunicationAppointments,
     component: BaseCategoryView,
     meta: {
+      title: 'Communicatie & afspraken',
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
     },
@@ -108,9 +108,9 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/kamp/:campId?/communicatie%20&%20afspraken/:id?',
     name: 'Communicatie & afspraken ',
-    // component: CommunicationAppointments,
     component: BaseCategoryView,
     meta: {
+      title: 'Communicatie & afspraken',
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
     },
@@ -118,9 +118,9 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/kamp/:campId?/veiligheid/:id?',
     name: 'Veiligheid',
-    // component: Safety,
     component: BaseCategoryView,
     meta: {
+      title: 'Veiligheid',
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
     },
@@ -128,9 +128,9 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/kamp/:campId?/leden & leiding/:id?',
     name: 'Leden & leiding',
-    // component: MembersLeadership,
     component: BaseCategoryView,
     meta: {
+      title: 'Leden & leiding',
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
     },
@@ -138,9 +138,9 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/kamp/:campId?/leden%20&%20leiding/:id?',
     name: 'Leden & leiding ',
-    // component: MembersLeadership,
     component: BaseCategoryView,
     meta: {
+      title: 'Leden & leiding',
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
     },
@@ -148,9 +148,90 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/kamp/:campId?/budget/:id?',
     name: 'Budget',
-    // component: Budget,
     component: BaseCategoryView,
     meta: {
+      title: 'Budget',
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  // SECTIONS
+  {
+    path: '/kamp/:campId?/planning/:id?/section/:sectionId',
+    name: 'Planning Sections',
+    component: BaseCategoryView,
+    meta: {
+      title: 'Planning',
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/logistiek/:id?/section/:sectionId',
+    name: 'Logistiek Sections',
+    component: BaseCategoryView,
+    meta: {
+      title: 'Logistiek',
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    }
+  },
+  {
+    path: '/kamp/:campId?/communicatie & afspraken/:id?/section/:sectionId',
+    name: 'Communicatie & afspraken Sections',
+    component: BaseCategoryView,
+    meta: {
+      title: 'Communicatie & afspraken',
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/communicatie%20&%20afspraken/:id?/section/:sectionId',
+    name: 'Communicatie & afspraken Sections',
+    component: BaseCategoryView,
+    meta: {
+      title: 'Communicatie & afspraken',
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/veiligheid/:id?/section/:sectionId',
+    name: 'Veiligheid Sections',
+    component: BaseCategoryView,
+    meta: {
+      title: 'Veiligheid',
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/leden & leiding/:id?/section/:sectionId',
+    name: 'Leden & leiding Sections',
+    component: BaseCategoryView,
+    meta: {
+      title: 'Leden & leiding',
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/leden%20&%20leiding/:id?/section/:sectionId',
+    name: 'Leden & leiding Sections',
+    component: BaseCategoryView,
+    meta: {
+      title: 'Leden & leiding',
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/budget/:id?/section/:sectionId',
+    name: 'Budget Sections',
+    component: BaseCategoryView,
+    meta: {
+      title: 'Budget',
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
     },

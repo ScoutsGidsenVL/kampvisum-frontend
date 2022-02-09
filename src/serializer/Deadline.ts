@@ -1,6 +1,7 @@
 import { Check, CheckDeserializer } from "./Check"
 import { Visum, VisumDeserializer } from "./Visum"
 import { DueDate, DueDateDeserializer, DueDateSerializer } from "./DueDate"
+import { SubCategory, SubCategoryDeserializer } from "./SubCategory"
 export interface Deadline {
   id?: string
   visum: string
@@ -11,6 +12,7 @@ export interface Deadline {
   important: boolean
   dueDate: DueDate
   deadlineCheck?: Check
+  deadlineSubCategory?: SubCategory
 }
 
 export const DeadlineDeserializer = (input: any): Deadline => {
@@ -23,7 +25,8 @@ export const DeadlineDeserializer = (input: any): Deadline => {
     explanation: input.explanation,
     important: input.important,
     dueDate: DueDateDeserializer(input.due_date),
-    // deadlineCheck: CheckDeserializer(input.deadline_check)
+    deadlineCheck: input.deadline_check ? CheckDeserializer(input.deadline_check) : undefined,
+    deadlineSubCategory: input.deadline_sub_category ? SubCategoryDeserializer(input.deadline_sub_category) : undefined
   }
 
   return single

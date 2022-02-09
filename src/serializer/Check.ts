@@ -20,14 +20,16 @@ export interface Check {
   id?: string
   checkParent?: CheckParent
   value?: any
-  endpoint: string
+  endpoint: string,
+  state?: string
 }
 
 export const CheckDeserializer = (input: any): Check => {
   const single: Check = {
     id: input.id,
     checkParent: input.parent ? CheckParentDeserializer(input.parent) : undefined,
-    endpoint: input.endpoint ? input.endpoint : undefined
+    endpoint: input.endpoint ? input.endpoint : undefined,
+    state: input.state ? input.state : 'UNCHECKED'
   }
 
   if (single.checkParent?.checkType?.checkType === CheckTypes.DurationCheck) {

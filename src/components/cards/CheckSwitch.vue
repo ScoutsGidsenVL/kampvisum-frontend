@@ -2,44 +2,45 @@
   <!-- <div v-if="checkType === 'Message'">
     <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{ state: ColorState.DANGER }" />
   </div> -->
-
-  <div v-if="checkType === CheckTypes.SimpleCheck">
-    <!-- {{check}} -->
-    <check-component :check="check" />
-
-  </div>
-
-  <div v-if="checkType === CheckTypes.DurationCheck">
-      <date-field class="my-2" :key="section" :check="check" />
-  </div>
-
-  <div v-if="checkType === CheckTypes.CommentCheck">
-    <comment-check :check="check" />
-  </div>
-
-  <div v-if="checkType === CheckTypes.CampLocationCheck">
-    <div class="pb-5">
-      <location-component :check="check" @rl="rl($event)" />
+{{check.id}}
+<div :id="check.id">
+    <div v-if="checkType === CheckTypes.SimpleCheck">
+      <!-- {{check}} -->
+      <check-component :check="check" />
     </div>
-  </div>
 
-  <div v-if="checkType === CheckTypes.LocationCheck">
-    <div class="pb-5">
-      <location-component :check="check" @rl="rl($event)" />
+    <div v-if="checkType === CheckTypes.DurationCheck">
+        <date-field class="my-2" :key="section" :check="check" />
     </div>
-  </div>
 
-  <div v-if="checkType === CheckTypes.FileUploadCheck">
-    <overview-files :visum="visum" :check="check" @rl="rl($event)" />
-  </div>
+    <div v-if="checkType === CheckTypes.CommentCheck">
+      <comment-check :check="check" />
+    </div>
 
-  <div class="my-4" v-if="checkType === CheckTypes.MemberCheck">
-    <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
-  </div>
+    <div v-if="checkType === CheckTypes.CampLocationCheck">
+      <div class="pb-5">
+        <location-component :check="check" @rl="rl($event)" />
+      </div>
+    </div>
 
-  <div class="my-4" v-if="checkType === CheckTypes.ParticipantCheck">
-    <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
-  </div>
+    <div v-if="checkType === CheckTypes.LocationCheck">
+      <div class="pb-5">
+        <location-component :check="check" @rl="rl($event)" />
+      </div>
+    </div>
+
+    <div v-if="checkType === CheckTypes.FileUploadCheck">
+      <overview-files :visum="visum" :check="check" @rl="rl($event)" />
+    </div>
+
+    <div class="my-4" v-if="checkType === CheckTypes.MemberCheck">
+      <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
+    </div>
+
+    <div class="my-4" v-if="checkType === CheckTypes.ParticipantCheck">
+      <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
+    </div>
+</div>
 </template>
 
 <script lang="ts">

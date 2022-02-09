@@ -2,7 +2,7 @@
   <div v-if="visum"  class="flex w-100 -mt-3">
     <div class="w-100">
       <div>
-        <page-header :title="route.name" :subTitle="getSectionsTitle(visum.camp)" />
+        <page-header :title="route.meta.title" :subTitle="getSectionsTitle(visum.camp)" />
       </div>
 
       <div v-if="visum" class="w-100 flex pt-3">
@@ -36,6 +36,7 @@ import { Loader } from 'vue-3-component-library'
 import { Visum } from '../../serializer/Visum'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useNavigation } from '@/router/navigation'
 
 export default defineComponent({
   name: 'BaseCategoryView',
@@ -54,16 +55,24 @@ export default defineComponent({
     const { setCategoryInfo } = useInfoBarHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const isFetchingVisum = ref<boolean>(true)
-
+    const { jumpToId } = useNavigation()
+  
     const fetchVisum = () => {
       getCampByRouteParam().then((v: Visum) => {
         visum.value = v
         //NEEDS TO BE REFACTORED AND ONLY RETRIEVE A CATEGORY BASED ON THE SELECTED ID
+        console.log(route.params)
         category.value = visum.value.categorySet.categories.find((c: Category) => c.id === route.params.id)
         isFetchingVisum.value = false
 
         if (category.value) {
           setCategoryInfo(category.value.categoryParent.description)
+        }
+
+        if (route.params.sectionId) {
+          setTimeout(() => {
+            jumpToId(route.params.sectionId)
+          },200)
         }
       })
     }
