@@ -28,7 +28,7 @@ export const useNavigation = (): {
     // element.addClass('bg-red')
     document.getElementById(id).setAttribute("style", "padding:5px; background-color: #F4F5D4;");
     // @ts-ignore
-    const y = element.getBoundingClientRect().top - 65;
+    const y = element.getBoundingClientRect().top - 80;
     window.scrollTo({top: y, behavior: 'smooth'});
   }
 

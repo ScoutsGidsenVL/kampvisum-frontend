@@ -52,7 +52,7 @@
               </div>
               <span 
               v-if="selectedDeadline.deadlineCheck.state !== 'CECKED'" 
-              @click="navigateTowardsSection('logistiek', visum, '74643023-c315-4f89-a72b-ba7349c2286d', selectedDeadline.deadlineCheck.id, route)" 
+              @click="navigateTowardsSection(selectedDeadline.deadlineCheck.category.name, visum, selectedDeadline.deadlineCheck.category.id, selectedDeadline.deadlineCheck.id, route)" 
               class="ml-4 text-green underline cursor-pointer">vul aan</span>
             </div>
 
@@ -65,7 +65,7 @@
               </div>
               <span 
               v-if="selectedDeadline.deadlineSubCategory.state !== 'CECKED'" 
-              @click="navigateTowardsSection('CATEGORY LABEL', visum, 'CATEGORY ID', selectedDeadline.deadlineSubCategory.id, route)" 
+              @click="navigateTowardsSection(selectedDeadline.deadlineSubCategory.category.name, visum, selectedDeadline.deadlineSubCategory.category.id, selectedDeadline.deadlineSubCategory.id, route)" 
               class="ml-4 text-green underline cursor-pointer">vul aan</span>
             </div>
 

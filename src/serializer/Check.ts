@@ -1,5 +1,6 @@
 import { CheckParent, CheckParentDeserializer } from "./CheckParent"
 import { CommentCheckDeserializer } from "./CommentCheck"
+import { DeadlineCategory, DeadlineCategoryDeserializer } from "./DeadlineCategory"
 
 //VALUE DESERIALIZERS (make it more dynamic MAYBE?)
 import { ValueDeserializer } from "./DurationDateCheck"
@@ -22,6 +23,7 @@ export interface Check {
   value?: any
   endpoint: string,
   state?: string
+  category?: DeadlineCategory
 }
 
 export const CheckDeserializer = (input: any): Check => {
@@ -29,7 +31,8 @@ export const CheckDeserializer = (input: any): Check => {
     id: input.id,
     checkParent: input.parent ? CheckParentDeserializer(input.parent) : undefined,
     endpoint: input.endpoint ? input.endpoint : undefined,
-    state: input.state ? input.state : 'UNCHECKED'
+    state: input.state ? input.state : 'UNCHECKED',
+    category: input.category ? DeadlineCategoryDeserializer(input.category) : undefined
   }
 
   if (single.checkParent?.checkType?.checkType === CheckTypes.DurationCheck) {

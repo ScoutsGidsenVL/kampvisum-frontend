@@ -1,5 +1,5 @@
 <template>
-  <div @click="navigateTowardsCategory(category.categoryParent.label, visum, category.id, route)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen" style="height: 222px">
+  <div @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id, route)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen" style="height: 222px">
     <div class="z-2">
       <h2 class="mb-3 mt-0">{{ category.categoryParent.label }}</h2>
       <div v-for="subCategory in category.subCategories" :key="subCategory" class="d-flex gap-3 my-2.5 items-center">

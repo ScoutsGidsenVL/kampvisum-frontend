@@ -19,8 +19,9 @@
 </template>
 
 <script lang="ts">
-import { BasePage, ScoutsDummyBar, defineRules, Breadcrumb } from 'vue-3-component-library'
+import { BasePage, ScoutsDummyBar, defineRules } from 'vue-3-component-library'
 import NavigationSideBar from './components/sideBars/NavigationSideBar.vue'
+import Breadcrumb from './components/semantics/Breadcrumb.vue'
 import Notification from './components/semantics/Notification.vue'
 import { useInternetHelper } from './helpers/internetHelper'
 import { defineComponent } from 'vue'

@@ -1,5 +1,4 @@
 <template>
-{{subCategory.id}}
   <div :id="subCategory.id">
     <div class="p-3 border border-lightGray flex gap-6 flex-col">
       <header-subcategory-card :subCategory="subCategory" @openSidebar="openSidebar()" />

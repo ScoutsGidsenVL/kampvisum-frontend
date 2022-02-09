@@ -61,7 +61,6 @@ export default defineComponent({
       getCampByRouteParam().then((v: Visum) => {
         visum.value = v
         //NEEDS TO BE REFACTORED AND ONLY RETRIEVE A CATEGORY BASED ON THE SELECTED ID
-        console.log(route.params)
         category.value = visum.value.categorySet.categories.find((c: Category) => c.id === route.params.id)
         isFetchingVisum.value = false
 

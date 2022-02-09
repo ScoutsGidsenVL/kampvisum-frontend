@@ -2,7 +2,6 @@
   <!-- <div v-if="checkType === 'Message'">
     <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{ state: ColorState.DANGER }" />
   </div> -->
-{{check.id}}
 <div :id="check.id">
     <div v-if="checkType === CheckTypes.SimpleCheck">
       <!-- {{check}} -->
