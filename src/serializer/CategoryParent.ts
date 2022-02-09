@@ -1,6 +1,6 @@
 export interface CategoryParent {
-  name?: string
-  label?: string
+  name: string
+  label: string
   description: string
   explanation: string
 }

@@ -82,6 +82,7 @@ import { Visum } from '@/serializer/Visum'
 import { Camp } from '../serializer/Camp'
 import { useI18n } from 'vue-i18n'
 import store from '../store/store'
+import { useNavigation } from '@/router/navigation'
 
 export default defineComponent({
   name: 'KampvisumHome',
@@ -108,6 +109,11 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
+
+    const { setBreadcrumbs } = useNavigation()
+
+
+    setBreadcrumbs([])
 
     const { triggerNotification } = useNotification()
     const isFetchingVisums = ref<boolean>(true)

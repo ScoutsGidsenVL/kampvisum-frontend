@@ -31,6 +31,7 @@ import { useCampHelper } from '../helpers/campHelper'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { Loader } from 'vue-3-component-library'
+import { useNavigation } from '@/router/navigation'
 
 export default defineComponent({
   name: 'CampOverview',
@@ -43,6 +44,7 @@ export default defineComponent({
     const { getSectionsTitle } = useSectionsHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const { getCampByRouteParam } = useCampHelper()
+    const { setBreadcrumbs } = useNavigation()
     window.scrollTo({ top: 0, behavior: 'auto' })
     const visum = ref<Visum>()
     const isFetchingVisum = ref<boolean>(true)
@@ -50,6 +52,7 @@ export default defineComponent({
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
       isFetchingVisum.value = false
+      setBreadcrumbs([{ title: v.camp.name, name: 'kamp', uuid: v.id }])
     })
 
     const sidebar = ref<Sidebar>({state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN})

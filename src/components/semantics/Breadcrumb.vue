@@ -18,7 +18,7 @@
                 </a>
               </li>
               <!-- CRUMBS -->
-              <li v-for="breadcrumb in breadcrumbs" @click="navigateToCrumb(breadcrumb)" :key="breadcrumb" class="breadcrumb-item active cursor-pointer">
+              <li v-for="(breadcrumb) in breadcrumbs" @click="navigateToCrumb(breadcrumb)" :key="breadcrumb" class="breadcrumb-item active cursor-pointer">
                 <a v-if="breadcrumb && breadcrumb.title">{{ breadcrumb.title }}</a>
               </li>
             </div>
@@ -48,13 +48,8 @@
 
 <script lang="ts">
 import { RouteLocationNormalizedLoaded, Router } from 'vue-router'
-import { defineComponent, PropType, ref } from 'vue'
-
-export interface breadcrumb {
-  title: string
-  name: string
-  uuid?: string
-}
+import { breadcrumb, useNavigation } from '@/router/navigation'
+import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   name: 'BreadCrumb',
@@ -80,15 +75,22 @@ export default defineComponent({
   },
   setup(props) {
     const route = props.route
-    const breadcrumbs = ref<breadcrumb[]>([{title: 'uno', name: 'uno'},{title: 'dos', name: 'dos'}])
+    const { breadcrumbs } = useNavigation()
 
     const navigateHome = () => {
       props.router.push(props.home)
     }
 
     const navigateToCrumb = (selectedBreadcrumb: breadcrumb) => {
-      
-      props.router.push('test')
+      let link: string = ''
+
+      for (let i = 0; i < breadcrumbs.value.length; i++) {
+        link += '/' + breadcrumbs.value[i].name + '/' + (breadcrumbs.value[i].uuid ? breadcrumbs.value[i].uuid : '')
+        if (breadcrumbs.value[i].name === selectedBreadcrumb.name) {
+          break
+        }
+      }
+      props.router.push(link)
     }
 
     return {

@@ -56,6 +56,7 @@ export default defineComponent({
     const { checkIfIsMobileSize } = usePhoneHelper()
     const isFetchingVisum = ref<boolean>(true)
     const { jumpToId } = useNavigation()
+    const { setBreadcrumbs } = useNavigation()
   
     const fetchVisum = () => {
       getCampByRouteParam().then((v: Visum) => {
@@ -66,6 +67,7 @@ export default defineComponent({
 
         if (category.value) {
           setCategoryInfo(category.value.categoryParent.description)
+          setBreadcrumbs([{title: v.camp.name,name: 'kamp', uuid: v.id}, { title: category.value.categoryParent.label ,name: category.value.categoryParent.name, uuid: category.value.id}])
         }
 
         if (route.params.sectionId) {
