@@ -20,11 +20,15 @@
         :canDeselect="false"
       />
       <multi-select
+        v-if="groupYears[0]"
         id="year"
         placeholder="Kies een jaar"
+        @addSelection="selectFilter($event, 'year')"
         value-prop="id"
         :options="groupYears"
-        @addSelection="selectFilter($event, 'year')"
+        :value="groupYears[0]"
+        :canClear="false"
+        :canDeselect="false"
       />
     </div>
 
@@ -79,7 +83,6 @@ import { useCampHelper } from '../helpers/campHelper'
 import { Group } from '../serializer/Group'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
-import { Camp } from '../serializer/Camp'
 import { useI18n } from 'vue-i18n'
 import store from '../store/store'
 import { useNavigation } from '@/router/navigation'
@@ -142,6 +145,7 @@ export default defineComponent({
         .getGroupYears(groupId)
         .then((years: Array<string>) => {
           groupYears.value = years
+          setSelectedYear(groupYears.value[0])
         })
     }
 
@@ -191,6 +195,7 @@ export default defineComponent({
     }
 
     const setSelectedYear = (year: string) => {
+      console.log('setSelectedYear: ', year)
       selectedYear.value = year
     }
 

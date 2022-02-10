@@ -1,3 +1,4 @@
+import { GroupType, GroupTypeDeserializer } from "./GroupType"
 import { Name, NameDeserializer, NameSerializer } from "./Name"
 
 export interface Section {
@@ -7,6 +8,8 @@ export interface Section {
   readonly name?: Name
   readonly hidden?: boolean
   readonly group?: string
+  groupType?: GroupType
+  groupAdminId?: string
 }
 
 export const SectionDeserializer = (input: any): Section => {
@@ -17,6 +20,8 @@ export const SectionDeserializer = (input: any): Section => {
     uuid: input.uuid ? input.uuid : undefined,
     hidden: input.hidden,
     group: input.group ? input.group : undefined,
+    groupType: input.group_type ? GroupTypeDeserializer(input.group_type) : undefined,
+    groupAdminId: input.group_admin_id ? input.group_admin_admin_id : undefined
   }
   return single
 }
