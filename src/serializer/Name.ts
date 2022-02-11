@@ -5,6 +5,7 @@ export interface Name {
   gender?: string
   deleted?: string
   hidden?: boolean
+  ageGroup?: string
 }
 
 export const NameDeserializer = (input: any): Name => {
@@ -14,9 +15,9 @@ export const NameDeserializer = (input: any): Name => {
     name: input.name,
     gender: input.gender,
     deleted: input.deleted,
-    hidden: input.hidden ? input.hidden : undefined
+    hidden: input.hidden ? input.hidden : undefined,
+    ageGroup: input.age_group ? input.age_group : undefined
   }
-
   return single
 }
 

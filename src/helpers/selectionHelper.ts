@@ -35,6 +35,6 @@ export const useSelectionHelper = (): {
   return {
     displayCheck,
     checkForIdMatch,
-    displayCheckFile
+    displayCheckFile,
   }
 }

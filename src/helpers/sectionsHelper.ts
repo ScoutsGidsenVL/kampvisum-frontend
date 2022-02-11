@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 export const useSectionsHelper = (): {
   getSectionsTitle: (camp: Camp) => string,
+  genderLabel: (gender: string) => string
 } => {
 
 
@@ -21,7 +22,22 @@ export const useSectionsHelper = (): {
     return sectionsTitle.value
   }
 
+  const genderLabel = (gender: string) => {
+    let label = ''
+    if (gender === 'M') {
+      label = 'Man'
+    }
+    if (gender === 'V') {
+      label = 'Vrouw'
+    }
+    if (gender === 'I') {
+      label = 'Mix'
+    }
+    return label
+  }
+
   return {
     getSectionsTitle,
+    genderLabel
   }
 }

@@ -34,7 +34,7 @@ export default defineComponent({
   props: {
   },
   setup (props, { emit }) {
-    const options = ref<any>([{value: 'M', label: 'Man'}, {value: 'F', label: 'Vrouw'}, {value: 'X', label: 'X'}])
+    const options = ref<any>([{value: 'M', label: 'Man'}, {value: 'F', label: 'Vrouw'}, {value: 'X', label: 'Andere'}])
     const filter = ref<Filter>({ gender: '', ageMin: '', ageMax: '' })
     let debounce: any
 

@@ -1,4 +1,5 @@
 import router from '@/router'
+import { Group } from '@/serializer/Group'
 import { Visum } from '@/serializer/Visum'
 import { ref, Ref } from 'vue'
 export interface breadcrumb {
@@ -8,14 +9,21 @@ export interface breadcrumb {
 }
 
 const breadcrumbs = ref<breadcrumb[]>([])
+const selectedGroup = ref<Group>({ groupAdminId: '' })
 
 export const useNavigation = (): {
   navigateTowardsCategory: (name: string, visum: Visum, categoryUuid: string, route: any) => void
   navigateTowardsSection: (name: string, visum: Visum, categoryUuid: string, sectionId: string, route: any) => void
   jumpToId: (id: string | string[]) => void
   breadcrumbs: Ref<breadcrumb[]>
+  selectedGroup: Ref<any>
   setBreadcrumbs: (b: breadcrumb[]) => void
+  setSelectedGroup: (group: Group) => void
 } => {
+
+  const setSelectedGroup = (group: Group) => {
+    selectedGroup.value = group
+  }
 
   const setBreadcrumbs = (b: breadcrumb[]) => {
     breadcrumbs.value = b
@@ -51,6 +59,8 @@ export const useNavigation = (): {
     navigateTowardsSection,
     jumpToId,
     breadcrumbs,
-    setBreadcrumbs
+    setBreadcrumbs,
+    selectedGroup,
+    setSelectedGroup
   }
 }

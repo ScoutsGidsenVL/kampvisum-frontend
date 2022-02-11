@@ -10,6 +10,7 @@ export interface Section {
   readonly group?: string
   groupType?: GroupType
   groupAdminId?: string
+  
 }
 
 export const SectionDeserializer = (input: any): Section => {
