@@ -1,13 +1,24 @@
 <template>
   <div class="home p-3">
-    {{selectedGroup}}
     <warning v-if="visumToBeDeleted && visumToBeDeleted.camp" :title="visumToBeDeleted.camp.name" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
-    
     <div>
-      <camp-side-bar v-if="selectedGroup" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.groupAdminId"/>
+      <camp-side-bar :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.groupAdminId"/>
     </div>
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
+      <multi-select
+        v-if="myGroups[0]"
+        id="group"
+        :object="true"
+        placeholder="Kies een groep"
+        @addSelection="selectFilter($event, 'group')"
+        track-by="fullName"
+        value-prop="groupAdminId"
+        :options="myGroups"
+        :value="myGroups[0]"
+        :canClear="false"
+        :canDeselect="false"
+      />
       <multi-select
         v-if="groupYears[0]"
         id="year"
@@ -69,9 +80,11 @@ import MultiSelect from '../components/inputs/MultiSelect.vue'
 import { useNotification } from '@/composable/useNotification'
 import {ArrayResult} from '../interfaces/ArrayResult'
 import { useCampHelper } from '../helpers/campHelper'
-import { defineComponent, ref,watch, watchEffect } from 'vue'
+import { Group } from '../serializer/Group'
+import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
+import store from '../store/store'
 import { useNavigation } from '@/router/navigation'
 
 export default defineComponent({
@@ -89,6 +102,7 @@ export default defineComponent({
     const { setCampsByGroup, campsByGroup } = useCampHelper()
     const isWarningDisplayed = ref<Boolean>(false)
     const visumToBeDeleted = ref<Visum>()
+    const selectedGroup = ref<Group>({ groupAdminId: ''})
     const isDeletingVisum = ref<Boolean>(false)
     const selectedYear = ref<string>('')
     const groupYears = ref<string[]>([])
@@ -98,7 +112,9 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
-    const { setBreadcrumbs, selectedGroup } = useNavigation()
+
+    const { setBreadcrumbs } = useNavigation()
+
 
     setBreadcrumbs([])
 
@@ -106,17 +122,22 @@ export default defineComponent({
     const isFetchingVisums = ref<boolean>(true)
 
     const getVisums = async (groupId: string, year: string) => {
-          console.log('GET VISUMS FETCHING')
-
       await RepositoryFactory.get(CampRepository)
         .getArray('?page=1&page_size=100&group=' + groupId + ((year !== '') ? '&year=' + year : ''))
         .then((c: ArrayResult) => {
-          console.log('GET VISUMS SUCCESS 1')
           visums.value = c
           setCampsByGroup(visums.value)
           isFetchingVisums.value = false
-          console.log('GET VISUMS SUCCESS 2')
         })
+    }
+
+    const setSelectedGroup = (group: Group) => {
+      selectedGroup.value = group
+    }
+
+    const getUserGroups = async () => {
+      myGroups.value = store.getters.user.scoutsGroups
+      setSelectedGroup(myGroups.value[0])
     }
 
     const getGroupYears = async (groupId: string) => {
@@ -178,12 +199,13 @@ export default defineComponent({
       selectedYear.value = year
     }
 
-    const selectFilter = () => {
+    const selectFilter = (event: any, filter: string) => {
+      filter === 'group' ? setSelectedGroup(event) : event !== null ? setSelectedYear(event) : setSelectedYear('')
       getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
     }
 
-    getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
-
+    getUserGroups().then(() => getGroupYears(selectedGroup.value.groupAdminId))
+    .then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
 
     return {
       isFetchingVisums,

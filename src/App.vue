@@ -7,7 +7,7 @@
         <bread-crumb :isInternetActive="isInternetActive" class="md:px-5 md:mx-3" :home="'/kampvisum-home/'" :router="router" :route="route" />
       </div>
       <div class="d-flex">
-        <navigation-side-bar class="xs:mr-4 md:mr-0" />
+        <!-- <navigation-side-bar class="xs:mr-4 md:mr-0" /> -->
         <div class="w-100 md:px-5 md:mx-3 mt-3">
           <h1 class="ml-3 w-full h1">{{ $route.meta.titleKey ? $t($route.meta.titleKey) : '' }}</h1>
           <router-view />
