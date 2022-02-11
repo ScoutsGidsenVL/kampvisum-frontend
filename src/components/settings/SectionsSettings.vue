@@ -14,8 +14,6 @@
         <loader color="lightGreen" size="10" :isLoading="true" />
       </div>
 
-      {{sectionSideBarState}}
-
       <div>
         <section-sidebar :title="'Section'" v-model:sideBarState="sectionSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.groupAdminId"/>
       </div>

@@ -9,7 +9,7 @@
         <i-pencil @click="edit(groupSection)" class="text-green cursor-pointer" />
       </div>
       <div>
-        <cross @click="remove()" class="text-red cursor-pointer" />
+        <cross @click="remove(groupSection)" class="text-red cursor-pointer" />
       </div>
     </div>
   </div>
