@@ -1,5 +1,6 @@
 <template>
   <div class="home p-3">
+    {{selectedGroup}}
     <warning v-if="visumToBeDeleted && visumToBeDeleted.camp" :title="visumToBeDeleted.camp.name" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
     
     <div>
@@ -68,7 +69,7 @@ import MultiSelect from '../components/inputs/MultiSelect.vue'
 import { useNotification } from '@/composable/useNotification'
 import {ArrayResult} from '../interfaces/ArrayResult'
 import { useCampHelper } from '../helpers/campHelper'
-import { defineComponent, ref, watchEffect } from 'vue'
+import { defineComponent, ref,watch, watchEffect } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
 import { useNavigation } from '@/router/navigation'
@@ -177,10 +178,8 @@ export default defineComponent({
       getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
     }
 
-    watchEffect(() => {
-      console.log('WATCHER HOME')
-      getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
-    })
+    getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
+
 
     return {
       isFetchingVisums,

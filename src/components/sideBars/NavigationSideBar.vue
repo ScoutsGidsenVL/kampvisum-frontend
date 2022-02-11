@@ -104,7 +104,6 @@ export default defineComponent({
     const myGroups = ref<any>([])  
 
     watch(() => store.getters.user.scoutsGroups, () => {
-      console.log('WATCHER - NAVIGATION SIDEBAR')
       myGroups.value = store.getters.user.scoutsGroups
       setSelectedGroup(myGroups.value[0])
     })
