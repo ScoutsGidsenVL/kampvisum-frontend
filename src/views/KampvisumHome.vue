@@ -177,7 +177,10 @@ export default defineComponent({
       getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
     }
 
-    watchEffect(() => getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value)))
+    watchEffect(() => {
+      console.log('WATCHER HOME')
+      getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
+    })
 
     return {
       isFetchingVisums,

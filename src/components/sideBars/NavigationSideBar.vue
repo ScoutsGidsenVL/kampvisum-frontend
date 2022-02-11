@@ -65,6 +65,7 @@
 </template>
 
 <script lang="ts">
+import MultiSelect from '../../components/inputs/MultiSelect.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { Sidebar, SidebarState } from '@/helpers/infoBarHelper'
 import { useCampHelper } from '../../helpers/campHelper'
@@ -74,7 +75,6 @@ import NavigationItem from './NavigationItem.vue'
 import { defineComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import store from '../../store/store'
-import MultiSelect from '../../components/inputs/MultiSelect.vue'
 
 export default defineComponent({
   components: { 
@@ -104,6 +104,7 @@ export default defineComponent({
     const myGroups = ref<any>([])  
 
     watch(() => store.getters.user.scoutsGroups, () => {
+      console.log('WATCHER - NAVIGATION SIDEBAR')
       myGroups.value = store.getters.user.scoutsGroups
       setSelectedGroup(myGroups.value[0])
     })
