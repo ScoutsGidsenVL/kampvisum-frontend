@@ -106,12 +106,16 @@ export default defineComponent({
     const isFetchingVisums = ref<boolean>(true)
 
     const getVisums = async (groupId: string, year: string) => {
+          console.log('GET VISUMS FETCHING')
+
       await RepositoryFactory.get(CampRepository)
         .getArray('?page=1&page_size=100&group=' + groupId + ((year !== '') ? '&year=' + year : ''))
         .then((c: ArrayResult) => {
+          console.log('GET VISUMS SUCCESS 1')
           visums.value = c
           setCampsByGroup(visums.value)
           isFetchingVisums.value = false
+          console.log('GET VISUMS SUCCESS 2')
         })
     }
 
