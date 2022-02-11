@@ -28,7 +28,7 @@ pipeline {
               "files": [
                 {
                   "pattern": "frontend.zip",
-                  "target": "groepsadmin-frontend/${BRANCH_NAME}/${BUILD_ID}/"
+                  "target": "kampvisum-frontend/${BRANCH_NAME}/${BUILD_ID}/"
                 }
              ]
             }'''
