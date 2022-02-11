@@ -4,7 +4,7 @@
     <div class="text-center">{{genderLabel(groupSection.name.gender)}}</div>
     <div class="text-center">{{groupSection.name.ageGroup}}</div>
     
-    <div class="flex justify-end gap-5">
+    <div class="group-hover: flex justify-end gap-5">
       <div>
         <i-pencil @click="edit(groupSection)" class="text-green cursor-pointer" />
       </div>
