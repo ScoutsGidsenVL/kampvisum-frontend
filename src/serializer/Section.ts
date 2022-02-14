@@ -5,7 +5,7 @@ export interface Section {
   readonly id?: string
   readonly uuid?: string
   readonly deleted?: any
-  readonly name?: Name
+  name: Name
   readonly hidden?: boolean
   readonly group?: string
   groupType?: GroupType
@@ -16,7 +16,7 @@ export interface Section {
 export const SectionDeserializer = (input: any): Section => {
   const single: Section = {
     id: input.id ? input.id : undefined,
-    name: input.name ? NameDeserializer(input.name) : undefined,
+    name: NameDeserializer(input.name),
     deleted: input.deleted ? input.deleted : undefined,
     uuid: input.uuid ? input.uuid : undefined,
     hidden: input.hidden,
@@ -27,14 +27,11 @@ export const SectionDeserializer = (input: any): Section => {
   return single
 }
 
-export const SectionSerializer = (input: any): any => {
+export const SectionSerializer = (input: Section): any => {
   const single: any = {
-    id: input.id ? input.id : undefined,
-    name: input.name ? NameSerializer(input.name) : undefined,
-    deleted: input.deleted ? input.deleted : undefined,
-    uuid: input.uuid ? input.uuid : undefined,
-    hidden: input.hidden ? input.hidden : undefined,
-    group: input.group ? input.group : undefined,
+    group_admin_id: input.groupAdminId ? input.groupAdminId : undefined,
+    group_type: input.groupType ? input.groupType : undefined,
+    name: input.name ? NameSerializer(input.name) : undefined
   }
 
   return single

@@ -16,7 +16,7 @@ export const NameDeserializer = (input: any): Name => {
     gender: input.gender,
     deleted: input.deleted,
     hidden: input.hidden ? input.hidden : undefined,
-    ageGroup: input.age_group ? input.age_group : undefined
+    ageGroup: input.age_group ? input.age_group.toString() : undefined
   }
   return single
 }
@@ -24,8 +24,8 @@ export const NameDeserializer = (input: any): Name => {
 export const NameSerializer = (input: any): any => {
   const single: any = {
     name: input.name,
-    start_date: input.startDate,
-    end_date: input.startDate
+    gender: input.gender ? input.gender : undefined,
+    age_group: input.ageGroup ? Number(input.ageGroup) : undefined
   }
   return single
 }

@@ -41,6 +41,7 @@ import { CustomButton, Loader } from 'vue-3-component-library'
 import { useNavigation } from '@/router/navigation'
 import { Section } from '@/serializer/Section'
 import SectionItem from '../semantics/SectionItem.vue'
+import { SectionsRepository } from '@/repositories/SectionsRepository'
 
 export default defineComponent({
   components: {  
@@ -63,9 +64,16 @@ export default defineComponent({
       }
     }
 
-    const removeSection = (section: Section) => {
-      console.log('remove section: ', section)
+    const removeSection = async (section: Section) => {
+      if (section.id) {
+        await RepositoryFactory.get(SectionsRepository)
+        .removeById(section.id)
+        .then(() => {
+          getGroupSections(selectedGroup.value.groupAdminId)
+        })
+      } 
     }
+    
     const openSectionSideBar = () => {
       sectionSideBarState.value = { state: 'new' }
     }
@@ -80,10 +88,12 @@ export default defineComponent({
 
     const actionSuccess = (action: string) => {
       if (action === 'POST') {
-        triggerNotification('Kamp is succesvol aangemaakt')
+        triggerNotification('Tak is succesvol aangemaakt')
+        getGroupSections(selectedGroup.value.groupAdminId)
       }
       if (action === 'UPDATE') {
         triggerNotification('Kamp is succesvol bewerkt')
+        getGroupSections(selectedGroup.value.groupAdminId)
       }
       getGroupSections(selectedGroup.value.groupAdminId)
     }

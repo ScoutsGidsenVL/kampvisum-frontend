@@ -1,6 +1,5 @@
 <template>
   <div class="home p-3">
-    {{selectedGroup}}
     <warning v-if="visumToBeDeleted && visumToBeDeleted.camp" :title="visumToBeDeleted.camp.name" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
     
     <div>
@@ -60,19 +59,19 @@
 </template>
 
 <script lang="ts">
+import { CustomButton, Warning, Loader } from 'vue-3-component-library'
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { CustomButton, Warning, Loader } from 'vue-3-component-library'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
 import { useNotification } from '@/composable/useNotification'
 import {ArrayResult} from '../interfaces/ArrayResult'
 import { useCampHelper } from '../helpers/campHelper'
-import { defineComponent, ref,watch, watchEffect } from 'vue'
+import { useNavigation } from '@/router/navigation'
+import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
-import { useNavigation } from '@/router/navigation'
 
 export default defineComponent({
   name: 'KampvisumHome',

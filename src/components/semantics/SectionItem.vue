@@ -2,9 +2,9 @@
   <div class="grid grid-cols-4 p-2 border-b border-black text-black">
     <div>{{groupSection.name.name}}</div>
     <div class="text-center">{{genderLabel(groupSection.name.gender)}}</div>
-    <div class="text-center">{{groupSection.name.ageGroup}}</div>
+    <div>{{ageGroupLabel(groupSection.name.ageGroup)}}</div>
     
-    <div class="group-hover: flex justify-end gap-5">
+    <div class="flex justify-end gap-5">
       <div>
         <i-pencil @click="edit(groupSection)" class="text-green cursor-pointer" />
       </div>
@@ -36,7 +36,7 @@ export default defineComponent({
     }
   },
   setup (props, { emit }) {
-    const { genderLabel } = useSectionsHelper()
+    const { genderLabel, ageGroupLabel } = useSectionsHelper()
     const remove = (section: Section) => {
       emit('removeSection', section)
     }
@@ -46,7 +46,8 @@ export default defineComponent({
     return {
       genderLabel,
       edit, 
-      remove
+      remove,
+      ageGroupLabel
     }
   }
 })
