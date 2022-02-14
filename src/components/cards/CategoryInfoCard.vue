@@ -37,7 +37,7 @@ export default defineComponent({
     const route = useRoute()
 
     const navigateTowardsSubCategory = (category: Category) => {
-      router.push('/kamp/' + route.params.campId.toString() + '/' + category.categoryParent.label + '/' + category.id)
+      router.push('/kamp/' + route.params.campId.toString() + '/' + category.categoryParent.name + '/' + category.id)
     }
 
     return {
