@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import BaseCategoryView from '@/views/categories/BaseCategoryView.vue'
 import SettingsOverview from '@/views/SettingsOverview.vue'
 import DocumentsOverview from '@/views/DocumentsOverview.vue'
@@ -198,7 +198,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes,
 })
 
