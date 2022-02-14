@@ -4,10 +4,12 @@
       Takken voor {{selectedGroup.groupAdminId}}
     </div>
 
+    <warning v-if="isWarningDisplayed" :title="sectionToBeDeleted.name.name" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker deze tak te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="removeSection()" />
+
     <div class="bg-white shadow-md">
 
       <div v-if="groupSections">
-        <section-item v-for="groupSection in groupSections" :key="groupSection" :groupSection="groupSection" @removeSection="removeSection($event)" @editSection="editSection($event)"/>
+        <section-item v-for="groupSection in groupSections" :key="groupSection" :groupSection="groupSection" @removeSection="displayWarning($event)" @editSection="editSection($event)"/>
       </div>
 
       <div v-else class="text-center py-5">
@@ -32,23 +34,24 @@
 </template>
 
 <script lang="ts">
+import { CustomButton, Loader, Warning } from 'vue-3-component-library'
+import { SectionsRepository } from '@/repositories/SectionsRepository'
 import { GroupRepository } from '@/repositories/groupRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { useNotification } from '@/composable/useNotification'
 import SectionSidebar from '../sideBars/SectionSideBar.vue'
 import { defineComponent, watchEffect, ref } from 'vue'
-import { CustomButton, Loader } from 'vue-3-component-library'
+import SectionItem from '../semantics/SectionItem.vue'
 import { useNavigation } from '@/router/navigation'
 import { Section } from '@/serializer/Section'
-import SectionItem from '../semantics/SectionItem.vue'
-import { SectionsRepository } from '@/repositories/SectionsRepository'
 
 export default defineComponent({
   components: {  
     SectionSidebar,
     CustomButton,
     SectionItem,
-    Loader
+    Loader,
+    'warning': Warning,
   },
   name: 'SectionSettings',
   setup () {
@@ -56,7 +59,8 @@ export default defineComponent({
     const { triggerNotification } = useNotification()
     const { selectedGroup } = useNavigation()
     const groupSections = ref<Section[]>()
-1
+    const isWarningDisplayed = ref<Boolean>(false)
+    const sectionToBeDeleted = ref<Section>()
     const editSection = (section: Section) => {
       sectionSideBarState.value = {
         state: 'edit',
@@ -64,12 +68,23 @@ export default defineComponent({
       }
     }
 
-    const removeSection = async (section: Section) => {
-      if (section.id) {
+    const displayWarning = (section: Section) => {
+      isWarningDisplayed.value = true
+      sectionToBeDeleted.value = section
+    }
+
+    const hideWarning = () => {
+      isWarningDisplayed.value = false
+    }
+
+    const removeSection = async () => {
+      if (sectionToBeDeleted.value && sectionToBeDeleted.value.id) {
         await RepositoryFactory.get(SectionsRepository)
-        .removeById(section.id)
+        .removeById(sectionToBeDeleted.value.id)
         .then(() => {
           getGroupSections(selectedGroup.value.groupAdminId)
+          isWarningDisplayed.value = false
+          triggerNotification('Tak is succesvol verwijderd')
         })
       } 
     }
@@ -103,11 +118,15 @@ export default defineComponent({
     return {
       sectionSideBarState,
       openSectionSideBar,
+      isWarningDisplayed,
+      sectionToBeDeleted,
+      displayWarning,
       selectedGroup,
       groupSections,
       actionSuccess,
+      removeSection,
       editSection,
-      removeSection
+      hideWarning
     }
   }
 })

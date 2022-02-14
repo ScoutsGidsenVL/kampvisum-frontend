@@ -11,7 +11,7 @@ export class LocationCheckRepository extends BaseRepository {
   public serializer = PostLocationSerializer
 
   update(url: string, data: any) {
-    return this.patch(url, this.serializer(data)).then((response: any) => {
+    return this.patch(url, [this.serializer(data)]).then((response: any) => {
       return this.deserializer(response)
     })
   }

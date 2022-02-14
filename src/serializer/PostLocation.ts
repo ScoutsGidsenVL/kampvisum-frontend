@@ -36,7 +36,7 @@ export const PostLocationSerializer = (input: any): any => {
     contact_name: input.contactName ? input.contactName : undefined,
     contact_phone: input.contactPhone ? input.contactPhone : undefined,
     contact_email: input.contactEmail ? input.contactEmail : undefined,
-    locations: input.locations.map((sL: SearchedLocation) => SearchedLocationSerializer(sL)),
+    locations: input.locations ? input.locations.map((sL: SearchedLocation) => SearchedLocationSerializer(sL)) : [],
     zoom: input.zoom,
     center_latitude: input.centerLatitude,
     center_longitude: input.centerLongitude
