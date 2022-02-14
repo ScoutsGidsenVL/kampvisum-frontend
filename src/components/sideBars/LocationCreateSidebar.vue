@@ -152,8 +152,6 @@ export default defineComponent({
       useScope: 'local',
     })
 
-    console.log('HUH')
-
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
       resetForm()

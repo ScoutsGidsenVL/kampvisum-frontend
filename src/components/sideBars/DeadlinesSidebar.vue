@@ -164,7 +164,6 @@ export default defineComponent({
     }
 
     const openDeadline = (event: any) => {
-      console.log('EVENT: ', event)
       selectedDeadline.value = event
       isDeadlineDetail.value = true
     }

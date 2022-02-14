@@ -107,7 +107,6 @@ export default defineComponent({
     }
 
     watch(() => store.getters.user.scoutsGroups, () => {
-      console.log('WATCH GROUPS - NAV SIDEBAR')
       myGroups.value = store.getters.user.scoutsGroups
       setSelectedGroup(myGroups.value[0])
     })
