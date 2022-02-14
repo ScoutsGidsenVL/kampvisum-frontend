@@ -69,7 +69,7 @@ import { useNotification } from '@/composable/useNotification'
 import {ArrayResult} from '../interfaces/ArrayResult'
 import { useCampHelper } from '../helpers/campHelper'
 import { useNavigation } from '@/router/navigation'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
 
@@ -169,7 +169,7 @@ export default defineComponent({
       if (action === 'UPDATE') {
         triggerNotification('Kamp is succesvol bewerkt')
       }
-      getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
+      getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
     }
 
     const setSelectedYear = (year: string) => {
@@ -183,6 +183,12 @@ export default defineComponent({
 
     getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
 
+    watch(
+      () => selectedGroup.value,
+      () => {
+        getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
+      }
+    )
 
     return {
       isFetchingVisums,
