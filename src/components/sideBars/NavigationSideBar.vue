@@ -4,12 +4,8 @@
       <div class="fixed d-flex" :class="{ 'md:w-98 xs:w-100': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
         <div class="w-100 border-r-2 border-lightGray flex-column bg-gray h-screen px-4" :class="{ 'd-none': sidebar.state === SidebarState.CLOSED, 'd-flex': sidebar.state === SidebarState.OPEN }">
           
-          <div class="mt-4 d-flex justify-between mb-3 items-center">
-            <svg width="47" height="36" viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19.6099 0.437012L3.08984 24.2465H28.4577L11.802 0.437012" stroke="black" stroke-width="3" stroke-miterlimit="10"/>
-              <path d="M10.8374 24.2466L15.7814 17.1641L20.4238 24.2466H10.8374Z" fill="#231F20" stroke="#231F20" stroke-miterlimit="10"/>
-              <path d="M0 24.2466H32" stroke="#231F20" stroke-width="3" stroke-miterlimit="10"/>
-            </svg>
+          <div @click="home()" class="mt-4 d-flex justify-between mb-3 items-center cursor-pointer">
+            <i-logo />
             <h1 class="text-2xl mt-1.5">Kampkaft</h1>
           </div>
 
@@ -75,11 +71,14 @@ import NavigationItem from './NavigationItem.vue'
 import { defineComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import store from '../../store/store'
+import ILogo from '../icons/ILogo.vue'
+import router from '@/router'
 
 export default defineComponent({
   components: { 
     NavigationItem, 
     'multi-select': MultiSelect,
+    ILogo
   },
   name: 'NavigationSideBar',
   setup() {
@@ -103,6 +102,10 @@ export default defineComponent({
 
     const myGroups = ref<any>([])  
 
+    const home = () => {
+      router.push('/kampvisum-home/')
+    }
+
     watch(() => store.getters.user.scoutsGroups, () => {
       console.log('WATCH GROUPS - NAV SIDEBAR')
       myGroups.value = store.getters.user.scoutsGroups
@@ -112,13 +115,14 @@ export default defineComponent({
     return {
       navigateTowardsCategory,
       getSectionsTitle,
+      setSelectedGroup,
       toggleSideBar,
       SidebarState,
       campsByGroup,
+      myGroups,
       sidebar,
       route,
-      setSelectedGroup,
-      myGroups
+      home
     }
   }
 })

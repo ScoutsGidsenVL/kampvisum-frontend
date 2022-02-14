@@ -15,7 +15,8 @@ export enum CheckTypes {
   LocationCheck = 'LocationCheck',
   FileUploadCheck = 'FileUploadCheck',
   MemberCheck = 'MemberCheck',
-  ParticipantCheck = 'ParticipantCheck'
+  ParticipantCheck = 'ParticipantCheck',
+  NumberCheck = 'NumberCheck'
 }
 export interface Check {
   id?: string

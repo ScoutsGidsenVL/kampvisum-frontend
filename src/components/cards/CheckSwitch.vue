@@ -39,6 +39,10 @@
     <div class="my-4" v-if="checkType === CheckTypes.ParticipantCheck">
       <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
     </div>
+
+    <div class="mt-4" v-if="checkType === CheckTypes.NumberCheck">
+      <number-check :check="check" @rl="rl($event)" />
+    </div>
 </div>
 </template>
 
@@ -56,6 +60,7 @@ import CheckComponent from './checks/check.vue'
 import VSwitch from '@lmiller1990/v-switch'
 import { Visum } from '@/serializer/Visum'
 import { Camp } from '@/serializer/Camp'
+import NumberCheck from '../semantics/NumberCheck.vue'
 
 export default defineComponent({
   name: 'ConcernSwitch',
@@ -70,6 +75,7 @@ export default defineComponent({
     DateField,
     VSwitch,
     Message,
+    NumberCheck,
   },
   props: {
     checkType: String,
