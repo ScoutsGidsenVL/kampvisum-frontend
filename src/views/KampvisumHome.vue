@@ -29,6 +29,12 @@
         </template>
       </custom-button>
     </div>
+
+    <div class="h-screen -m-56 grid content-center" v-if="isFetchingVisums">
+      <div class="text-center">
+        <loader color="lightGreen" size="20" :isLoading="isFetchingVisums" />
+      </div>
+    </div>
     
     <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
       <div v-for="visum in visums" :key="visum.id">
@@ -47,12 +53,6 @@
             </svg>
           </template>
         </camp-info-card>
-      </div>
-    </div>
-
-    <div class="h-screen -m-56 grid content-center" v-if="isFetchingVisums">
-      <div class="text-center">
-        <loader color="lightGreen" size="20" :isLoading="isFetchingVisums" />
       </div>
     </div>
   </div>
@@ -98,23 +98,17 @@ export default defineComponent({
       useScope: 'local',
     })
     const { setBreadcrumbs, selectedGroup } = useNavigation()
-
-    setBreadcrumbs([])
-
     const { triggerNotification } = useNotification()
     const isFetchingVisums = ref<boolean>(true)
+    setBreadcrumbs([])
 
     const getVisums = async (groupId: string, year: string) => {
-          console.log('GET VISUMS FETCHING')
-
       await RepositoryFactory.get(CampRepository)
         .getArray('?page=1&page_size=100&group=' + groupId + ((year !== '') ? '&year=' + year : ''))
         .then((c: ArrayResult) => {
-          console.log('GET VISUMS SUCCESS 1')
           visums.value = c
           setCampsByGroup(visums.value)
           isFetchingVisums.value = false
-          console.log('GET VISUMS SUCCESS 2')
         })
     }
 
@@ -173,7 +167,6 @@ export default defineComponent({
     }
 
     const setSelectedYear = (year: string) => {
-      console.log('setSelectedYear: ', year)
       selectedYear.value = year
     }
 
@@ -186,6 +179,8 @@ export default defineComponent({
     watch(
       () => selectedGroup.value,
       () => {
+      isFetchingVisums.value = true
+      visums.value = []
         getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
       }
     )
