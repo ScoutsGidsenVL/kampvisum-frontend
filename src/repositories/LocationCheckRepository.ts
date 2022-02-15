@@ -14,10 +14,15 @@ export class LocationCheckRepository extends BaseRepository {
     let arr: Array<any> = []
     if (parentLocations) {
       parentLocations.forEach((p: any) => {
-        arr.push({ id: p.id})
+        if (data.id !== p.id) {
+          console.log('DAT ID: ', data.id, 'P ID: ', p.id)
+          arr.push({ id: p.id})
+        }
       })
     }
+
     arr.push(this.serializer(data))
+
     return this.patch(url, { locations: arr }).then((response: any) => {
       return this.deserializer(response)
     })

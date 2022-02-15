@@ -3,7 +3,7 @@ import { Visum, VisumDeserializer } from "./Visum"
 import { DueDate, DueDateDeserializer, DueDateSerializer } from "./DueDate"
 import { SubCategory, SubCategoryDeserializer } from "./SubCategory"
 import { DeadlineParent, DeadlineParentDeserializer } from "./DeadlineParent"
-import { FlagDeserializer, FlagParent } from "./FlagParent"
+import { FlagDeserializer, Flag } from "./Flag"
 export interface Deadline {
   createdBy?: string
   createdOn?: string
@@ -11,7 +11,7 @@ export interface Deadline {
   visum: string
   linkedChecks?: Array<Check>
   linkedSubCategories?: Array<SubCategory>
-  flags?: Array<FlagParent>
+  flags?: Array<Flag>
   deadlineParent?: DeadlineParent
   updatedBy?: string
   updatedOn?: string

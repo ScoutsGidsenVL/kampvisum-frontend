@@ -5,7 +5,7 @@ export interface FlagParent {
   name?: string
 }
 
-export const FlagDeserializer = (input: any): FlagParent => {
+export const FlagParentDeserializer = (input: any): FlagParent => {
   const single: FlagParent = {
     id: input.id,
     index: input.index,
@@ -16,7 +16,7 @@ export const FlagDeserializer = (input: any): FlagParent => {
   return single
 }
 
-export const FlagSerializer = (input: FlagParent): any => {
+export const FlagParentSerializer = (input: FlagParent): any => {
   const single: any = {
   }
   return single

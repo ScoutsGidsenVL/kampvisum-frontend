@@ -52,7 +52,7 @@
                 <p>{{linkedCheck.label}}</p>
               </div>
               <span 
-              v-if="linkedCheck.state !== 'CECKED'" 
+              v-if="linkedCheck.state !== 'CHECKED'" 
               @click="navigateTowardsSection(linkedCheck.category.name, visum, linkedCheck.category.id, linkedCheck.id, route)" 
               class="ml-4 text-green underline cursor-pointer">vul aan</span>
             </div>
@@ -64,11 +64,26 @@
                 <i-empty-check v-else  />
                 <p>{{linkedSubCategory.label}}</p>
               </div>
-              <!-- <span 
-              v-if="linkedSubCategory.state !== 'CECKED'" 
+              <span 
+              v-if="linkedSubCategory.state !== 'CHECKED'" 
+              @click="navigateTowardsSection(linkedSubCategory.category.name, visum, linkedSubCategory.category.id, linkedSubCategory.id, route)" 
+              class="ml-4 text-green underline cursor-pointer">vul aan</span>
+            </div>
+
+            <!-- FLAGS -->
+            <div v-for="flag in selectedDeadline.flags" :key="flag">
+              {{flag.flag}}
+              <!-- <div class="flex items-center gap-2">
+                <i-checked v-if="linkedSubCategory.state === 'CHECKED'" />
+                <i-empty-check v-else  />
+                <p>{{linkedSubCategory.label}}</p>
+              </div>
+              <span 
+              v-if="linkedSubCategory.state !== 'CHECKED'" 
               @click="navigateTowardsSection(linkedSubCategory.category.name, visum, linkedSubCategory.category.id, linkedSubCategory.id, route)" 
               class="ml-4 text-green underline cursor-pointer">vul aan</span> -->
             </div>
+
           </div>
         </div>
       </div>
