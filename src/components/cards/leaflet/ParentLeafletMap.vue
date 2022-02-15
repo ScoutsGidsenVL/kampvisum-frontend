@@ -20,7 +20,7 @@
                 </svg>
               </l-icon>
               <l-popup class="w-60" >
-                <custom-popup :location="parentSubLocation" :parentLocation="parentLocation" :check="check" />
+                <custom-popup :location="parentSubLocation" :parentLocation="parentLocation" :check="check" @edit="edit($event)" />
               </l-popup>
             </l-marker>
           </div>
@@ -143,6 +143,10 @@ export default defineComponent ({
     const centerUpdated = (center: any) => {
       emit('update:center', [center.lat,center.lng])
     }
+
+    const edit = (parentLocation: any) => {
+      emit('edit', parentLocation)
+    }
     return {
       deleteMainLocationPoint,
       cancelLocationPoint,
@@ -158,6 +162,7 @@ export default defineComponent ({
       InputTypes,
       addOnClick,
       toPatch,
+      edit
     }
   }
 })

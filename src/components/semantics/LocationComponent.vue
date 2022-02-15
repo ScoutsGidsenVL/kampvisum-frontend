@@ -5,10 +5,12 @@
       v-if="!isReloading" 
       :parentLocations="check.value.locations" 
       :check="check" 
-      :center="[check.value.centerLatitude, check.value.centerLongitude]  "  
+      :center="[check.value.centerLatitude, check.value.centerLongitude]"
+      @edit="edit($event)"  
     />
     <custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="'+ voeg locatie toe'" />
-    <location-create-sidebar v-if="createSidebar.state === 'new'" :parentLocations="check.value.locations" :check="check" title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
+    {{createSidebar.state}}
+    <location-create-sidebar v-if="createSidebar.state === 'new' || createSidebar.state === 'edit'" :parentLocations="check.value.locations" :check="check" title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
   </div>
 </template>
 
@@ -67,12 +69,17 @@ export default defineComponent({
       }
     )
 
+    const edit = (parentLocation: any) => {
+      createSidebar.value = { state: 'edit' }
+    }
+
     return {
       openLocationCreateSidebar,
       createSidebar,
       actionSuccess,
       isReloading,
       check,
+      edit
     }
   }
 })
