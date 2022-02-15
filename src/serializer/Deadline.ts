@@ -13,6 +13,7 @@ export interface Deadline {
   deadlineParent?: DeadlineParent
   updatedBy?: string
   updatedOn?: string
+  state?: string
 }
 
 export const DeadlineDeserializer = (input: any): Deadline => {
@@ -27,6 +28,7 @@ export const DeadlineDeserializer = (input: any): Deadline => {
     updatedBy: input.updated_by ? input.updated_by : undefined,
     updatedOn: input.updated_on ? input.updated_on : undefined,
     visum: input.visum,
+    state: input.state ? input.state : 'UNCHECKED'
   }
 
   return single

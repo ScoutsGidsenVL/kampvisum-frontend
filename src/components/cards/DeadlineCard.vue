@@ -5,8 +5,8 @@
       <div class="flex items-center">
         <!-- CHECK ICON -->
         <div class="mr-2.5">
-          <i-checked />
-          <i-empty-check />
+          <i-checked v-if="deadline.state === 'CHECKED'" />
+          <i-empty-check v-if="deadline.state === 'UNCHECKED'" />
         </div>
 
         <div>

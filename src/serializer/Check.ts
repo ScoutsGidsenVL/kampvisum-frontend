@@ -26,6 +26,8 @@ export interface Check {
   state?: string
   category?: DeadlineCategory
   zoom?: number
+  name?: string
+  label?: string
 }
 
 export const CheckDeserializer = (input: any): Check => {
@@ -35,6 +37,8 @@ export const CheckDeserializer = (input: any): Check => {
     endpoint: input.endpoint ? input.endpoint : undefined,
     state: input.state ? input.state : 'UNCHECKED',
     category: input.category ? DeadlineCategoryDeserializer(input.category) : undefined,
+    name: input.name ? input.name : undefined,
+    label: input.label ? input.label : undefined
   }
 
   if (single.checkParent?.checkType?.checkType === CheckTypes.DurationCheck) {

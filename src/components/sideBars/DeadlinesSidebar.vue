@@ -42,35 +42,34 @@
             </div>
           </div>
 
-          <div class="mt-3">
-            <!-- CHECK -->
-            <div v-if="selectedDeadline.linkedCheckssss">
-              <div class="flex gap-2">
-                <i-checked v-if="selectedDeadline.deadlineCheck.state === 'CHECKED'" />
+          <div class="mt-3 ml-4">
+
+            <!-- CHECKS -->
+            <div v-for="linkedCheck in selectedDeadline.linkedChecks" :key="linkedCheck">
+              <div class="flex gap-2 mt-1">
+                <i-checked v-if="linkedCheck.state === 'CHECKED'" />
                 <i-empty-check v-else />
-                <p>{{selectedDeadline.deadlineCheck.checkParent.label}}</p>
+                <p>{{linkedCheck.label}}</p>
               </div>
-              <span 
-              v-if="selectedDeadline.deadlineCheck.state !== 'CECKED'" 
-              @click="navigateTowardsSection(selectedDeadline.deadlineCheck.category.name, visum, selectedDeadline.deadlineCheck.category.id, selectedDeadline.deadlineCheck.id, route)" 
-              class="ml-4 text-green underline cursor-pointer">vul aan</span>
+              <!-- <span 
+              v-if="selectedDeadline.deadlineCheck.state !== 'CHECKED'" 
+              @click="navigateTowardsSection(selectedDeadline.deadlineCheck.category.name, visum, selectedDeadline.deadlineCheck.category.id, linkedCheck.id, route)" 
+              class="ml-4 text-green underline cursor-pointer">vul aan</span> -->
             </div>
 
-            <!-- CATEGORY -->
-            <div v-if="selectedDeadline.deadlineSubCategory">
+            <!-- CATEGORIES -->
+            <div v-for="linkedSubCategory in selectedDeadline.linkedSubCategories" :key="linkedSubCategory">
               <div class="flex items-center gap-2">
-                <i-checked v-if="selectedDeadline.deadlineSubCategory.state === 'CHECKED'" />
+                <i-checked v-if="linkedSubCategory.state === 'CHECKED'" />
                 <i-empty-check v-else  />
-                <p>{{selectedDeadline.deadlineSubCategory.subCategoryParent.label}}</p>
+                <p>{{linkedSubCategory.label}}</p>
               </div>
-              <span 
-              v-if="selectedDeadline.deadlineSubCategory.state !== 'CECKED'" 
-              @click="navigateTowardsSection(selectedDeadline.deadlineSubCategory.category.name, visum, selectedDeadline.deadlineSubCategory.category.id, selectedDeadline.deadlineSubCategory.id, route)" 
-              class="ml-4 text-green underline cursor-pointer">vul aan</span>
+              <!-- <span 
+              v-if="linkedSubCategory.state !== 'CECKED'" 
+              @click="navigateTowardsSection(selectedDeadline.deadlineSubCategory.category.name, visum, selectedDeadline.deadlineSubCategory.category.id, linkedSubCategory.id, route)" 
+              class="ml-4 text-green underline cursor-pointer">vul aan</span> -->
             </div>
-
           </div>
-
         </div>
       </div>
 

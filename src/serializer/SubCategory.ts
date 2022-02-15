@@ -5,8 +5,10 @@ export interface SubCategory {
   checks?: []
   id?: string
   subCategoryParent?: SubCategoryParent
-  state: string,
+  state: string
   category?: DeadlineCategory
+  name?: string
+  label?: string
 }
 
 export const SubCategoryDeserializer = (input: any): SubCategory => {
@@ -15,7 +17,9 @@ export const SubCategoryDeserializer = (input: any): SubCategory => {
     id: input.id,
     subCategoryParent: input.parent ? SubCategoryParentDeserializer(input.parent) : undefined,
     state: input.state ? input.state : 'UNCHECKED',
-    category: input.category ? DeadlineCategoryDeserializer(input.category) : undefined
+    category: input.category ? DeadlineCategoryDeserializer(input.category) : undefined,
+    name: input.name ? input.name : undefined,
+    label: input.label ? input.label : undefined
   }
   return single
 }
