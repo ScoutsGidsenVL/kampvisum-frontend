@@ -132,6 +132,11 @@ export default defineComponent({
       type: Object as PropType<Check>,
       required: true
     },
+    parentLocations: {
+      type: Object as PropType<Array<any>>,
+      required: false,
+      default: () => { return [] }
+    },
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
@@ -172,7 +177,7 @@ export default defineComponent({
 
     const patchLocation = async (location: PostLocation) => {
       await RepositoryFactory.get(LocationCheckRepository)
-        .update(props.check.endpoint, location)
+        .updateLocationCheck(props.check.endpoint, location, props.parentLocations)
         .then((p: any) => {
           context.emit('actionSuccess', {data: p, action: 'PATCH'})
           patchLoading.value = false

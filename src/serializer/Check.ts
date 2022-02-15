@@ -46,7 +46,11 @@ export const CheckDeserializer = (input: any): Check => {
     single.value = PostLocationDeserializer(input.value)
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.CampLocationCheck) 
   {
-    single.value = PostLocationDeserializer(input.value)
+    let arr: Array<any> = []
+    input.value.forEach((x:any) => {
+      arr.push(PostLocationDeserializer(x))
+    })
+    single.value = arr
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.ParticipantCheck) 
   {
     single.value = ParticipantCheckDeserializer(input.value)

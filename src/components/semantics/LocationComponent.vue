@@ -1,9 +1,9 @@
 <template>
   <div>
     <strong>{{check.checkParent.label}}</strong>
-    <leaflet-map v-if="!isReloading" :locations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" />
+    <parent-leaflet-map v-if="!isReloading" :parentLocations="check.value" :check="check" :center="[check.value[0].centerLatitude, check.value[0].centerLongitude]"  />
     <custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="'+ voeg locatie toe'" />
-    <location-create-sidebar v-if="createSidebar.state === 'new'" :check="check" title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
+    <location-create-sidebar v-if="createSidebar.state === 'new'" :parentLocations="check.value" :check="check" title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
   </div>
 </template>
 
@@ -14,13 +14,15 @@ import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { CustomButton } from 'vue-3-component-library'
 import { Check } from '@/serializer/Check'
+import ParentLeafletMap from '../cards/leaflet/ParentLeafletMap.vue'
 
 export default defineComponent({
   name: 'LocationComponent',
   components: {
     LeafletMap,
     CustomButton,
-    LocationCreateSidebar
+    LocationCreateSidebar,
+    ParentLeafletMap
   },
   props: {
     check: {

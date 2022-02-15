@@ -163,6 +163,8 @@ export default defineComponent({
       if (action === 'UPDATE') {
         triggerNotification('Kamp is succesvol bewerkt')
       }
+      isFetchingVisums.value = true
+      visums.value = []
       getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
     }
 

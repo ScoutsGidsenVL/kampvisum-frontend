@@ -2,7 +2,7 @@
         <nav role="navigation" aria-labelledby="system-breadcrumb" class="breadcrumb-wrapper__nav">
           <h2 id="system-breadcrumb" class="visually-hidden">Kruimelpad</h2>
           <ol class="flex justify-between">
-            <div class="breadcrumb">
+            <div class="breadcrumb text-sm mt-1">
               <!-- HOME -->
               <li class="breadcrumb-item cursor-pointer" @click="navigateHome()">
                 <a class="breadcrumb-item--home flex items-center">
@@ -19,7 +19,7 @@
               </li>
               <!-- CRUMBS -->
               <li v-for="(breadcrumb) in breadcrumbs" @click="navigateToCrumb(breadcrumb)" :key="breadcrumb" class="breadcrumb-item active cursor-pointer">
-                <a v-if="breadcrumb && breadcrumb.title">{{ breadcrumb.title }}</a>
+                <a  v-if="breadcrumb && breadcrumb.title">{{ breadcrumb.title }}</a>
               </li>
             </div>
             <div v-if="false" class="pr-2">
