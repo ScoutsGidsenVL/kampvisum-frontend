@@ -19,10 +19,10 @@
       >
         <div class="mt-4">
           <div class="w-100">
-            <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name.name" :label="'Tak naam'" />
+            <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name.name" :label="t('pages.settings.sections.sidebar.form.section-name')" />
           </div>
 
-          <label class="mt-4 font-bold">Geslacht</label>
+          <label class="mt-4 font-bold">{{t('pages.settings.sections.sidebar.form.gender')}}</label>
           
           <div class="flex gap-3">
             <div v-for="option in options" :key="option" class="flex items-center gap-1 mr-0.5">
@@ -96,7 +96,11 @@ export default defineComponent({
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
-    const options = ref<any>([{value: 'M', label: 'Man'}, {value: 'F', label: 'Vrouw'}, {value: 'I', label: 'Mix'}])
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
+    const options = ref<any>([{value: 'M', label: t('pages.settings.sections.sidebar.form.genders.male')}, {value: 'F', label: t('pages.settings.sections.sidebar.form.genders.female')}, {value: 'I', label: 'Mix'}])
     const optionsAgeGroup = ref<any>([
       {value: '10', label: 'kapoenen en zeehondjes'},
       {value: '15', label: 'startleeftijd 7 jaar'},
@@ -128,10 +132,6 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const isReload = ref<boolean>(false)
     const chosenGender = ref<string>('M')
-    const { t } = useI18n({
-      inheritLocale: true,
-      useScope: 'local',
-    })
 
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })

@@ -18,7 +18,7 @@ export class LocationCheckRepository extends BaseRepository {
       })
     }
     arr.push(this.serializer(data))
-    return this.patch(url, { value: arr, zoom: check ? check.zoom : undefined }).then((response: any) => {
+    return this.patch(url, { locations: arr }).then((response: any) => {
       return this.deserializer(response)
     })
   }
