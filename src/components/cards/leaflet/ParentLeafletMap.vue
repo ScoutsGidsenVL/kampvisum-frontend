@@ -2,7 +2,7 @@
   <div class="h-96 w-full">
       <l-map
         class="z-0 border-2 border-black"
-        v-model:zoom="check.zoom"
+        v-model:zoom="check.value.zoom"
         :center="center"
         @update:center="centerUpdated"
         @click="addOnClick($event)"

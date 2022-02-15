@@ -35,8 +35,6 @@ export const CheckDeserializer = (input: any): Check => {
     endpoint: input.endpoint ? input.endpoint : undefined,
     state: input.state ? input.state : 'UNCHECKED',
     category: input.category ? DeadlineCategoryDeserializer(input.category) : undefined,
-    zoom: input.zoom ? input.zoom : undefined
-
   }
 
   if (single.checkParent?.checkType?.checkType === CheckTypes.DurationCheck) {
@@ -50,10 +48,15 @@ export const CheckDeserializer = (input: any): Check => {
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.CampLocationCheck) 
   {
     let arr: Array<any> = []
-    // input.value.forEach((x:any) => {
-    //   arr.push(PostLocationDeserializer(x))
-    // })
-    single.value = arr
+    input.value.locations.forEach((x:any) => {
+      arr.push(PostLocationDeserializer(x))
+    })
+    single.value = { 
+      zoom: input.value.zoom,
+      locations: arr, 
+      centerLatitude: input.value.center_latitude,
+      centerLongitude: input.value.center_longitude
+    }
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.ParticipantCheck) 
   {
     single.value = ParticipantCheckDeserializer(input.value)
