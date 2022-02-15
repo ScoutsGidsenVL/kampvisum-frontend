@@ -57,6 +57,7 @@ export const CheckDeserializer = (input: any): Check => {
       centerLatitude: input.value.center_latitude,
       centerLongitude: input.value.center_longitude
     }
+    console.log('LOGGING: ', single.value)
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.ParticipantCheck) 
   {
     single.value = ParticipantCheckDeserializer(input.value)

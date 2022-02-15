@@ -11,6 +11,7 @@ export class LocationCheckRepository extends BaseRepository {
   public serializer = PostLocationSerializer
 
   updateLocationCheck(url: string, data: any, parentLocations?: Array<any>, check?: Check) {
+    console.log(' updateLocationCheck DATA: ', data)
     let arr: Array<any> = []
     if (parentLocations) {
       parentLocations.forEach((p: any) => {
@@ -18,7 +19,7 @@ export class LocationCheckRepository extends BaseRepository {
       })
     }
     arr.push(this.serializer(data))
-    return this.patch(url, { locations: arr }).then((response: any) => {
+    return this.patch(url + 'rnd', { locations: arr }).then((response: any) => {
       return this.deserializer(response)
     })
   }

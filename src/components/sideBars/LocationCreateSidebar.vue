@@ -57,6 +57,9 @@
             </div>
           </div>
 
+          <!-- <pre>
+            {{check.value}}
+          </pre> -->
           <leaflet-map 
           @addOnClick="addOnClick($event)" 
           @deleteLocationPoint="deleteLocationPoint($event)" 
@@ -76,7 +79,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
-                {{check.value.locations.length > 0 ? 'Bewerk' : 'Voeg toe'}}
+                {{'Voeg toe'}}
               </div>
             </template>
           </custom-button>
@@ -140,7 +143,10 @@ export default defineComponent({
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
-    const check = ref<Check>({ value: PostLocationDeserializer(PostLocationSerializer(props.check.value)), endpoint: props.check.endpoint, checkParent: props.check.checkParent })
+    // CLONE OBJECT
+    const check = ref<Check>({...props.check})
+    console.log('cloned object: ', check.value)
+    // const check = ref<Check>({ value: PostLocationDeserializer(PostLocationSerializer(props.check.value)), endpoint: props.check.endpoint, checkParent: props.check.checkParent })
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const searchedLocations = ref<Array<SearchedLocation>>([])
     const searchedLocation = ref<SearchedLocation>({})
@@ -149,8 +155,11 @@ export default defineComponent({
     const patchLoading = ref<boolean>(false)
     const { sideBarState } = toRefs(props)
     const loading = ref<boolean>(false)
+    //NEEDS REFACTOR
+    const init = ref<PostLocation>({...props.check.value})
+    init.value.locations = []
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>({
-      initialValues: props.check.value
+      initialValues: init.value
     })
     const { t } = useI18n({
       inheritLocale: true,
@@ -165,17 +174,20 @@ export default defineComponent({
     const onSubmit = async () => {
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
       handleSubmit(async (values: PostLocation) => {
+        console.log('values 1: ', values)
         patchLoading.value = true
         values.zoom = check.value.value.zoom
         values.centerLatLon = check.value.value.centerLatLon
         values.centerLatitude = check.value.value.centerLatLon[0]
         values.centerLongitude = check.value.value.centerLatLon[1]
+        console.log('values 2: ', values)
         await patchLocation(values)
         closeSideBar()
       })()
     }
 
     const patchLocation = async (location: PostLocation) => {
+      console.log('patchLocation location', location)
       await RepositoryFactory.get(LocationCheckRepository)
         .updateLocationCheck(props.check.endpoint, location, props.parentLocations)
         .then((p: any) => {
@@ -207,6 +219,7 @@ export default defineComponent({
     }
 
     const addLocationPoint = (location: SearchedLocation) => {
+      console.log('TESTTTT')
       emptySearchResults()
       if (location.latLon) {
         check.value.value.centerLatitude = location.latLon[0] ? location.latLon[0] : check.value.value.centerLatitude
