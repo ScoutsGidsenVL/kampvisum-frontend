@@ -25,6 +25,7 @@ export interface Check {
   endpoint: string,
   state?: string
   category?: DeadlineCategory
+  zoom?: number
 }
 
 export const CheckDeserializer = (input: any): Check => {
@@ -33,7 +34,9 @@ export const CheckDeserializer = (input: any): Check => {
     checkParent: input.parent ? CheckParentDeserializer(input.parent) : undefined,
     endpoint: input.endpoint ? input.endpoint : undefined,
     state: input.state ? input.state : 'UNCHECKED',
-    category: input.category ? DeadlineCategoryDeserializer(input.category) : undefined
+    category: input.category ? DeadlineCategoryDeserializer(input.category) : undefined,
+    zoom: input.zoom ? input.zoom : undefined
+
   }
 
   if (single.checkParent?.checkType?.checkType === CheckTypes.DurationCheck) {
@@ -47,9 +50,9 @@ export const CheckDeserializer = (input: any): Check => {
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.CampLocationCheck) 
   {
     let arr: Array<any> = []
-    input.value.forEach((x:any) => {
-      arr.push(PostLocationDeserializer(x))
-    })
+    // input.value.forEach((x:any) => {
+    //   arr.push(PostLocationDeserializer(x))
+    // })
     single.value = arr
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.ParticipantCheck) 
   {

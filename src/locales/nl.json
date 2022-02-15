@@ -1,5 +1,5 @@
 {
-  "test": "test123",
+  "title": "Kampkaft",
   "page-titles": {
     "kampvisum": "Kampvisum",
     "settings": "Instellingen",
@@ -11,6 +11,30 @@
   "pages": {
     "kampvisum-overview": {
       "create-camp-button": "Maak nieuw kamp aan"
+    },
+    "settings": {
+      "sections": {
+        "title": "Takken",
+        "sections-for": "Takken voor",
+        "create-camp": "Maak nieuwe tak aan",
+        "sidebar": {
+          "title": "Tak",
+          "form": {
+            "section-name": "Tak naam",
+            "gender": "Geslacht",
+            "genders": {
+              "male": "Man",
+              "female": "Vrouw",
+              "mix": "Mix"
+            },
+            "age-group": "Leeftijdsgroep"
+          },
+          "edit": "Bewerk",
+          "add": "Voeg toe"
+        }
+      },
+      "deadlines": {
+      }
     }
   },
   "sidebars": {
@@ -26,6 +50,8 @@
       "buttons": {
         "add": "Voeg toe"
       }
+    },
+    "navigation-sidebar": {
     }
   }
 }

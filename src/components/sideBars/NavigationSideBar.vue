@@ -6,7 +6,7 @@
           
           <div @click="home()" class="mt-4 d-flex justify-between mb-3 items-center cursor-pointer">
             <i-logo />
-            <h1 class="text-2xl mt-1.5">Kampkaft</h1>
+            <h1 class="text-2xl mt-1.5">{{t('title')}}</h1>
           </div>
 
           <div class="my-3">
@@ -14,7 +14,6 @@
               v-if="myGroups[0]"
               id="group"
               :object="true"
-              placeholder="Kies een groep"
               @addSelection="setSelectedGroup($event)"
               track-by="fullName"
               value-prop="groupAdminId"
@@ -39,7 +38,7 @@
               </div>
             </div>
 
-            <navigation-item link="/instellingen" text="Instellingen"/>
+            <navigation-item link="/instellingen" :text="t('page-titles.settings')"/>
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
             <!-- <navigation-item link="/locaties" text="Locaties"/> -->
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
@@ -73,6 +72,7 @@ import { useRoute } from 'vue-router'
 import store from '../../store/store'
 import ILogo from '../icons/ILogo.vue'
 import router from '@/router'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   components: { 
@@ -88,7 +88,10 @@ export default defineComponent({
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsCategory, setSelectedGroup } = useNavigation()
     const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
-
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
     const toggleSideBar: () => void = () => {
       if (sidebar.value.state === SidebarState.OPEN) {
         sidebar.value.state = SidebarState.CLOSED
@@ -121,7 +124,8 @@ export default defineComponent({
       myGroups,
       sidebar,
       route,
-      home
+      home,
+      t
     }
   }
 })

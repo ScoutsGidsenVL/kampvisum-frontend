@@ -1,7 +1,12 @@
 <template>
   <div>
     <strong>{{check.checkParent.label}}</strong>
-    <parent-leaflet-map v-if="!isReloading" :parentLocations="check.value" :check="check" :center="[check.value[0].centerLatitude, check.value[0].centerLongitude]"  />
+    <parent-leaflet-map 
+      v-if="!isReloading" 
+      :parentLocations="check.value" 
+      :check="check" 
+      :center="[check.centerLatitude, check.centerLongitude]  "  
+    />
     <custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="'+ voeg locatie toe'" />
     <location-create-sidebar v-if="createSidebar.state === 'new'" :parentLocations="check.value" :check="check" title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
   </div>

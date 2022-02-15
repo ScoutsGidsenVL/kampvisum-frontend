@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="italic font-bold py-2">
-      Takken voor {{selectedGroup.groupAdminId}}
+      {{t('pages.settings.sections.sections-for')}} {{selectedGroup.groupAdminId}}
     </div>
 
     <warning v-if="isWarningDisplayed" :title="sectionToBeDeleted.name.name" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker deze tak te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="removeSection()" />
@@ -17,12 +17,12 @@
       </div>
 
       <div>
-        <section-sidebar :title="'Section'" v-model:sideBarState="sectionSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.groupAdminId"/>
+        <section-sidebar :title="t('pages.settings.sections.sidebar.title')" v-model:sideBarState="sectionSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.groupAdminId"/>
       </div>
     </div>
 
     <div class="mt-3 xs:w-100 md:w-80">
-      <custom-button class="w-100" :extraStyle="'w-100'" @click="openSectionSideBar()" :text="'Maak nieuw tak aan'">
+      <custom-button class="w-100" :extraStyle="'w-100'" @click="openSectionSideBar()" :text="t('pages.settings.sections.create-camp')">
         <template v-slot:icon>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
@@ -44,6 +44,7 @@ import { defineComponent, watchEffect, ref } from 'vue'
 import SectionItem from '../semantics/SectionItem.vue'
 import { useNavigation } from '@/router/navigation'
 import { Section } from '@/serializer/Section'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   components: {  
@@ -67,6 +68,11 @@ export default defineComponent({
         entity: section,
       }
     }
+
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
 
     const displayWarning = (section: Section) => {
       isWarningDisplayed.value = true
@@ -126,7 +132,8 @@ export default defineComponent({
       actionSuccess,
       removeSection,
       editSection,
-      hideWarning
+      hideWarning,
+      t
     }
   }
 })
