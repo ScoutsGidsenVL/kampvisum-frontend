@@ -56,10 +56,7 @@
               </div>
             </div>
           </div>
-
-          <!-- <pre>
-            {{check.value}}
-          </pre> -->
+          <!-- {{init}} -->
           <leaflet-map 
           @addOnClick="addOnClick($event)" 
           @deleteLocationPoint="deleteLocationPoint($event)" 
@@ -143,10 +140,10 @@ export default defineComponent({
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
+    
     // CLONE OBJECT
     const check = ref<Check>({...props.check})
-    console.log('cloned object: ', check.value)
-    // const check = ref<Check>({ value: PostLocationDeserializer(PostLocationSerializer(props.check.value)), endpoint: props.check.endpoint, checkParent: props.check.checkParent })
+
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const searchedLocations = ref<Array<SearchedLocation>>([])
     const searchedLocation = ref<SearchedLocation>({})
@@ -155,19 +152,28 @@ export default defineComponent({
     const patchLoading = ref<boolean>(false)
     const { sideBarState } = toRefs(props)
     const loading = ref<boolean>(false)
-    //NEEDS REFACTOR
+
+
+
+    // -------------- NEEDS REFACTOR -----------
     const init = ref<PostLocation>({...props.check.value})
-    console.log('sidebar state: ', sideBarState.value)
-    // const init = ref<any>(sideBarState.value.state === 'new' ? {...props.check.value} : {...sideBarState.value.entity})
+    init.value.centerLatLon = [props.check.value.centerLatitude, props.check.value.centerLongitude]
     if (sideBarState.value.state === 'new') {
       init.value.locations = []
     }
     if (sideBarState.value.state === 'edit') {
       init.value.locations = []
+      init.value.name = sideBarState.value.entity.name
+      init.value.contactName = sideBarState.value.entity.contactName
+      init.value.contactPhone = sideBarState.value.entity.contactPhone
+      init.value.contactEmail = sideBarState.value.entity.contactEmail
     }
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>({
       initialValues: {...init.value}
     })
+    // -------------------------------------------------
+
+
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -283,6 +289,7 @@ export default defineComponent({
       values,
       check,
       t,
+      init
     }
   },
 })

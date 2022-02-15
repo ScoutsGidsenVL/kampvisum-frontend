@@ -35,10 +35,11 @@ export const CheckDeserializer = (input: any): Check => {
     id: input.id,
     checkParent: input.parent ? CheckParentDeserializer(input.parent) : undefined,
     endpoint: input.endpoint ? input.endpoint : undefined,
-    state: input.state ? input.state : 'UNCHECKED',
     category: input.category ? DeadlineCategoryDeserializer(input.category) : undefined,
+    
     name: input.name ? input.name : undefined,
-    label: input.label ? input.label : undefined
+    label: input.label ? input.label : undefined,
+    state: input.state ? input.state : 'UNCHECKED',
   }
 
   if (single.checkParent?.checkType?.checkType === CheckTypes.DurationCheck) {
@@ -60,9 +61,9 @@ export const CheckDeserializer = (input: any): Check => {
       zoom: input.value.zoom,
       locations: arr, 
       centerLatitude: input.value.center_latitude,
-      centerLongitude: input.value.center_longitude
+      centerLongitude: input.value.center_longitude,
+      centerLatLon: [input.value.center_latitude, input.value.center_longitude]
     }
-    console.log('LOGGING: ', single.value)
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.ParticipantCheck) 
   {
     single.value = ParticipantCheckDeserializer(input.value)

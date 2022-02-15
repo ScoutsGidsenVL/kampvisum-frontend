@@ -30,20 +30,20 @@
 <script lang="ts">
 import DeadlineImportantAlert from '../semantics/DeadlineImportantAlert.vue'
 import IRightArrow from '../icons/IRightArrow.vue'
+import IEmptyCheck from '../icons/IEmptyCheck.vue'
 import { Deadline } from '@/serializer/Deadline'
 import IImportant from '../icons/IImportant.vue'
 import { defineComponent, PropType } from 'vue'
 import IChecked from '../icons/IChecked.vue'
-import IEmptyCheck from '../icons/IEmptyCheck.vue'
 
 export default defineComponent({
   name: 'DeadlineInfoCard',
   components: {
+    DeadlineImportantAlert,
     IRightArrow,
     IImportant,
-    DeadlineImportantAlert,
+    IEmptyCheck,
     IChecked,
-    IEmptyCheck
   },
   props: {
     isImportant: Boolean,
