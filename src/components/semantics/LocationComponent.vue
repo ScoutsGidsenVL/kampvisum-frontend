@@ -9,7 +9,6 @@
       @edit="edit($event)"  
     />
     <custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="'+ voeg locatie toe'" />
-    {{createSidebar.state}}
     <location-create-sidebar v-if="createSidebar.state === 'new' || createSidebar.state === 'edit'" :parentLocations="check.value.locations" :check="check" title="create" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
   </div>
 </template>

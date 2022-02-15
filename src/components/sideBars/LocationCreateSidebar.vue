@@ -167,6 +167,8 @@ export default defineComponent({
       init.value.contactName = sideBarState.value.entity.contactName
       init.value.contactPhone = sideBarState.value.entity.contactPhone
       init.value.contactEmail = sideBarState.value.entity.contactEmail
+      init.value.locations = sideBarState.value.entity.locations
+
     }
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>({
       initialValues: {...init.value}
@@ -193,6 +195,7 @@ export default defineComponent({
         values.centerLatLon = check.value.value.centerLatLon
         values.centerLatitude = check.value.value.centerLatLon[0]
         values.centerLongitude = check.value.value.centerLatLon[1]
+        sideBarState.value.state === 'edit' ?  values.id = sideBarState.value.entity.id : undefined 
         await patchLocation(values)
         closeSideBar()
       })()
