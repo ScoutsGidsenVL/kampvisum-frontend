@@ -29,22 +29,22 @@
           <div class="flex flex-col px-4">
             <div class="mt-3">
               <h2>
-                {{selectedDeadline.label}}
+                {{selectedDeadline.deadlineParent.label}}
               </h2>
             </div>
 
-            <h4 class="text-green">Deadline: {{selectedDeadline.dueDate.dateDay}}/{{selectedDeadline.dueDate.dateMonth}}/{{selectedDeadline.dueDate.dateYear}}</h4>
+            <h4 class="text-green">Deadline: {{selectedDeadline.deadlineParent.dueDate.dateDay}}/{{selectedDeadline.deadlineParent.dueDate.dateMonth}}/{{selectedDeadline.deadlineParent.dueDate.dateYear}}</h4>
           
             <div class="my-2">
               <p>
-                {{selectedDeadline.description}}
+                {{selectedDeadline.deadlineParent.description}}
               </p>
             </div>
           </div>
 
           <div class="mt-3">
             <!-- CHECK -->
-            <div v-if="selectedDeadline.deadlineCheck">
+            <div v-if="selectedDeadline.linkedCheckssss">
               <div class="flex gap-2">
                 <i-checked v-if="selectedDeadline.deadlineCheck.state === 'CHECKED'" />
                 <i-empty-check v-else />
@@ -173,6 +173,7 @@ export default defineComponent({
         .getArray(props.visum.id)
         .then((d: Array<any>) => {
           deadlines.value = d
+          console.log('DEADLINES:', deadlines.value)
         })
     }
 

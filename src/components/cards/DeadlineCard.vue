@@ -1,12 +1,9 @@
 <template>
   <div class="bg-white shadow-md">
-    <deadline-important-alert v-if="deadline.isImportant" />
+    <deadline-important-alert v-if="deadline.deadlineParent.isImportant" />
     <div class="flex justify-between p-3">
       <div class="flex items-center">
         <!-- CHECK ICON -->
-        <!-- <pre>
-          {{deadline}}
-        </pre> -->
         <div class="mr-2.5">
           <i-checked />
           <i-empty-check />
@@ -14,10 +11,11 @@
 
         <div>
           <strong class="xs:text-sm">
-            {{deadline.label}}
+            {{deadline.deadlineParent.label}}
           </strong>
           <p>
-            {{deadline.dueDate.dateDay}}/{{deadline.dueDate.dateMonth}}/{{deadline.dueDate.dateYear}}
+            <!-- {{deadline.deadlineParent.dueDate.calculatedDate}} -->
+            {{deadline.deadlineParent.dueDate.dateDay}}/{{deadline.deadlineParent.dueDate.dateMonth}}/{{deadline.deadlineParent.dueDate.dateYear}}
           </p>
         </div>
       </div>
