@@ -11,7 +11,6 @@ export class LocationCheckRepository extends BaseRepository {
   public serializer = PostLocationSerializer
 
   updateLocationCheck(url: string, data: any, parentLocations?: Array<any>, check?: Check) {
-    console.log(' updateLocationCheck DATA: ', data)
     let arr: Array<any> = []
     if (parentLocations) {
       parentLocations.forEach((p: any) => {

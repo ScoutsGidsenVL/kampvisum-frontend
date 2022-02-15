@@ -125,7 +125,7 @@ export default defineComponent({
       required: true,
     },
     sideBarState: {
-      type: Object as PropType<sideBarState<Location>>,
+      type: Object as PropType<any>,
       required: true,
       default: () => {
         'hide'
@@ -157,10 +157,18 @@ export default defineComponent({
     const loading = ref<boolean>(false)
     //NEEDS REFACTOR
     const init = ref<PostLocation>({...props.check.value})
-    init.value.locations = []
+    console.log('sidebar state: ', sideBarState.value)
+    // const init = ref<any>(sideBarState.value.state === 'new' ? {...props.check.value} : {...sideBarState.value.entity})
+    if (sideBarState.value.state === 'new') {
+      init.value.locations = []
+    }
+    if (sideBarState.value.state === 'edit') {
+      init.value.locations = []
+    }
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>({
-      initialValues: init.value
+      initialValues: {...init.value}
     })
+
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -174,20 +182,17 @@ export default defineComponent({
     const onSubmit = async () => {
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
       handleSubmit(async (values: PostLocation) => {
-        console.log('values 1: ', values)
         patchLoading.value = true
         values.zoom = check.value.value.zoom
         values.centerLatLon = check.value.value.centerLatLon
         values.centerLatitude = check.value.value.centerLatLon[0]
         values.centerLongitude = check.value.value.centerLatLon[1]
-        console.log('values 2: ', values)
         await patchLocation(values)
         closeSideBar()
       })()
     }
 
     const patchLocation = async (location: PostLocation) => {
-      console.log('patchLocation location', location)
       await RepositoryFactory.get(LocationCheckRepository)
         .updateLocationCheck(props.check.endpoint, location, props.parentLocations)
         .then((p: any) => {
@@ -219,7 +224,6 @@ export default defineComponent({
     }
 
     const addLocationPoint = (location: SearchedLocation) => {
-      console.log('TESTTTT')
       emptySearchResults()
       if (location.latLon) {
         check.value.value.centerLatitude = location.latLon[0] ? location.latLon[0] : check.value.value.centerLatitude

@@ -1,5 +1,6 @@
 <template>
   <div class="h-96 w-full">
+    CENTER: {{center}}
     <l-map
       class="z-0 border-2 border-black"
       v-model="z"
