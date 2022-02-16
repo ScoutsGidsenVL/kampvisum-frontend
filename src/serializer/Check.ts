@@ -49,7 +49,18 @@ export const CheckDeserializer = (input: any): Check => {
     single.value = CommentCheckDeserializer(input)
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.LocationCheck) 
   {
-    single.value = PostLocationDeserializer(input.value)
+    //REFACTOR TO DESERIALIZER
+    let arr: Array<any> = []
+    input.value.locations.forEach((x:any) => {
+      arr.push(PostLocationDeserializer(x))
+    })
+    single.value = { 
+      zoom: input.value.zoom,
+      locations: arr, 
+      centerLatitude: input.value.center_latitude,
+      centerLongitude: input.value.center_longitude,
+      centerLatLon: [input.value.center_latitude, input.value.center_longitude]
+    }
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.CampLocationCheck) 
   {
     //REFACTOR TO DESERIALIZER

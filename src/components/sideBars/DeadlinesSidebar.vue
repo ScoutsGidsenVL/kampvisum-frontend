@@ -203,6 +203,7 @@ export default defineComponent({
         await RepositoryFactory.get(DeadlineRepository)
         .updateFlag(flag.id, { flag: flag.flag })
         .then(() => {
+          getDeadlines()
           triggerNotification('Deadline check is succesvol aangepast')
         })
       }

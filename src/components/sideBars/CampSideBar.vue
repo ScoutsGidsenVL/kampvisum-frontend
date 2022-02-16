@@ -1,7 +1,7 @@
 <template>
   <div>
     <base-side-bar
-      :isOverflowHidden="isOverflowHidden"
+      :isOverflowHidden="true"
       :selection="selected"
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
@@ -22,10 +22,10 @@
             <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
           </div>
 
-          <div class="w-100 mt-4">
-            <span class="font-bold">
+          <div v-if="sideBarState.state !== 'edit'" class="w-100 mt-4">
+            <!-- <span class="font-bold">
               Camp Type
-            </span>
+            </span> -->
             <div>
               <input class="cursor-pointer mr-2" id="inter" name="inter" v-model="isInternational" type="checkbox">
               <label class="cursor-pointer" for="inter">Internationaal kamp</label>
@@ -40,9 +40,8 @@
               track-by="label"
               value-prop="id"
               :options="campTypes"
-              :value="campTypes[0]"
               :canClear="false"
-              :canDeselect="false"
+              :canDeselect="true"
               @addSelection="selectedValue($event)"
             />
           </div>
@@ -72,15 +71,15 @@
 import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
 import { Section, SectionObjectsToSectionStrings } from '@/serializer/Section'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
+import { CampTypeRepository } from '@/repositories/CampTypeRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { GroupRepository } from '@/repositories/groupRepository'
-import { CampTypeRepository } from '@/repositories/CampTypeRepository'
 import { CampRepository } from '@/repositories/campRepository'
 import { useForm, useField, ErrorMessage } from 'vee-validate'
+import MultiSelect from '../inputs/MultiSelect.vue'
+import { CampType } from '@/serializer/CampType'
 import { Camp } from '../../serializer/Camp'
 import { useI18n } from 'vue-i18n'
-import { CampType } from '@/serializer/CampType'
-import MultiSelect from '../inputs/MultiSelect.vue'
 
 export default defineComponent({
   name: 'CampSideBar',
@@ -103,11 +102,6 @@ export default defineComponent({
       default: () => {
         'hide'
       },
-    },
-    isOverflowHidden: {
-      type: Boolean,
-      required: false,
-      default: true,
     },
     selectedGroupId: {
       type: String,
@@ -257,20 +251,20 @@ export default defineComponent({
 
     return {
       selectedGroupSections,
+      isInternational,
+      selectedCampType,
       groupSections,
+      selectedValue,
       isSubmitting,
       sideBarState,
       closeSideBar,
       InputTypes,
+      campTypes,
       selected,
       onSubmit,
+      isReload,
       values,
       t,
-      campTypes,
-      isInternational,
-      isReload,
-      selectedValue,
-      selectedCampType
     }
   },
 })

@@ -2,7 +2,7 @@
   <div>
     <base-side-bar
       maxWidth="max-w-2xl"
-      :isOverflowHidden="true"
+      :isOverflowHidden="false"
       :selection="selected"
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
@@ -47,7 +47,7 @@
             </div>
           </div>
 
-          <div class="bg-lighterGreen p-3" >
+          <div v-if="check.checkParent.checkType.checkType === 'CampLocationCheck'" class="bg-lighterGreen p-3" >
             <h4 class="">Hoofdlocatie</h4>
             <div v-for="(searchedLocation) in searchedLocations" :key="searchedLocation">
               <div v-if="searchedLocation.isMainLocation">
