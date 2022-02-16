@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --port 8040",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "prod": "vue-cli-service  serve --mode production --port 8040",
     "test:unit": "vue-cli-service test:unit",
