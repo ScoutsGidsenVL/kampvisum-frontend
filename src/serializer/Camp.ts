@@ -37,14 +37,14 @@ export const CampDeserializer = (input: any): Camp => {
 }
 
 export const CampSerializer = (input: any): any => {
+  console.log('EDIT INPUT: ', input)
   const single: any = {
     name: input.name,
     start_date: input.startDate,
     end_date: input.startDate,
     sections: input.sections,
-    camp_type: { id: input.campType.id }
+    camp_types: [{ id: input.campType.id }]
   }
-  
   return {camp: single}
 }
 

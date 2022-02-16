@@ -102,27 +102,19 @@ export default defineComponent({
     })
     const options = ref<any>([{value: 'M', label: t('pages.settings.sections.sidebar.form.genders.male')}, {value: 'F', label: t('pages.settings.sections.sidebar.form.genders.female')}, {value: 'I', label: 'Mix'}])
     const optionsAgeGroup = ref<any>([
-      {value: '10', label: 'kapoenen en zeehondjes'},
-      {value: '15', label: 'startleeftijd 7 jaar'},
-      {value: '16', label: 'startleeftijd 8 jaar'},
-      {value: '17', label: 'startleeftijd 9 jaar'},
-      {value: '20', label: 'kabouter en (zee)welp'},
-      {value: '25', label: 'startleeftijd 9 jaar'},
-      {value: '26', label: 'startleeftijd 10 jaar'},
-      {value: '27', label: 'startleeftijd 11 jaar'},
-      {value: '30', label: 'jonggivers en scheepsmakkers'},
-      {value: '35', label: 'startleeftijd 11 jaar'},
-      {value: '36', label: 'startleeftijd 11 jaar'},
-      {value: '37', label: 'startleeftijd 11 jaar'},
-      {value: '40', label: 'gidsen en (zee)verkenners'},
-      {value: '45', label: 'startleeftijd 11 jaar'},
-      {value: '46', label: 'startleeftijd 11 jaar'},
-      {value: '47', label: 'startleeftijd 11 jaar'},
-      {value: '50', label: 'jins en loodsen'},
-      {value: '55', label: 'startleeftijd 18 jaar'},
-      {value: '60', label: 'leeftijdsgroep ouder dan 18, bv. VIPS (akabe)'},
-      {value: '100', label: 'leeftijdsgroep voor leiding, district, gouw, verbond'},
-      {value: '999', label: 'onbekende leeftijdsgroep'},
+      {value: '6', label: 'startleeftijd 6 jaar'},
+      {value: '7', label: 'startleeftijd 7 jaar'},
+      {value: '8', label: 'startleeftijd 8 jaar'},
+      {value: '9', label: 'startleeftijd 9 jaar'},
+      {value: '10', label: 'startleeftijd 10 jaar'},
+      {value: '11', label: 'startleeftijd 11 jaar'},
+      {value: '12', label: 'startleeftijd 12 jaar'},
+      {value: '13', label: 'startleeftijd 13 jaar'},
+      {value: '14', label: 'startleeftijd 14 jaar'},
+      {value: '15', label: 'startleeftijd 15 jaar'},
+      {value: '16', label: 'startleeftijd 16 jaar'},
+      {value: '17', label: 'startleeftijd 17 jaar'},
+      {value: '18', label: 'startleeftijd 18 jaar'},
     ])
     const chosenAgeGroup = ref<any>({value: '10', label: 'kapoenen en zeehondjes'})
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
@@ -151,6 +143,7 @@ export default defineComponent({
     }
 
     const updateSection = async (section: Section) => {
+      console.log('SECTION: ', section)
       section.groupAdminId = selectedGroup.value.groupAdminId
       section.name.gender = chosenGender.value
       section.groupType = selectedGroup.value.type
@@ -199,6 +192,7 @@ export default defineComponent({
           chosenAgeGroup.value = optionsAgeGroup.value.find((x: any) => x.value === props.sideBarState.entity.name.ageGroup)
           const section = ref<Section>({
             name: {
+              id: props.sideBarState.entity.name.id,
               name: props.sideBarState.entity.name.name,
               ageGroup: optionsAgeGroup.value.find((x: any) => x.value === props.sideBarState.entity.name.ageGroup)
             }

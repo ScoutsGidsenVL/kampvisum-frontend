@@ -1,8 +1,8 @@
 <template>
-  <div class="grid grid-cols-4 p-2 border-b border-black text-black">
+  <div v-if="!groupSection.hidden" class="grid grid-cols-4 p-2 border-b border-black text-black">
     <div>{{groupSection.name.name}}</div>
     <div class="text-center">{{genderLabel(groupSection.name.gender)}}</div>
-    <div>{{ageGroupLabel(groupSection.name.ageGroup)}}</div>
+    <div>startleeftijd {{groupSection.name.ageGroup}} jaar</div>
     
     <div class="flex justify-end gap-5">
       <div>

@@ -8,7 +8,6 @@
           <i-checked v-if="deadline.state === 'CHECKED'" />
           <i-empty-check v-if="deadline.state === 'UNCHECKED'" />
         </div>
-
         <div>
           <strong class="xs:text-sm">
             {{deadline.deadlineParent.label}}

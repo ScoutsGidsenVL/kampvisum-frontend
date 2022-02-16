@@ -23,6 +23,7 @@ export const NameDeserializer = (input: any): Name => {
 
 export const NameSerializer = (input: any): any => {
   const single: any = {
+    id: input.id ? input.id : undefined,
     name: input.name,
     gender: input.gender ? input.gender : undefined,
     age_group: input.ageGroup ? Number(input.ageGroup) : undefined
