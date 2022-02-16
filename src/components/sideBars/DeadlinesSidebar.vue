@@ -11,6 +11,8 @@
         <i-vertical-dots />
       </div>
     </div>
+
+    <!-- WHEN OPEN -->
     <div class="h-screen" :class="{ 'd-flex p-3 flex-column': sidebar.state === SidebarState.OPEN, 'd-none fixed': sidebar.state === SidebarState.CLOSED }">
       <!-- DEADLINE DETAIL WHEN CLICKED ON AN DEADLINE-->
       <div v-if="isDeadlineDetail" class="w-100 flex flex-col justify-between xs:mt-20 md:mt-0">
@@ -96,6 +98,11 @@
 
           <div class="pt-3 flex flex-column gap-5">
             <deadline-info-card />
+
+            <div class="text-center">
+              <loader class="mt-5" color="lightGreen" size="20" :isLoading="isFetchingDeadlines" />
+            </div>
+
             <deadline-card v-for="deadline in deadlines" :key="deadline" :deadline="deadline" :isImportant="true" @openDeadline="openDeadline($event)"/>
           </div>
         </div>
@@ -109,7 +116,7 @@ import DeadlineInfoCard from '@/components/cards/DeadlineInfoCard.vue'
 import { DeadlineRepository } from '@/repositories/DeadlineRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import DeadlineCard from '@/components/cards/DeadlineCard.vue'
-import { CustomButton } from 'vue-3-component-library'
+import { CustomButton, Loader } from 'vue-3-component-library'
 import IVerticalDots from '../icons/IVerticalDots.vue'
 import { defineComponent, PropType, ref } from 'vue'
 import { useNavigation } from '@/router/navigation'
@@ -142,8 +149,9 @@ export default defineComponent({
     CustomButton,
     IEmptyCheck,
     IImportant,
+    IChecked,
     ICross,
-    IChecked
+    Loader
   },
   props: {
     sidebar: {
@@ -161,7 +169,7 @@ export default defineComponent({
     const isDeadlineDetail = ref<boolean>(false)
     const selectedDeadline = ref<Deadline>()
     const route = useRoute()
-
+    const isFetchingDeadlines = ref<boolean>(true)
     const goBack = () => {
       isDeadlineDetail.value = false
     }
@@ -184,7 +192,7 @@ export default defineComponent({
         .getArray(props.visum.id)
         .then((d: Array<any>) => {
           deadlines.value = d
-          console.log('DEADLINES:', deadlines.value)
+          isFetchingDeadlines.value = false
         })
     }
     const { triggerNotification } = useNotification()
@@ -204,6 +212,7 @@ export default defineComponent({
 
     return {
       navigateTowardsSection,
+      isFetchingDeadlines,
       isDeadlineDetail,
       selectedDeadline,
       closeSideBar,
