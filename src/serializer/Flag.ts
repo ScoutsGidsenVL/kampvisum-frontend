@@ -6,7 +6,6 @@ export interface Flag {
   flag?: boolean
   id?: string
   flagParent?: FlagParent
-
 }
 
 export const FlagDeserializer = (input: any): Flag => {
