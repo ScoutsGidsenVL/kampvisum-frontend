@@ -17,6 +17,7 @@
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
         @submit.prevent="onSubmit"
       >
+      {{values}}
         <div class="mt-4">
           <div class="w-100">
             <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
@@ -151,6 +152,7 @@ export default defineComponent({
     const updateCamp = async (data: Camp) => {
       console.log('TO EDIT DATA: ', data)
       if (data.id && props.sideBarState) {
+        data.campType = selectedCampType.value
         await RepositoryFactory.get(CampRepository)
           .update(props.sideBarState.entity.id, data)
           .then(() => {
@@ -227,9 +229,9 @@ export default defineComponent({
             startDate: value.entity.camp.startDate,
             sections: value.entity.camp.sections,
           })
+          selectedCampType.value = value.entity.categorySet.categorySetParent.campType
           camp.value.sections = SectionObjectsToSectionStrings(value.entity.camp.sections)
           selectedGroupSections.value = SectionObjectsToSectionStrings(value.entity.camp.sections)
-
           resetForm({
             values: camp.value,
           })
