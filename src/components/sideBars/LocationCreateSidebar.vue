@@ -2,17 +2,17 @@
   <div>
     <base-side-bar
       maxWidth="max-w-2xl"
-      :isOverflowHidden="false"
+      :isOverflowHidden="true"
       :selection="selected"
       :is-display="sideBarState.state !== 'hide'"
       :is-edit="sideBarState.state === 'edit'"
-      name="LocationCreateSidebar"
+      name="LocationSidebar"
       :title="title"
       @hideSidebar="closeSideBar"
       width="max-w-2xl"
     >
       <form
-        id="addNewLocation"
+        id="locationForm"
         ref="formDiv"
         :class="{ 'd-flex': sideBarState.state === 'new' || sideBarState.state === 'edit', 'd-none': sideBarState.state === 'list' }"
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
@@ -87,16 +87,16 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
-import { PostLocation, PostLocationDeserializer, PostLocationSerializer } from '../../serializer/PostLocation'
+import { BaseSideBar, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
-import { useNotification } from '../../composable/useNotification'
 import { SearchedLocation } from '../../serializer/SearchedLocation'
+import { useNotification } from '../../composable/useNotification'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
+import { PostLocation } from '../../serializer/PostLocation'
 import DateField from '@/components/semantics/DateField.vue'
 import { useForm, ErrorMessage } from 'vee-validate'
 import SearchInput from '../inputs/SearchInput.vue'
@@ -184,6 +184,7 @@ export default defineComponent({
 
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
+      document.body.classList.remove('overflow-hidden')
       resetForm()
     }
 

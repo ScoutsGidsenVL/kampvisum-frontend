@@ -43,6 +43,7 @@ export default defineComponent({
     const { sidebar } = useInfoBarHelper()
 
     const openLocationCreateSidebar = (): void => {
+      document.body.classList.add('overflow-hidden')
       createSidebar.value = {state: 'new'}
     }
 
