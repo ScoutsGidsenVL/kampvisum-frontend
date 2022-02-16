@@ -58,7 +58,7 @@
             </div>
 
             <!-- CATEGORIES -->
-            <div v-for="linkedSubCategory in selectedDeadline.linkedSubCategories" :key="linkedSubCategory">
+            <div class="mt-3" v-for="linkedSubCategory in selectedDeadline.linkedSubCategories" :key="linkedSubCategory">
               <div class="flex items-center gap-2">
                 <i-checked v-if="linkedSubCategory.state === 'CHECKED'" />
                 <i-empty-check v-else  />
@@ -71,19 +71,14 @@
             </div>
 
             <!-- FLAGS -->
-            <div v-for="flag in selectedDeadline.flags" :key="flag">
-              {{flag.flag}}
-              <!-- <div class="flex items-center gap-2">
-                <i-checked v-if="linkedSubCategory.state === 'CHECKED'" />
-                <i-empty-check v-else  />
-                <p>{{linkedSubCategory.label}}</p>
-              </div>
-              <span 
-              v-if="linkedSubCategory.state !== 'CHECKED'" 
-              @click="navigateTowardsSection(linkedSubCategory.category.name, visum, linkedSubCategory.category.id, linkedSubCategory.id, route)" 
-              class="ml-4 text-green underline cursor-pointer">vul aan</span> -->
-            </div>
+            <div class="mt-3" v-for="flag in selectedDeadline.flags" :key="flag">
+              <div class="flex items-center gap-2">
+                <i-checked class="cursor-pointer" @click="toggleFlag(flag)" v-if="flag.flag === true" />
+                <i-empty-check class="cursor-pointer" v-else @click="toggleFlag(flag)" />
 
+                <p>{{flag.flagParent.label}}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -117,14 +112,16 @@ import DeadlineCard from '@/components/cards/DeadlineCard.vue'
 import { CustomButton } from 'vue-3-component-library'
 import IVerticalDots from '../icons/IVerticalDots.vue'
 import { defineComponent, PropType, ref } from 'vue'
+import { useNavigation } from '@/router/navigation'
 import IEmptyCheck from '../icons/IEmptyCheck.vue'
 import { Deadline } from '@/serializer/Deadline'
 import IImportant from '../icons/IImportant.vue'
+import IChecked from '../icons/IChecked.vue'
 import { Visum } from '@/serializer/Visum'
 import ICross from '../icons/ICross.vue'
-import IChecked from '../icons/IChecked.vue'
-import { useNavigation } from '@/router/navigation'
+import { Flag } from '@/serializer/Flag'
 import { useRoute } from 'vue-router'
+import { useNotification } from '@/composable/useNotification'
 
 export enum SidebarState {
   OPEN = 'OPEN',
@@ -190,20 +187,33 @@ export default defineComponent({
           console.log('DEADLINES:', deadlines.value)
         })
     }
+    const { triggerNotification } = useNotification()
+
+    const toggleFlag = async (flag: Flag) => {
+      flag.flag = !flag.flag
+      if (flag.id) {
+        await RepositoryFactory.get(DeadlineRepository)
+        .updateFlag(flag.id, { flag: flag.flag })
+        .then(() => {
+          triggerNotification('Deadline check is succesvol aangepast')
+        })
+      }
+    }
 
     getDeadlines()
 
     return {
-      closeSideBar,
-      SidebarState,
-      openSideBar,
-      deadlines,
-      openDeadline,
+      navigateTowardsSection,
       isDeadlineDetail,
       selectedDeadline,
+      closeSideBar,
+      SidebarState,
+      openDeadline,
+      openSideBar,
+      deadlines,
       goBack,
       route,
-      navigateTowardsSection
+      toggleFlag
     }
   }
 })

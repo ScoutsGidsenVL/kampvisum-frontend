@@ -35,5 +35,11 @@ export class DeadlineRepository extends BaseRepository {
       return this.deserializer(response)
     })
   }
+  
+  updateFlag(id: string, data: any) {
+    return this.patch(this.endpoint + 'flags/' + id, data).then((response: any) => {
+      return response
+    })
+  }
 
 }

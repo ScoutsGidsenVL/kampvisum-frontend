@@ -1,6 +1,6 @@
 <template>
 <transition name="fade">
-  <div v-if="isDisplayingNotification" class="fixed xs:mx-3 xs:top-3 md:bottom-10 md:right-10 z-40 rounded-lg bg-green text-white p-3">
+  <div v-if="isDisplayingNotification" class="fixed xs:mx-3 xs:top-3 md:bottom-10 md:right-10 z-50 rounded-lg bg-green text-white p-3">
     {{ message }}
   </div>
 </transition>

@@ -10,15 +10,13 @@ export interface Flag {
 }
 
 export const FlagDeserializer = (input: any): Flag => {
-  console.log('RAW FlagDeserializer: ', input)
   const single: Flag = {
-    createdBy: input.createdBy ? input.createdBy : undefined,
-    createdOn: input.createdOn ? input.createdOn : undefined,
-    flag: input.flag ? input.flag : undefined,
+    createdBy: input.created_by ? input.created_by : undefined,
+    createdOn: input.created_on ? input.created_on : undefined,
+    flag: input.flag ? input.flag : false,
     id: input.id ? input.id : undefined,
     flagParent: input.parent ? input.parent : undefined
   }
-
   return single
 }
 
