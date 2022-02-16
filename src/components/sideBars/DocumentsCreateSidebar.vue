@@ -61,11 +61,12 @@
 import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, CustomHeader } from 'vue-3-component-library'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { FileCheckRepository } from '@/repositories/FileCheckRepository'
-import { FileRepository } from '@/repositories/FileRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
+import { FileRepository } from '@/repositories/FileRepository'
+import { useSelectionHelper } from '@/helpers/selectionHelper'
 import DateField from '@/components/semantics/DateField.vue'
 import { PostLocation } from '../../serializer/PostLocation'
 import { DeadlineItem } from '@/serializer/DeadlineItem'
@@ -76,9 +77,8 @@ import SearchInput from '../inputs/SearchInput.vue'
 import { FileItem } from '@/serializer/FileItem'
 import Dropzone from '../inputs/Dropzone.vue'
 import { Check } from '@/serializer/Check'
-import { useI18n } from 'vue-i18n'
 import { Visum } from '@/serializer/Visum'
-import { useSelectionHelper } from '@/helpers/selectionHelper'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -88,12 +88,12 @@ export default defineComponent({
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,
     DeadlineItemCard,
+    FileItemComponent,
     ErrorMessage,
-    DateField,
-    LeafletMap,
     SearchInput,
+    LeafletMap,
+    DateField,
     Dropzone,
-    FileItemComponent
   },
   props: {
     title: {
@@ -219,12 +219,14 @@ export default defineComponent({
     return {
       LocationSearchRepository,
       removeItemFromArray,
+      fetchedSearchResult,
       filesToSelectFrom,
+      FileRepository,
+      filesUploaded,
       isSubmitting,
       sideBarState,
       closeSideBar,
       uploadedFile,
-      filesUploaded,
       isUploading,
       isPatching,
       InputTypes,
@@ -236,8 +238,6 @@ export default defineComponent({
       values,
       items,
       t,
-      FileRepository,
-      fetchedSearchResult
     }
   },
 })

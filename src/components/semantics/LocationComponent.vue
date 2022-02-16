@@ -15,12 +15,12 @@
 
 <script lang="ts">
 import LocationCreateSidebar from '../sideBars/LocationCreateSidebar.vue'
-import { defineComponent, ref, PropType, toRefs, watch } from 'vue'
+import ParentLeafletMap from '../cards/leaflet/ParentLeafletMap.vue'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
+import { defineComponent, ref, PropType, watch } from 'vue'
 import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { CustomButton } from 'vue-3-component-library'
 import { Check } from '@/serializer/Check'
-import ParentLeafletMap from '../cards/leaflet/ParentLeafletMap.vue'
 
 export default defineComponent({
   name: 'LocationComponent',
@@ -38,7 +38,6 @@ export default defineComponent({
   },
   setup (props, { emit }) {
     const isReloading = ref<boolean>(false)
-    // const { check } = toRefs(props)
     const createSidebar = ref<any>({state: 'hide'})
     const { sidebar } = useInfoBarHelper()
 
@@ -49,7 +48,6 @@ export default defineComponent({
 
     const actionSuccess = (action: {data: any, action: string}) => {
       if (action.action === 'PATCH') {
-        // check.value.value = action.data
         reloadMapComponent()
         emit('rl', true)
       }
@@ -78,7 +76,6 @@ export default defineComponent({
       createSidebar,
       actionSuccess,
       isReloading,
-      // check,
       edit
     }
   }

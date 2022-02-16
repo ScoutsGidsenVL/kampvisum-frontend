@@ -28,7 +28,7 @@
           <strong class="m-0 text-lg">Contactpersoon</strong>
           <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactName" label="Naam" />
           <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactPhone" label="Gsm nummer" />
-          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactEmail" label="Email" />
+          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required|email' : 'email'" name="contactEmail" label="Email" />
         </div>
 
         <div class="pb-4 flex flex-col gap-3 relative">
@@ -56,7 +56,6 @@
               </div>
             </div>
           </div>
-          <!-- {{init}} -->
           <leaflet-map 
           @addOnClick="addOnClick($event)" 
           @deleteLocationPoint="deleteLocationPoint($event)" 
