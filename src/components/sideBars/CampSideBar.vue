@@ -17,7 +17,6 @@
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
         @submit.prevent="onSubmit"
       >
-      {{values}}
         <div class="mt-4">
           <div class="w-100">
             <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
@@ -28,7 +27,7 @@
               Camp Type
             </span> -->
             <div>
-              <input class="cursor-pointer mr-2" id="inter" name="inter" v-model="isInternational" type="checkbox">
+              <input class="cursor-pointer mr-2" id="inter" name="inter" v-model="isInternational" type="checkbox" />
               <label class="cursor-pointer" for="inter">Internationaal kamp</label>
             </div>
 
@@ -90,7 +89,7 @@ export default defineComponent({
     'custom-button': CustomButton,
     'custom-header': CustomHeader,
     ErrorMessage,
-    MultiSelect
+    MultiSelect,
   },
   props: {
     title: {
@@ -107,7 +106,7 @@ export default defineComponent({
     selectedGroupId: {
       type: String,
       required: true,
-    }
+    },
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
@@ -180,8 +179,8 @@ export default defineComponent({
 
     const getCampTypes = async () => {
       await RepositoryFactory.get(CampTypeRepository)
-      .getArray()
-      .then((results: CampType[]) => {
+        .getArray()
+        .then((results: CampType[]) => {
           campTypesOriginal.value = results
           filterOutCampTypes()
         })
@@ -236,21 +235,22 @@ export default defineComponent({
             values: camp.value,
           })
 
-          setTimeout(
-            () => {
-              selectedGroupSections.value.forEach((s: any) => {
-                // @ts-ignore
-                document.getElementById('checkbox-'+s).checked = true;
-              });
-            }, 50
-          )
+          setTimeout(() => {
+            selectedGroupSections.value.forEach((s: any) => {
+              // @ts-ignore
+              document.getElementById('checkbox-' + s).checked = true
+            })
+          }, 50)
         }
       }
     )
 
-    watch(() => isInternational.value, () => {
-      filterOutCampTypes()
-    })
+    watch(
+      () => isInternational.value,
+      () => {
+        filterOutCampTypes()
+      }
+    )
 
     return {
       selectedGroupSections,
