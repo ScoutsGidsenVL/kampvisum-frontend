@@ -4,7 +4,7 @@ import AuthRepository from './repositories/authRepository'
 import MasterConfig from './models/config/masterConfig'
 import { OpenIdConnectPlugin } from 'inuits-vuejs-oidc'
 import 'vue-3-component-library/lib/index.css'
-import { createI18n } from "vue-i18n";
+import { createI18n } from 'vue-i18n'
 const VueLuxon = require('vue-luxon')
 import store from './store/store'
 // import './registerServiceWorker'
@@ -13,25 +13,27 @@ import router from './router'
 import App from './App.vue'
 
 // import LitepieDatepicker from 'litepie-datepicker'
-const nl = require("./locales/nl.json")
+const nl = require('./locales/nl.json')
 new StaticFileRepository().getFile('config.json').then((result: any) => {
   const i18n = createI18n({
     legacy: false,
-    locale: "nl",
+    locale: 'nl',
     fallbackLocale: 'nl',
     globalInjection: true,
     fallbackWarn: false,
     missingWarn: false,
     messages: {
-      nl: nl.default
-    }
-  });
-
-  const app = createApp(App).use(i18n).use(VueLuxon, {
-    output: {
-      locale: 'nl',
-    }
+      nl: nl.default,
+    },
   })
+
+  const app = createApp(App)
+    .use(i18n)
+    .use(VueLuxon, {
+      output: {
+        locale: 'nl',
+      },
+    })
 
   let configFile = result
 
@@ -60,15 +62,15 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
 
   router.beforeEach((to: any, from: any, next: any) => {
     if (to.matched.some((record: any) => record.meta.requiresOpenIdAuth)) {
-        !store.getters.loaded
-          ? RepositoryFactory.get(AuthRepository)
-              .me()
-              .then((user: any) => {
-                store.dispatch('setUser', user).then(() => {
-                  next()
-                })
+      !store.getters.isLoaded
+        ? RepositoryFactory.get(AuthRepository)
+            .me()
+            .then((user: any) => {
+              store.dispatch('setUser', user).then(() => {
+                next()
               })
-          : next()
+            })
+        : next()
     } else {
       next()
     }
