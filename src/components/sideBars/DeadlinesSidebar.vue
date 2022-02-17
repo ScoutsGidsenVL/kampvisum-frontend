@@ -165,11 +165,13 @@ export default defineComponent({
   },
   setup(props, context) {
     const { navigateTowardsSection } = useNavigation()
-    const deadlines = ref<any>([])
-    const isDeadlineDetail = ref<boolean>(false)
-    const selectedDeadline = ref<Deadline>()
-    const route = useRoute()
     const isFetchingDeadlines = ref<boolean>(true)
+    const isDeadlineDetail = ref<boolean>(false)
+    const isUpdatingFlag = ref<boolean>(false)
+    const selectedDeadline = ref<Deadline>()
+    const deadlines = ref<any>([])
+    const route = useRoute()
+
     const goBack = () => {
       isDeadlineDetail.value = false
     }
@@ -196,16 +198,19 @@ export default defineComponent({
         })
     }
     const { triggerNotification } = useNotification()
-
     const toggleFlag = async (flag: Flag) => {
-      flag.flag = !flag.flag
-      if (flag.id) {
-        await RepositoryFactory.get(DeadlineRepository)
-        .updateFlag(flag.id, { flag: flag.flag })
-        .then(() => {
-          getDeadlines()
-          triggerNotification('Deadline check is succesvol aangepast')
-        })
+      if (!isUpdatingFlag.value) {
+        isUpdatingFlag.value = true
+        if (flag.id) {
+          await RepositoryFactory.get(DeadlineRepository)
+          .updateFlag(flag.id, { flag: flag.flag })
+          .then(() => {
+            flag.flag = !flag.flag
+            getDeadlines()
+            triggerNotification('Deadline check is succesvol aangepast')
+            isUpdatingFlag.value = false
+          })
+        }
       }
     }
 

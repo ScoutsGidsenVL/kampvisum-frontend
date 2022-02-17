@@ -12,8 +12,8 @@ const breadcrumbs = ref<breadcrumb[]>([])
 const selectedGroup = ref<Group>({ groupAdminId: '' })
 
 export const useNavigation = (): {
-  navigateTowardsCategory: (name: string, visum: Visum, categoryUuid: string, route: any) => void
-  navigateTowardsSection: (name: string, visum: Visum, categoryUuid: string, sectionId: string, route: any) => void
+  navigateTowardsCategory: (name: string, visum: Visum, categoryUuid: string) => void
+  navigateTowardsSection: (name: string, visum: Visum, categoryUuid: string, sectionId: string) => void
   jumpToId: (id: string | string[]) => void
   breadcrumbs: Ref<breadcrumb[]>
   selectedGroup: Ref<any>
@@ -22,21 +22,23 @@ export const useNavigation = (): {
 } => {
 
   const setSelectedGroup = (group: Group) => {
-    selectedGroup.value = group
+      // router.push('/kampvisum-home/')
+      console.log('TRIGGER')
+      selectedGroup.value = group
   }
 
   const setBreadcrumbs = (b: breadcrumb[]) => {
     breadcrumbs.value = b
   }
 
-  const navigateTowardsCategory = (name: string, visum: Visum, categoryUuid: string, route: any) => {
+  const navigateTowardsCategory = (name: string, visum: Visum, categoryUuid: string) => {
     const navigate = (name: string) => {
       router.push('/kamp/' + visum.id.toString() + '/' + name + '/' + categoryUuid)
     }
     navigate(name.toLowerCase())
   }
 
-  const navigateTowardsSection = (name: string, visum: Visum, categoryUuid: string, sectionId: string, route: any) => {
+  const navigateTowardsSection = (name: string, visum: Visum, categoryUuid: string, sectionId: string) => {
     const navigate = (name: string) => {
       router.push('/kamp/' + visum.id.toString() + '/' + name + '/' + categoryUuid + '/section/' + sectionId)
     }

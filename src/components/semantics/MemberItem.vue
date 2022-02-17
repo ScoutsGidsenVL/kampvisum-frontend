@@ -13,14 +13,14 @@
         verwijder
       </div>
       <div class="flex gap-3 items-center">
-        <div class="flex gap-2 items-center font-bold">
+        <!-- <div class="flex gap-2 items-center font-bold">
           <input class="cursor-pointer" :value="true" v-model="participant.hasPaid" type="checkbox" id="paid" name="paid">
           <label class="cursor-pointer m-0" for="paid">betaald</label>
-        </div>
+        </div> -->
 
-        <div>
+        <!-- <div>
           <i-info :info="'to check if someone has paid or not.'" />
-        </div>
+        </div> -->
       </div>
     </div>    
   </div>

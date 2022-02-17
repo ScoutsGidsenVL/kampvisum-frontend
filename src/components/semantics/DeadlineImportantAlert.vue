@@ -1,6 +1,9 @@
 <template>
   <div v-if="true" class="border-l-4 border-red p-2 flex items-center gap-3">
     <i-important />
+    <div>
+      <h1 class="text-lg m-0 text-red">Belangerijk</h1>
+    </div>
   </div>
 </template>
 

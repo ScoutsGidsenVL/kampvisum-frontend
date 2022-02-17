@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white shadow-md">
+  <div @click="arrowClick()" class="cursor-pointer bg-white shadow-md">
     <deadline-important-alert v-if="deadline.deadlineParent.isImportant" />
     <div class="flex justify-between p-3">
       <div class="flex items-center">
@@ -19,7 +19,7 @@
         </div>
       </div>
       <!-- ARROW ICON -->
-      <div @click="arrowClick()" class="flex items-center cursor-pointer">
+      <div class="flex items-center">
         <i-right-Arrow />
       </div>
     </div>

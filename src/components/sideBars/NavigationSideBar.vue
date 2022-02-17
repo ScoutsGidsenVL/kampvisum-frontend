@@ -30,7 +30,7 @@
               <div v-for="(visum) in campsByGroup" :key="visum">
                 <navigation-item :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
                   <div v-for="(category) in visum.categorySet.categories" :key="category">
-                    <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id, route)" class="xs:text-sm md:text-md block cursor-pointer py-1">
+                    <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" class="xs:text-sm md:text-md block cursor-pointer py-1">
                       {{category.categoryParent.label}}
                     </a>
                   </div>
