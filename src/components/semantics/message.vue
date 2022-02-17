@@ -5,7 +5,7 @@
       'border-l-8 border-red bg-lightRed': color.state === ColorState.DANGER,
       'border-lightGreen bg-lighterGreen': color.state === ColorState.SUCCES,
       'border-l-8 border-orange bg-lightOrange': color.state === ColorState.WARNING,
-      ' border-black bg-lightGray': color.state === ColorState.GRAY,
+      'border-black bg-gray': color.state === ColorState.GRAY,
     }"
   >
     <div class="py-2">
