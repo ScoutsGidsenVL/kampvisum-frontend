@@ -1,14 +1,15 @@
 <template>
-  <div class="p-2 bg-white shadow-md border-2 border-gray">
-    <div v-for="(file) in check.value" :key="file">
+  <div class="pb-0">
+    <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
+    <div v-for="file in check.value" :key="file">
       <file-item :file="file" :check="check" @actionSuccess="actionSuccess($event)" />
     </div>
 
-    <div class="text-center mt-3" v-if="check.value.length === 0">
+    <div class="text-left mt-3 pl-3" v-if="check.value.length === 0">
       <p class="italic">Geen document</p>
     </div>
 
-    <div>
+    <div class="pl-3">
       <div class="mt-2">
         <custom-button @click="openCreateSidebar()" class="mt-4" text="+ voeg document(en) toe" />
       </div>
@@ -25,30 +26,32 @@ import { defineComponent, ref, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
 import FileItem from './FileItem.vue'
 import { Visum } from '@/serializer/Visum'
+import Message, { ColorState } from '../semantics/message.vue'
 
 export default defineComponent({
   name: 'OverviewFiles',
   components: {
     'file-item': FileItem,
     'custom-button': CustomButton,
-    DocumentsCreateSidebar
+    DocumentsCreateSidebar,
+    Message,
   },
   props: {
     check: {
       type: Object as PropType<Check>,
-      required: true
+      required: true,
     },
     visum: {
       type: Object as PropType<Visum>,
       required: true,
     },
   },
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const { triggerNotification } = useNotification()
-    const createSidebar = ref<any>({state: 'hide'})
+    const createSidebar = ref<any>({ state: 'hide' })
 
     const openCreateSidebar = (): void => {
-      createSidebar.value = {state: 'new'}
+      createSidebar.value = { state: 'new' }
     }
 
     const actionSuccess = (action: string) => {
@@ -64,8 +67,9 @@ export default defineComponent({
     return {
       openCreateSidebar,
       createSidebar,
-      actionSuccess
+      actionSuccess,
+      ColorState,
     }
-  }
+  },
 })
 </script>

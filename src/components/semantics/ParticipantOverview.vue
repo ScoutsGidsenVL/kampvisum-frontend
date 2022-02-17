@@ -1,23 +1,34 @@
 <template>
-  <div class="p-2 bg-white shadow-md">
-    <message class="p-2" :title="check.checkParent.label" :color="{state: ColorState.SUCCES}" />
-    <div>
-      <member-item v-for="(participant) in check.value" :key="participant" :check="check" :participant="participant" @actionSuccess="actionSuccess($event)" @openSidebarToEdit="openSidebarToEdit($event)"/>
+  <div class="pb-3">
+    <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.SUCCES }" />
+    <div class="">
+      <member-item
+        v-for="participant in check.value"
+        :key="participant"
+        :check="check"
+        :participant="participant"
+        @actionSuccess="actionSuccess($event)"
+        @openSidebarToEdit="openSidebarToEdit($event)"
+      />
     </div>
 
-    <div class="text-center mt-3" v-if="check.value.length === 0">
-      <p class="italic">{{!check.checkParent.isMultiple ? 'Geen lid' : 'Geen leden'}}</p>
+    <div class="text-left pl-3 mt-3" v-if="check.value.length === 0">
+      <p class="italic">{{ !check.checkParent.isMultiple ? 'Geen lid' : 'Geen leden' }}</p>
     </div>
 
-    <div class="flex">
+    <div class="flex pl-3">
       <div class="xs:w-100 md:w-40">
-        <custom-button @click="openMemberSidebar()" class="w-100 mt-4" :extraStyle="'w-100'" :text="check.value.length > 0 ? check.checkParent.isMultiple ? '+ VOEG TOE' : '+ VERANDER' : '+ VOEG TOE'" />
+        <custom-button
+          @click="openMemberSidebar()"
+          class="w-100 mt-4"
+          :extraStyle="'w-100'"
+          :text="check.value.length > 0 ? (check.checkParent.isMultiple ? '+ VOEG TOE' : '+ VERANDER') : '+ VOEG TOE'"
+        />
       </div>
     </div>
-        
+
     <member-sidebar v-if="check.checkParent.isMember" :visum="visum" :check="check" v-model:sideBarState="sidebar" @actionSuccess="actionSuccess($event)" />
     <participant-sidebar v-if="!check.checkParent.isMember" :visum="visum" :check="check" v-model:sideBarState="sidebar" @actionSuccess="actionSuccess($event)" />
-
   </div>
 </template>
 
@@ -40,24 +51,24 @@ export default defineComponent({
     MemberItem,
     CustomButton,
     ParticipantSidebar,
-    MemberSidebar
+    MemberSidebar,
   },
   props: {
     check: {
       type: Object as PropType<Check>,
-      required: true
+      required: true,
     },
     visum: {
       type: Object as PropType<Visum>,
       required: true,
     },
   },
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const { triggerNotification } = useNotification()
-    const sidebar = ref<any>({state: 'hide'})
+    const sidebar = ref<any>({ state: 'hide' })
 
     const openMemberSidebar = (): void => {
-      sidebar.value = {state: 'search'}
+      sidebar.value = { state: 'search' }
     }
 
     const actionSuccess = (action: string) => {
@@ -71,7 +82,7 @@ export default defineComponent({
     }
 
     const openSidebarToEdit = (m: Member) => {
-      sidebar.value = { state: 'edit', entity: m}
+      sidebar.value = { state: 'edit', entity: m }
     }
 
     return {
@@ -79,8 +90,8 @@ export default defineComponent({
       openMemberSidebar,
       actionSuccess,
       ColorState,
-      sidebar
+      sidebar,
     }
-  }
+  },
 })
 </script>

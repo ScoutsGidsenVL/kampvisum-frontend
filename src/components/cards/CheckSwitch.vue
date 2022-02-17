@@ -2,48 +2,44 @@
   <!-- <div v-if="checkType === 'Message'">
     <message title="Feedback DC" text="Materiaal niet verzekerd" :color="{ state: ColorState.DANGER }" />
   </div> -->
-<div :id="check.id">
-    <div v-if="checkType === CheckTypes.SimpleCheck">
+  <div :id="check.id">
+    <div class="px-3" v-if="checkType === CheckTypes.SimpleCheck">
       <!-- {{check}} -->
       <check-component :check="check" />
     </div>
 
-    <div v-if="checkType === CheckTypes.DurationCheck">
-        <date-field class="my-2" :key="section" :check="check" />
+    <div class="px-3" v-if="checkType === CheckTypes.DurationCheck">
+      <date-field class="my-2" :key="section" :check="check" />
     </div>
 
-    <div v-if="checkType === CheckTypes.CommentCheck">
+    <div class="px-3 mt-3" v-if="checkType === CheckTypes.CommentCheck">
       <comment-check :check="check" />
     </div>
 
-    <div v-if="checkType === CheckTypes.CampLocationCheck">
-      <div class="pb-5">
-        <location-component :check="check" @rl="rl($event)" />
-      </div>
+    <div class="bg-gray my-3 border-l-4 border-lightGreen" v-if="checkType === CheckTypes.CampLocationCheck">
+      <location-component :check="check" @rl="rl($event)" />
     </div>
 
-    <div v-if="checkType === CheckTypes.LocationCheck">
-      <div class="pb-5">
-        <location-component :check="check" @rl="rl($event)" />
-      </div>
+    <div class="bg-gray my-3 border-l-4 border-lightGreen" v-if="checkType === CheckTypes.LocationCheck">
+      <location-component :check="check" @rl="rl($event)" />
     </div>
 
-    <div v-if="checkType === CheckTypes.FileUploadCheck">
+    <div class="bg-gray mt-3 border-l-4 border-black" v-if="checkType === CheckTypes.FileUploadCheck">
       <overview-files :visum="visum" :check="check" @rl="rl($event)" />
     </div>
 
-    <div class="my-4" v-if="checkType === CheckTypes.MemberCheck">
+    <div class="bg-gray my-3 border-l-4 border-lightGreen" v-if="checkType === CheckTypes.MemberCheck">
       <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
     </div>
 
-    <div class="my-4" v-if="checkType === CheckTypes.ParticipantCheck">
+    <div class="bg-gray my-3 border-l-4 border-lightGreen" v-if="checkType === CheckTypes.ParticipantCheck">
       <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
     </div>
 
-    <div class="mt-4" v-if="checkType === CheckTypes.NumberCheck">
+    <div class="px-3 mt-4" v-if="checkType === CheckTypes.NumberCheck">
       <number-check :check="check" @rl="rl($event)" />
     </div>
-</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -89,11 +85,10 @@ export default defineComponent({
     },
     check: {
       type: Object as PropType<Check>,
-      required: true
-    }
+      required: true,
+    },
   },
-  setup (props, { emit }) {
-
+  setup(props, { emit }) {
     const rl = () => {
       emit('rl', true)
     }
@@ -102,8 +97,8 @@ export default defineComponent({
       CheckTypes,
       ColorState,
       InputTypes,
-      rl
+      rl,
     }
-  }
+  },
 })
 </script>

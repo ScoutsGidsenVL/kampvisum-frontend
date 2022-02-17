@@ -6,7 +6,7 @@
       </div>
 
       <div v-if="visum" class="w-100 flex pt-3">
-        <div class="w-100">
+        <div class="w-100 pt-3 pr-3 pb-3">
           <div v-for="subCategory in category.subCategories" :key="subCategory">
             <base-subcategory-card @rl="rl($event)" :visum="visum" class="mb-3" :subCategory="subCategory" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
           </div>

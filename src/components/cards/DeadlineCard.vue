@@ -6,15 +6,15 @@
         <!-- CHECK ICON -->
         <div class="mr-2.5">
           <i-checked v-if="deadline.state === 'CHECKED'" />
-          <i-empty-check v-if="deadline.state === 'UNCHECKED'" />
+          <i-empty-check v-if="deadline.state === 'UNCHECKED'" :gray="true" />
         </div>
         <div>
-          <strong class="xs:text-sm">
-            {{deadline.deadlineParent.label}}
+          <strong class="font-museo text-md font-semibold">
+            {{ deadline.deadlineParent.label }}
           </strong>
-          <p>
+          <p class="font-museo text-sm font-normal">
             <!-- {{deadline.deadlineParent.dueDate.calculatedDate}} -->
-            {{deadline.deadlineParent.dueDate.dateDay}}/{{deadline.deadlineParent.dueDate.dateMonth}}/{{deadline.deadlineParent.dueDate.dateYear}}
+            {{ deadline.deadlineParent.dueDate.dateDay }}/{{ deadline.deadlineParent.dueDate.dateMonth }}/{{ deadline.deadlineParent.dueDate.dateYear }}
           </p>
         </div>
       </div>
@@ -48,18 +48,17 @@ export default defineComponent({
     isImportant: Boolean,
     deadline: {
       type: Object as PropType<Deadline>,
-      required: true
-    }
+      required: true,
+    },
   },
-  setup (props, { emit }) {
-
+  setup(props, { emit }) {
     const arrowClick = () => {
       emit('openDeadline', props.deadline)
     }
 
     return {
-      arrowClick
+      arrowClick,
     }
-  }
+  },
 })
 </script>

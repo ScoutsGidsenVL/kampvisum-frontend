@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- DUMMY NEEDS TO GET REMOVED AND IS ONLY FOR STYLING PURPOSES -->
-    <scouts-dummy-bar /> 
+    <scouts-dummy-bar />
     <base-page class="scouts-bar-padding">
       <div class="sticky top-0 pl-4 py-2 bg-white z-40 border border-lightGray">
         <bread-crumb :isInternetActive="isInternetActive" class="md:px-5 md:mx-3" :home="'/kampvisum-home/'" :router="router" :route="route" />
@@ -38,7 +38,6 @@ export default defineComponent({
     Notification,
   },
   setup() {
-
     const { checkIfInternetActive, isInternetActive } = useInternetHelper()
 
     const route = useRoute()
@@ -56,8 +55,16 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
 @import url('https://use.typekit.net/frt5hnw.css');
+
+.font-museo {
+  font-family: museo-sans, -apple-system, system-ui, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+.font-aglet {
+  font-family: aglet-slab, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+}
 
 @media (min-width: 992px) {
   /* #app {

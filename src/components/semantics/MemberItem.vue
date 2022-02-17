@@ -1,5 +1,5 @@
 <template>
-  <div class="hover-edit xs:rounded-md xs:shadow-md md:border-b-2 flex flex-col md:flex-row gap-3 md:gap-0 justify-between p-2.5">
+  <div class="hover-edit xs:rounded-md xs:shadow-md md:border-b-2 flex flex-col md:flex-row gap-3 md:gap-0 justify-between p-2.5 bg-white">
     <div class="flex gap-3 items-center">
       <i-person />
       <div>
@@ -9,9 +9,7 @@
     </div>
 
     <div class="flex justify-between md:gap-16 items-center">
-      <div v-if="check.checkParent.isMultiple" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
-        verwijder
-      </div>
+      <div v-if="check.checkParent.isMultiple" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">verwijder</div>
       <div class="flex gap-3 items-center">
         <!-- <div class="flex gap-2 items-center font-bold">
           <input class="cursor-pointer" :value="true" v-model="participant.hasPaid" type="checkbox" id="paid" name="paid">
@@ -22,7 +20,7 @@
           <i-info :info="'to check if someone has paid or not.'" />
         </div> -->
       </div>
-    </div>    
+    </div>
   </div>
 </template>
 
@@ -41,21 +39,22 @@ export default defineComponent({
   components: {
     IPerson,
     IInfo,
-    IPencil
+    IPencil,
   },
   props: {
     participant: {
       type: Object as PropType<Member>,
       required: true,
-      default: () => { return {} }
+      default: () => {
+        return {}
+      },
     },
     check: {
       type: Object as PropType<Check>,
-      required: true
+      required: true,
     },
   },
-  setup (props, { emit }) {
-
+  setup(props, { emit }) {
     const deleteFromList = async (p: Member) => {
       if (props.check.id) {
         await RepositoryFactory.get(ParticipantCheckRepository)
@@ -68,25 +67,25 @@ export default defineComponent({
 
     const openEditForm = (m: Member) => {
       emit('openSidebarToEdit', m)
-    } 
+    }
 
     return {
       deleteFromList,
-      openEditForm
+      openEditForm,
     }
-  }
+  },
 })
 </script>
 
 <style lang="scss" scoped>
-  .pencil {
-      visibility: hidden;
-      cursor: pointer;
-  }
+.pencil {
+  visibility: hidden;
+  cursor: pointer;
+}
 
-  .hover-edit:hover {
-    .pencil {
-      visibility: visible;
-    }
+.hover-edit:hover {
+  .pencil {
+    visibility: visible;
   }
+}
 </style>

@@ -2,7 +2,7 @@
   <div v-if="visum" class="p-3">
     <h1>{{ visum.camp.name }}</h1>
 
-    <h4 class="text-green inline">
+    <h4 class="inline text-green font-aglet font-light">
       {{ getSectionsTitle(visum.camp) }}
     </h4>
     <hr />

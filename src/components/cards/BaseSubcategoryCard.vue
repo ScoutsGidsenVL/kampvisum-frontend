@@ -1,8 +1,8 @@
 <template>
   <div :id="subCategory.id">
-    <div class="p-3 border border-lightGray flex gap-6 flex-col">
+    <div class="pt-3 border border-lightGray flex gap-0 flex-col">
       <header-subcategory-card :subCategory="subCategory" @openSidebar="openSidebar()" />
-      <check-switch @rl="rl($event)" v-for="(check) in checks" :key="check" :visum="visum" :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
+      <check-switch @rl="rl($event)" v-for="check in checks" :key="check" :visum="visum" :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default defineComponent({
   components: {
     'check-switch': CheckSwitch,
     'header-subcategory-card': HeaderSubcategoryCard,
-    'litepie-datepicker': LitepieDatepicker
+    'litepie-datepicker': LitepieDatepicker,
   },
   props: {
     subCategory: {
@@ -32,9 +32,9 @@ export default defineComponent({
       type: Object as PropType<Visum>,
       required: true,
     },
-    checks: Array as PropType<Check[]>
+    checks: Array as PropType<Check[]>,
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const openSidebar = () => {
       emit('openSidebar')
     }
@@ -45,7 +45,7 @@ export default defineComponent({
 
     return {
       openSidebar,
-      rl
+      rl,
     }
   },
 })

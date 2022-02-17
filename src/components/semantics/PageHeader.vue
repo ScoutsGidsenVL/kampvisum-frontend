@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="p-3 border border-lightGray shadow-sm">
-      <h1>{{title}}</h1>
-      <h4 v-if="subTitle" class="text-green">{{subTitle}}</h4>
+      <h1>{{ title }}</h1>
+      <h4 v-if="subTitle" class="text-green font-aglet font-light">{{ subTitle }}</h4>
     </div>
   </div>
 </template>
@@ -16,9 +16,9 @@ export default defineComponent({
     title: {
       type: String,
       required: true,
-      default: 'default title'
+      default: 'default title',
     },
-    subTitle: String
-  }
+    subTitle: String,
+  },
 })
 </script>

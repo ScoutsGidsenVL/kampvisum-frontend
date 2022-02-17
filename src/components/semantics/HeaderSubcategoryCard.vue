@@ -1,8 +1,8 @@
 <template>
-  <div class="flex justify-between items-center">
+  <div class="flex justify-between items-center mb-3 px-3">
     <div class="flex items-center gap-3">
       <div>
-        <h4 class="font-semibold font-sans m-0">{{subCategory.subCategoryParent.label}}</h4>
+        <h4 class="font-semibold font-sans font-bold text-xl m-0">{{ subCategory.subCategoryParent.label }}</h4>
       </div>
       <div class="cursor-pointer">
         <i-info :info="subCategory.subCategoryParent.explanation" />
@@ -28,10 +28,10 @@ export default defineComponent({
     subCategory: {
       type: Object as PropType<SubCategory>,
       required: true,
-    }
+    },
   },
   components: {
-    IInfo
-  }
+    IInfo,
+  },
 })
 </script>
