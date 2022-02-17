@@ -10,6 +10,10 @@ export interface breadcrumb {
 
 const breadcrumbs = ref<breadcrumb[]>([])
 const selectedGroup = ref<Group>({ groupAdminId: '' })
+const selectedYear = ref<string>()
+const years = ref<Array<string>>([])
+const visums = ref<Visum[]>([])
+const isFetchingVisums = ref<boolean>(false)
 
 export const useNavigation = (): {
   navigateTowardsCategory: (name: string, visum: Visum, categoryUuid: string) => void
@@ -17,14 +21,36 @@ export const useNavigation = (): {
   jumpToId: (id: string | string[]) => void
   breadcrumbs: Ref<breadcrumb[]>
   selectedGroup: Ref<any>
+  selectedYear: Ref<any>
+  years: Ref<any>
+  visums: Ref<any>
+  isFetchingVisums: Ref<any>
   setBreadcrumbs: (b: breadcrumb[]) => void
   setSelectedGroup: (group: Group) => void
+  setSelectedYear: (year: string) => void
+  setYears: (years: string[]) => void
+  setVisums: (v: Visum[]) => void
+  setIsFetchingVisums: (b: boolean) => void
 } => {
 
   const setSelectedGroup = (group: Group) => {
-      // router.push('/kampvisum-home/')
-      console.log('TRIGGER')
+    console.log('group: ', group)
       selectedGroup.value = group
+  }
+
+  const setSelectedYear = (year: string) => {
+    selectedYear.value = year
+  }
+  
+  const setYears = (ys: string[]) => {
+    years.value = ys
+  }
+  const setVisums = (v: Visum[]) => {
+    visums.value = v
+    isFetchingVisums.value = false
+  }
+  const setIsFetchingVisums = (b: boolean) => {
+    isFetchingVisums.value = b
   }
 
   const setBreadcrumbs = (b: breadcrumb[]) => {
@@ -63,6 +89,14 @@ export const useNavigation = (): {
     breadcrumbs,
     setBreadcrumbs,
     selectedGroup,
-    setSelectedGroup
+    selectedYear,
+    setSelectedGroup,
+    setSelectedYear,
+    years,
+    setYears,
+    setVisums,
+    visums,
+    setIsFetchingVisums,
+    isFetchingVisums
   }
 }

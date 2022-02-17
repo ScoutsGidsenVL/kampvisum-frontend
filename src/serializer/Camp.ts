@@ -19,7 +19,6 @@ export interface Camp {
 }
 
 export const CampDeserializer = (input: any): Camp => {
-  console.log('RAW CAMP: ', input)
   const single: Camp = {
     campType: input.camp_type ? input.camp_type : undefined,
     createdBy: input.created_by ? input.created_by : undefined,
@@ -39,7 +38,6 @@ export const CampDeserializer = (input: any): Camp => {
 }
 
 export const CampSerializer = (input: any): any => {
-  console.log('EDIT INPUT: ', input)
   const single: any = {
     name: input.name,
     start_date: input.startDate,

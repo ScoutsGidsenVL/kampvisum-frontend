@@ -8,13 +8,13 @@
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
       <multi-select
-        v-if="groupYears[0]"
+        v-if="years[0]"
         id="year"
         placeholder="Kies een jaar"
         @addSelection="selectFilter($event, 'year')"
         value-prop="id"
-        :options="groupYears"
-        :value="groupYears[0]"
+        :options="years"
+        :value="years[0]"
         :canClear="false"
         :canDeselect="false"
       />
@@ -85,47 +85,31 @@ export default defineComponent({
   },
   setup() {
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })
-    const { setCampsByGroup, campsByGroup } = useCampHelper()
     const isWarningDisplayed = ref<Boolean>(false)
     const visumToBeDeleted = ref<Visum>()
     const isDeletingVisum = ref<Boolean>(false)
-    const selectedYear = ref<string>('')
-    const groupYears = ref<string[]>([])
     const myGroups = ref<any>([])  
-    const visums = ref<any>([])
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
     })
-    const { setBreadcrumbs, selectedGroup } = useNavigation()
+    const { setBreadcrumbs, selectedGroup, selectedYear, setVisums, visums, isFetchingVisums, years } = useNavigation()
     const { triggerNotification } = useNotification()
-    const isFetchingVisums = ref<boolean>(true)
     setBreadcrumbs([])
-
-    const getVisums = async (groupId: string, year: string) => {
-      await RepositoryFactory.get(CampRepository)
-        .getArray('?page=1&page_size=100&group=' + groupId + ((year !== '') ? '&year=' + year : ''))
-        .then((c: ArrayResult) => {
-          visums.value = c
-          setCampsByGroup(visums.value)
-          isFetchingVisums.value = false
-        })
-    }
-
-    const getGroupYears = async (groupId: string) => {
-      await RepositoryFactory.get(CampRepository)
-        .getGroupYears(groupId)
-        .then((years: Array<string>) => {
-          groupYears.value = years
-          setSelectedYear(groupYears.value[0])
-        })
-    }
 
     const editCamp = (visum: Visum) => {
       campSideBarState.value = {
         state: 'edit',
         entity: visum,
       }
+    }
+
+    const getVisums = async (groupId: string, year: string) => {
+      await RepositoryFactory.get(CampRepository)
+        .getArray('?page=1&page_size=100&group=' + groupId + ((year !== '') ? '&year=' + year : ''))
+        .then((visums: Visum[]) => {
+          setVisums(visums)
+        })
     }
 
     const deleteCamp = () => {
@@ -165,28 +149,14 @@ export default defineComponent({
       }
       isFetchingVisums.value = true
       visums.value = []
-      getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
-    }
-
-    const setSelectedYear = (year: string) => {
-      selectedYear.value = year
-    }
-
-    const selectFilter = () => {
+      // OPNIEUW FETCHEN
       getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
     }
 
-    getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
-
-    watch(
-      () => selectedGroup.value,
-      () => {
-      isFetchingVisums.value = true
-      visums.value = []
-        getGroupYears(selectedGroup.value.groupAdminId).then(() => getVisums(selectedGroup.value.groupAdminId, selectedYear.value))
-      }
-    )
-
+    const selectFilter = () => {
+      // getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
+    }
+    
     return {
       isFetchingVisums,
       isWarningDisplayed, 
@@ -199,8 +169,7 @@ export default defineComponent({
       actionSuccess, 
       selectFilter, 
       hideWarning, 
-      campsByGroup,
-      groupYears, 
+      years, 
       deleteCamp, 
       myGroups, 
       editCamp, 

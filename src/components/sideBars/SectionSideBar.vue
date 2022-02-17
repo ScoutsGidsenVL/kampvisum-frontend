@@ -143,7 +143,6 @@ export default defineComponent({
     }
 
     const updateSection = async (section: Section) => {
-      console.log('SECTION: ', section)
       section.groupAdminId = selectedGroup.value.groupAdminId
       section.name.gender = chosenGender.value
       section.groupType = selectedGroup.value.type

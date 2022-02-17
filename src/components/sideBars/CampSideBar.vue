@@ -149,7 +149,6 @@ export default defineComponent({
     }
 
     const updateCamp = async (data: Camp) => {
-      console.log('TO EDIT DATA: ', data)
       if (data.id && props.sideBarState) {
         data.campType = selectedCampType.value
         await RepositoryFactory.get(CampRepository)

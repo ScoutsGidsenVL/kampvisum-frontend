@@ -14,7 +14,7 @@
               v-if="myGroups[0]"
               id="group"
               :object="true"
-              @addSelection="setSelectedGroup($event)"
+              @addSelection="addSelectedGroup($event)"
               track-by="fullName"
               value-prop="groupAdminId"
               :options="myGroups"
@@ -25,9 +25,11 @@
           </div>
 
           <div class="top-44 w-auto">
-            
-            <div v-if="campsByGroup && campsByGroup.length > 0">
-              <div v-for="(visum) in campsByGroup" :key="visum">
+            <div>
+              <div class="text-center">
+                <loader color="lightGreen" size="10" :isLoading="isFetchingVisums" />
+              </div>
+              <div v-for="(visum) in visums" :key="visum">
                 <navigation-item :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
                   <div v-for="(category) in visum.categorySet.categories" :key="category">
                     <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" class="xs:text-sm md:text-md block cursor-pointer py-1">
@@ -62,36 +64,44 @@
 <script lang="ts">
 import MultiSelect from '../../components/inputs/MultiSelect.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 import { Sidebar, SidebarState } from '@/helpers/infoBarHelper'
-import { useCampHelper } from '../../helpers/campHelper'
+import { CampRepository } from '@/repositories/campRepository'
 import { useNavigation } from '../../router/navigation'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import NavigationItem from './NavigationItem.vue'
 import { defineComponent, ref, watch } from 'vue'
+import { Loader } from 'vue-3-component-library'
+import ILogo from '../icons/ILogo.vue'
 import { useRoute } from 'vue-router'
 import store from '../../store/store'
-import ILogo from '../icons/ILogo.vue'
-import router from '@/router'
 import { useI18n } from 'vue-i18n'
+import router from '@/router'
+import { Visum } from '@/serializer/Visum'
 
 export default defineComponent({
   components: { 
     NavigationItem, 
     'multi-select': MultiSelect,
-    ILogo
+    ILogo,
+    Loader
   },
   name: 'NavigationSideBar',
   setup() {
     const route = useRoute()
-    const { campsByGroup } = useCampHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const { getSectionsTitle } = useSectionsHelper()
-    const { navigateTowardsCategory, setSelectedGroup } = useNavigation()
+    const { 
+      navigateTowardsCategory,
+      setSelectedGroup, setSelectedYear, setYears, selectedGroup,selectedYear, setVisums, visums, setIsFetchingVisums, isFetchingVisums } = useNavigation()
     const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
     })
+
+    setIsFetchingVisums(true)
+
     const toggleSideBar: () => void = () => {
       if (sidebar.value.state === SidebarState.OPEN) {
         sidebar.value.state = SidebarState.CLOSED
@@ -109,10 +119,43 @@ export default defineComponent({
       router.push('/kampvisum-home/')
     }
 
-    watch(() => store.getters.user.scoutsGroups, () => {
-      myGroups.value = store.getters.user.scoutsGroups
-      setSelectedGroup(myGroups.value[0])
-    })
+    const addSelectedGroup = (group: any) => {
+      setSelectedGroup(group)
+      setIsFetchingVisums(true)
+      setVisums([])
+      getYearsAndVisums()
+    }
+
+    const getYearsAndVisums = () => {
+      getGroupYears(selectedGroup.value.groupAdminId).then(() => {
+        getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
+      })
+    }
+
+    const getGroupYears = async (groupId: string) => {
+      await RepositoryFactory.get(CampRepository)
+        .getGroupYears(groupId)
+        .then((years: Array<string>) => {
+          setYears(years)
+          setSelectedYear(years[0])
+        })
+    }
+
+    const getVisums = async (groupId: string, year: string) => {
+      await RepositoryFactory.get(CampRepository)
+        .getArray('?page=1&page_size=100&group=' + groupId + ((year !== '') ? '&year=' + year : ''))
+        .then((visums: Array<Visum>) => {
+          setVisums(visums)
+        })
+    }
+
+    if (route) {
+      watch(() => store.getters.user.scoutsGroups, () => {
+        myGroups.value = store.getters.user.scoutsGroups
+        setSelectedGroup(myGroups.value[0])
+        getYearsAndVisums()
+      })
+    }
 
     return {
       navigateTowardsCategory,
@@ -120,12 +163,14 @@ export default defineComponent({
       setSelectedGroup,
       toggleSideBar,
       SidebarState,
-      campsByGroup,
       myGroups,
       sidebar,
       route,
       home,
-      t
+      t,
+      visums,
+      isFetchingVisums,
+      addSelectedGroup
     }
   }
 })

@@ -15,7 +15,6 @@ export class LocationCheckRepository extends BaseRepository {
     if (parentLocations) {
       parentLocations.forEach((p: any) => {
         if (data.id !== p.id) {
-          console.log('DAT ID: ', data.id, 'P ID: ', p.id)
           arr.push({ id: p.id})
         }
       })

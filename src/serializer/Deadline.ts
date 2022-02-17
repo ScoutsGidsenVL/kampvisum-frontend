@@ -19,7 +19,6 @@ export interface Deadline {
 }
 
 export const DeadlineDeserializer = (input: any): Deadline => {
-  console.log('RAW DEADLINES:', input)
   const single: Deadline = {
     createdBy: input.created_by ? input.created_by : undefined,
     createdOn: input.created_on ? input.created_on : undefined,
