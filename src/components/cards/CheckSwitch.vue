@@ -16,11 +16,11 @@
       <comment-check :check="check" />
     </div>
 
-    <div class="bg-gray my-3 border-l-4 border-lightGreen" v-if="checkType === CheckTypes.CampLocationCheck">
+    <div class="bg-gray my-3 border-l-4 border-black" v-if="checkType === CheckTypes.CampLocationCheck">
       <location-component :check="check" @rl="rl($event)" />
     </div>
 
-    <div class="bg-gray my-3 border-l-4 border-lightGreen" v-if="checkType === CheckTypes.LocationCheck">
+    <div class="bg-gray my-3 border-l-4 border-black" v-if="checkType === CheckTypes.LocationCheck">
       <location-component :check="check" @rl="rl($event)" />
     </div>
 
@@ -28,11 +28,11 @@
       <overview-files :visum="visum" :check="check" @rl="rl($event)" />
     </div>
 
-    <div class="bg-gray my-3 border-l-4 border-lightGreen" v-if="checkType === CheckTypes.MemberCheck">
+    <div class="bg-gray my-3 border-l-4 border-black" v-if="checkType === CheckTypes.MemberCheck">
       <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
     </div>
 
-    <div class="bg-gray my-3 border-l-4 border-lightGreen" v-if="checkType === CheckTypes.ParticipantCheck">
+    <div class="bg-gray my-3 border-l-4 border-black" v-if="checkType === CheckTypes.ParticipantCheck">
       <participant-overview :visum="visum" :check="check" @rl="rl($event)" />
     </div>
 

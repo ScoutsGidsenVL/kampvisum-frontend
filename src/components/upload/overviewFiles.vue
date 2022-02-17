@@ -9,7 +9,7 @@
       <p class="italic">Geen document</p>
     </div>
 
-    <div class="pl-3">
+    <div class="pl-3 pb-3">
       <div class="mt-2">
         <custom-button @click="openCreateSidebar()" class="mt-4" text="+ voeg document(en) toe" />
       </div>

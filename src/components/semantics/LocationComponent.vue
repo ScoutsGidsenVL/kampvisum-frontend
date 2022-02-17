@@ -1,6 +1,6 @@
 <template>
   <div class="pb-3">
-    <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.SUCCES }" />
+    <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
     <parent-leaflet-map v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @edit="edit($event)" />
     <div class="pl-3"><custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="'+ voeg locatie toe'" /></div>
     <location-create-sidebar

@@ -1,6 +1,6 @@
 <template>
   <div class="pb-3">
-    <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.SUCCES }" />
+    <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
     <div class="">
       <member-item
         v-for="participant in check.value"
