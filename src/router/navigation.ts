@@ -12,8 +12,6 @@ const breadcrumbs = ref<breadcrumb[]>([])
 const selectedGroup = ref<Group>({ groupAdminId: '' })
 const selectedYear = ref<string>()
 const years = ref<Array<string>>([])
-const visums = ref<Visum[]>([])
-const isFetchingVisums = ref<boolean>(false)
 
 export const useNavigation = (): {
   navigateTowardsCategory: (name: string, visum: Visum, categoryUuid: string) => void
@@ -23,34 +21,22 @@ export const useNavigation = (): {
   selectedGroup: Ref<any>
   selectedYear: Ref<any>
   years: Ref<any>
-  visums: Ref<any>
-  isFetchingVisums: Ref<any>
   setBreadcrumbs: (b: breadcrumb[]) => void
   setSelectedGroup: (group: Group) => void
   setSelectedYear: (year: string) => void
   setYears: (years: string[]) => void
-  setVisums: (v: Visum[]) => void
-  setIsFetchingVisums: (b: boolean) => void
 } => {
-
   const setSelectedGroup = (group: Group) => {
     console.log('group: ', group)
-      selectedGroup.value = group
+    selectedGroup.value = group
   }
 
   const setSelectedYear = (year: string) => {
     selectedYear.value = year
   }
-  
+
   const setYears = (ys: string[]) => {
     years.value = ys
-  }
-  const setVisums = (v: Visum[]) => {
-    visums.value = v
-    isFetchingVisums.value = false
-  }
-  const setIsFetchingVisums = (b: boolean) => {
-    isFetchingVisums.value = b
   }
 
   const setBreadcrumbs = (b: breadcrumb[]) => {
@@ -73,13 +59,13 @@ export const useNavigation = (): {
 
   const jumpToId = (id: string | string[]) => {
     // @ts-ignore
-    const element = document.getElementById(id);
+    const element = document.getElementById(id)
     // @ts-ignore
     // element.addClass('bg-red')
-    document.getElementById(id).setAttribute("style", "padding:5px; background-color: #FBCCD4; border: 2px solid #E00A1E")
+    document.getElementById(id).setAttribute('style', 'padding:5px; background-color: #FBCCD4; border: 2px solid #E00A1E')
     // @ts-ignore
-    const y = element.getBoundingClientRect().top - 80;
-    window.scrollTo({top: y, behavior: 'smooth'});
+    const y = element.getBoundingClientRect().top - 80
+    window.scrollTo({ top: y, behavior: 'smooth' })
   }
 
   return {
@@ -94,9 +80,5 @@ export const useNavigation = (): {
     setSelectedYear,
     years,
     setYears,
-    setVisums,
-    visums,
-    setIsFetchingVisums,
-    isFetchingVisums
   }
 }

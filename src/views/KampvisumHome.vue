@@ -1,9 +1,25 @@
 <template>
   <div class="home p-3">
-    <warning v-if="visumToBeDeleted && visumToBeDeleted.camp" :title="visumToBeDeleted.camp.name" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker het kamp te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteCamp()" />
-    
+    <warning
+      v-if="visumToBeDeleted && visumToBeDeleted.camp"
+      :title="visumToBeDeleted.camp.name"
+      :isLoading="isDeletingVisum"
+      :isDisplayed="isWarningDisplayed"
+      text="Ben je zeker het kamp te willen verwijderen?"
+      leftButton="annuleren"
+      rightButton="verwijder"
+      @leftButtonClicked="hideWarning()"
+      @rightButtonClicked="deleteCamp()"
+    />
+
     <div>
-      <camp-side-bar v-if="selectedGroup" :title="t('sidebars.kampvisum-sidebar.title')" v-model:sideBarState="campSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.groupAdminId"/>
+      <camp-side-bar
+        v-if="selectedGroup"
+        :title="t('sidebars.kampvisum-sidebar.title')"
+        v-model:sideBarState="campSideBarState"
+        @actionSuccess="actionSuccess($event)"
+        :selectedGroupId="selectedGroup.groupAdminId"
+      />
     </div>
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
@@ -35,10 +51,10 @@
         <loader color="lightGreen" size="20" :isLoading="isFetchingVisums" />
       </div>
     </div>
-    
+
     <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
       <div v-for="visum in visums" :key="visum.id">
-        <camp-info-card class="mt-5" :visum="visum" >
+        <camp-info-card class="mt-5" :visum="visum">
           <template v-slot:buttons>
             <svg @click.stop="editCamp(visum)" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hover:text-lightGreen cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
               <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
@@ -66,12 +82,13 @@ import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
 import { useNotification } from '@/composable/useNotification'
-import {ArrayResult} from '../interfaces/ArrayResult'
+import { ArrayResult } from '../interfaces/ArrayResult'
 import { useCampHelper } from '../helpers/campHelper'
 import { useNavigation } from '@/router/navigation'
 import { defineComponent, ref, watch } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
+import useVisum from '@/composable/useVisum'
 
 export default defineComponent({
   name: 'KampvisumHome',
@@ -80,20 +97,21 @@ export default defineComponent({
     'custom-button': CustomButton,
     'camp-side-bar': CampSidebar,
     'multi-select': MultiSelect,
-    'warning': Warning,
-    Loader
+    warning: Warning,
+    Loader,
   },
   setup() {
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })
     const isWarningDisplayed = ref<Boolean>(false)
     const visumToBeDeleted = ref<Visum>()
     const isDeletingVisum = ref<Boolean>(false)
-    const myGroups = ref<any>([])  
+    const myGroups = ref<any>([])
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
     })
-    const { setBreadcrumbs, selectedGroup, selectedYear, setVisums, visums, isFetchingVisums, years } = useNavigation()
+    const { setBreadcrumbs, selectedGroup, selectedYear, years } = useNavigation()
+    const { visums, isFetchingVisums, getVisums } = useVisum()
     const { triggerNotification } = useNotification()
     setBreadcrumbs([])
 
@@ -104,29 +122,21 @@ export default defineComponent({
       }
     }
 
-    const getVisums = async (groupId: string, year: string) => {
-      await RepositoryFactory.get(CampRepository)
-        .getArray('?page=1&page_size=100&group=' + groupId + ((year !== '') ? '&year=' + year : ''))
-        .then((visums: Visum[]) => {
-          setVisums(visums)
-        })
-    }
-
     const deleteCamp = () => {
       isDeletingVisum.value = true
       if (visumToBeDeleted.value) {
         RepositoryFactory.get(CampRepository)
-        .removeById(visumToBeDeleted.value.id)
-        .then(() => {
-          getVisums(selectedGroup.value.groupAdminId, selectedYear.value).then(() => {
-            isDeletingVisum.value = false
-            isWarningDisplayed.value = false
-            triggerNotification('Kamp is succesvol verwijderd')
+          .removeById(visumToBeDeleted.value.id)
+          .then(() => {
+            getVisums(selectedGroup.value.groupAdminId, selectedYear.value).then(() => {
+              isDeletingVisum.value = false
+              isWarningDisplayed.value = false
+              triggerNotification('Kamp is succesvol verwijderd')
+            })
           })
-        })  
       }
     }
-    
+
     const openCampSideBar = () => {
       campSideBarState.value = { state: 'new' }
     }
@@ -156,24 +166,24 @@ export default defineComponent({
     const selectFilter = () => {
       // getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
     }
-    
+
     return {
       isFetchingVisums,
-      isWarningDisplayed, 
-      campSideBarState, 
-      visumToBeDeleted, 
-      openCampSideBar, 
-      isDeletingVisum, 
-      displayWarning, 
-      selectedGroup, 
-      actionSuccess, 
-      selectFilter, 
-      hideWarning, 
-      years, 
-      deleteCamp, 
-      myGroups, 
-      editCamp, 
-      visums, 
+      isWarningDisplayed,
+      campSideBarState,
+      visumToBeDeleted,
+      openCampSideBar,
+      isDeletingVisum,
+      displayWarning,
+      selectedGroup,
+      actionSuccess,
+      selectFilter,
+      hideWarning,
+      years,
+      deleteCamp,
+      myGroups,
+      editCamp,
+      visums,
       t,
     }
   },

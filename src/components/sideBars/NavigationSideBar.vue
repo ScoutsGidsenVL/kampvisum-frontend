@@ -1,12 +1,11 @@
 <template>
-  <div class=" w-auto h-screen z-30">
+  <div class="w-auto h-screen z-30">
     <div class="d-flex h-screen" :class="{ 'md:w-98 xs:w-100': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
       <div class="fixed d-flex" :class="{ 'md:w-98 xs:w-100': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
         <div class="w-100 border-r-2 border-lightGray flex-column bg-gray h-screen px-4" :class="{ 'd-none': sidebar.state === SidebarState.CLOSED, 'd-flex': sidebar.state === SidebarState.OPEN }">
-          
           <div @click="home()" class="mt-4 d-flex justify-between mb-3 items-center cursor-pointer">
             <i-logo />
-            <h1 class="text-2xl mt-1.5">{{t('title')}}</h1>
+            <h1 class="text-2xl mt-1.5">{{ t('title') }}</h1>
           </div>
 
           <div class="my-3">
@@ -29,24 +28,24 @@
               <div class="text-center">
                 <loader color="lightGreen" size="10" :isLoading="isFetchingVisums" />
               </div>
-              <div v-for="(visum) in visums" :key="visum">
+              <div v-for="visum in visums" :key="visum">
                 <navigation-item :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
-                  <div v-for="(category) in visum.categorySet.categories" :key="category">
+                  <div v-for="category in visum.categorySet.categories" :key="category">
                     <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" class="xs:text-sm md:text-md block cursor-pointer py-1">
-                      {{category.categoryParent.label}}
+                      {{ category.categoryParent.label }}
                     </a>
                   </div>
                 </navigation-item>
               </div>
             </div>
 
-            <navigation-item link="/instellingen" :text="t('page-titles.settings')"/>
+            <navigation-item link="/instellingen" :text="t('page-titles.settings')" />
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
             <!-- <navigation-item link="/locaties" text="Locaties"/> -->
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
           </div>
         </div>
-        
+
         <!-- SMALL TOGGLE BAR -->
         <div @click="toggleSideBar()" class="w-6 bg-lightGray h-screen flex flex-wrap justify-center content-center cursor-pointer">
           <svg v-if="sidebar.state === SidebarState.CLOSED" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current text-black" fill="none" viewBox="0 0 24 24">
@@ -77,58 +76,54 @@ import { useRoute } from 'vue-router'
 import store from '../../store/store'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
-import { Visum } from '@/serializer/Visum'
+import useVisum from '../../composable/useVisum'
+import { Group } from '@/serializer/Group'
 
 export default defineComponent({
-  components: { 
-    NavigationItem, 
+  components: {
+    NavigationItem,
     'multi-select': MultiSelect,
     ILogo,
-    Loader
+    Loader,
   },
   name: 'NavigationSideBar',
   setup() {
     const route = useRoute()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const { getSectionsTitle } = useSectionsHelper()
-    const { 
-      navigateTowardsCategory,
-      setSelectedGroup, setSelectedYear, setYears, selectedGroup,selectedYear, setVisums, visums, setIsFetchingVisums, isFetchingVisums } = useNavigation()
+    const { navigateTowardsCategory, setSelectedGroup, setSelectedYear, setYears, selectedGroup, selectedYear } = useNavigation()
+    const { getVisums, isFetchingVisums, visums } = useVisum()
     const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
     })
 
-    setIsFetchingVisums(true)
-
     const toggleSideBar: () => void = () => {
       if (sidebar.value.state === SidebarState.OPEN) {
         sidebar.value.state = SidebarState.CLOSED
-        return;
+        return
       }
       if (sidebar.value.state === SidebarState.CLOSED) {
         sidebar.value.state = SidebarState.OPEN
-        return;
+        return
       }
     }
 
-    const myGroups = ref<any>([])  
+    const myGroups = ref<any>([])
 
     const home = () => {
       router.push('/kampvisum-home/')
     }
 
-    const addSelectedGroup = (group: any) => {
+    const addSelectedGroup = (group: Group) => {
       setSelectedGroup(group)
-      setIsFetchingVisums(true)
-      setVisums([])
-      getYearsAndVisums()
+      getYearsAndVisums(group)
     }
 
-    const getYearsAndVisums = () => {
-      getGroupYears(selectedGroup.value.groupAdminId).then(() => {
-        getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
+    const getYearsAndVisums = (group: Group) => {
+      getGroupYears(group.groupAdminId).then(() => {
+        getVisums(group.groupAdminId, selectedYear.value)
       })
     }
 
@@ -141,20 +136,15 @@ export default defineComponent({
         })
     }
 
-    const getVisums = async (groupId: string, year: string) => {
-      await RepositoryFactory.get(CampRepository)
-        .getArray('?page=1&page_size=100&group=' + groupId + ((year !== '') ? '&year=' + year : ''))
-        .then((visums: Array<Visum>) => {
-          setVisums(visums)
-        })
-    }
-
     if (route) {
-      watch(() => store.getters.user.scoutsGroups, () => {
-        myGroups.value = store.getters.user.scoutsGroups
-        setSelectedGroup(myGroups.value[0])
-        getYearsAndVisums()
-      })
+      watch(
+        () => store.getters.user.scoutsGroups,
+        (groups: Group[]) => {
+          myGroups.value = groups
+          setSelectedGroup(groups[0])
+          getYearsAndVisums(groups[0])
+        }
+      )
     }
 
     return {
@@ -165,13 +155,12 @@ export default defineComponent({
       SidebarState,
       myGroups,
       sidebar,
-      route,
       home,
       t,
       visums,
       isFetchingVisums,
-      addSelectedGroup
+      addSelectedGroup,
     }
-  }
+  },
 })
 </script>
