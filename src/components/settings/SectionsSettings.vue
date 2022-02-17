@@ -1,15 +1,22 @@
 <template>
   <div>
-    <div class="italic font-bold py-2">
-      {{t('pages.settings.sections.sections-for')}} {{selectedGroup.groupAdminId}}
-    </div>
+    <div class="italic font-bold py-2">{{ t('pages.settings.sections.sections-for') }} {{ selectedGroup.groupAdminId }}</div>
 
-    <warning v-if="isWarningDisplayed" :title="sectionToBeDeleted.name.name" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker deze tak te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="removeSection()" />
+    <warning
+      v-if="isWarningDisplayed"
+      :title="sectionToBeDeleted.name.name"
+      :isLoading="isDeletingVisum"
+      :isDisplayed="isWarningDisplayed"
+      text="Ben je zeker deze tak te willen verwijderen?"
+      leftButton="annuleren"
+      rightButton="verwijder"
+      @leftButtonClicked="hideWarning()"
+      @rightButtonClicked="removeSection()"
+    />
 
     <div class="bg-white shadow-md">
-
       <div v-if="groupSections">
-        <section-item v-for="groupSection in groupSections" :key="groupSection" :groupSection="groupSection" @removeSection="displayWarning($event)" @editSection="editSection($event)"/>
+        <section-item v-for="groupSection in groupSections" :key="groupSection" :groupSection="groupSection" @removeSection="displayWarning($event)" @editSection="editSection($event)" />
       </div>
 
       <div v-else class="text-center py-5">
@@ -17,7 +24,12 @@
       </div>
 
       <div>
-        <section-sidebar :title="t('pages.settings.sections.sidebar.title')" v-model:sideBarState="sectionSideBarState" @actionSuccess="actionSuccess($event)" :selectedGroupId="selectedGroup.groupAdminId"/>
+        <section-sidebar
+          :title="t('pages.settings.sections.sidebar.title')"
+          v-model:sideBarState="sectionSideBarState"
+          @actionSuccess="actionSuccess($event)"
+          :selectedGroupId="selectedGroup.groupAdminId"
+        />
       </div>
     </div>
 
@@ -42,23 +54,23 @@ import { useNotification } from '@/composable/useNotification'
 import SectionSidebar from '../sideBars/SectionSideBar.vue'
 import { defineComponent, watchEffect, ref } from 'vue'
 import SectionItem from '../semantics/SectionItem.vue'
-import { useNavigation } from '@/router/navigation'
 import { Section } from '@/serializer/Section'
 import { useI18n } from 'vue-i18n'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
-  components: {  
+  components: {
     SectionSidebar,
     CustomButton,
     SectionItem,
     Loader,
-    'warning': Warning,
+    warning: Warning,
   },
   name: 'SectionSettings',
-  setup () {
+  setup() {
     const sectionSideBarState = ref<any>({ state: 'hide', entity: {} })
     const { triggerNotification } = useNotification()
-    const { selectedGroup } = useNavigation()
+    const { selectedGroup } = useGroupAndYears()
     const groupSections = ref<Section[]>()
     const isWarningDisplayed = ref<Boolean>(false)
     const sectionToBeDeleted = ref<Section>()
@@ -86,15 +98,15 @@ export default defineComponent({
     const removeSection = async () => {
       if (sectionToBeDeleted.value && sectionToBeDeleted.value.id) {
         await RepositoryFactory.get(SectionsRepository)
-        .removeById(sectionToBeDeleted.value.id)
-        .then(() => {
-          getGroupSections(selectedGroup.value.groupAdminId)
-          isWarningDisplayed.value = false
-          triggerNotification('Tak is succesvol verwijderd')
-        })
-      } 
+          .removeById(sectionToBeDeleted.value.id)
+          .then(() => {
+            getGroupSections(selectedGroup.value.groupAdminId)
+            isWarningDisplayed.value = false
+            triggerNotification('Tak is succesvol verwijderd')
+          })
+      }
     }
-    
+
     const openSectionSideBar = () => {
       sectionSideBarState.value = { state: 'new' }
     }
@@ -133,8 +145,8 @@ export default defineComponent({
       removeSection,
       editSection,
       hideWarning,
-      t
+      t,
     }
-  }
+  },
 })
 </script>

@@ -1,17 +1,17 @@
 <template>
-  <div v-if="visum"  class="flex w-100 -mt-3">
+  <div v-if="visum" class="flex w-100 -mt-3">
     <div class="w-100">
       <div>
         <page-header :title="route.meta.title" :subTitle="getSectionsTitle(visum.camp)" />
       </div>
 
       <div v-if="visum" class="w-100 flex pt-3">
-          <div class="w-100">
-            <div v-for="(subCategory) in category.subCategories" :key="subCategory" >
-              <base-subcategory-card @rl="rl($event)" :visum="visum" class="mb-3" :subCategory="subCategory" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
-            </div>
+        <div class="w-100">
+          <div v-for="subCategory in category.subCategories" :key="subCategory">
+            <base-subcategory-card @rl="rl($event)" :visum="visum" class="mb-3" :subCategory="subCategory" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
           </div>
-          <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
+        </div>
+        <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
       </div>
     </div>
   </div>
@@ -36,7 +36,7 @@ import { Loader } from 'vue-3-component-library'
 import { Visum } from '../../serializer/Visum'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useNavigation } from '@/router/navigation'
+import { useNavigation } from '@/composable/useNavigation'
 
 export default defineComponent({
   name: 'BaseCategoryView',
@@ -44,7 +44,7 @@ export default defineComponent({
     BaseSubcategoryCard,
     PageHeader,
     InformationSideBar,
-    Loader
+    Loader,
   },
   setup() {
     const route = useRoute()
@@ -57,7 +57,7 @@ export default defineComponent({
     const isFetchingVisum = ref<boolean>(true)
     const { jumpToId } = useNavigation()
     const { setBreadcrumbs } = useNavigation()
-  
+
     const fetchVisum = () => {
       getCampByRouteParam().then((v: Visum) => {
         visum.value = v
@@ -67,18 +67,21 @@ export default defineComponent({
 
         if (category.value) {
           setCategoryInfo(category.value.categoryParent.description)
-          setBreadcrumbs([{title: v.camp.name,name: 'kamp', uuid: v.id}, { title: category.value.categoryParent.label ,name: category.value.categoryParent.name, uuid: category.value.id}])
+          setBreadcrumbs([
+            { title: v.camp.name, name: 'kamp', uuid: v.id },
+            { title: category.value.categoryParent.label, name: category.value.categoryParent.name, uuid: category.value.id },
+          ])
         }
 
         if (route.params.sectionId) {
           setTimeout(() => {
             jumpToId(route.params.sectionId)
-          },200)
+          }, 200)
         }
       })
     }
-        
-    const sidebar = ref<Sidebar>({state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
+
+    const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
 
     const closeSidebar = () => {
       sidebar.value.state = SidebarState.CLOSED
@@ -103,7 +106,7 @@ export default defineComponent({
       sidebar,
       route,
       visum,
-      rl
+      rl,
     }
   },
 })

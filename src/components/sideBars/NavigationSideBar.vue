@@ -10,14 +10,14 @@
 
           <div class="my-3">
             <multi-select
-              v-if="myGroups[0]"
+              v-if="getAvailableGroups()"
               id="group"
               :object="true"
-              @addSelection="addSelectedGroup($event)"
+              @addSelection="changeSelectedGroup($event)"
               track-by="fullName"
               value-prop="groupAdminId"
-              :options="myGroups"
-              :value="myGroups[0]"
+              :options="getAvailableGroups()"
+              :value="getAvailableGroups()[0]"
               :canClear="false"
               :canDeselect="false"
             />
@@ -66,18 +66,18 @@ import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { Sidebar, SidebarState } from '@/helpers/infoBarHelper'
 import { CampRepository } from '@/repositories/campRepository'
-import { useNavigation } from '../../router/navigation'
+import { useNavigation } from '../../composable/useNavigation'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import NavigationItem from './NavigationItem.vue'
 import { defineComponent, ref, watch } from 'vue'
 import { Loader } from 'vue-3-component-library'
 import ILogo from '../icons/ILogo.vue'
 import { useRoute } from 'vue-router'
-import store from '../../store/store'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import useVisum from '../../composable/useVisum'
 import { Group } from '@/serializer/Group'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   components: {
@@ -91,8 +91,9 @@ export default defineComponent({
     const route = useRoute()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const { getSectionsTitle } = useSectionsHelper()
-    const { navigateTowardsCategory, setSelectedGroup, setSelectedYear, setYears, selectedGroup, selectedYear } = useNavigation()
-    const { getVisums, isFetchingVisums, visums } = useVisum()
+    const { navigateTowardsCategory } = useNavigation()
+    const { setSelectedGroup, getAvailableGroups } = useGroupAndYears()
+    const { isFetchingVisums, visums } = useVisum()
     const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
     const { t } = useI18n({
       inheritLocale: true,
@@ -110,56 +111,26 @@ export default defineComponent({
       }
     }
 
-    const myGroups = ref<any>([])
-
     const home = () => {
       router.push('/kampvisum-home/')
     }
 
-    const addSelectedGroup = (group: Group) => {
+    const changeSelectedGroup = (group: Group) => {
       setSelectedGroup(group)
-      getYearsAndVisums(group)
-    }
-
-    const getYearsAndVisums = (group: Group) => {
-      getGroupYears(group.groupAdminId).then(() => {
-        getVisums(group.groupAdminId, selectedYear.value)
-      })
-    }
-
-    const getGroupYears = async (groupId: string) => {
-      await RepositoryFactory.get(CampRepository)
-        .getGroupYears(groupId)
-        .then((years: Array<string>) => {
-          setYears(years)
-          setSelectedYear(years[0])
-        })
-    }
-
-    if (route) {
-      watch(
-        () => store.getters.user.scoutsGroups,
-        (groups: Group[]) => {
-          myGroups.value = groups
-          setSelectedGroup(groups[0])
-          getYearsAndVisums(groups[0])
-        }
-      )
     }
 
     return {
       navigateTowardsCategory,
       getSectionsTitle,
-      setSelectedGroup,
       toggleSideBar,
       SidebarState,
-      myGroups,
+      getAvailableGroups,
       sidebar,
       home,
       t,
       visums,
       isFetchingVisums,
-      addSelectedGroup,
+      changeSelectedGroup,
     }
   },
 })

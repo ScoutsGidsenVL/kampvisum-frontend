@@ -23,17 +23,7 @@
     </div>
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
-      <multi-select
-        v-if="years[0]"
-        id="year"
-        placeholder="Kies een jaar"
-        @addSelection="selectFilter($event, 'year')"
-        value-prop="id"
-        :options="years"
-        :value="years[0]"
-        :canClear="false"
-        :canDeselect="false"
-      />
+      <multi-select v-if="years[0]" id="year" placeholder="Kies een jaar" @addSelection="selectNewYear" value-prop="id" :options="years" :value="years[0]" :canClear="false" :canDeselect="false" />
     </div>
 
     <div class="xs:w-100 md:w-80">
@@ -52,7 +42,7 @@
       </div>
     </div>
 
-    <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+    <div v-show="!isFetchingVisums" class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
       <div v-for="visum in visums" :key="visum.id">
         <camp-info-card class="mt-5" :visum="visum">
           <template v-slot:buttons>
@@ -82,13 +72,12 @@ import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
 import { useNotification } from '@/composable/useNotification'
-import { ArrayResult } from '../interfaces/ArrayResult'
-import { useCampHelper } from '../helpers/campHelper'
-import { useNavigation } from '@/router/navigation'
+import { useNavigation } from '@/composable/useNavigation'
 import { defineComponent, ref, watch } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
 import useVisum from '@/composable/useVisum'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'KampvisumHome',
@@ -105,12 +94,12 @@ export default defineComponent({
     const isWarningDisplayed = ref<Boolean>(false)
     const visumToBeDeleted = ref<Visum>()
     const isDeletingVisum = ref<Boolean>(false)
-    const myGroups = ref<any>([])
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
     })
-    const { setBreadcrumbs, selectedGroup, selectedYear, years } = useNavigation()
+    const { setBreadcrumbs } = useNavigation()
+    const { selectedGroup, selectedYear, years, setSelectedYear, getYearsForGroup } = useGroupAndYears()
     const { visums, isFetchingVisums, getVisums } = useVisum()
     const { triggerNotification } = useNotification()
     setBreadcrumbs([])
@@ -128,11 +117,12 @@ export default defineComponent({
         RepositoryFactory.get(CampRepository)
           .removeById(visumToBeDeleted.value.id)
           .then(() => {
-            getVisums(selectedGroup.value.groupAdminId, selectedYear.value).then(() => {
-              isDeletingVisum.value = false
-              isWarningDisplayed.value = false
-              triggerNotification('Kamp is succesvol verwijderd')
-            })
+            selectedYear.value &&
+              getVisums(selectedGroup.value.groupAdminId, selectedYear.value).then(() => {
+                isDeletingVisum.value = false
+                isWarningDisplayed.value = false
+                triggerNotification('Kamp is succesvol verwijderd')
+              })
           })
       }
     }
@@ -150,21 +140,23 @@ export default defineComponent({
       isWarningDisplayed.value = false
     }
 
-    const actionSuccess = (action: string) => {
+    const actionSuccess = async (action: string) => {
       if (action === 'POST') {
         triggerNotification('Kamp is succesvol aangemaakt')
       }
       if (action === 'UPDATE') {
         triggerNotification('Kamp is succesvol bewerkt')
       }
-      isFetchingVisums.value = true
-      visums.value = []
       // OPNIEUW FETCHEN
-      getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
+      console.log(selectedYear.value)
+      if (!selectedYear.value) {
+        await getYearsForGroup(selectedGroup.value.groupAdminId)
+      }
+      selectedYear.value && getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
     }
 
-    const selectFilter = () => {
-      // getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
+    const selectNewYear = (year: string) => {
+      setSelectedYear(year)
     }
 
     return {
@@ -177,11 +169,10 @@ export default defineComponent({
       displayWarning,
       selectedGroup,
       actionSuccess,
-      selectFilter,
+      selectNewYear,
       hideWarning,
       years,
       deleteCamp,
-      myGroups,
       editCamp,
       visums,
       t,

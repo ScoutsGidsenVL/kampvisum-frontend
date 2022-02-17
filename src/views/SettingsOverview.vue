@@ -3,7 +3,7 @@
   <div class="flex -ml-8 -mr-8 bg-white border-gray border border-5">
     <div @click="setTabState('sections')" class="text-center w-full cursor-pointer" :class="tabState === 'sections' ? 'text-white bg-green' : ''">
       <h3 class="font-museo-sans font-semibold mt-2">
-        {{t('pages.settings.sections.title')}}
+        {{ t('pages.settings.sections.title') }}
       </h3>
     </div>
     <!-- <div @click="setTabState('deadlines')" class="text-center w-full cursor-pointer" :class="tabState === 'deadlines' ? 'text-white bg-green' : ''">
@@ -24,7 +24,7 @@
 import SectionsSettings from '@/components/settings/SectionsSettings.vue'
 import DeadlineSettings from '@/components/settings/DeadlineSettings.vue'
 import { defineComponent, ref } from 'vue'
-import { useNavigation } from '@/router/navigation'
+import { useNavigation } from '@/composable/useNavigation'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
@@ -47,8 +47,8 @@ export default defineComponent({
     return {
       tabState,
       setTabState,
-      t
+      t,
     }
-  }
+  },
 })
 </script>

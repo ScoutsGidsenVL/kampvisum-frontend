@@ -9,7 +9,7 @@
     <div class="w-100 flex">
       <div class="w-100 grid xl:grid-cols-2 gap-4" style="height: fit-content !important">
         <div v-for="category in visum.categorySet.categories" :key="category">
-            <category-info-card :visum="visum" :category="category" />
+          <category-info-card :visum="visum" :category="category" />
         </div>
       </div>
       <deadlines-sidebar :visum="visum" :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
@@ -31,14 +31,14 @@ import { useCampHelper } from '../helpers/campHelper'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { Loader } from 'vue-3-component-library'
-import { useNavigation } from '@/router/navigation'
+import { useNavigation } from '@/composable/useNavigation'
 
 export default defineComponent({
   name: 'CampOverview',
   components: {
     'category-info-card': CategoryInfoCard,
     'deadlines-sidebar': DeadlinesSideBar,
-    Loader
+    Loader,
   },
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
@@ -55,7 +55,7 @@ export default defineComponent({
       setBreadcrumbs([{ title: v.camp.name, name: 'kamp', uuid: v.id }])
     })
 
-    const sidebar = ref<Sidebar>({state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN})
+    const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
 
     const closeSidebar = () => {
       sidebar.value.state = SidebarState.CLOSED
@@ -64,14 +64,14 @@ export default defineComponent({
     const openSidebar = () => {
       sidebar.value.state = SidebarState.OPEN
     }
-    
+
     return {
       getSectionsTitle,
       isFetchingVisum,
       closeSidebar,
       openSidebar,
       sidebar,
-      visum
+      visum,
     }
   },
 })

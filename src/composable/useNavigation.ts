@@ -1,5 +1,4 @@
 import router from '@/router'
-import { Group } from '@/serializer/Group'
 import { Visum } from '@/serializer/Visum'
 import { ref, Ref } from 'vue'
 export interface breadcrumb {
@@ -9,36 +8,15 @@ export interface breadcrumb {
 }
 
 const breadcrumbs = ref<breadcrumb[]>([])
-const selectedGroup = ref<Group>({ groupAdminId: '' })
-const selectedYear = ref<string>()
-const years = ref<Array<string>>([])
 
 export const useNavigation = (): {
   navigateTowardsCategory: (name: string, visum: Visum, categoryUuid: string) => void
   navigateTowardsSection: (name: string, visum: Visum, categoryUuid: string, sectionId: string) => void
   jumpToId: (id: string | string[]) => void
   breadcrumbs: Ref<breadcrumb[]>
-  selectedGroup: Ref<any>
-  selectedYear: Ref<any>
-  years: Ref<any>
   setBreadcrumbs: (b: breadcrumb[]) => void
-  setSelectedGroup: (group: Group) => void
-  setSelectedYear: (year: string) => void
-  setYears: (years: string[]) => void
+  goToHome: () => void
 } => {
-  const setSelectedGroup = (group: Group) => {
-    console.log('group: ', group)
-    selectedGroup.value = group
-  }
-
-  const setSelectedYear = (year: string) => {
-    selectedYear.value = year
-  }
-
-  const setYears = (ys: string[]) => {
-    years.value = ys
-  }
-
   const setBreadcrumbs = (b: breadcrumb[]) => {
     breadcrumbs.value = b
   }
@@ -55,6 +33,10 @@ export const useNavigation = (): {
       router.push('/kamp/' + visum.id.toString() + '/' + name + '/' + categoryUuid + '/section/' + sectionId)
     }
     navigate(name.toLowerCase())
+  }
+
+  const goToHome = () => {
+    router.push('/kampvisum-home')
   }
 
   const jumpToId = (id: string | string[]) => {
@@ -74,11 +56,6 @@ export const useNavigation = (): {
     jumpToId,
     breadcrumbs,
     setBreadcrumbs,
-    selectedGroup,
-    selectedYear,
-    setSelectedGroup,
-    setSelectedYear,
-    years,
-    setYears,
+    goToHome,
   }
 }

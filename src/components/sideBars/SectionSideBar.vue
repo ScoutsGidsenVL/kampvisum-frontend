@@ -22,12 +22,12 @@
             <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name.name" :label="t('pages.settings.sections.sidebar.form.section-name')" />
           </div>
 
-          <label class="mt-4 font-bold">{{t('pages.settings.sections.sidebar.form.gender')}}</label>
-          
+          <label class="mt-4 font-bold">{{ t('pages.settings.sections.sidebar.form.gender') }}</label>
+
           <div class="flex gap-3">
             <div v-for="option in options" :key="option" class="flex items-center gap-1 mr-0.5">
-              <input class="cursor-pointer" type="radio" :id="option.value" :value="option.value" v-model="chosenGender">
-              <label class="cursor-pointer mb-0" :for="option.value">{{option.label}}</label>
+              <input class="cursor-pointer" type="radio" :id="option.value" :value="option.value" v-model="chosenGender" />
+              <label class="cursor-pointer mb-0" :for="option.value">{{ option.label }}</label>
             </div>
           </div>
 
@@ -66,7 +66,8 @@ import MultiSelect from '../inputs/MultiSelect.vue'
 import { Section } from '@/serializer/Section'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
-import { useNavigation } from '@/router/navigation'
+import { useNavigation } from '@/composable/useNavigation'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'SectionSideBar',
@@ -75,7 +76,7 @@ export default defineComponent({
     'custom-input': CustomInput,
     'custom-button': CustomButton,
     'custom-header': CustomHeader,
-    MultiSelect
+    MultiSelect,
   },
   props: {
     title: {
@@ -92,7 +93,7 @@ export default defineComponent({
     selectedGroupId: {
       type: String,
       required: true,
-    }
+    },
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
@@ -100,26 +101,30 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
-    const options = ref<any>([{value: 'M', label: t('pages.settings.sections.sidebar.form.genders.male')}, {value: 'F', label: t('pages.settings.sections.sidebar.form.genders.female')}, {value: 'I', label: 'Mix'}])
-    const optionsAgeGroup = ref<any>([
-      {value: '6', label: 'startleeftijd 6 jaar'},
-      {value: '7', label: 'startleeftijd 7 jaar'},
-      {value: '8', label: 'startleeftijd 8 jaar'},
-      {value: '9', label: 'startleeftijd 9 jaar'},
-      {value: '10', label: 'startleeftijd 10 jaar'},
-      {value: '11', label: 'startleeftijd 11 jaar'},
-      {value: '12', label: 'startleeftijd 12 jaar'},
-      {value: '13', label: 'startleeftijd 13 jaar'},
-      {value: '14', label: 'startleeftijd 14 jaar'},
-      {value: '15', label: 'startleeftijd 15 jaar'},
-      {value: '16', label: 'startleeftijd 16 jaar'},
-      {value: '17', label: 'startleeftijd 17 jaar'},
-      {value: '18', label: 'startleeftijd 18 jaar'},
+    const options = ref<any>([
+      { value: 'M', label: t('pages.settings.sections.sidebar.form.genders.male') },
+      { value: 'F', label: t('pages.settings.sections.sidebar.form.genders.female') },
+      { value: 'I', label: 'Mix' },
     ])
-    const chosenAgeGroup = ref<any>({value: '10', label: 'kapoenen en zeehondjes'})
+    const optionsAgeGroup = ref<any>([
+      { value: '6', label: 'startleeftijd 6 jaar' },
+      { value: '7', label: 'startleeftijd 7 jaar' },
+      { value: '8', label: 'startleeftijd 8 jaar' },
+      { value: '9', label: 'startleeftijd 9 jaar' },
+      { value: '10', label: 'startleeftijd 10 jaar' },
+      { value: '11', label: 'startleeftijd 11 jaar' },
+      { value: '12', label: 'startleeftijd 12 jaar' },
+      { value: '13', label: 'startleeftijd 13 jaar' },
+      { value: '14', label: 'startleeftijd 14 jaar' },
+      { value: '15', label: 'startleeftijd 15 jaar' },
+      { value: '16', label: 'startleeftijd 16 jaar' },
+      { value: '17', label: 'startleeftijd 17 jaar' },
+      { value: '18', label: 'startleeftijd 18 jaar' },
+    ])
+    const chosenAgeGroup = ref<any>({ value: '10', label: 'kapoenen en zeehondjes' })
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Section>()
-    const { selectedGroup } = useNavigation()
+    const { selectedGroup } = useGroupAndYears()
     const groupSections = ref<Section[]>([])
     const { sideBarState } = toRefs(props)
     const isReload = ref<boolean>(false)
@@ -145,7 +150,7 @@ export default defineComponent({
     const updateSection = async (section: Section) => {
       section.groupAdminId = selectedGroup.value.groupAdminId
       section.name.gender = chosenGender.value
-      section.groupType = selectedGroup.value.type
+      // section.groupType = selectedGroup.value.type
       section.name.ageGroup = chosenAgeGroup.value.value
       if (props.sideBarState) {
         await RepositoryFactory.get(SectionsRepository)
@@ -158,7 +163,7 @@ export default defineComponent({
 
     const postSection = async (section: Section) => {
       section.groupAdminId = selectedGroup.value.groupAdminId
-      section.groupType = selectedGroup.value.type
+      // section.groupType = selectedGroup.value.type
       section.name.gender = chosenGender.value
       section.name.ageGroup = chosenAgeGroup.value.value
 
@@ -193,8 +198,8 @@ export default defineComponent({
             name: {
               id: props.sideBarState.entity.name.id,
               name: props.sideBarState.entity.name.name,
-              ageGroup: optionsAgeGroup.value.find((x: any) => x.value === props.sideBarState.entity.name.ageGroup)
-            }
+              ageGroup: optionsAgeGroup.value.find((x: any) => x.value === props.sideBarState.entity.name.ageGroup),
+            },
           })
           resetForm({
             values: section.value,
@@ -219,7 +224,7 @@ export default defineComponent({
       options,
       values,
       t,
-      selectedGroup
+      selectedGroup,
     }
   },
 })
