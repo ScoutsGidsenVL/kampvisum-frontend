@@ -113,7 +113,16 @@ export default defineComponent({
     
     const chosenAgeGroup = ref<any>({ value: '10', label: 'kapoenen en zeehondjes' })
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
-    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Section>()
+    const initSection = ref<Section>({
+        name: {
+          id: '',
+          name: '',
+          ageGroup: '',
+        },
+      })
+    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Section>({
+      initialValues: initSection.value
+    })
     const { selectedGroup } = useGroupAndYears()
     const groupSections = ref<Section[]>([])
     const { sideBarState } = toRefs(props)
@@ -122,7 +131,10 @@ export default defineComponent({
 
     const closeSideBar = () => {
       context.emit('update:sideBarState', { state: 'hide' })
-      resetForm()
+      resetGender()
+      resetForm({
+        values: initSection.value,
+      })
     }
 
     const onSubmit = async () => {
@@ -174,6 +186,10 @@ export default defineComponent({
 
     const selectedValue = (event: any) => {
       chosenAgeGroup.value = event
+    }
+
+    const resetGender = () => {
+      chosenGender.value = 'M'
     }
 
     getGroupSections(props.selectedGroupId)
