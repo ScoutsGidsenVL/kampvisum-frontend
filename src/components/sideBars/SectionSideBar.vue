@@ -152,7 +152,6 @@ export default defineComponent({
     const updateSection = async (section: Section) => {
       section.groupAdminId = selectedGroup.value.groupAdminId
       section.name.gender = chosenGender.value
-      // section.groupType = selectedGroup.value.type
       section.name.ageGroup = chosenAgeGroup.value.value
       if (props.sideBarState) {
         await RepositoryFactory.get(SectionsRepository)
@@ -165,7 +164,6 @@ export default defineComponent({
 
     const postSection = async (section: Section) => {
       section.groupAdminId = selectedGroup.value.groupAdminId
-      // section.groupType = selectedGroup.value.type
       section.name.gender = chosenGender.value
       section.name.ageGroup = chosenAgeGroup.value.value
 

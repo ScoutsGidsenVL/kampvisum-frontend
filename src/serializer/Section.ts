@@ -22,14 +22,14 @@ export const SectionDeserializer = (input: any): Section => {
     hidden: input.hidden,
     group: input.group ? input.group : undefined,
     groupType: input.group_type ? GroupTypeDeserializer(input.group_type) : undefined,
-    groupAdminId: input.group_admin_id ? input.group_admin_admin_id : undefined
+    groupAdminId: input.group_group_admin_id ? input.group_group_admin_admin_id : undefined
   }
   return single
 }
 
 export const SectionSerializer = (input: Section): any => {
   const single: any = {
-    group_admin_id: input.groupAdminId ? input.groupAdminId : undefined,
+    group_group_admin_id: input.groupAdminId ? input.groupAdminId : undefined,
     group_type: input.groupType ? input.groupType : undefined,
     name: input.name ? NameSerializer(input.name) : undefined
   }
