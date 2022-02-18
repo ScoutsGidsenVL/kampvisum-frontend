@@ -77,12 +77,10 @@
             </div>
 
             <!-- FLAGS -->
+
             <div class="mt-3" v-for="flag in selectedDeadline.flags" :key="flag">
               <div class="flex items-center gap-2">
-                <i-checked class="cursor-pointer" @click="toggleFlag(flag)" v-if="flag.flag === true" />
-                <i-empty-check class="cursor-pointer" v-else @click="toggleFlag(flag)" />
-
-                <p>{{ flag.flagParent.label }}</p>
+                <deadline-check :flag="flag" :isUpdatingFlag="isUpdatingFlag" @toggle="toggleFlag($event)" />
               </div>
             </div>
           </div>
@@ -131,6 +129,7 @@ import ICross from '../icons/ICross.vue'
 import { Flag } from '@/serializer/Flag'
 import { useRoute } from 'vue-router'
 import { useNotification } from '@/composable/useNotification'
+import DeadlineCheck from '../cards/checks/DeadlineCheck.vue'
 
 export enum SidebarState {
   OPEN = 'OPEN',
@@ -154,6 +153,7 @@ export default defineComponent({
     IChecked,
     ICross,
     Loader,
+    DeadlineCheck,
   },
   props: {
     sidebar: {
@@ -201,13 +201,13 @@ export default defineComponent({
     }
     const { triggerNotification } = useNotification()
     const toggleFlag = async (flag: Flag) => {
+      console.log('CHECKING: ', flag.flag)
       if (!isUpdatingFlag.value) {
         isUpdatingFlag.value = true
         if (flag.id) {
           await RepositoryFactory.get(DeadlineRepository)
             .updateFlag(flag.id, { flag: flag.flag })
             .then(() => {
-              flag.flag = !flag.flag
               getDeadlines()
               triggerNotification('Deadline check is succesvol aangepast')
               isUpdatingFlag.value = false
