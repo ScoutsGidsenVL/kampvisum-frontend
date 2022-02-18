@@ -102,23 +102,15 @@ export default defineComponent({
     const options = ref<any>([
       { value: 'M', label: t('pages.settings.sections.sidebar.form.genders.male') },
       { value: 'F', label: t('pages.settings.sections.sidebar.form.genders.female') },
-      { value: 'I', label: 'Mix' },
+      { value: 'I', label: t('pages.settings.sections.sidebar.form.genders.mix') },
     ])
-    const optionsAgeGroup = ref<any>([
-      { value: '6', label: 'startleeftijd 6 jaar' },
-      { value: '7', label: 'startleeftijd 7 jaar' },
-      { value: '8', label: 'startleeftijd 8 jaar' },
-      { value: '9', label: 'startleeftijd 9 jaar' },
-      { value: '10', label: 'startleeftijd 10 jaar' },
-      { value: '11', label: 'startleeftijd 11 jaar' },
-      { value: '12', label: 'startleeftijd 12 jaar' },
-      { value: '13', label: 'startleeftijd 13 jaar' },
-      { value: '14', label: 'startleeftijd 14 jaar' },
-      { value: '15', label: 'startleeftijd 15 jaar' },
-      { value: '16', label: 'startleeftijd 16 jaar' },
-      { value: '17', label: 'startleeftijd 17 jaar' },
-      { value: '18', label: 'startleeftijd 18 jaar' },
-    ])
+
+    const optionsAgeGroup = ref<any>([])
+
+    for (let i = 6; i < 19; i++) {
+      optionsAgeGroup.value.push({ value: i, label: `${t('pages.settings.sections.start-age')} ${i} ${t('pages.settings.sections.year')}` })
+    }
+    
     const chosenAgeGroup = ref<any>({ value: '10', label: 'kapoenen en zeehondjes' })
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Section>()
