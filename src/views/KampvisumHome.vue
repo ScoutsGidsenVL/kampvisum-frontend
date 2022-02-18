@@ -5,9 +5,9 @@
       :title="visumToBeDeleted.camp.name"
       :isLoading="isDeletingVisum"
       :isDisplayed="isWarningDisplayed"
-      text="Ben je zeker het kamp te willen verwijderen?"
-      leftButton="annuleren"
-      rightButton="verwijder"
+      :text="t('pages.kampvisum-overview.delete-warning')"
+      :leftButton="t('pages.kampvisum-overview.delete-warning-button-left')"
+      :rightButton="t('pages.kampvisum-overview.delete-warning-button-right')"
       @leftButtonClicked="hideWarning()"
       @rightButtonClicked="deleteCamp()"
     />
@@ -23,7 +23,7 @@
     </div>
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
-      <multi-select v-if="years[0]" id="year" placeholder="Kies een jaar" @addSelection="selectNewYear" value-prop="id" :options="years" :value="years[0]" :canClear="false" :canDeselect="false" />
+      <multi-select v-if="years[0]" id="year" @addSelection="selectNewYear" value-prop="id" :options="years" :value="years[0]" :canClear="false" :canDeselect="false" />
     </div>
 
     <div class="xs:w-100 md:w-80">
@@ -72,12 +72,12 @@ import CampInfoCard from '@/components/cards/CampInfoCard.vue'
 import { CampRepository } from '@/repositories/campRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
 import { useNotification } from '@/composable/useNotification'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 import { useNavigation } from '@/composable/useNavigation'
-import { defineComponent, ref, watch } from 'vue'
+import useVisum from '@/composable/useVisum'
+import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
-import useVisum from '@/composable/useVisum'
-import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'KampvisumHome',
@@ -121,7 +121,7 @@ export default defineComponent({
               getVisums(selectedGroup.value.groupAdminId, selectedYear.value).then(() => {
                 isDeletingVisum.value = false
                 isWarningDisplayed.value = false
-                triggerNotification('Kamp is succesvol verwijderd')
+                triggerNotification(t('pages.kampvisum-overview.notification-deleted'))
               })
           })
       }
@@ -142,10 +142,10 @@ export default defineComponent({
 
     const actionSuccess = async (action: string) => {
       if (action === 'POST') {
-        triggerNotification('Kamp is succesvol aangemaakt')
+        triggerNotification(t('pages.kampvisum-overview.notification-posted'))
       }
       if (action === 'UPDATE') {
-        triggerNotification('Kamp is succesvol bewerkt')
+        triggerNotification(t('pages.kampvisum-overview.notification-updated'))
       }
       // OPNIEUW FETCHEN
       console.log(selectedYear.value)
@@ -160,8 +160,8 @@ export default defineComponent({
     }
 
     return {
-      isFetchingVisums,
       isWarningDisplayed,
+      isFetchingVisums,
       campSideBarState,
       visumToBeDeleted,
       openCampSideBar,
@@ -171,10 +171,10 @@ export default defineComponent({
       actionSuccess,
       selectNewYear,
       hideWarning,
-      years,
       deleteCamp,
       editCamp,
       visums,
+      years,
       t,
     }
   },

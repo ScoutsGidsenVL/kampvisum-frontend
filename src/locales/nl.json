@@ -10,7 +10,13 @@
   },
   "pages": {
     "kampvisum-overview": {
-      "create-camp-button": "Maak nieuw kamp aan"
+      "create-camp-button": "Maak nieuw kamp aan",
+      "delete-warning": "Ben je zeker het kamp te willen verwijderen?",
+      "delete-warning-button-left": "annuleren",
+      "delete-warning-button-right": "verwijder",
+      "notification-deleted": "kamp is succesvol verwijderd",
+      "notification-posted": "kamp is succesvol aangemaakt",
+      "notification-updated": "Kamp is succesvol bewerkt"
     },
     "settings": {
       "sections": {
@@ -21,8 +27,8 @@
         "delete-warning-button-right": "verwijder",
         "notification-deleted": "Tak is succesvol verwijderd",
         "notification-posted": "Tak is succesvol aangemaakt",
-        "notification-updated": "Kamp is succesvol bewerkt",
-        "create-camp": "Maak nieuwe tak aan",
+        "notification-updated": "tak is succesvol bewerkt",
+        "create-section": "Maak nieuwe tak aan",
         "start-age": "startleeftijd",
         "year": "jaar",
         "sidebar": {
