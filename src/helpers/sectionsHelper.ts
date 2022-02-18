@@ -4,7 +4,6 @@ import { ref } from 'vue'
 export const useSectionsHelper = (): {
   getSectionsTitle: (camp: Camp) => string
   genderLabel: (gender: string) => string
-  ageGroupLabel: (gender: string) => string
 } => {
   const getSectionsTitle = (camp: Camp): string => {
     const sectionsTitle = ref<string>('')
@@ -39,6 +38,5 @@ export const useSectionsHelper = (): {
   return {
     getSectionsTitle,
     genderLabel,
-    ageGroupLabel,
   }
 }
