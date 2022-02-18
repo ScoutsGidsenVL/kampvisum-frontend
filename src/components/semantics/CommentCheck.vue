@@ -12,6 +12,7 @@ import RepositoryFactory from '@/repositories/repositoryFactory'
 import { defineComponent, PropType, watch } from 'vue'
 import { Check } from '@/serializer/Check'
 import { useForm } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'CommentCheck',
@@ -25,6 +26,10 @@ export default defineComponent({
     },
   },
   setup (props) {
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
     const { triggerNotification } = useNotification()
     let debounce: any
 
@@ -36,7 +41,7 @@ export default defineComponent({
       await RepositoryFactory.get(CommentCheckRepository)
         .update(props.check.endpoint, comment)
         .then((p: any) => {
-          triggerNotification('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
+          triggerNotification(t('checks.notification-updated'))
         })
     }
 

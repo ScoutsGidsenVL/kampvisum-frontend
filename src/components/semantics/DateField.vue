@@ -30,6 +30,7 @@ import { useNotification } from '@/composable/useNotification'
 import { defineComponent, ref, watch, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
 const { DateTime } = require("luxon");
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'DateField',
@@ -48,6 +49,10 @@ export default defineComponent({
     'litepie-datepicker': LitepieDatepicker
   },
   setup (props) {
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
     const dateValues = ref<Array<string>>([])
     const dateValue = ref('')
 
@@ -70,7 +75,7 @@ export default defineComponent({
       await RepositoryFactory.get(DurationDateCheckRepository)
         .update(props.check.endpoint, dates)
         .then((p: any) => {
-          triggerNotification('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
+          triggerNotification(t('checks.notification-updated'))
         })
     }
 

@@ -2,12 +2,12 @@
   <div class="pb-3">
     <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
     <parent-leaflet-map v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @edit="edit($event)" />
-    <div class="pl-3"><custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="'+ voeg locatie toe'" /></div>
+    <div class="pl-3"><custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="t('checks.location-check.add-location')" /></div>
     <location-create-sidebar
       v-if="createSidebar.state === 'new' || createSidebar.state === 'edit'"
       :parentLocations="check.value.locations"
       :check="check"
-      title="create"
+      :title="t('checks.location-check.create')"
       v-model:sideBarState="createSidebar"
       @actionSuccess="actionSuccess($event)"
     />
@@ -23,6 +23,7 @@ import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { CustomButton } from 'vue-3-component-library'
 import { Check } from '@/serializer/Check'
 import Message, { ColorState } from './message.vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'LocationComponent',
@@ -40,6 +41,10 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
     const isReloading = ref<boolean>(false)
     const createSidebar = ref<any>({ state: 'hide' })
     const { sidebar } = useInfoBarHelper()
@@ -81,6 +86,7 @@ export default defineComponent({
       isReloading,
       ColorState,
       edit,
+      t
     }
   },
 })

@@ -78,5 +78,12 @@
     },
     "navigation-sidebar": {
     }
+  },
+  "checks": {
+    "notification-updated": "Aanpassingen aan het kamp zijn succesvol opgeslagen!",
+    "location-check": {
+      "add-location": "+ voeg locatie toe",
+      "create": "Nieuw"
+    }
   }
 }

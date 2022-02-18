@@ -57,6 +57,7 @@ import { SimpleCheck } from '@/serializer/SimpleCheck'
 import { defineComponent, ref, PropType } from 'vue'
 import IInfo from '../../icons/IInfo.vue'
 import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
+import { useI18n } from 'vue-i18n'
 
 export enum StatusState {
   CHECKED = 'CHECKED',
@@ -83,6 +84,10 @@ export default defineComponent({
     isSimpleCheck: Boolean,
   },
   setup(props) {
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
     const simpleCheck = ref<SimpleCheck>(CheckDeserializer(props.check))
     const { triggerNotification } = useNotification()
 
@@ -90,7 +95,7 @@ export default defineComponent({
       await RepositoryFactory.get(SimpleCheckRepository)
         .update(simpleCheck.endpoint, simpleCheck)
         .then(() => {
-          triggerNotification('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
+          triggerNotification(t('checks.notification-updated'))
         })
     }
 
