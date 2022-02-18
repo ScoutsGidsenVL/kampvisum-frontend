@@ -7,9 +7,9 @@
       :title="sectionToBeDeleted.name.name"
       :isLoading="isDeletingVisum"
       :isDisplayed="isWarningDisplayed"
-      text="Ben je zeker deze tak te willen verwijderen?"
-      leftButton="annuleren"
-      rightButton="verwijder"
+      :text="t('pages.settings.sections.delete-warning')"
+      :leftButton="t('pages.settings.sections.delete-warning-button-left')"
+      :rightButton="t('pages.settings.sections.delete-warning-button-right')"
       @leftButtonClicked="hideWarning()"
       @rightButtonClicked="removeSection()"
     />
@@ -102,7 +102,7 @@ export default defineComponent({
           .then(() => {
             getGroupSections(selectedGroup.value.groupAdminId)
             isWarningDisplayed.value = false
-            triggerNotification('Tak is succesvol verwijderd')
+            triggerNotification(t('pages.settings.sections.notification-deleted'))
           })
       }
     }
@@ -121,11 +121,11 @@ export default defineComponent({
 
     const actionSuccess = (action: string) => {
       if (action === 'POST') {
-        triggerNotification('Tak is succesvol aangemaakt')
+        triggerNotification(t('pages.settings.sections.notification-posted'))
         getGroupSections(selectedGroup.value.groupAdminId)
       }
       if (action === 'UPDATE') {
-        triggerNotification('Kamp is succesvol bewerkt')
+        triggerNotification(t('pages.settings.sections.notification-updated'))
         getGroupSections(selectedGroup.value.groupAdminId)
       }
       getGroupSections(selectedGroup.value.groupAdminId)

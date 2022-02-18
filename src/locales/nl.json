@@ -16,7 +16,15 @@
       "sections": {
         "title": "Takken",
         "sections-for": "Takken voor",
+        "delete-warning": "Ben je zeker deze tak te willen verwijderen?",
+        "delete-warning-button-left": "annuleren",
+        "delete-warning-button-right": "verwijder",
+        "notification-deleted": "Tak is succesvol verwijderd",
+        "notification-posted": "Tak is succesvol aangemaakt",
+        "notification-updated": "Kamp is succesvol bewerkt",
         "create-camp": "Maak nieuwe tak aan",
+        "start-age": "startleeftijd",
+        "year": "jaar",
         "sidebar": {
           "title": "Tak",
           "form": {
