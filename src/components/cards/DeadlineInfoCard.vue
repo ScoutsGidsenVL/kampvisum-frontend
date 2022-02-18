@@ -10,7 +10,7 @@
 
       <div>
         <strong class="xs:text-sm">
-          Wat zijn deadlines
+          {{text}}
         </strong>
       </div>
     </div>
@@ -28,5 +28,8 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'DeadlineInfoCard',
+  props: {
+    text: String
+  }
 })
 </script>

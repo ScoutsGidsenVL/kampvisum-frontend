@@ -26,12 +26,12 @@
 import DeadlinesSideBar, { Sidebar, SidebarState } from '@/components/sideBars/DeadlinesSidebar.vue'
 import CategoryInfoCard from '../components/cards/CategoryInfoCard.vue'
 import { useSectionsHelper } from '../helpers/sectionsHelper'
+import { useNavigation } from '@/composable/useNavigation'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { useCampHelper } from '../helpers/campHelper'
+import { Loader } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
-import { Loader } from 'vue-3-component-library'
-import { useNavigation } from '@/composable/useNavigation'
 
 export default defineComponent({
   name: 'CampOverview',

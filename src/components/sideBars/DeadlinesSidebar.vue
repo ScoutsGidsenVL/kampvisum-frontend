@@ -20,8 +20,8 @@
       <!-- DEADLINE DETAIL WHEN CLICKED ON AN DEADLINE-->
       <div v-if="isDeadlineDetail" class="w-100 flex flex-col justify-between xs:mt-20 md:mt-0">
         <div class="flex justify-between items-center">
-          <h2>Deadline</h2>
-          <div class="underline cursor-pointer" @click="goBack()">return</div>
+          <h2>{{t('sidebars.deadline-sidebar.title')}}</h2>
+          <div class="underline cursor-pointer" @click="goBack()">{{t('sidebars.deadline-sidebar.return')}}</div>
         </div>
         <!-- CARD -->
         <div class="bg-white shadow-md p-2 mt-2">
@@ -35,7 +35,7 @@
             </div>
 
             <h4 class="text-green">
-              Deadline: {{ selectedDeadline.deadlineParent.dueDate.dateDay }}/{{ selectedDeadline.deadlineParent.dueDate.dateMonth }}/{{ selectedDeadline.deadlineParent.dueDate.dateYear }}
+              {{t('sidebars.deadline-sidebar.deadline')}}: {{ selectedDeadline.deadlineParent.dueDate.dateDay }}/{{ selectedDeadline.deadlineParent.dueDate.dateMonth }}/{{ selectedDeadline.deadlineParent.dueDate.dateYear }}
             </h4>
 
             <div class="my-2">
@@ -57,7 +57,7 @@
                 v-if="linkedCheck.state !== 'CHECKED'"
                 @click="navigateTowardsSection(linkedCheck.category.name, visum, linkedCheck.category.id, linkedCheck.id, route)"
                 class="ml-4 text-green underline cursor-pointer"
-                >vul aan</span
+                >{{t('sidebars.deadline-sidebar.fill-in')}}</span
               >
             </div>
 
@@ -72,7 +72,7 @@
                 v-if="linkedSubCategory.state !== 'CHECKED'"
                 @click="navigateTowardsSection(linkedSubCategory.category.name, visum, linkedSubCategory.category.id, linkedSubCategory.id, route)"
                 class="ml-4 text-green underline cursor-pointer"
-                >vul aan</span
+                >{{t('sidebars.deadline-sidebar.fill-in')}}</span
               >
             </div>
 
@@ -91,13 +91,13 @@
       <div v-if="!isDeadlineDetail">
         <div class="w-100 flex items-center justify-between cursor-pointer xs:mt-20 md:mt-0" @click="closeSideBar()">
           <div class="flex gap-3">
-            <h2>Deadlines</h2>
+            <h2>{{t('sidebars.deadline-sidebar.title')}}</h2>
           </div>
           <i-cross />
         </div>
 
         <div class="pt-3 flex flex-column gap-5">
-          <deadline-info-card />
+          <deadline-info-card :text="t('sidebars.deadline-sidebar.info')" />
 
           <div class="text-center">
             <loader class="mt-5" color="lightGreen" size="20" :isLoading="isFetchingDeadlines" />
@@ -117,9 +117,11 @@ import { DeadlineRepository } from '@/repositories/DeadlineRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import DeadlineCard from '@/components/cards/DeadlineCard.vue'
 import { CustomButton, Loader } from 'vue-3-component-library'
+import { useNotification } from '@/composable/useNotification'
+import DeadlineCheck from '../cards/checks/DeadlineCheck.vue'
+import { useNavigation } from '@/composable/useNavigation'
 import IVerticalDots from '../icons/IVerticalDots.vue'
 import { defineComponent, PropType, ref } from 'vue'
-import { useNavigation } from '@/composable/useNavigation'
 import IEmptyCheck from '../icons/IEmptyCheck.vue'
 import { Deadline } from '@/serializer/Deadline'
 import IImportant from '../icons/IImportant.vue'
@@ -128,8 +130,7 @@ import { Visum } from '@/serializer/Visum'
 import ICross from '../icons/ICross.vue'
 import { Flag } from '@/serializer/Flag'
 import { useRoute } from 'vue-router'
-import { useNotification } from '@/composable/useNotification'
-import DeadlineCheck from '../cards/checks/DeadlineCheck.vue'
+import { useI18n } from 'vue-i18n'
 
 export enum SidebarState {
   OPEN = 'OPEN',
@@ -174,6 +175,11 @@ export default defineComponent({
     const deadlines = ref<any>([])
     const route = useRoute()
 
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
+
     const goBack = () => {
       isDeadlineDetail.value = false
     }
@@ -201,7 +207,6 @@ export default defineComponent({
     }
     const { triggerNotification } = useNotification()
     const toggleFlag = async (flag: Flag) => {
-      console.log('CHECKING: ', flag.flag)
       if (!isUpdatingFlag.value) {
         isUpdatingFlag.value = true
         if (flag.id) {
@@ -209,7 +214,7 @@ export default defineComponent({
             .updateFlag(flag.id, { flag: flag.flag })
             .then(() => {
               getDeadlines()
-              triggerNotification('Deadline check is succesvol aangepast')
+              triggerNotification(t('sidebars.deadline-sidebar.notification-updated'))
               isUpdatingFlag.value = false
             })
         }
@@ -227,10 +232,11 @@ export default defineComponent({
       SidebarState,
       openDeadline,
       openSideBar,
+      toggleFlag,
       deadlines,
       goBack,
       route,
-      toggleFlag,
+      t
     }
   },
 })

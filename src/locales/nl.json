@@ -18,6 +18,9 @@
       "notification-posted": "kamp is succesvol aangemaakt",
       "notification-updated": "Kamp is succesvol bewerkt"
     },
+    "camp-overview": {
+
+    },
     "settings": {
       "sections": {
         "title": "Takken",
@@ -64,6 +67,14 @@
       "buttons": {
         "add": "Voeg toe"
       }
+    },
+    "deadline-sidebar": {
+      "title": "Deadlines",
+      "return": "terug",
+      "deadline": "Deadline",
+      "info": "Wat zijn deadlines",
+      "fill-in": "Vul aan",
+      "notification-updated": "Deadline check is succesvol bewerkt"
     },
     "navigation-sidebar": {
     }
