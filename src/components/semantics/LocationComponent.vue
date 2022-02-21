@@ -45,6 +45,7 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
+    
     const isReloading = ref<boolean>(false)
     const createSidebar = ref<any>({ state: 'hide' })
     const { sidebar } = useInfoBarHelper()

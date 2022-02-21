@@ -23,52 +23,52 @@
       >
         <div class="mt-4">
           <div class="w-100">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="firstName" label="Voornaam" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="firstName" :label="t('sidebars.participant-sidebar.firstName')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="lastName" label="Achternaam" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="lastName" :label="t('sidebars.participant-sidebar.lastName')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="email" label="Email" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="email" :label="t('sidebars.participant-sidebar.email')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="phoneNumber" label="Gsm" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="phoneNumber" :label="t('sidebars.participant-sidebar.phone')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="city" label="Stad" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="city" :label="t('sidebars.participant-sidebar.city')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="postalCode" label="Postcode" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="postalCode" :label="t('sidebars.participant-sidebar.postcode')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="street" label="Straat" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="street" :label="t('sidebars.participant-sidebar.street')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" maxlength="5" rules="required" name="number" label="Nr" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" maxlength="5" rules="required" name="number" :label="t('sidebars.participant-sidebar.nr')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" maxlength="5" name="letterBox" label="Bus" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" maxlength="5" name="letterBox" :label="t('sidebars.participant-sidebar.mailbox')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.DATE" rules="required" name="birthDate" label="Geboortedatum" />
+            <custom-input :disabled="isPatching" :type="InputTypes.DATE" rules="required" name="birthDate" :label="t('sidebars.participant-sidebar.birthdate')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT_AREA" name="comment" label="Opmerking" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT_AREA" name="comment" :label="t('sidebars.participant-sidebar.comment')" />
           </div>
         </div>
 
         <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
-          <custom-button :isSubmitting="isPatching" :text="sideBarState.state === 'edit' ? 'Bewerk' : 'Voeg toe'" />
+          <custom-button :isSubmitting="isPatching" :text="sideBarState.state === 'edit' ? t('sidebars.participant-sidebar.edit') : t('sidebars.participant-sidebar.add')" />
         </div>
       </form>
       <!-- SEARCH -->
@@ -83,7 +83,7 @@
           <participant-filter @changedFilters="changedFilters($event)" />
         </div>
         <div class="p-4">
-          <search-input :filter="filter" v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="ParticipantRepository" @fetchedOptions="fetchedSearchResults($event)" />
+          <search-input :filter="filter" v-model:loading="loading" name="search" :placeholder="t('sidebars.participant-sidebar.search')" :repository="ParticipantRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
         <div class="mx-1 mb-72 overflow-y-auto">
           <div class="mx-4">
@@ -106,22 +106,22 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, InputTypes, CustomInput, CustomButton, option } from 'vue-3-component-library'
+import { BaseSideBar, InputTypes, CustomInput, CustomButton, option } from 'vue-3-component-library'
 import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
-import { ParticipantRepository } from '@/repositories/ParticipantRepository'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
+import { ParticipantRepository } from '@/repositories/ParticipantRepository'
 import { MemberRepository } from '../../repositories/MemberRepository'
 import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
 import { useSelectionHelper } from '../../helpers/selectionHelper'
+import ParticipantFilter from '../semantics/ParticipantFilter.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import SearchInput from '../inputs/SearchInput.vue'
+import { Filter } from '../../serializer/Filter'
 import { Member } from '@/serializer/Member'
 import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
-import ParticipantFilter from '../semantics/ParticipantFilter.vue'
-import { Filter } from '../../serializer/Filter'
 
 export default defineComponent({
   name: 'ParticipantSideBar',
@@ -287,6 +287,7 @@ export default defineComponent({
       fetchedSearchResults,
       MemberRepository,
       fetchedMembers,
+      changedFilters,
       changeSideBar,
       isSubmitting,
       sideBarState,
@@ -299,9 +300,8 @@ export default defineComponent({
       loading,
       options,
       values,
+      filter,
       t,
-      changedFilters,
-      filter
     }
   },
 })

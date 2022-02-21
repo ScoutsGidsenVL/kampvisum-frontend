@@ -6,27 +6,28 @@
     </div>
 
     <div class="text-left mt-3 pl-3" v-if="check.value.length === 0">
-      <p class="italic">Geen document</p>
+      <p class="italic">{{t('checks.document-check.no-document')}}</p>
     </div>
 
     <div class="pl-3 pb-3">
       <div class="mt-2">
-        <custom-button @click="openCreateSidebar()" class="mt-4" text="+ voeg document(en) toe" />
+        <custom-button @click="openCreateSidebar()" class="mt-4" :text="t('checks.document-check.add-documents')" />
       </div>
     </div>
   </div>
-  <documents-create-sidebar :visum="visum" :check="check" title="Documenten" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
+  <documents-create-sidebar :visum="visum" :check="check" :title="t('checks.document-check.title')" v-model:sideBarState="createSidebar" @actionSuccess="actionSuccess($event)" />
 </template>
 
 <script lang="ts">
 import DocumentsCreateSidebar from '../sideBars/DocumentsCreateSidebar.vue'
 import { useNotification } from '@/composable/useNotification'
+import Message, { ColorState } from '../semantics/message.vue'
 import { CustomButton } from 'vue-3-component-library'
 import { defineComponent, ref, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
-import FileItem from './FileItem.vue'
 import { Visum } from '@/serializer/Visum'
-import Message, { ColorState } from '../semantics/message.vue'
+import FileItem from './FileItem.vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'OverviewFiles',
@@ -49,6 +50,10 @@ export default defineComponent({
   setup(props, { emit }) {
     const { triggerNotification } = useNotification()
     const createSidebar = ref<any>({ state: 'hide' })
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
 
     const openCreateSidebar = (): void => {
       createSidebar.value = { state: 'new' }
@@ -56,10 +61,10 @@ export default defineComponent({
 
     const actionSuccess = (action: string) => {
       if (action === 'PATCH') {
-        triggerNotification('Bestand(en) succesvol toegevoegd')
+        triggerNotification(t('checks.document-check.notification-patched'))
       }
       if (action === 'DELETE') {
-        triggerNotification('Bestand succesvol verwijderd uit de lijst')
+        triggerNotification(t('checks.document-check.notification-deleted'))
       }
       emit('rl', true)
     }
@@ -69,6 +74,7 @@ export default defineComponent({
       createSidebar,
       actionSuccess,
       ColorState,
+      t
     }
   },
 })

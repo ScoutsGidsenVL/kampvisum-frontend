@@ -19,7 +19,6 @@
       "notification-updated": "Kamp is succesvol bewerkt"
     },
     "camp-overview": {
-
     },
     "settings": {
       "sections": {
@@ -77,13 +76,87 @@
       "notification-updated": "Deadline check is succesvol bewerkt"
     },
     "navigation-sidebar": {
+    },
+    "location-sidebar": {
+      "form": {
+        "name": "Naam locatie",
+        "contactPerson": "Contactperson",
+        "contactName": "Naam",
+        "contactPhone": "Gsm nummer",
+        "contactEmail": "Email",
+        "addresses": "Adres(sen)",
+        "search-map": "Zoek een adres of duid het aan op de kaart.",
+        "search-addres": "Zoek adres",
+        "main-location": "Hoofdlocatie",
+        "add": "Voeg toe",
+        "notification-patched": "Aanpassingen aan het kamp zijn succesvol opgeslagen!"
+      }
+    },
+    "participant-sidebar": {
+      "filter": {
+        "man": "Man",
+        "woman": "Vrouw",
+        "other": "Andere",
+        "min-age": "Min leeftijd",
+        "max-age": "Max leeftijd"
+      },
+      "firstName": "Voornaam",
+      "lastName": "Naam",
+      "email": "Email",
+      "phone": "Gsm",
+      "city": "Stad",
+      "postcode": "Postcode",
+      "street": "Straat",
+      "nr": "Nr",
+      "mailbox": "Bus",
+      "birthdate": "Geboortedatum",
+      "comment": "Opmerking",
+      "edit": "Bewerk",
+      "add": "VOEG TOE",
+      "search": "Zoek op naam"
     }
   },
   "checks": {
     "notification-updated": "Aanpassingen aan het kamp zijn succesvol opgeslagen!",
     "location-check": {
+      "main-location": "hoofdlocatie",
+      "edit": "Bewerk",
       "add-location": "+ voeg locatie toe",
-      "create": "Nieuw"
+      "create": "Nieuw",
+      "delete-warning-title": "Hoofdlocatie",
+      "delete-warning": "Ben je zeker de hoofdlocatie te willen verwijderen?",
+      "delete-warning-button-left": "annuleren",
+      "delete-warning-button-right": "verwijder"
+    },
+    "document-check": {
+      "no-document": "Geen document",
+      "add-documents": "+ voeg document(en) toe",
+      "title": "Documenten",
+      "download": "Download",
+      "remove": "Verwijder",
+      "select": "Selecteer",
+      "selected": "Geselecteerd",
+      "uploaded-files": "Geüploade bestanden",
+      "no-uploaded-files": "Geen bestanden geüpload",
+      "search-files": "Zoek door bestaande bestanden",
+      "notification-patched": "Bestand(en) succesvol toegevoegd",
+      "notification-deleted": "Bestand succesvol verwijderd uit de lijst",
+      "instruction": "Drag your documents here, or browse for documents manually.",
+      "upload-files": "BESTANDEN UPLOADEN"
+    },
+    "participant-check": {
+      "no-member": "Geen lid",
+      "no-members": "Geen leden",
+      "add": "+ VOEG TOE",
+      "add-without-plus": "VOEG TOE",
+      "change": "+ VERANDER",
+      "notification-patched": "Lid/leden succesvol toegevoegd",
+      "notification-deleted": "Lid succesvol verwijderd uit de lijst",
+      "remove": "verwijder",
+      "search": "Zoek op naam"
+    },
+    "number-check": {
+      "notification-patched": "Aanpassingen aan het kamp zijn succesvol opgeslagen!"
     }
   }
 }

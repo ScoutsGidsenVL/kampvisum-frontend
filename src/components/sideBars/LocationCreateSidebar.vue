@@ -20,22 +20,22 @@
       >
         <div class="mt-1flex flex-col gap-3">
           <div class="w-100">
-            <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" rules="required" name="name" label="Naam locatie" />
+            <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.location-sidebar.form.name')" />
           </div>
         </div>
 
         <div class="py-4">
-          <strong class="m-0 text-lg">Contactpersoon</strong>
-          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactName" label="Naam" />
-          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactPhone" label="Gsm nummer" />
-          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required|email' : 'email'" name="contactEmail" label="Email" />
+          <strong class="m-0 text-lg">{{t('sidebars.location-sidebar.form.contactPerson')}}</strong>
+          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactName" :label="t('sidebars.location-sidebar.form.contactName')" />
+          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactPhone" :label="t('sidebars.location-sidebar.form.contactPhone')" />
+          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required|email' : 'email'" name="contactEmail" :label="t('sidebars.location-sidebar.form.contactEmail')" />
         </div>
 
         <div class="pb-4 flex flex-col gap-3 relative">
-          <strong class="m-0 text-lg">Adres(sen)</strong>
+          <strong class="m-0 text-lg">{{t('sidebars.location-sidebar.form.addressess')}}</strong>
 
-          <div class="bg-lighterGreen p-2">Zoek een adres of duid het aan op de kaart.</div>
-          <search-input :loadingSubmit="patchLoading" v-model:loading="loading" name="search" placeholder="Zoek adres" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
+          <div class="bg-lighterGreen p-2">{{t('sidebars.location-sidebar.form.search-map')}}</div>
+          <search-input :loadingSubmit="patchLoading" v-model:loading="loading" name="search" :placeholder="t('sidebars.location-sidebar.form.search-map')" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
           <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-10 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
             <div v-for="(fetchedLocation, index) in fetchedLocationsToSelect" :key="fetchedLocation" :class="index === 1 ? 'border-t-10': ''" class="border-ligtGray hover:bg-lightGray p-2 pl-3 cursor-pointer border-b-2">
               <div class="flex flex-col" @click="addLocationPoint(fetchedLocation)">
@@ -48,7 +48,7 @@
           </div>
 
           <div v-if="check.checkParent.checkType.checkType === 'CampLocationCheck'" class="bg-lighterGreen p-3" >
-            <h4 class="">Hoofdlocatie</h4>
+            <h4 class="">{{t('sidebars.location-sidebar.form.main-location')}}</h4>
             <div v-for="(searchedLocation) in searchedLocations" :key="searchedLocation">
               <div v-if="searchedLocation.isMainLocation">
                 <p class="mb-0 italic">{{searchedLocation.name}}</p>
@@ -75,7 +75,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
-                {{'Voeg toe'}}
+                {{t('sidebars.location-sidebar.form.add')}}
               </div>
             </template>
           </custom-button>
@@ -207,7 +207,7 @@ export default defineComponent({
         .then((p: any) => {
           context.emit('actionSuccess', {data: p, action: 'PATCH'})
           patchLoading.value = false
-          triggerNotification('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
+          triggerNotification(t('sidebars.location-sidebar.form.notification-patched'))
         })
     }
 

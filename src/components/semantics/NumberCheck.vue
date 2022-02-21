@@ -6,13 +6,14 @@
 </template>
 
 <script lang="ts">
+import { NumberCheckRepository } from '@/repositories/NumberCheckRepository'
 import { useNotification } from '../../composable/useNotification'
 import { InputTypes, CustomInput } from 'vue-3-component-library'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 import { defineComponent, PropType, watch } from 'vue'
 import { Check } from '@/serializer/Check'
 import { useForm } from 'vee-validate'
-import RepositoryFactory from '@/repositories/repositoryFactory'
-import { NumberCheckRepository } from '@/repositories/NumberCheckRepository'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'NumberCheck',
@@ -29,6 +30,10 @@ export default defineComponent({
 
     const { triggerNotification } = useNotification()
 
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
 
     const { values } = useForm({
       initialValues: { number: props.check.value ? props.check.value : '' },
@@ -38,7 +43,7 @@ export default defineComponent({
       await RepositoryFactory.get(NumberCheckRepository)
         .update(props.check.endpoint, comment)
         .then((p: any) => {
-          triggerNotification('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
+          triggerNotification(t('checks.number-check.notification-patched'))
         })
     }
 
@@ -52,6 +57,7 @@ export default defineComponent({
     return {
       InputTypes,
       values,
+      t
     }
   }
 })

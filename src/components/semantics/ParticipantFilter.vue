@@ -11,8 +11,8 @@
       </div>
       <div class="flex" style="margin-left: 110px">
         <div class="flex xs:flex-col pt-3 gap-4 -mt-4">
-          <input @input="changedAge()" v-model="filter.ageMin" placeholder="Min leeftijd" type="number" style="width:115px" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-          <input @input="changedAge()" v-model="filter.ageMax" placeholder="Max leeftijd" type="number" style="width:120px" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <input @input="changedAge()" v-model="filter.ageMin" :placeholder="t('sidebars.participant-sidebar.filter.min-age')" type="number" style="width:115px" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <input @input="changedAge()" v-model="filter.ageMax" :placeholder="t('sidebars.participant-sidebar.filter.max-age')" type="number" style="width:120px" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
         <div class="ml-3 xs:hidden">
           <cross v-if="filter.gender || filter.ageMin || filter.ageMax" @click="clearFilters()" class="cursor-pointer" />
@@ -26,7 +26,7 @@
 import { defineComponent, ref, watch } from 'vue'
 import { Filter } from '../../serializer/Filter'
 import Cross from '../icons/Cross.vue'
-  const delay = require('delay');
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   components: { Cross },
@@ -34,9 +34,13 @@ export default defineComponent({
   props: {
   },
   setup (props, { emit }) {
-    const options = ref<any>([{value: 'M', label: 'Man'}, {value: 'F', label: 'Vrouw'}, {value: 'X', label: 'Andere'}])
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
+
+    const options = ref<any>([{value: 'M', label: t('sidebars.participant-sidebar.filter.man')}, {value: 'F', label: t('sidebars.participant-sidebar.filter.woman')}, {value: 'X', label: t('sidebars.participant-sidebar.filter.other')}])
     const filter = ref<Filter>({ gender: '', ageMin: '', ageMax: '' })
-    let debounce: any
 
     watch(() => filter.value.gender, () => {
       emit('changedFilters', filter.value)
@@ -54,10 +58,11 @@ export default defineComponent({
     }
 
     return {
-      filter,
-      options,
       clearFilters,
-      changedAge
+      changedAge,
+      options,
+      filter,
+      t
     }
   }
 })

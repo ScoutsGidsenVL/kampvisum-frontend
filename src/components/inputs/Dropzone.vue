@@ -31,7 +31,7 @@
           </svg>
         </span>
         <span class="text-xs text-black">
-          Drag your documents here, or browse for documents manually.
+          {{t('checks.document-check.instruction')}}
         </span>
       </div>
     </div>
@@ -43,8 +43,7 @@
       :disabled="fileCount === 0"
       @click="doUpload()"
     >
-      BESTANDEN UPLOADEN
-      <!-- {{ $tm('upload.button') }} -->
+      {{t('checks.document-check.upload-files')}}
     </button>
 
     <div v-if="uploading" class="mt-3 text-center">
@@ -111,7 +110,8 @@
   import store from '@/store/store'
   import Dropzone from 'dropzone'
   const delay = require('delay');
-
+  import { useI18n } from 'vue-i18n'
+  
   export default defineComponent({
     name: 'Upload',
     components: {
@@ -126,6 +126,10 @@
     },
     emits: ['update:progress', 'uploadedFile'],
     setup({}, { emit }) {
+      const { t } = useI18n({
+        inheritLocale: true,
+        useScope: 'local',
+      })
       const fileCount = ref<number>(0)
       const uploading = ref<boolean>(false)
       const { uploadIsComplete } = useUpload()
@@ -226,6 +230,7 @@
         uploading,
         fileCount,
         doUpload,
+        t
       }
     },
   })

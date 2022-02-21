@@ -13,7 +13,7 @@
     </div>
 
     <div class="text-left pl-3 mt-3" v-if="check.value.length === 0">
-      <p class="italic">{{ !check.checkParent.isMultiple ? 'Geen lid' : 'Geen leden' }}</p>
+      <p class="italic">{{ !check.checkParent.isMultiple ? t('checks.participant-check.no-member') : t('checks.participant-check.no-members') }}</p>
     </div>
 
     <div class="flex pl-3">
@@ -22,7 +22,7 @@
           @click="openMemberSidebar()"
           class="w-100 mt-4"
           :extraStyle="'w-100'"
-          :text="check.value.length > 0 ? (check.checkParent.isMultiple ? '+ VOEG TOE' : '+ VERANDER') : '+ VOEG TOE'"
+          :text="check.value.length > 0 ? (check.checkParent.isMultiple ? t('checks.participant-check.add') : t('checks.participant-check.change')) : t('checks.participant-check.add')"
         />
       </div>
     </div>
@@ -43,6 +43,7 @@ import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
 import MemberItem from './MemberItem.vue'
 import { Member } from '@/serializer/Member'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'MembersOverview',
@@ -67,16 +68,21 @@ export default defineComponent({
     const { triggerNotification } = useNotification()
     const sidebar = ref<any>({ state: 'hide' })
 
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
+
     const openMemberSidebar = (): void => {
       sidebar.value = { state: 'search' }
     }
 
     const actionSuccess = (action: string) => {
       if (action === 'PATCH') {
-        triggerNotification('Lid/leden succesvol toegevoegd')
+        triggerNotification(t('checks.participant-check.notification-patched'))
       }
       if (action === 'DELETE') {
-        triggerNotification('Lid succesvol verwijderd uit de lijst')
+        triggerNotification(t('checks.participant-check.notification-deleted'))
       }
       emit('rl', true)
     }
@@ -91,6 +97,7 @@ export default defineComponent({
       actionSuccess,
       ColorState,
       sidebar,
+      t
     }
   },
 })

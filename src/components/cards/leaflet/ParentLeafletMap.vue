@@ -22,12 +22,12 @@
       </div>
     </l-map>
     <warning
-      title="Hoofdlocatie"
+      :title="t('checks.location-check.delete-warning-title')"
       :isLoading="isDeletingVisum"
       :isDisplayed="isWarningDisplayed"
-      text="Ben je zeker de hoofdlocatie te willen verwijderen?"
-      leftButton="annuleren"
-      rightButton="verwijder"
+      :text="t('checks.location-check.delete-warning')"
+      :leftButton="t('checks.location-check.delete-warning-button-left')"
+      :rightButton="t('checks.location-check.delete-warning-button-right')"
       @leftButtonClicked="hideWarning()"
       @rightButtonClicked="deleteMainLocationPoint()"
     />
@@ -43,6 +43,7 @@ import { latLng } from '../../../interfaces/latLng'
 import CustomPopup from './CustomPopup.vue'
 import { Check } from '@/serializer/Check'
 import 'leaflet/dist/leaflet.css'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   components: {
@@ -90,6 +91,10 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
     // THIS APPLICATION USES VUE3-LEAFLET BUT DOCUMENTATION IS ALMOST THE SAME AS VUE2-LEAFLET
     // https://vue2-leaflet.netlify.app/quickstart/
     const isWarningDisplayed = ref<Boolean>(false)
@@ -169,6 +174,7 @@ export default defineComponent({
       addOnClick,
       toPatch,
       edit,
+      t
     }
   },
 })

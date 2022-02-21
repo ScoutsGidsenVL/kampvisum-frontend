@@ -22,7 +22,7 @@
         </div>
         
         <div class="p-4 mx-1">
-          <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search" placeholder="Zoek op naam" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
+          <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search" :placeholder="t('checks.participant-check.search')" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
 
         <div class="mx-1 mb-72 overflow-y-auto">
@@ -39,7 +39,7 @@
         </div>
 
         <div class="mt-5 py-4 px-4 absolute bottom-0 bg-white w-full">
-          <custom-button :disabled="!(fetchedMembers.some((f) => f.isChecked === true))" :isSubmitting="isPatching" text="VOEG TOE" />
+          <custom-button :disabled="!(fetchedMembers.some((f) => f.isChecked === true))" :isSubmitting="isPatching" :text="t('checks.participant-check.add-without-plus')" />
         </div>
     </form>
     </base-side-bar>
@@ -156,6 +156,7 @@ export default defineComponent({
       fetchedSearchResults,
       MemberRepository,
       fetchedMembers,
+      changedFilters,
       sideBarState,
       closeSideBar,
       displayCheck,
@@ -164,9 +165,8 @@ export default defineComponent({
       selected,
       onSubmit,
       loading,
+      filter,
       t,
-      changedFilters,
-      filter
     }
   },
 })

@@ -23,15 +23,15 @@
           </div>
         </div>
         <div class="flex flex-col mb-1">
-          <span class="font-bold text-sm">Geüploade bestanden</span>
+          <span class="font-bold text-sm">{{t('checks.document-check.uploaded-files')}}</span>
         </div>
         <div class="pb-4">
-          <span v-show="filesUploaded.length === 0 && !isUploading">Geen bestanden geüpload</span>
+          <span v-show="filesUploaded.length === 0 && !isUploading">{{t('checks.document-check.no-uploaded-files')}}</span>
           <file-item-component v-for="(file) in filesUploaded" :file="file" :key="file" :canBeChecked="true" />
         </div>
 
         <div class="pb-4 flex flex-col">
-          <span class="font-bold text-sm">Zoek door bestaande bestanden</span>
+          <span class="font-bold text-sm">{{t('checks.document-check.search-files')}}</span>
           <search-input v-model:loading="loading" name="search" :repository="FileRepository" :group="visum.groupGroupAdminId" @fetchedOptions="fetchedSearchResult($event)" />
         </div>
 

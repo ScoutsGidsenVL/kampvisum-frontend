@@ -3,7 +3,7 @@
     <h1 class="text-xl underline pb-3">{{ parentLocation.name }}</h1>
     <div class="flex gap-2 items-center">
       <h1 class="text-lg mt-1">{{ location.name }}</h1>
-      <div v-if="location.isMainLocation" class="font-bold text-sm text-white bg-lightGreen m-0 rounded-full px-2 h-5">hoofdlocatie</div>
+      <div v-if="location.isMainLocation" class="font-bold text-sm text-white bg-lightGreen m-0 rounded-full px-2 h-5">{{t('checks.location-check.main-location')}}</div>
     </div>
     <div class="pb-3">
       <a class="text-sm" target="_blank" :href="'https://www.google.com/maps?q=' + location.address">{{ location.address }}</a>  
@@ -27,7 +27,7 @@
 
     <div class="flex justify-between">
       <div class="flex items-center gap-2 justify-center cursor-pointer text-green hover:text-lightGreen">
-        <p @click="edit()" class="underline">Bewerk</p>
+        <p @click="edit()" class="underline">{{t('checks.location-check.edit')}}</p>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
         </svg>
@@ -44,12 +44,14 @@
 </template>
 
 <script lang="ts">
+import { SearchedLocation } from '@/serializer/SearchedLocation'
 import IPersonGreen from '@/components/icons/IPersonGreen.vue'
 import IPhoneGreen from '@/components/icons/IPhoneGreen.vue'
 import IMailGreen from '@/components/icons/IMailGreen.vue'
-import { Check } from '@/serializer/Check'
-import { SearchedLocation } from '@/serializer/SearchedLocation'
 import { defineComponent, PropType } from 'vue'
+import { Check } from '@/serializer/Check'
+import { useI18n } from 'vue-i18n'
+
 
 export default defineComponent({
   components: { IPersonGreen, IPhoneGreen, IMailGreen, },
@@ -68,11 +70,16 @@ export default defineComponent({
     },
   },
   setup (props, { emit }) {
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
     const edit = () => {
       emit('edit', props.parentLocation)
     }
     return  {
-      edit
+      edit,
+      t
     }
   }
 })
