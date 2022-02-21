@@ -212,8 +212,15 @@ export default defineComponent({
         if (flag.id) {
           await RepositoryFactory.get(DeadlineRepository)
             .updateFlag(flag.id, { flag: flag.flag })
-            .then(() => {
-              getDeadlines()
+            .then((deadline: Deadline) => {
+              deadlines.value.map(
+                (dl: Deadline) => {
+                  if (dl.id === deadline.id) {
+                    dl.state = deadline.state
+                  }
+                }
+              )
+              console.log('Deadline: ', deadline)
               triggerNotification(t('sidebars.deadline-sidebar.notification-updated'))
               isUpdatingFlag.value = false
             })
