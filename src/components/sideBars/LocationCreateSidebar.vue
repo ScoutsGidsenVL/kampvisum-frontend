@@ -32,7 +32,7 @@
         </div>
 
         <div class="pb-4 flex flex-col gap-3 relative">
-          <strong class="m-0 text-lg">{{t('sidebars.location-sidebar.form.addressess')}}</strong>
+          <strong class="m-0 text-lg">{{t('sidebars.location-sidebar.form.addresses')}}</strong>
 
           <div class="bg-lighterGreen p-2">{{t('sidebars.location-sidebar.form.search-map')}}</div>
           <search-input :loadingSubmit="patchLoading" v-model:loading="loading" name="search" :placeholder="t('sidebars.location-sidebar.form.search-map')" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
@@ -182,6 +182,7 @@ export default defineComponent({
     })
 
     const closeSideBar = () => {
+      context.emit('actionSuccess', {action: 'CLOSE'})
       context.emit('update:sideBarState', { state: 'hide' })
       document.body.classList.remove('overflow-hidden')
       resetForm()

@@ -1,6 +1,6 @@
 <template>
   <div class="h-96 w-full">
-    <l-map class="z-0" v-model:zoom="check.value.zoom" :center="center" @update:center="centerUpdated" @click="addOnClick($event)">
+    <l-map ref="myMap" class="z-0" v-model:zoom="check.value.zoom" :center="center" @update:center="centerUpdated" @click="addOnClick($event)">
       <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"></l-tile-layer>
 
       <div v-for="parentLocation in parentLocations" :key="parentLocation">
@@ -20,6 +20,16 @@
           </l-marker>
         </div>
       </div>
+      <l-control position="bottomleft" class="text-white" >
+        <slot name="create"></slot>
+      </l-control>
+      <l-control position="bottomleft" class="text-white" >
+        <custom-button class="text-white" @click="doMapStuff()">
+        <template v-slot:icon>
+          <i-center />
+        </template>
+        </custom-button>
+      </l-control>
     </l-map>
     <warning
       :title="t('checks.location-check.delete-warning-title')"
@@ -35,26 +45,30 @@
 </template>
 
 <script lang="ts">
-import { LMap, LTileLayer, LMarker, LIcon, LPopup } from '@vue-leaflet/vue-leaflet'
+import { LMap, LTileLayer, LMarker, LIcon, LPopup, LControl } from '@vue-leaflet/vue-leaflet'
+import { CustomInput, CustomButton, InputTypes, Warning } from 'vue-3-component-library'
 import { SearchedLocation } from '../../../serializer/SearchedLocation'
-import { CustomInput, InputTypes, Warning } from 'vue-3-component-library'
 import { defineComponent, ref, PropType, toRefs } from 'vue'
-import { latLng } from '../../../interfaces/latLng'
+import ICenter from '@/components/icons/ICenter.vue'
+import { latLngBounds, latLng } from 'leaflet'
 import CustomPopup from './CustomPopup.vue'
 import { Check } from '@/serializer/Check'
-import 'leaflet/dist/leaflet.css'
 import { useI18n } from 'vue-i18n'
+import 'leaflet/dist/leaflet.css'
 
 export default defineComponent({
   components: {
     CustomPopup,
     LTileLayer,
     CustomInput,
+    LControl,
     LMarker,
     LPopup,
     LIcon,
     LMap,
     Warning,
+    CustomButton,
+    ICenter
   },
   props: {
     center: Object as PropType<Array<number>>,
@@ -91,6 +105,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const myMap = ref<any>(null)
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -98,9 +113,36 @@ export default defineComponent({
     // THIS APPLICATION USES VUE3-LEAFLET BUT DOCUMENTATION IS ALMOST THE SAME AS VUE2-LEAFLET
     // https://vue2-leaflet.netlify.app/quickstart/
     const isWarningDisplayed = ref<Boolean>(false)
-
     const displayWarning = () => {
       isWarningDisplayed.value = true
+    }
+
+    const doMapStuff = () => {
+      let locs: Array<any> = []
+      props.parentLocations.forEach((parentLocation: any) => {
+        parentLocation.locations.forEach((location: any) => {
+          locs.push(location.latLon)
+          //NEEDS BETTER SOLUTION, WHEN ONLY ONE LOCATION ITS BUGGY
+          if (props.parentLocations.length === 1 && parentLocation.locations.length === 1) {
+            locs.push([location.latLon[0]*1.0001,location.latLon[1]*1.0001])
+          }
+        })
+      })
+
+      const markerBounds = latLngBounds([])
+
+      locs.forEach((loc: any) => {
+        markerBounds.extend(latLng(loc[0],loc[1]))
+      })
+
+      let map = myMap.value.leafletObject
+      
+      if (map) {
+        myMap.value.leafletObject.fitBounds([[markerBounds.getSouth(),markerBounds.getWest()],[markerBounds.getNorth(),markerBounds.getEast()]])
+        setTimeout(function() {
+          map.setZoom(map.getZoom() - 1);
+        }, 1);
+      }
     }
 
     const hideWarning = () => {
@@ -111,7 +153,7 @@ export default defineComponent({
     const toPatch = ref<Array<Array<number>>>([[], [], []])
     const iconWidthAndHeight = [25, 40]
 
-    const patchLatLng = (latLng: latLng, id: number) => {
+    const patchLatLng = (latLng: any, id: number) => {
       toPatch.value[id] = [latLng.lat, latLng.lng]
       //PATCH NEW VALUES TO ENDPOINT...
     }
@@ -158,6 +200,10 @@ export default defineComponent({
     const edit = (parentLocation: any) => {
       emit('edit', parentLocation)
     }
+
+    setTimeout(() => {
+      doMapStuff()
+    }, 1)
     return {
       deleteMainLocationPoint,
       cancelLocationPoint,
@@ -174,7 +220,9 @@ export default defineComponent({
       addOnClick,
       toPatch,
       edit,
-      t
+      t,
+      doMapStuff,
+      myMap
     }
   },
 })
@@ -183,5 +231,9 @@ export default defineComponent({
 <style>
 .leaflet-popup-content-wrapper {
   border-radius: 0px !important;
+}
+
+.leaflet-container button a {
+    color: white;
 }
 </style>

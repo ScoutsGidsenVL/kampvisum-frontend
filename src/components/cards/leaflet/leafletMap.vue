@@ -1,6 +1,7 @@
 <template>
   <div class="h-96 w-full">
     <l-map
+      ref="myMap"
       class="z-0 border-2 border-black"
       v-model="z"
       v-model:zoom="check.value.zoom"
@@ -94,6 +95,14 @@
           </l-popup>
         </l-marker>
       </div>
+
+      <l-control position="bottomleft" class="text-white" >
+        <custom-button type="button" class="text-white" @click="doMapStuff()">
+        <template v-slot:icon>
+          <i-center />
+        </template>
+        </custom-button>
+      </l-control>
     </l-map>
     <warning title="Hoofdlocatie" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker de hoofdlocatie te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteMainLocationPoint()" />
   </div>
@@ -101,16 +110,18 @@
 
 <script lang="ts">
 import {
-  LMap,
   LTileLayer,
   LMarker,
-  LIcon,
+  LControl,
   LPopup,
+  LIcon,
+  LMap,
 } from "@vue-leaflet/vue-leaflet";
+import { CustomInput, CustomButton, InputTypes, Warning } from 'vue-3-component-library'
 import { SearchedLocation } from '../../../serializer/SearchedLocation'
-import { CustomInput, InputTypes, Warning } from 'vue-3-component-library'
 import { defineComponent, ref, PropType, toRefs } from 'vue'
-import { latLng } from '../../../interfaces/latLng'
+import ICenter from "@/components/icons/ICenter.vue";
+import { latLngBounds, latLng } from 'leaflet'
 import CustomPopup from './CustomPopup.vue'
 import { Check } from "@/serializer/Check";
 import "leaflet/dist/leaflet.css";
@@ -118,13 +129,16 @@ import "leaflet/dist/leaflet.css";
 export default defineComponent ({
   components: {
     CustomPopup,
-    LTileLayer,
     CustomInput,
+    CustomButton,
+    LTileLayer,
     LMarker,
+    Warning,
+    LControl,
     LPopup,
     LIcon,
     LMap,
-    Warning
+    ICenter,
   },
   props: {
     center: Object as PropType<Array<number>>,
@@ -148,6 +162,7 @@ export default defineComponent ({
     }
   },
   setup (props, { emit }) {
+    const myMap = ref<any>(null)
     // THIS APPLICATION USES VUE3-LEAFLET BUT DOCUMENTATION IS ALMOST THE SAME AS VUE2-LEAFLET
     // https://vue2-leaflet.netlify.app/quickstart/
     const isWarningDisplayed = ref<Boolean>(false)
@@ -164,7 +179,7 @@ export default defineComponent ({
     const toPatch = ref<Array<Array<number>>>([[],[],[]])
     const iconWidthAndHeight = [25, 40]
 
-    const patchLatLng = (latLng: latLng, id: number) => {
+    const patchLatLng = (latLng: any, id: number) => {
       toPatch.value[id] = [latLng.lat, latLng.lng]
       //PATCH NEW VALUES TO ENDPOINT...
     }
@@ -208,21 +223,56 @@ export default defineComponent ({
     const centerUpdated = (center: any) => {
       emit('update:center', [center.lat,center.lng])
     }
+
+    const doMapStuff = () => {
+      let locs: Array<any> = []
+      props.searchedLocations.forEach((location: any) => {
+          locs.push(location.latLon)
+          if (props.searchedLocations.length === 1) {
+            locs.push(location.latLon)
+            //NEEDS BETTER SOLUTION, WHEN ONLY ONE LOCATION ITS BUGGY
+              locs.push([location.latLon[0]*1.0001,location.latLon[1]*1.0001])
+          }
+      })
+
+      const markerBounds = latLngBounds([])
+
+      locs.forEach((loc: any) => {
+        markerBounds.extend(latLng(loc[0],loc[1]))
+      })
+
+      let map = myMap.value.leafletObject
+      
+      if (map) {
+        map.fitBounds([[markerBounds.getSouth(),markerBounds.getWest()],[markerBounds.getNorth(),markerBounds.getEast()]])
+        // map.value.leafletObject.fitBounds([[10,10],[10,10]])
+        
+        setTimeout(function() {
+          map.setZoom(map.getZoom() - 1);
+        }, 1);
+      }
+    }
+
+    setTimeout(() => {
+      doMapStuff()
+    }, 1)
     return {
+      deleteMainLocationPoint,
       cancelLocationPoint,
       deleteLocationPoint,
       iconWidthAndHeight,
+      isWarningDisplayed,
       checkMainLocation,
       addLocationPoint,
+      displayWarning,
       centerUpdated,
       patchLatLng,
+      hideWarning,
       InputTypes,
       addOnClick,
+      doMapStuff,
       toPatch,
-      displayWarning,
-      hideWarning,
-      isWarningDisplayed,
-      deleteMainLocationPoint
+      myMap
     }
   }
 })

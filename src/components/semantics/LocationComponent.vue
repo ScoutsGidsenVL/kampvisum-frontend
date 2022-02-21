@@ -1,8 +1,11 @@
 <template>
   <div class="pb-3">
     <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
-    <parent-leaflet-map v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @edit="edit($event)" />
-    <div class="pl-3"><custom-button @click="openLocationCreateSidebar()" class="mt-4" :text="t('checks.location-check.add-location')" /></div>
+    <parent-leaflet-map v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @edit="edit($event)">
+      <template v-slot:create>
+        <custom-button @click="openLocationCreateSidebar()" :text="t('checks.location-check.add-location')" /> 
+      </template> 
+    </parent-leaflet-map>
     <location-create-sidebar
       v-if="createSidebar.state === 'new' || createSidebar.state === 'edit'"
       :parentLocations="check.value.locations"
@@ -60,13 +63,16 @@ export default defineComponent({
         reloadMapComponent()
         emit('rl', true)
       }
+      if (action.action === 'CLOSE') {
+        reloadMapComponent()
+      }
     }
 
     const reloadMapComponent = () => {
       isReloading.value = true
       setTimeout(() => {
         isReloading.value = false
-      }, 50)
+      }, 1)
     }
 
     watch(

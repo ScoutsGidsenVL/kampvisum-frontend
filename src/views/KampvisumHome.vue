@@ -148,7 +148,6 @@ export default defineComponent({
         triggerNotification(t('pages.kampvisum-overview.notification-updated'))
       }
       // OPNIEUW FETCHEN
-      console.log(selectedYear.value)
       if (!selectedYear.value) {
         await getYearsForGroup(selectedGroup.value.groupAdminId)
       }
