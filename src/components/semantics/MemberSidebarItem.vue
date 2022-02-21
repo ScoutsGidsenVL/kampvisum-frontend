@@ -6,7 +6,7 @@
         <strong>{{ member.fullName }}</strong>
       </div>
         <div v-if="member.birthDate">
-          {{ member.birthDate }}
+          {{ DateTime.fromFormat(member.birthDate,'yyyy-MM-dd').toFormat('dd MMM yyyy') }}
         </div>
       </div>
       <div class="flex gap-2 items-center font-bold">
@@ -20,6 +20,7 @@
 <script lang="ts">
 import { Member } from '@/serializer/Member'
 import { defineComponent, PropType } from 'vue'
+const { DateTime } = require("luxon");
 
 export default defineComponent({
   name: 'MemberSidebarItem',
@@ -41,6 +42,7 @@ export default defineComponent({
     }
 
     return {
+      DateTime,
       toggle
     }
   },

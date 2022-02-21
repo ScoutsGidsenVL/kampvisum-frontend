@@ -33,6 +33,7 @@ import IPerson from '../icons/IPerson.vue'
 import IPencil from '../icons/IPencil.vue'
 import { Check } from '@/serializer/Check'
 import IInfo from '../icons/IInfo.vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'MemberItem',
@@ -65,6 +66,11 @@ export default defineComponent({
       }
     }
 
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
+
     const openEditForm = (m: Member) => {
       emit('openSidebarToEdit', m)
     }
@@ -72,6 +78,7 @@ export default defineComponent({
     return {
       deleteFromList,
       openEditForm,
+      t
     }
   },
 })
