@@ -18,6 +18,7 @@ export default defineComponent({
     loader: Loader
   },
   setup() {
+    console.log('START')
     const store = useStore()
     // Custom start view to work with the inuits oicd/Keycloak when vue is not in history mode
 
@@ -34,9 +35,8 @@ export default defineComponent({
         window.location.replace(url.toString())
       })
     } else {
-        router.push('/kampvisum-home')
+      router.push('/kampvisum-home')
     }
-    return {}
   },
 })
 </script>
