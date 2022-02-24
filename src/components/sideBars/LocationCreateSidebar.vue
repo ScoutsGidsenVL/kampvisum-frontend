@@ -34,6 +34,16 @@
         <div class="pb-4 flex flex-col gap-3 relative">
           <strong class="m-0 text-lg">{{t('sidebars.location-sidebar.form.addresses')}}</strong>
 
+          <div v-if="check.checkParent.checkType.checkType === 'CampLocationCheck' && searchedLocations.length > 0" class="bg-lighterGreen p-3" >
+            <h4 class="">{{t('sidebars.location-sidebar.form.main-location')}}</h4>
+            <div v-for="(searchedLocation) in searchedLocations" :key="searchedLocation">
+              <div v-if="searchedLocation.isMainLocation">
+                <p class="mb-0 italic">{{searchedLocation.name}}</p>
+                <a class="text-sm italic" target="_blank" :href="'https://www.google.com/maps?q=' + searchedLocation.address">{{ searchedLocation.address }}</a>  
+              </div>
+            </div>
+          </div>
+
           <div class="bg-lighterGreen p-2">{{t('sidebars.location-sidebar.form.search-map')}}</div>
           <search-input :loadingSubmit="patchLoading" v-model:loading="loading" name="search" :placeholder="t('sidebars.location-sidebar.form.search-map')" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
           <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-10 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
@@ -47,15 +57,6 @@
             </div>
           </div>
 
-          <div v-if="check.checkParent.checkType.checkType === 'CampLocationCheck'" class="bg-lighterGreen p-3" >
-            <h4 class="">{{t('sidebars.location-sidebar.form.main-location')}}</h4>
-            <div v-for="(searchedLocation) in searchedLocations" :key="searchedLocation">
-              <div v-if="searchedLocation.isMainLocation">
-                <p class="mb-0 italic">{{searchedLocation.name}}</p>
-                <a class="text-sm italic" target="_blank" :href="'https://www.google.com/maps?q=' + searchedLocation.address">{{ searchedLocation.address }}</a>  
-              </div>
-            </div>
-          </div>
           <leaflet-map 
           @addOnClick="addOnClick($event)" 
           @deleteLocationPoint="deleteLocationPoint($event)" 
