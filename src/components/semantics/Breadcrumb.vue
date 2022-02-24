@@ -50,6 +50,8 @@
 import { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 import { breadcrumb, useNavigation } from '@/composable/useNavigation'
 import { defineComponent, PropType } from 'vue'
+import useGroupAndYears from '@/composable/useGroupAndYears'
+import useVisum from '@/composable/useVisum'
 
 export default defineComponent({
   name: 'BreadCrumb',
@@ -76,9 +78,11 @@ export default defineComponent({
   setup(props) {
     const route = props.route
     const { breadcrumbs } = useNavigation()
-
+    const { selectedGroup, selectedYear } = useGroupAndYears()
+    const { getVisums } = useVisum()
     const navigateHome = () => {
       props.router.push(props.home)
+      selectedYear.value && getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
     }
 
     const navigateToCrumb = (selectedBreadcrumb: breadcrumb) => {
