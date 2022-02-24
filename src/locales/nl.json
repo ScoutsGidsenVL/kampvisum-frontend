@@ -153,7 +153,8 @@
       "notification-patched": "Lid/leden succesvol toegevoegd",
       "notification-deleted": "Lid succesvol verwijderd uit de lijst",
       "remove": "verwijder",
-      "search": "Zoek op naam"
+      "search": "Zoek op naam",
+      "inActiveMember": "Geen scoutslid"
     },
     "number-check": {
       "notification-patched": "Aanpassingen aan het kamp zijn succesvol opgeslagen!"
