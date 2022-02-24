@@ -23,27 +23,9 @@
           </div>
 
           <div v-if="sideBarState.state !== 'edit'" class="w-100 mt-4">
-            <!-- <span class="font-bold">
-              Camp Type
-            </span> -->
-            <div>
-              <input class="cursor-pointer mr-2" id="inter" name="inter" v-model="isInternational" type="checkbox" />
-              <label class="cursor-pointer" for="inter">Internationaal kamp</label>
+            <div v-for="campType in campTypes" :key="campType">
+              <custom-input v-model="selectedCampTypes" :disabled="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="campType.id" :label="campType.label" />
             </div>
-
-            <multi-select
-              class="mt-2"
-              v-if="campTypes.length > 0 && !isReload"
-              id="campType"
-              :object="true"
-              placeholder="Kies een kamp type"
-              track-by="label"
-              value-prop="id"
-              :options="campTypes"
-              :canClear="false"
-              :canDeselect="true"
-              @addSelection="selectedValue($event)"
-            />
           </div>
 
           <div v-if="sideBarState.state !== 'hide'">
@@ -115,10 +97,8 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const groupSections = ref<Section[]>([])
     const campTypes = ref<CampType[]>([])
-    const campTypesOriginal = ref<CampType[]>([])
-    const isInternational = ref<boolean>(false)
     const isReload = ref<boolean>(false)
-
+    const selectedCampTypes = ref<Array<string>>()
     const { value: selectedGroupSections } = useField('sections', 'minimumOneSection', {
       initialValue: Array<String>(),
     })
@@ -132,8 +112,8 @@ export default defineComponent({
       context.emit('update:sideBarState', { state: 'hide' })
       resetForm()
       values.name = ''
-      isInternational.value = false
       selectedGroupSections.value = []
+      selectedCampTypes.value = []
     }
 
     const onSubmit = async () => {
@@ -150,7 +130,7 @@ export default defineComponent({
 
     const updateCamp = async (data: Camp) => {
       if (data.id && props.sideBarState) {
-        data.campType = selectedCampType.value
+        data.campTypes = selectedCampTypes.value
         await RepositoryFactory.get(CampRepository)
           .update(props.sideBarState.entity.id, data)
           .then(() => {
@@ -160,7 +140,7 @@ export default defineComponent({
     }
 
     const postCamp = async (data: Camp) => {
-      data.campType = selectedCampType.value
+      data.campTypes = selectedCampTypes.value
       await RepositoryFactory.get(CampRepository)
         .create(data)
         .then(() => {
@@ -180,8 +160,7 @@ export default defineComponent({
       await RepositoryFactory.get(CampTypeRepository)
         .getArray()
         .then((results: CampType[]) => {
-          campTypesOriginal.value = results
-          filterOutCampTypes()
+          filterOutCampTypes(results)
         })
     }
 
@@ -191,14 +170,9 @@ export default defineComponent({
       selectedCampType.value = event
     }
 
-    const filterOutCampTypes = () => {
+    const filterOutCampTypes = (types: CampType[]) => {
       isReload.value = true
-      if (isInternational.value) {
-        campTypes.value = campTypesOriginal.value.filter((x: CampType) => x.isBase === false)
-      } else {
-        campTypes.value = campTypesOriginal.value.filter((x: CampType) => x.isBase === true)
-      }
-
+      campTypes.value = types.filter((x: CampType) => x.isBase === false)
       selectedCampType.value = campTypes.value[0]
 
       setTimeout(() => {
@@ -230,6 +204,7 @@ export default defineComponent({
           selectedCampType.value = value.entity.categorySet.categorySetParent.campType
           camp.value.sections = SectionObjectsToSectionStrings(value.entity.camp.sections)
           selectedGroupSections.value = SectionObjectsToSectionStrings(value.entity.camp.sections)
+          selectedCampTypes.value = []
           resetForm({
             values: camp.value,
           })
@@ -244,16 +219,8 @@ export default defineComponent({
       }
     )
 
-    watch(
-      () => isInternational.value,
-      () => {
-        filterOutCampTypes()
-      }
-    )
-
     return {
       selectedGroupSections,
-      isInternational,
       selectedCampType,
       groupSections,
       selectedValue,
@@ -267,6 +234,7 @@ export default defineComponent({
       isReload,
       values,
       t,
+      selectedCampTypes
     }
   },
 })
