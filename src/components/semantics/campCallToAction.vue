@@ -1,7 +1,7 @@
 <template>
   <div class="mt-3 col-span-2">
     <div style="width: fit-content" class="bg-green text-white rounded-sm">
-      <h1 class="text-2xl mb-3 px-3 pt-3">{{t('pages.kampvisum-overview.call-to-action-title')}}</h1>
+      <h1 class="text-xl mb-3 px-3 pt-3">{{t('pages.kampvisum-overview.call-to-action-title')}}</h1>
       
       <div v-if="isdisplayCallToAction || visums.length === 0" v-html="t('pages.kampvisum-overview.call-to-action')" class="px-3 pb-3"></div>
 

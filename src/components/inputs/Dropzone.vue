@@ -145,7 +145,7 @@
             url: `${baseUrl}files/`,
             headers: {},
             autoProcessQueue: false,
-            acceptedFiles: 'application/pdf,.csv',
+            // acceptedFiles: '*',
             previewTemplate: dropzonePreviewDiv.value?.outerHTML,
             uploadMultiple: true,
             parallelUploads: 99,
