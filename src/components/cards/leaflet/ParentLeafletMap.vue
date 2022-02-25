@@ -118,7 +118,9 @@ export default defineComponent({
     }
 
     const doMapStuff = () => {
+      let map = myMap.value.leafletObject
       let locs: Array<any> = []
+
       props.parentLocations.forEach((parentLocation: any) => {
         parentLocation.locations.forEach((location: any) => {
           locs.push(location.latLon)
@@ -140,8 +142,6 @@ export default defineComponent({
       locs.forEach((loc: any) => {
         markerBounds.extend(latLng(loc[0],loc[1]))
       })
-
-      let map = myMap.value.leafletObject
       
       if (map) {
         myMap.value.leafletObject.fitBounds([[markerBounds.getSouth(),markerBounds.getWest()],[markerBounds.getNorth(),markerBounds.getEast()]])
@@ -213,7 +213,7 @@ export default defineComponent({
 
     setTimeout(() => {
       doMapStuff()
-    }, 1)
+    }, 20)
     return {
       deleteMainLocationPoint,
       cancelLocationPoint,
