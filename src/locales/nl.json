@@ -5,18 +5,18 @@
     "settings": "Instellingen",
     "documents": "Documenten",
     "locations": "Locaties",
-    "non-members": "Niet leden"
+    "non-members": "Niet-leden"
 
   },
   "pages": {
     "kampvisum-overview": {
       "create-camp-button": "Maak nieuw kamp aan",
-      "delete-warning": "Ben je zeker het kamp te willen verwijderen?",
-      "delete-warning-button-left": "annuleren",
+      "delete-warning": "Ben je zeker dat je het kamp wil verwijderen?",
+      "delete-warning-button-left": "annuleer",
       "delete-warning-button-right": "verwijder",
       "notification-deleted": "kamp is succesvol verwijderd",
       "notification-posted": "kamp is succesvol aangemaakt",
-      "notification-updated": "Kamp is succesvol bewerkt"
+      "notification-updated": "kamp is succesvol bewerkt"
     },
     "camp-overview": {
     },
@@ -24,24 +24,24 @@
       "sections": {
         "title": "Takken",
         "sections-for": "Takken voor",
-        "delete-warning": "Ben je zeker deze tak te willen verwijderen?",
-        "delete-warning-button-left": "annuleren",
+        "delete-warning": "Ben je zeker dat je deze tak wil verwijderen?",
+        "delete-warning-button-left": "annuleer",
         "delete-warning-button-right": "verwijder",
-        "notification-deleted": "Tak is succesvol verwijderd",
-        "notification-posted": "Tak is succesvol aangemaakt",
+        "notification-deleted": "tak is succesvol verwijderd",
+        "notification-posted": "tak is succesvol aangemaakt",
         "notification-updated": "tak is succesvol bewerkt",
-        "create-section": "Maak nieuwe tak aan",
+        "create-section": "maak een nieuwe tak aan",
         "start-age": "startleeftijd",
         "year": "jaar",
         "sidebar": {
           "title": "Tak",
           "form": {
-            "section-name": "Tak naam",
+            "section-name": "Taknaam",
             "gender": "Geslacht",
             "genders": {
               "male": "Man",
               "female": "Vrouw",
-              "mix": "Mix"
+              "mix": "Gemengd"
             },
             "age-group": "Leeftijdsgroep"
           },
@@ -80,10 +80,10 @@
     "location-sidebar": {
       "form": {
         "name": "Naam locatie",
-        "contactPerson": "Contactperson",
+        "contactPerson": "Contactpersoon",
         "contactName": "Naam",
-        "contactPhone": "Gsm nummer",
-        "contactEmail": "Email",
+        "contactPhone": "gsm-nummer",
+        "contactEmail": "E-mail",
         "addresses": "Adres(sen)",
         "search-map": "Zoek een adres of duid het aan op de kaart.",
         "search-addres": "Zoek adres",
@@ -101,13 +101,13 @@
         "max-age": "Max leeftijd"
       },
       "firstName": "Voornaam",
-      "lastName": "Naam",
-      "email": "Email",
-      "phone": "Gsm",
+      "lastName": "Achternaam",
+      "email": "E-mail",
+      "phone": "gsm-nummer",
       "city": "Stad",
       "postcode": "Postcode",
       "street": "Straat",
-      "nr": "Nr",
+      "nr": "Nummer",
       "mailbox": "Bus",
       "birthdate": "Geboortedatum",
       "comment": "Opmerking",
@@ -124,8 +124,8 @@
       "add-location": "+ voeg locatie toe",
       "create": "Nieuw",
       "delete-warning-title": "Hoofdlocatie",
-      "delete-warning": "Ben je zeker de hoofdlocatie te willen verwijderen?",
-      "delete-warning-button-left": "annuleren",
+      "delete-warning": "Ben je zeker dat je de hoofdlocatie wil verwijderen?",
+      "delete-warning-button-left": "annuleer",
       "delete-warning-button-right": "verwijder"
     },
     "document-check": {
@@ -139,24 +139,24 @@
       "uploaded-files": "Geüploade bestanden",
       "no-uploaded-files": "Geen bestanden geüpload",
       "search-files": "Zoek door bestaande bestanden",
-      "notification-patched": "Bestand(en) succesvol toegevoegd",
-      "notification-deleted": "Bestand succesvol verwijderd uit de lijst",
-      "instruction": "Drag your documents here, or browse for documents manually.",
+      "notification-patched": "bestand(en) succesvol toegevoegd",
+      "notification-deleted": "bestand succesvol verwijderd uit de lijst",
       "upload-files": "BESTANDEN UPLOADEN"
+      "instruction": "Sleep je documenten hier naartoe, of klik hier om ze op te laden",
     },
     "participant-check": {
       "no-member": "Geen lid",
       "no-members": "Geen leden",
       "add": "+ VOEG TOE",
       "add-without-plus": "VOEG TOE",
-      "change": "+ VERANDER",
-      "notification-patched": "Lid/leden succesvol toegevoegd",
-      "notification-deleted": "Lid succesvol verwijderd uit de lijst",
+      "change": "+ WIJZIG",
+      "notification-patched": "lid/leden succesvol toegevoegd",
+      "notification-deleted": "lid succesvol verwijderd uit de lijst",
       "remove": "verwijder",
       "search": "Zoek op naam"
     },
     "number-check": {
-      "notification-patched": "Aanpassingen aan het kamp zijn succesvol opgeslagen!"
+      "notification-patched": "aanpassingen opgeslagen"
     }
   }
 }
