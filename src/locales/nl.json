@@ -16,7 +16,9 @@
       "delete-warning-button-right": "verwijder",
       "notification-deleted": "kamp is succesvol verwijderd",
       "notification-posted": "kamp is succesvol aangemaakt",
-      "notification-updated": "Kamp is succesvol bewerkt"
+      "notification-updated": "Kamp is succesvol bewerkt",
+      "call-to-action-title": "Hoe werkt de kampkaft ?",
+      "call-to-action": "• Gebruik het menu links om je groep te selecteren <br> • Klik dan op de knop hierboven om een nieuw kamp aan te maken <br> • Daarna kan je op de volgende schermen alle details invullen <br> • Focus op wat er nodig is voor deadline “kampregistratie” <br> • Je kan later de overige gegevens nog aanvullen <br>"
     },
     "camp-overview": {
     },
