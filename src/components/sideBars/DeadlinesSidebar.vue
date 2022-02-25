@@ -220,7 +220,6 @@ export default defineComponent({
                   }
                 }
               )
-              console.log('Deadline: ', deadline)
               triggerNotification(t('sidebars.deadline-sidebar.notification-updated'))
               isUpdatingFlag.value = false
             })

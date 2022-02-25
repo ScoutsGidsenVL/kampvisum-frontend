@@ -20,6 +20,7 @@ export interface BaseMember {
   hasPaid?: string
   isMember?: boolean
   isChecked?: boolean
+  inactiveMember?: boolean
 }
 
 export const BaseMemberDeserializer = (input: any): BaseMember => {
@@ -40,7 +41,8 @@ export const BaseMemberDeserializer = (input: any): BaseMember => {
     fullName: `${input.first_name} ${input.last_name}`,
     fullAddress: `${input.street} ${input.number} ${(input.letter_box ? ' Bus ' + input.letter_box : '')}, ${input.postal_code} ${input.city}`,
     isMember: input.is_member ? input.is_member : false,
-    isChecked: false
+    isChecked: false,
+    inactiveMember: input.inactive_member ? input.inactive_member : false
   }
   return single
 }

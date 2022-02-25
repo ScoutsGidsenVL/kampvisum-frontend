@@ -229,6 +229,15 @@ export default defineComponent({
     }
 
     const fetchedSearchResults = (results: Member[]) => {
+      //ALSO CHECK ALREADY ADDED MEMBERS IN SEARCH RESULTS
+      props.check.value.forEach((alreadyAddedMember: Member) => {
+        results.forEach((member: Member) => {
+          if (member.id === alreadyAddedMember.id) {
+            member.isChecked = true
+          }
+        })
+      });
+      
       loading.value = false
       //KEEP THE CHECKED MEMBERS
       let checkedMembers: Member[] = []

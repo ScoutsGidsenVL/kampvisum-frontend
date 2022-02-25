@@ -235,6 +235,12 @@ export default defineComponent ({
           }
       })
 
+      if (props.searchedLocations.length === 0) {
+        //SET COORDS TO BELGIUM IF THERE ARE NO LOCATIONS
+        locs.push([50.500479,4.6954777])
+        locs.push([50.500480,4.6954778])
+      }
+
       const markerBounds = latLngBounds([])
 
       locs.forEach((loc: any) => {
@@ -247,9 +253,11 @@ export default defineComponent ({
         map.fitBounds([[markerBounds.getSouth(),markerBounds.getWest()],[markerBounds.getNorth(),markerBounds.getEast()]])
         // map.value.leafletObject.fitBounds([[10,10],[10,10]])
         
-        setTimeout(function() {
-          map.setZoom(map.getZoom() - 1);
-        }, 1);
+        if (props.searchedLocations.length === 0) {
+            map.setZoom(7)
+          } else {
+            map.setZoom(map.getZoom() - 1);
+          }
       }
     }
 

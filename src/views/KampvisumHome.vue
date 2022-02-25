@@ -42,7 +42,9 @@
       </div>
     </div>
 
-    <div v-show="!isFetchingVisums" class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+    <div v-if="!isFetchingVisums" class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+      <camp-call-to-action :visums="visums" />
+
       <div v-for="visum in visums" :key="visum.id">
         <camp-info-card class="mt-5" :visum="visum">
           <template v-slot:buttons>
@@ -78,6 +80,7 @@ import useVisum from '@/composable/useVisum'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
+import CampCallToAction from '@/components/semantics/campCallToAction.vue'
 
 export default defineComponent({
   name: 'KampvisumHome',
@@ -88,6 +91,7 @@ export default defineComponent({
     'multi-select': MultiSelect,
     warning: Warning,
     Loader,
+    CampCallToAction,
   },
   setup() {
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })

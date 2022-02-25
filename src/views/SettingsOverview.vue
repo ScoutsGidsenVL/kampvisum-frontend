@@ -2,7 +2,7 @@
   <!-- TABS -->
   <div class="flex -ml-8 -mr-8 bg-white border-gray border border-5">
     <div @click="setTabState('sections')" class="text-center w-full cursor-pointer" :class="tabState === 'sections' ? 'text-white bg-green' : ''">
-      <h3 class="font-museo-sans font-semibold mt-2">
+      <h3 class="font-semibold font-museo mt-2">
         {{ t('pages.settings.sections.title') }}
       </h3>
     </div>

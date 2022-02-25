@@ -16,7 +16,9 @@
       "delete-warning-button-right": "verwijder",
       "notification-deleted": "kamp is succesvol verwijderd",
       "notification-posted": "kamp is succesvol aangemaakt",
-      "notification-updated": "kamp is succesvol bewerkt"
+      "notification-updated": "kamp is succesvol bewerkt",
+      "call-to-action-title": "Hoe werkt de kampkaft ?",
+      "call-to-action": "• Gebruik het menu links om je groep te selecteren <br> • Klik dan op de knop hierboven om een nieuw kamp aan te maken <br> • Daarna kan je op de volgende schermen alle details invullen <br> • Focus op wat er nodig is voor deadline “kampregistratie” <br> • Je kan later de overige gegevens nog aanvullen <br>"
     },
     "camp-overview": {
     },
@@ -141,7 +143,7 @@
       "search-files": "Zoek door bestaande bestanden",
       "notification-patched": "bestand(en) succesvol toegevoegd",
       "notification-deleted": "bestand succesvol verwijderd uit de lijst",
-      "upload-files": "BESTANDEN UPLOADEN"
+      "upload-files": "BESTANDEN UPLOADEN",
       "instruction": "Sleep je documenten hier naartoe, of klik hier om ze op te laden",
     },
     "participant-check": {
@@ -153,7 +155,8 @@
       "notification-patched": "lid/leden succesvol toegevoegd",
       "notification-deleted": "lid succesvol verwijderd uit de lijst",
       "remove": "verwijder",
-      "search": "Zoek op naam"
+      "search": "Zoek op naam",
+      "inActiveMember": "Geen scoutslid"
     },
     "number-check": {
       "notification-patched": "aanpassingen opgeslagen"

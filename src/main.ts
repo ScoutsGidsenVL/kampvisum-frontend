@@ -61,16 +61,19 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
   store.dispatch('setConfig', configFile)
 
   router.beforeEach((to: any, from: any, next: any) => {
-    if (to.matched.some((record: any) => record.meta.requiresOpenIdAuth)) {
-      !store.getters.isLoaded
-        ? RepositoryFactory.get(AuthRepository)
-            .me()
-            .then((user: any) => {
-              store.dispatch('setUser', user).then(() => {
-                next()
-              })
-            })
-        : next()
+    localStorage.setItem('TO', to.fullPath);    
+    if (to.meta.requiresOpenIdAuth === true) {
+      if (store.getters.isLoaded === false) {
+        RepositoryFactory.get(AuthRepository)
+        .me()
+        .then((user: any) => {
+          store.dispatch('setUser', user).then(() => {
+            next(to.fullPath)
+          })
+        })
+      } else {
+        next()
+      }
     } else {
       next()
     }

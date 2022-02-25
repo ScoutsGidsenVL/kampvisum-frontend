@@ -92,9 +92,14 @@ export default defineComponent({
     })
     const downloadFile = (id: string) => {
       RepositoryFactory.get(FileRepository)
-        .downloadFile(id)
-        .then((downloadedFile) => {
-          const savedAsFile = saveAs(downloadedFile, 'ricardo - debug')
+        .getById(id)
+        .then((minioData: { url: string}) => {
+          window.open(minioData.url, '_blank');
+          //  RepositoryFactory.get(FileRepository)
+          //   .getMinioFile(minioData.url)
+          //   .then((downloadedFile: any) => {
+          //     const savedAsFile = saveAs(downloadedFile, 'ricardo - debug')              
+          //   })
         })
     }
 

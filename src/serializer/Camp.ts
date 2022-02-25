@@ -15,12 +15,12 @@ export interface Camp {
   updatedOn?: string
   year?: any
   categories?: Array<Category>
-  campType?: CampType
+  campTypes?: Array<string>
 }
 
 export const CampDeserializer = (input: any): Camp => {
   const single: Camp = {
-    campType: input.camp_type ? input.camp_type : undefined,
+    campTypes: input.camp_types ? input.camp_types : undefined,
     createdBy: input.created_by ? input.created_by : undefined,
     createdOn: input.created_on ? input.created_on : undefined,
     endDate: input.end_date,
@@ -38,13 +38,19 @@ export const CampDeserializer = (input: any): Camp => {
 }
 
 export const CampSerializer = (input: any): any => {
+  console.log('INPUT: ', input)
   const single: any = {
     name: input.name,
     start_date: input.startDate,
     end_date: input.startDate,
     sections: input.sections,
-    camp_types: [{ id: input.campType.id }]
   }
+  let arr: any[] = []
+  input.campTypes && input.campTypes.forEach((c: string) => {
+    arr.push({ id: c })
+  })
+  single.camp_types = arr
+  console.log('SINGLE: ', single)
   return {camp: single}
 }
 

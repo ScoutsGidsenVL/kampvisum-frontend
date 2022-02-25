@@ -37,6 +37,19 @@ export default abstract class BaseApiRepository {
     }
   }
 
+  getMinioFile(minioUrl: string) {
+    const instance = this.axiosInstance
+    return instance
+    .get(minioUrl)
+    .then(function (result: AxiosResponse) {
+      // Only return the data of response
+      return result.data
+    })
+    .catch((error: any) => {
+      return this.processError(error)
+    })
+  }
+
   protected get(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
     const instance = publicCall && !store.getters['openid/isLoggedIn'] ? this.publicAxiosInstance : this.axiosInstance
     return instance

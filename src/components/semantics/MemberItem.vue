@@ -11,6 +11,9 @@
     <div class="flex justify-between md:gap-16 items-center">
       <div v-if="check.checkParent.isMultiple" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">{{t('checks.participant-check.remove')}}</div>
       <div class="flex gap-3 items-center">
+        <div v-if="participant.inactiveMember" class="bg-red font-bold text-white rounded-full px-2">
+          {{t('checks.participant-check.inActiveMember')}}
+        </div>
         <!-- <div class="flex gap-2 items-center font-bold">
           <input class="cursor-pointer" :value="true" v-model="participant.hasPaid" type="checkbox" id="paid" name="paid">
           <label class="cursor-pointer m-0" for="paid">betaald</label>
