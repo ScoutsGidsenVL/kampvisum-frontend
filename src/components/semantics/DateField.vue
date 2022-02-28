@@ -74,6 +74,7 @@ export default defineComponent({
     })
 
     const patchDurationDateCheck = async (dates: Array<string>) => {
+      dates.map((d, i) => dates[i] = DateTime.fromFormat(d, 'dd MMM. yyyy').toFormat('yyyy-MM-dd'))
       await RepositoryFactory.get(DurationDateCheckRepository)
         .update(props.check.endpoint, dates)
         .then((p: any) => {
