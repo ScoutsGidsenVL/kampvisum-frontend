@@ -3,16 +3,18 @@
     <strong>{{check.checkParent.label}}</strong>
     <div v-if="isWithRange">
       <litepie-datepicker
+        i18n="nl-be"
         as-single
         use-range
         v-model="dateValues"
         :formatter="formatter"
-        separator=" - "
+        separator=","
         placeholder=" "
       ></litepie-datepicker>
     </div>
     <div v-else>
       <litepie-datepicker
+        i18n="nl-be"
         as-single
         v-model="dateValue"
         :formatter="formatter"
@@ -60,8 +62,8 @@ export default defineComponent({
 
     const initializeDateValues = () => {
       if (props.check?.value.startDate) {
-        dateValues.value.push(DateTime.fromFormat(props.check.value.startDate,'yyyy-MM-dd').toFormat('dd MMM yyyy'))
-        dateValues.value.push(DateTime.fromFormat(props.check.value.endDate,'yyyy-MM-dd').toFormat('dd MMM yyyy'))
+        dateValues.value.push(DateTime.fromFormat(props.check.value.startDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy').toLowerCase())
+        dateValues.value.push(DateTime.fromFormat(props.check.value.endDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy').toLowerCase())
       }
     }
     initializeDateValues()
