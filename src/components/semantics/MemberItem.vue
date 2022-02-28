@@ -9,7 +9,9 @@
     </div>
 
     <div class="flex justify-between md:gap-16 items-center">
-      <div v-if="check.checkParent.isMultiple" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">{{t('checks.participant-check.remove')}}</div>
+      <div v-if="check.checkParent.isMultiple" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
+        <i-trash />
+      </div>
       <div class="flex gap-3 items-center">
         <div class="bg-red font-bold text-white rounded-full px-2">
           {{t('checks.participant-check.inActiveMember')}}
@@ -35,6 +37,7 @@ import { defineComponent, PropType } from 'vue'
 import IPerson from '../icons/IPerson.vue'
 import IPencil from '../icons/IPencil.vue'
 import { Check } from '@/serializer/Check'
+import ITrash from '../icons/ITrash.vue'
 import IInfo from '../icons/IInfo.vue'
 import { useI18n } from 'vue-i18n'
 
@@ -44,6 +47,7 @@ export default defineComponent({
     IPerson,
     IInfo,
     IPencil,
+    ITrash,
   },
   props: {
     participant: {
