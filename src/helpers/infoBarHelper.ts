@@ -15,7 +15,7 @@ const { checkIfIsMobileSize } = usePhoneHelper()
 
 const categoryInfo =  ref<string>('')
 const info = ref<string>('')
-const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.CLOSED })
+const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
 
 export const useInfoBarHelper = (): {
   setInfo: (text?: string) => void,
@@ -33,7 +33,7 @@ export const useInfoBarHelper = (): {
     if (text) {
       info.value = text
     } else {
-      info.value = categoryInfo.value
+      info.value = categoryInfo.value ? categoryInfo.value : 'Geen info beschikbaar'
     }
   }
 
