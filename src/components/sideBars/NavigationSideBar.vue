@@ -28,10 +28,11 @@
               <div class="text-center">
                 <loader color="lightGreen" size="10" :isLoading="isFetchingVisums" />
               </div>
+              <!-- {{route.params}} -->
               <div v-for="visum in visums" :key="visum">
-                <navigation-item :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
+                <navigation-item :visum="visum" :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
                   <div v-for="category in visum.categorySet.categories" :key="category">
-                    <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" class="xs:text-sm md:text-md block cursor-pointer py-1">
+                    <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" class="xs:text-sm md:text-md block cursor-pointer my-1 px-2" style="width: fit-content" :class="(category.id === route.params.id) ? 'text-white bg-green rounded-full' : ''">
                       {{ category.categoryParent.label }}
                     </a>
                   </div>
@@ -39,7 +40,7 @@
               </div>
             </div>
 
-            <navigation-item link="/instellingen" :text="t('page-titles.settings')" />
+            <navigation-item :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
             <!-- <navigation-item link="/locaties" text="Locaties"/> -->
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
@@ -61,23 +62,21 @@
 </template>
 
 <script lang="ts">
+import router from '@/router'
 import MultiSelect from '../../components/inputs/MultiSelect.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
-import RepositoryFactory from '@/repositories/repositoryFactory'
 import { Sidebar, SidebarState } from '@/helpers/infoBarHelper'
-import { CampRepository } from '@/repositories/campRepository'
 import { useNavigation } from '../../composable/useNavigation'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import NavigationItem from './NavigationItem.vue'
-import { defineComponent, ref, watch } from 'vue'
 import { Loader } from 'vue-3-component-library'
-import ILogo from '../icons/ILogo.vue'
-import { useRoute } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import router from '@/router'
 import useVisum from '../../composable/useVisum'
+import { defineComponent, ref } from 'vue'
 import { Group } from '@/serializer/Group'
-import useGroupAndYears from '@/composable/useGroupAndYears'
+import ILogo from '../icons/ILogo.vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   components: {
@@ -89,11 +88,11 @@ export default defineComponent({
   name: 'NavigationSideBar',
   setup() {
     const route = useRoute()
+    const { isFetchingVisums, visums } = useVisum()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsCategory } = useNavigation()
     const { setSelectedGroup, getAvailableGroups } = useGroupAndYears()
-    const { isFetchingVisums, visums } = useVisum()
     const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
     const { t } = useI18n({
       inheritLocale: true,
@@ -121,16 +120,17 @@ export default defineComponent({
 
     return {
       navigateTowardsCategory,
+      changeSelectedGroup,
+      getAvailableGroups,
       getSectionsTitle,
+      isFetchingVisums,
       toggleSideBar,
       SidebarState,
-      getAvailableGroups,
       sidebar,
+      route,
+      visums,
       home,
       t,
-      visums,
-      isFetchingVisums,
-      changeSelectedGroup,
     }
   },
 })

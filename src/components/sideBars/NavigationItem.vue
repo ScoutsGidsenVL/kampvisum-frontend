@@ -2,7 +2,7 @@
   <div>
     <div @click="toggleDrawer()" class="py-2 d-flex justify-between">
       <div>
-        <strong @click="navigate()" class="xs:text-xs md:text-md cursor-pointer">
+        <strong @click="navigate()" class="xs:text-xs md:text-md cursor-pointer px-2" :class="highlight ? 'text-white bg-green rounded-full' : ''">
           {{text}}
         </strong>
       </div>
@@ -22,8 +22,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, PropType } from 'vue'
 import router from '@/router'
+import { Visum } from '@/serializer/Visum'
+import { useRoute } from 'vue-router'
 
 export enum DrawerState {
   OPEN = 'OPEN',
@@ -38,11 +40,26 @@ export default defineComponent({
   name: 'NavigationItem',
   props: {
     text: String,
-    link: String
+    link: String,
+    visum: {
+      type: Object as PropType<Visum>,
+      required: false,
+    },
+    highlight: Boolean,
   },
   setup (props) {
-    
-    const drawer = ref<Drawer>({state: DrawerState.CLOSED})
+    const route = useRoute()
+    const drawer = ref<Drawer>({ state: DrawerState.CLOSED})
+  
+  if (props.visum) {
+    if (props.visum.id === route.params.campId) {
+      drawer.value.state = DrawerState.OPEN
+    } else {
+      drawer.value.state = DrawerState.CLOSED
+    }
+  } else {
+      drawer.value.state = DrawerState.CLOSED
+  }
 
     const toggleDrawer = () => {
       if (!props.link) {
@@ -66,6 +83,7 @@ export default defineComponent({
       DrawerState,
       navigate,
       drawer,
+      route
     }
   }
 })
