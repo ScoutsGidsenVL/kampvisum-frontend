@@ -25,7 +25,7 @@
         </div>
         <!-- CARD -->
         <div class="bg-white shadow-md p-2 mt-2">
-          <deadline-important-alert v-if="selectedDeadline.isImportant" />
+          <deadline-important-alert v-if="selectedDeadline.deadlineParent.isImportant" />
 
           <div class="flex flex-col px-4">
             <div class="mt-3">
@@ -47,7 +47,7 @@
 
           <div class="mt-3 ml-4">
             <!-- CHECKS -->
-            <div class="mt-3" v-for="linkedCheck in selectedDeadline.linkedChecks" :key="linkedCheck">
+            <div class="mt-3 cursor-pointer" @click="navigateTowardsSection(linkedCheck.category.name, visum, linkedCheck.category.id, linkedCheck.id, route)" v-for="linkedCheck in selectedDeadline.linkedChecks" :key="linkedCheck">
               <div class="flex gap-2">
                 <i-checked v-if="linkedCheck.state === 'CHECKED'" />
                 <i-empty-check v-else />
@@ -55,7 +55,6 @@
               </div>
               <span
                 v-if="linkedCheck.state !== 'CHECKED'"
-                @click="navigateTowardsSection(linkedCheck.category.name, visum, linkedCheck.category.id, linkedCheck.id, route)"
                 class="ml-4 text-green underline cursor-pointer"
                 >{{t('sidebars.deadline-sidebar.fill-in')}}</span
               >
@@ -202,6 +201,11 @@ export default defineComponent({
         .getArray(props.visum.id)
         .then((d: Array<any>) => {
           deadlines.value = d
+          deadlines.value.forEach((dead: Deadline) => {
+            if (dead.deadlineParent && dead.deadlineParent.name === 'camp_registration') { 
+              openDeadline(dead)
+            }
+          })
           isFetchingDeadlines.value = false
         })
     }
