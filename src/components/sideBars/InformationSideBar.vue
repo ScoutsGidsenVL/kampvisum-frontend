@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div class="h-screen" :class="{ 'd-flex md:w-98 p-3 xs:mt-16 md:mt-0 md:sticky md:top-20 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
+    <div class="h-screen" :class="{ 'd-flex md:w-98 p-3 xs:mt-16 md:mt-0 md:sticky md:top-40 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
       <div class="w-100 pt-7 flex xs:pt-20 justify-between">
         <div class="flex gap-3">
           <i-info-green :info="'setting the info in the information sidebar and open the information sidebar'" />
@@ -110,7 +110,7 @@ header {
 }
 
 .top-custom {
-  top: 70px;
+  top: 150px;
 }
 
 .h-screen-90 {
