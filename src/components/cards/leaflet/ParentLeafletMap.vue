@@ -48,7 +48,7 @@
 import { LMap, LTileLayer, LMarker, LIcon, LPopup, LControl } from '@vue-leaflet/vue-leaflet'
 import { CustomInput, CustomButton, InputTypes, Warning } from 'vue-3-component-library'
 import { SearchedLocation } from '../../../serializer/SearchedLocation'
-import { defineComponent, ref, PropType, toRefs } from 'vue'
+import { defineComponent, ref, PropType, toRefs, onMounted } from 'vue'
 import ICenter from '@/components/icons/ICenter.vue'
 import { latLngBounds, latLng } from 'leaflet'
 import CustomPopup from './CustomPopup.vue'
@@ -211,9 +211,18 @@ export default defineComponent({
       emit('edit', parentLocation)
     }
 
-    setTimeout(() => {
-      doMapStuff()
-    }, 20)
+    const init = () => {
+      setTimeout(() => {
+        if (myMap.value && myMap.value.leafletObject && myMap.value.leafletObject.fitBounds ) {
+          doMapStuff()
+        } else {
+          init()
+        }
+      }, 100)
+    }
+
+    init()
+
     return {
       deleteMainLocationPoint,
       cancelLocationPoint,
