@@ -2,15 +2,22 @@
   <div>
     <div class="p-3 border border-lightGray shadow-sm">
       <h1>{{ title }}</h1>
-      <h4 v-if="subTitle" class="text-green font-aglet font-light">{{ subTitle }}</h4>
+      <h4 @click="navigateTowardsVisum(route.params.campId)" v-if="subTitle" class="flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline">
+        <i-left-arrow />
+        {{ subTitle }}
+      </h4>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { useNavigation } from '@/composable/useNavigation'
 import { defineComponent } from 'vue'
+import ILeftArrow from '../icons/ILeftArrow.vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
+  components: { ILeftArrow },
   name: 'PageHeader',
   props: {
     title: {
@@ -20,5 +27,13 @@ export default defineComponent({
     },
     subTitle: String,
   },
+  setup () {
+    const route = useRoute()
+    const { navigateTowardsVisum } = useNavigation()
+    return {
+      navigateTowardsVisum,
+      route
+    }
+  }
 })
 </script>

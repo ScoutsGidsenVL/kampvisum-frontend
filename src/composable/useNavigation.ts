@@ -15,10 +15,19 @@ export const useNavigation = (): {
   jumpToId: (id: string | string[]) => void
   breadcrumbs: Ref<breadcrumb[]>
   setBreadcrumbs: (b: breadcrumb[]) => void
-  goToHome: () => void
+  goToHome: () => void,
+  navigateTowardsVisum: (visumId:string) => void
 } => {
   const setBreadcrumbs = (b: breadcrumb[]) => {
     breadcrumbs.value = b
+  }
+
+  const navigateTowardsVisum = (visumId: string) => {
+    console.log('navigateTowardsVisum: ', visumId)
+    const navigate = () => {
+      router.push('/kamp/' + visumId)
+    }
+    navigate()
   }
 
   const navigateTowardsCategory = (name: string, visum: Visum, categoryUuid: string) => {
@@ -57,5 +66,6 @@ export const useNavigation = (): {
     breadcrumbs,
     setBreadcrumbs,
     goToHome,
+    navigateTowardsVisum
   }
 }

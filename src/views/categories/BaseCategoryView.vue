@@ -1,11 +1,11 @@
 <template>
-  <div v-if="visum" class="flex w-100 -mt-3">
+  <div v-if="category && visum" class="flex w-100 -mt-3">
     <div class="w-100">
-      <div>
+      <div class="sticky top-0 bg-white z-50">
         <page-header :title="route.meta.title" :subTitle="getSectionsTitle(visum.camp)" />
       </div>
 
-      <div v-if="visum" class="w-100 flex pt-3">
+      <div v-if="category && visum" class="w-100 flex pt-3">
         <div class="w-100 pt-3 pr-3 pb-3">
           <div v-for="subCategory in category.subCategories" :key="subCategory">
             <base-subcategory-card @rl="rl($event)" :visum="visum" class="mb-3" :subCategory="subCategory" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
@@ -50,13 +50,35 @@ export default defineComponent({
     const route = useRoute()
     const visum = ref<Visum>()
     const category = ref<Category>()
-    const { getCampByRouteParam } = useCampHelper()
+    const { getCampByRouteParam, getCategoryByRouteParam } = useCampHelper()
     const { getSectionsTitle } = useSectionsHelper()
     const { setCategoryInfo } = useInfoBarHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const isFetchingVisum = ref<boolean>(true)
     const { jumpToId } = useNavigation()
     const { setBreadcrumbs } = useNavigation()
+
+    const fetchCategory = () => {
+      getCategoryByRouteParam().then((c: Category) => {
+
+        category.value = c
+        isFetchingVisum.value = false
+
+        if (category.value) {
+          setCategoryInfo(category.value.categoryParent.description)
+          setBreadcrumbs([
+            { title: c.camp?.name ? c.camp?.name : '', name: 'kamp', uuid: c.visum?.id ? c.visum?.id : '' },
+            { title: category.value.categoryParent.label, name: category.value.categoryParent.name, uuid: category.value.id },
+          ])
+        }
+
+        if (route.params.sectionId) {
+          setTimeout(() => {
+            jumpToId(route.params.sectionId)
+          }, 200)
+        }
+      }) 
+    }
 
     const fetchVisum = () => {
       getCampByRouteParam().then((v: Visum) => {
@@ -92,10 +114,13 @@ export default defineComponent({
     }
 
     const rl = () => {
+      fetchCategory()
       fetchVisum()
     }
 
     fetchVisum()
+
+    fetchCategory()
 
     return {
       getSectionsTitle,
