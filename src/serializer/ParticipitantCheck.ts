@@ -11,26 +11,26 @@ interface participantToPatch {
   group_admin_id?: string
 }
 
-export const ParticipantCheckDeserializer = (input: any[]): Member[] => {
-  const array: Member[] = input.map((m: any) => MemberDeserializer(m))
+export const ParticipantCheckDeserializer = (input: any): Member[] => {
+  const array: Member[] = input.participants.map((i: any) => MemberDeserializer(i.participant))
   return array
 }
 
 export const ParticipantCheckSerializer = (input: Member[]): any => {
 
-  let membersToPatch: Array<participantToPatch> = []
+  let membersToPatch: Array<any> = []
   input.forEach(member => {
     if (member.isChecked) {
         if (member.isMember) {
-          membersToPatch.push({ group_admin_id: member.id })
+          membersToPatch.push({ participant: { group_admin_id: member.id } })
         } else {
-          membersToPatch.push({ id: member.id })
+          membersToPatch.push({ participant: { id: member.id } })
         }
     }
   })
 
   const single: any = {
-    value: membersToPatch
+    participants: membersToPatch
   }
   return single
 }
