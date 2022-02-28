@@ -11,7 +11,7 @@
           <div class="my-3">
             <multi-select
               v-if="getAvailableGroups()"
-              id="group"
+              id="groupSelector"
               :object="true"
               @addSelection="changeSelectedGroup($event)"
               track-by="fullName"
@@ -89,11 +89,9 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const { isFetchingVisums, visums } = useVisum()
-    const { checkIfIsMobileSize } = usePhoneHelper()
     const { getSectionsTitle } = useSectionsHelper()
-    const { navigateTowardsCategory } = useNavigation()
+    const { navigateTowardsCategory, sidebar } = useNavigation()
     const { setSelectedGroup, getAvailableGroups } = useGroupAndYears()
-    const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',

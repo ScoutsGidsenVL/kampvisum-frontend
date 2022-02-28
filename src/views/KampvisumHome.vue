@@ -11,7 +11,6 @@
       @leftButtonClicked="hideWarning()"
       @rightButtonClicked="deleteCamp()"
     />
-
     <div>
       <camp-side-bar
         v-if="selectedGroup"
@@ -21,6 +20,10 @@
         @navigateTowardsVisumOverview="navigateTowardsVisum($event)"
         :selectedGroupId="selectedGroup.groupAdminId"
       />
+    </div>
+
+    <div @click="shineSelector()" class="underline text-green mb-3 cursor-pointer">
+      verander groep
     </div>
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
@@ -82,6 +85,7 @@ import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
 import CampCallToAction from '@/components/semantics/campCallToAction.vue'
+import { SidebarState } from '@/helpers/infoBarHelper'
 
 export default defineComponent({
   name: 'KampvisumHome',
@@ -103,10 +107,11 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
-    const { setBreadcrumbs } = useNavigation()
+    const { setBreadcrumbs, sidebar } = useNavigation()
     const { selectedGroup, selectedYear, years, setSelectedYear, getYearsForGroup } = useGroupAndYears()
     const { visums, isFetchingVisums, getVisums, navigateTowardsVisum } = useVisum()
     const { triggerNotification } = useNotification()
+
     setBreadcrumbs([])
 
     const editCamp = (visum: Visum) => {
@@ -163,6 +168,12 @@ export default defineComponent({
       setSelectedYear(year)
     }
 
+    const shineSelector = () => {
+      // @ts-ignore
+      document.getElementById('groupSelector').style.border = '2px solid #7b8f1c'
+      sidebar.value.state = SidebarState.OPEN
+    }
+
     return {
       navigateTowardsVisum,
       isWarningDisplayed,
@@ -175,6 +186,7 @@ export default defineComponent({
       selectedGroup,
       actionSuccess,
       selectNewYear,
+      shineSelector,
       hideWarning,
       deleteCamp,
       editCamp,
