@@ -1,5 +1,6 @@
 <template>
-  <div class="bg-lighterGreen flex p-3 justify-between">
+<div class="bg-lighterGreen p-3">
+  <div v-if="false" class="flex justify-between">
     <div class="flex items-center">
       <!-- INFO ICON -->
       <div class="mr-2.5">
@@ -14,6 +15,7 @@
         </strong>
       </div>
     </div>
+    
     <!-- ARROW ICON -->
     <div class="cursor-pointer">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,15 +23,29 @@
       </svg>
     </div>
   </div>
+  <div>
+    {{t('sidebars.deadline-sidebar.actual-info')}}
+  </div>
+</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'DeadlineInfoCard',
   props: {
     text: String
+  },
+  setup () {
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
+    return {
+      t
+    }
   }
 })
 </script>
