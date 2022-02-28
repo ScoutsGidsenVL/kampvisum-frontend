@@ -1,8 +1,9 @@
 <template>
-  <div style="width: fit-content" class="items-center cursor-pointer flex gap-2.5 py-1">
-    <div @click="toggle()" class="hover-trigger cursor-pointer flex gap-2.5 py-1 items-center">
-      <div class="z-20 flex">
-        <div class="rounded-full bg-white h-6 w-6 -mr-6"></div>
+<div class="hover-trigger cursor-pointer hover:bg-lightGray rounded-md p-2 -ml-2 ht2">
+  <div>
+    <div class="flex">
+      <!-- STATE INDICATION -->
+      <div>
         <svg v-if="simpleCheck.value === StatusState.CHECKED" class="fill-current text-green" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path
             d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.393 7.5l-5.643 5.784-2.644-2.506-1.856 1.858 4.5 4.364 7.5-7.643-1.857-1.857z"
@@ -14,36 +15,44 @@
           <line x1="19" y1="51.5" x2="84" y2="51.5" stroke="#DC7700" stroke-width="11" />
         </svg>
       </div>
-
-      <div class="bg-lightGray -ml-6 z-10 rounded-r-full hover-target">
-        <div class="flex gap-2 items-center">
-          <tooltip tip="Checked">
-            <svg @click="select(StatusState.CHECKED)" class="fill-current text-green iconSize" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path
-                d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.393 7.5l-5.643 5.784-2.644-2.506-1.856 1.858 4.5 4.364 7.5-7.643-1.857-1.857z"
-              />
-            </svg>
-          </tooltip>
-          <tooltip tip="Niet relevant">
-            <svg @click="select(StatusState.NOT_APPLICABLE)" class="iconSize" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="51.5" cy="51.5" r="46" stroke="#DC7700" stroke-width="11" />
-              <line x1="19" y1="51.5" x2="84" y2="51.5" stroke="#DC7700" stroke-width="11" />
-            </svg>
-          </tooltip>
-          <tooltip tip="Leeg">
-            <i-empty-check @click="select(StatusState.EMPTY)" class="iconSize" />
-          </tooltip>
-        </div>
+      <!-- LABEL -->
+      <div class="ml-3 font-museo text-md check-label">
+        <p>
+          {{ check.checkParent.label }}
+        </p>
+      </div>
+      <!-- INFO -->
+      <div>
+        <i-info :info="check.checkParent.explanation" />
       </div>
     </div>
-    <div class="ml-3 font-museo text-md font-normal">
-      <p class="">
-        {{ check.checkParent.label }}
-      </p>
+    <!-- OPTIONS -->
+    <div class="hover-target">
+      <div @click="select(StatusState.CHECKED)" class="flex gap-4 hover:underline">
+        <svg class="fill-current text-green iconSize" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path
+            d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.393 7.5l-5.643 5.784-2.644-2.506-1.856 1.858 4.5 4.364 7.5-7.643-1.857-1.857z"
+          />
+        </svg>
+        <div>
+          Checked
+        </div>
+      </div>
+      <div @click="select(StatusState.NOT_APPLICABLE)" class="flex gap-4 hover:underline">
+        <svg class="iconSize" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="51.5" cy="51.5" r="46" stroke="#DC7700" stroke-width="11" />
+          <line x1="19" y1="51.5" x2="84" y2="51.5" stroke="#DC7700" stroke-width="11" />
+        </svg>
+        <div>
+          Niet relevant
+        </div>
+      </div>
+      <div @click="select(StatusState.EMPTY)" class="flex gap-4 hover:underline">
+      <i-empty-check class="iconSize" />
+      <div>Leeg</div>
+      </div>
     </div>
-    <div>
-      <i-info :info="check.checkParent.explanation" />
-    </div>
+  </div>
   </div>
 </template>
 
@@ -132,30 +141,28 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .hover-trigger .hover-target {
-  width: 0px;
-  height: 25px;
-  transition: 0.5s;
+  display: none;
 }
 
 .hover-trigger:hover .hover-target {
-  width: 110px;
-  transition: 0.5s;
-  padding-left: 20px;
-  .iconSize {
-    display: block;
-  }
+  display: block;
+}
+
+.hover-trigger:hover .check-label {
+  font-weight: bold;
+}
+
+.ht2:hover {
+  border-left: 5px solid black;
 }
 
 .iconSize {
-  display: none;
   margin-top: 2px;
-  width: 21px;
-  height: 21px;
-}
-
-.iconSize:hover {
-  margin-top: 0px;
   width: 24px;
   height: 24px;
+}
+
+.check-label {
+  font-weight: normal;
 }
 </style>
