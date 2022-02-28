@@ -18,6 +18,7 @@
         :title="t('sidebars.kampvisum-sidebar.title')"
         v-model:sideBarState="campSideBarState"
         @actionSuccess="actionSuccess($event)"
+        @navigateTowardsVisumOverview="navigateTowardsVisum($event)"
         :selectedGroupId="selectedGroup.groupAdminId"
       />
     </div>
@@ -104,7 +105,7 @@ export default defineComponent({
     })
     const { setBreadcrumbs } = useNavigation()
     const { selectedGroup, selectedYear, years, setSelectedYear, getYearsForGroup } = useGroupAndYears()
-    const { visums, isFetchingVisums, getVisums } = useVisum()
+    const { visums, isFetchingVisums, getVisums, navigateTowardsVisum } = useVisum()
     const { triggerNotification } = useNotification()
     setBreadcrumbs([])
 
@@ -163,6 +164,7 @@ export default defineComponent({
     }
 
     return {
+      navigateTowardsVisum,
       isWarningDisplayed,
       isFetchingVisums,
       campSideBarState,

@@ -40,6 +40,7 @@ import { defineComponent, PropType } from 'vue'
 import { Visum } from '../../serializer/Visum'
 import { useRoute } from 'vue-router'
 import router from '@/router'
+import useVisum from '@/composable/useVisum'
 
 export default defineComponent({
   name: 'CampInfoCard',
@@ -54,10 +55,7 @@ export default defineComponent({
     const route = useRoute()
     const { navigateTowardsCategory } = useNavigation()
     const { getSectionsTitle } = useSectionsHelper()
-
-    const navigateTowardsVisum = (visum: Visum) => {
-      router.push('/kamp/' + visum.id)
-    }
+    const { navigateTowardsVisum } = useVisum()
 
     return {
       navigateTowardsCategory,

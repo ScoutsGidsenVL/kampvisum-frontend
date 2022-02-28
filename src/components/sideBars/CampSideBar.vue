@@ -62,6 +62,7 @@ import MultiSelect from '../inputs/MultiSelect.vue'
 import { CampType } from '@/serializer/CampType'
 import { Camp } from '../../serializer/Camp'
 import { useI18n } from 'vue-i18n'
+import { Visum } from '@/serializer/Visum'
 
 export default defineComponent({
   name: 'CampSideBar',
@@ -90,7 +91,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['update:sideBarState', 'actionSuccess'],
+  emits: ['update:sideBarState', 'actionSuccess', 'navigateTowardsVisumOverview'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Camp>()
@@ -143,8 +144,9 @@ export default defineComponent({
       data.campTypes = selectedCampTypes.value
       await RepositoryFactory.get(CampRepository)
         .create(data)
-        .then(() => {
+        .then((visum: Visum) => {
           context.emit('actionSuccess', 'POST')
+          context.emit('navigateTowardsVisumOverview', visum)
         })
     }
 

@@ -11,7 +11,7 @@
     <div class="flex justify-between md:gap-16 items-center">
       <div v-if="check.checkParent.isMultiple" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">{{t('checks.participant-check.remove')}}</div>
       <div class="flex gap-3 items-center">
-        <div v-if="participant.inactiveMember" class="bg-red font-bold text-white rounded-full px-2">
+        <div class="bg-red font-bold text-white rounded-full px-2">
           {{t('checks.participant-check.inActiveMember')}}
         </div>
         <!-- <div class="flex gap-2 items-center font-bold">
