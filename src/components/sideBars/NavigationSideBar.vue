@@ -32,7 +32,7 @@
               <div v-for="visum in visums" :key="visum">
                 <navigation-item :visum="visum" :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
                   <div v-for="category in visum.categorySet.categories" :key="category">
-                    <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" class="xs:text-sm md:text-md block cursor-pointer my-1 px-2" style="width: fit-content" :class="(category.id === route.params.id) ? 'text-white bg-green rounded-full' : ''">
+                    <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" class="xs:text-sm md:text-md block cursor-pointer my-1 px-2" style="width: fit-content" :class="(category.id === route.params.id) ? 'text-green font-bold' : 'text-black'">
                       {{ category.categoryParent.label }}
                     </a>
                   </div>

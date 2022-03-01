@@ -37,7 +37,7 @@
             </l-icon>
           <l-popup class="w-56" >
             <div class="flex flex-col gap-4">
-              
+              <!-- BLACK POINT -->
               <div>
                 <label for="">Naam</label>
                 <input type="text" id="name" name="name" v-model="searchedLocation.name" class="bg-lightGray p-2 min-w-0 w-100">
@@ -67,12 +67,13 @@
       <div v-for="(sL, index) in searchedLocations" :key="sL">
         <l-marker id="searchedMarker" :lat-lng="sL.latLon">
           <l-icon>
-              <svg width="30" height="30" style="margin-left: -14px;margin-top: -30px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
-              </svg>
-            </l-icon>
-          <l-popup class="w-56" >
-            <div class="flex flex-col">
+            <svg width="30" height="30" style="margin-left: -14px;margin-top: -30px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
+            </svg>
+          </l-icon>
+          <!-- GREEN POINT -->
+          <l-popup class="w-56">
+            <div  class="flex flex-col">
               
               <div>
                 <label for="">Naam</label>
@@ -297,4 +298,9 @@ export default defineComponent ({
   .leaflet-popup-content-wrapper {
       border-radius: 0px !important;
   }
+  .leaflet-popup {
+    position: absolute;
+    text-align: center;
+    margin-bottom: 48px;
+}
 </style>

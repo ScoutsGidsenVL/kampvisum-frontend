@@ -2,7 +2,7 @@
   <div>
     <div @click="toggleDrawer()" class="py-2 d-flex justify-between">
       <div>
-        <strong @click="navigate()" class="xs:text-xs md:text-md cursor-pointer px-2" :class="highlight ? 'text-white bg-green rounded-full' : ''">
+        <strong @click="navigate()" class="xs:text-xs md:text-md cursor-pointer px-2" :class="highlight ? 'text-green font-bold' : ''">
           {{text}}
         </strong>
       </div>
