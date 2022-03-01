@@ -39,7 +39,7 @@
 
           <div class="bg-lighterGreen p-2">{{t('sidebars.location-sidebar.form.search-map')}}</div>
           <search-input :loadingSubmit="patchLoading" v-model:loading="loading" name="search" :placeholder="t('sidebars.location-sidebar.form.search-map')" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
-          <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-32 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
+          <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-36 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
             <div v-for="(fetchedLocation, index) in fetchedLocationsToSelect" :key="fetchedLocation" :class="index === 1 ? 'border-t-10': ''" class="border-ligtGray hover:bg-lightGray p-2 pl-3 cursor-pointer border-b-2">
               <div class="flex flex-col" @click="addLocationPoint(fetchedLocation)">
                 <strong>
@@ -154,8 +154,6 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const loading = ref<boolean>(false)
 
-
-
     // -------------- NEEDS REFACTOR -----------
     const init = ref<PostLocation>({...props.check.value})
     init.value.centerLatLon = [props.check.value.centerLatitude, props.check.value.centerLongitude]
@@ -236,21 +234,20 @@ export default defineComponent({
     const child2 = ref<any>(null)
 
     const centerInChildComponent = (loc: any) => {
-      console.log('centerInChildComponent loc: ',loc)
-      console.log(child2.value.centerClickedLocation(loc[0],loc[1]))
+      child2.value.centerClickedLocation(loc[0],loc[1])
     }
 
     const addLocationPoint = (location: SearchedLocation) => {
       emptySearchResults()
-      if (location.latLon) {
-        // check.value.value.centerLatitude = location.latLon[0] ? location.latLon[0] : check.value.value.centerLatitude
-        // check.value.value.centerLongitude = location.latLon[1] ? location.latLon[1] : check.value.value.centerLongitude
-        // check.value.value.centerLatLon = location.latLon
+      if (location.latLon && location.latLon.length > 0) {
         centerInChildComponent(location.latLon)
       }
       if (searchedLocations.value.length === 0 && check?.value?.checkParent?.checkType?.checkType === 'CampLocationCheck') {
         location.isMainLocation = true
       }
+
+      console.log('location', location)
+
       searchedLocations.value.push(location)
       resetSearchedLocation()
       values.locations = searchedLocations.value
@@ -276,6 +273,9 @@ export default defineComponent({
             .then((result: any) => {
               searchedLocation.value = result 
               searchedLocation.value.latLon = latLng
+              if (searchedLocation.value.latLon) {
+                centerInChildComponent([latLng.lat,latLng.lng])           
+              }              
             })      
     }
 

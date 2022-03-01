@@ -33,7 +33,6 @@ import { defineComponent, ref, PropType, watch } from 'vue'
 import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { CustomButton } from 'vue-3-component-library'
 import { Check } from '@/serializer/Check'
-import { Location } from '@/serializer/Location'
 import Message, { ColorState } from './message.vue'
 import { useI18n } from 'vue-i18n'
 
@@ -96,8 +95,7 @@ export default defineComponent({
     }
 
     const centerInChildComponent = (loc: any) => {
-      console.log('centerInChildComponent loc: ',loc)
-      console.log(child.value.centerClickedLocation(loc.latitude,loc.longitude))
+      child.value.centerClickedLocation(loc.latitude,loc.longitude)
     }
 
     return {

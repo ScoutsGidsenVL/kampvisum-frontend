@@ -1,6 +1,7 @@
 <template>
-  <div class="h-96 w-full">
+  <div class="w-full" style="height: 500px">
     <l-map
+      @popupclose="setPopupFalse()"
       :options="{scrollWheelZoom: false}"
       ref="myMap"
       class="z-0 border-2 border-black"
@@ -15,7 +16,7 @@
       ></l-tile-layer>
 
       <div v-for="(location, index) in locations" :key="location">
-        <l-marker @update:latLng="patchLatLng($event, index)" :lat-lng="location.latLon">
+        <l-marker :id="marker+index" @update:latLng="patchLatLng($event, index)" :lat-lng="location.latLon">
           <l-icon>
             <svg width="30" height="30" style="margin-left: -14px;margin-top: -30px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
@@ -65,7 +66,7 @@
       </div>
 
       <div v-for="(sL, index) in searchedLocations" :key="sL">
-        <l-marker id="searchedMarker" :lat-lng="sL.latLon">
+        <l-marker :lat-lng="sL.latLon">
           <l-icon>
             <svg width="30" height="30" style="margin-left: -14px;margin-top: -30px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
@@ -169,9 +170,27 @@ export default defineComponent ({
     // https://vue2-leaflet.netlify.app/quickstart/
     const isWarningDisplayed = ref<Boolean>(false)
 
+    const isPopupOpen = ref<boolean>(false)
+
+    const setPopupFalse = () => {
+      // setTimeout(() => {
+      //   isPopupOpen.value = false
+      // }, 100)
+    }
+
     const centerClickedLocation = (lat: any,lng: any) => {
       let map = myMap.value.leafletObject
       map.flyTo(latLng(lat, lng), 14)
+      // map.on('zoomend', function () {
+      //   // SEARCH
+      //   if (props.searchedLocations.length === 1) {
+      //     //@ts-ignore
+      //     document.querySelector("#locationForm > div.py-4.flex.flex-col.gap-3.relative > div.w-full > div > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-marker-pane.leaflet-zoom-hide > div").click()
+      //   } else {
+      //     //@ts-ignore
+      //     document.querySelector(`#locationForm > div.py-4.flex.flex-col.gap-3.relative > div.w-full > div > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-marker-pane.leaflet-zoom-hide > div:nth-child(${props.searchedLocations.length})`).click()
+      //   }
+      // })  
     }
 
     const displayWarning = () => {
@@ -192,7 +211,9 @@ export default defineComponent ({
     }
 
     const addLocationPoint = () => {
+      console.log('CLICKER POINT ADD')
       emit('addLocationPoint', searchedLocation.value)
+      // isPopupOpen.value = false
     }
 
     const cancelLocationPoint = () => {
@@ -285,6 +306,7 @@ export default defineComponent ({
       patchLatLng,
       hideWarning,
       InputTypes,
+      setPopupFalse,
       addOnClick,
       doMapStuff,
       toPatch,
