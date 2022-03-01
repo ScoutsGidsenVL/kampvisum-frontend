@@ -176,8 +176,6 @@ export default defineComponent({
     })
     // -------------------------------------------------
 
-
-
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',

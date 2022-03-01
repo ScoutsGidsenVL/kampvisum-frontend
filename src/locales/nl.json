@@ -52,6 +52,7 @@
         }
       },
       "deadlines": {
+        "important": "Belangrijk"
       }
     }
   },
