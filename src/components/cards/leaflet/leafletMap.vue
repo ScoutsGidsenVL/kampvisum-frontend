@@ -1,6 +1,7 @@
 <template>
   <div class="h-96 w-full">
     <l-map
+      :options="{scrollWheelZoom: false}"
       ref="myMap"
       class="z-0 border-2 border-black"
       v-model="z"
@@ -167,6 +168,11 @@ export default defineComponent ({
     // https://vue2-leaflet.netlify.app/quickstart/
     const isWarningDisplayed = ref<Boolean>(false)
 
+    const centerClickedLocation = (lat: any,lng: any) => {
+      let map = myMap.value.leafletObject
+      map.flyTo(latLng(lat, lng), 14)
+    }
+
     const displayWarning = () => {
       isWarningDisplayed.value = true
     }
@@ -265,6 +271,7 @@ export default defineComponent ({
       doMapStuff()
     }, 1)
     return {
+      centerClickedLocation,
       deleteMainLocationPoint,
       cancelLocationPoint,
       deleteLocationPoint,

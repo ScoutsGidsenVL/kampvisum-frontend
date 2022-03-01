@@ -51,6 +51,7 @@
           </div>
 
           <leaflet-map 
+          ref="child2"
           @addOnClick="addOnClick($event)" 
           @deleteLocationPoint="deleteLocationPoint($event)" 
           @cancelLocationPoint="cancelLocationPoint()" 
@@ -234,17 +235,21 @@ export default defineComponent({
       e.value = ""
     }
 
+    const child2 = ref<any>(null)
+
+    const centerInChildComponent = (loc: any) => {
+      console.log('centerInChildComponent loc: ',loc)
+      console.log(child2.value.centerClickedLocation(loc[0],loc[1]))
+    }
+
     const addLocationPoint = (location: SearchedLocation) => {
       emptySearchResults()
       if (location.latLon) {
-        check.value.value.centerLatitude = location.latLon[0] ? location.latLon[0] : check.value.value.centerLatitude
-        check.value.value.centerLongitude = location.latLon[1] ? location.latLon[1] : check.value.value.centerLongitude
-        check.value.value.centerLatLon = location.latLon
-        setTimeout(() => {
-          check.value.value.zoom = 15
-        }, 400)
+        // check.value.value.centerLatitude = location.latLon[0] ? location.latLon[0] : check.value.value.centerLatitude
+        // check.value.value.centerLongitude = location.latLon[1] ? location.latLon[1] : check.value.value.centerLongitude
+        // check.value.value.centerLatLon = location.latLon
+        centerInChildComponent(location.latLon)
       }
-
       if (searchedLocations.value.length === 0 && check?.value?.checkParent?.checkType?.checkType === 'CampLocationCheck') {
         location.isMainLocation = true
       }
@@ -293,6 +298,7 @@ export default defineComponent({
       addOnClick,
       selected,
       onSubmit,
+      child2,
       loading,
       values,
       check,

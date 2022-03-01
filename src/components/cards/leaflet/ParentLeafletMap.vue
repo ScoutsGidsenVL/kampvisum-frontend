@@ -120,7 +120,7 @@ export default defineComponent({
     const centerClickedLocation = (lat: any,lng: any) => {
       let map = myMap.value.leafletObject
       map.flyTo(latLng(lat, lng), 14)
-}
+    }
 
     const doMapStuff = () => {
       let map = myMap.value.leafletObject
