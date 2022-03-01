@@ -10,6 +10,7 @@
   },
   "pages": {
     "kampvisum-overview": {
+      "change-group": "verander groep",
       "create-camp-button": "Maak nieuw kamp aan",
       "delete-warning": "Ben je zeker dat je het kamp wil verwijderen?",
       "delete-warning-button-left": "annuleer",

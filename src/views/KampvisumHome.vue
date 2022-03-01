@@ -22,8 +22,8 @@
       />
     </div>
 
-    <div @click="shineSelector()" class="underline text-green mb-3 cursor-pointer">
-      verander groep
+    <div v-if="sidebar.state === SidebarState.CLOSED" @click="shineSelector()" class="underline text-green mb-3 cursor-pointer" style="width: fit-content">
+      {{t('pages.kampvisum-overview.change-group')}}
     </div>
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
@@ -175,6 +175,8 @@ export default defineComponent({
     }
 
     return {
+      SidebarState,
+      sidebar,
       navigateTowardsVisum,
       isWarningDisplayed,
       isFetchingVisums,
