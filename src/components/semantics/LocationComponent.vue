@@ -5,9 +5,11 @@
     
     <div class="pb-3 mb-3">
       <custom-button class="mx-3 mb-3" @click="openLocationCreateSidebar()" :text="t('checks.location-check.add-location')" /> 
-      <div class="md:border-b-2" v-for="(location) in check.value.locations" :key="location">
-        <div @click="centerInChildComponent(subLocation)" class="mx-3 hover:text-green cursor-pointer" v-for="(subLocation) in location.locations" :key="subLocation">
-          ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ subLocation.address }}
+      <div v-for="(location) in check.value.locations" :key="location">
+        <div @click="centerInChildComponent(subLocation)" class="md:border-b-2 hover:text-green cursor-pointer" v-for="(subLocation) in location.locations" :key="subLocation">
+          <div class="mx-3">
+            ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ subLocation.address }}
+          </div>
         </div>
       </div>
     </div>
