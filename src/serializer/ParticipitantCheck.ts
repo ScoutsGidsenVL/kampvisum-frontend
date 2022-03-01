@@ -12,7 +12,7 @@ interface participantToPatch {
 }
 
 export const ParticipantCheckDeserializer = (input: any): Member[] => {
-  const array: Member[] = input.participants.map((i: any) => MemberDeserializer(i.participant))
+  const array: Member[] = input.participants.map((i: any) => MemberDeserializer(i.participant, i.id, i.payment_status))
   return array
 }
 

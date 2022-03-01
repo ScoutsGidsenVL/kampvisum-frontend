@@ -159,7 +159,8 @@
       "notification-deleted": "lid succesvol verwijderd uit de lijst",
       "remove": "verwijder",
       "search": "Zoek op naam",
-      "inActiveMember": "Geen scoutslid"
+      "inActiveMember": "Geen scoutslid",
+      "paid": "betaald"
     },
     "number-check": {
       "notification-patched": "aanpassingen opgeslagen"

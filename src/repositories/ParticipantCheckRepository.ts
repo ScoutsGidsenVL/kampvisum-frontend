@@ -18,6 +18,12 @@ export class ParticipantCheckRepository extends BaseRepository {
   removeParticipantFromList(checkId: string, participantId: string): Promise<any> {
     return this.delete(`${this.endpoint}${checkId}/${participantId}`)
   }
+
+  toggleHasPaid(checkId: string, wrapperParticipantId: string) {
+    return this.patch(`${this.endpoint}${checkId}/${wrapperParticipantId}`, {}).then((response: any) => {
+      return this.deserializer(response.value)
+    })
+  }
 }
 
 

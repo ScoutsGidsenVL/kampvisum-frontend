@@ -17,14 +17,17 @@ export interface BaseMember {
   email?: string
   fullAddress?: string
   fullName?: string
-  hasPaid?: string
+  hasPaid?: boolean
   isMember?: boolean
   isChecked?: boolean
   inactiveMember?: boolean
+  wrapperId: string
 }
 
-export const BaseMemberDeserializer = (input: any): BaseMember => {
+export const BaseMemberDeserializer = (input: any, wId?:string, pStatus?: string): BaseMember => {
   const single: BaseMember = {
+    hasPaid: pStatus === 'Y' ? true : false,
+    wrapperId: wId ? wId : '',
     id: input.id ? input.id : input.group_admin_id,
     groupAdminId: input.group_admin_id ? input.group_admin_id : undefined,
     lastName: input.last_name,

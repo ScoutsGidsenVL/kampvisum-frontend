@@ -15,16 +15,16 @@
       <div v-if="check.checkParent.isMultiple" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
         <i-trash />
       </div>
-      <!-- <div class="flex gap-3 items-center">
+      <div class="flex gap-3 items-center">
         <div class="flex gap-2 items-center font-bold">
-          <input class="cursor-pointer" :value="true" v-model="participant.hasPaid" type="checkbox" id="paid" name="paid">
-          <label class="cursor-pointer m-0" for="paid">betaald</label>
+          <input :disabled="isPatchingPayment"  class="cursor-pointer" :value="true" v-model="participant.hasPaid" type="checkbox" id="paid" name="paid">
+          <label class="cursor-pointer m-0" for="paid">{{t('checks.participant-check.paid')}}</label>
         </div>
 
-        <div>
+        <!-- <div>
           <i-info :info="'to check if someone has paid or not.'" />
-        </div>
-      </div> -->
+        </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@
 import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { Member } from '../../serializer/Member'
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, watch, ref } from 'vue'
 import IPerson from '../icons/IPerson.vue'
 import IPencil from '../icons/IPencil.vue'
 import { Check } from '@/serializer/Check'
@@ -82,7 +82,23 @@ export default defineComponent({
       emit('openSidebarToEdit', m)
     }
 
+    const isPatchingPayment = ref<boolean>(false)
+
+    watch(() => props.participant.hasPaid, () => {
+      console.log('PATCH HAS PAID')
+      if (props.check.id && !isPatchingPayment.value) {
+        isPatchingPayment.value = true
+        console.log('wrapperId', props.participant)
+        RepositoryFactory.get(ParticipantCheckRepository)
+          .toggleHasPaid(props.check.id, props.participant.wrapperId)
+          .then(() => {
+            isPatchingPayment.value = false
+          })
+      }
+    })
+
     return {
+      isPatchingPayment,
       deleteFromList,
       openEditForm,
       t
