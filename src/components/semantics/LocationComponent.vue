@@ -1,11 +1,22 @@
 <template>
   <div class="pb-3">
+
     <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
-    <parent-leaflet-map v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @edit="edit($event)">
-      <template v-slot:create>
-        <custom-button @click="openLocationCreateSidebar()" :text="t('checks.location-check.add-location')" /> 
-      </template> 
-    </parent-leaflet-map>
+    
+    <div class="px-3 pb-3">
+      <custom-button @click="openLocationCreateSidebar()" :text="t('checks.location-check.add-location')" /> 
+      <div class="mt-3" v-for="(location) in check.value.locations" :key="location">
+        <div class="font-bold">
+          {{ location.name }}
+        </div>
+        <div class="ml-2" v-for="(subLocation) in location.locations" :key="subLocation">
+          • {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ subLocation.address }}
+        </div>
+      </div>
+    </div>
+
+    <parent-leaflet-map v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @edit="edit($event)" />
+
     <location-create-sidebar
       v-if="createSidebar.state === 'new' || createSidebar.state === 'edit'"
       :parentLocations="check.value.locations"

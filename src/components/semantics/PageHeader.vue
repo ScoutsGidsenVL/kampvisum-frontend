@@ -2,7 +2,7 @@
   <div>
     <div class="p-3 border border-lightGray shadow-sm">
       <h1>{{ title }}</h1>
-      <h4 @click="navigateTowardsVisum(route.params.campId)" v-if="subTitle" class="flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline">
+      <h4 style="width: fit-content" @click="navigateTowardsVisum(route.params.campId)" v-if="subTitle" class="flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline">
         <i-left-arrow />
         {{ subTitle }}
       </h4>

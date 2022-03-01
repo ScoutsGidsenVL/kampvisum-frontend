@@ -24,14 +24,7 @@
           </div>
         </div>
 
-        <div class="py-4">
-          <strong class="m-0 text-lg">{{t('sidebars.location-sidebar.form.contactPerson')}}</strong>
-          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactName" :label="t('sidebars.location-sidebar.form.contactName')" />
-          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactPhone" :label="t('sidebars.location-sidebar.form.contactPhone')" />
-          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required|email' : 'email'" name="contactEmail" :label="t('sidebars.location-sidebar.form.contactEmail')" />
-        </div>
-
-        <div class="pb-4 flex flex-col gap-3 relative">
+        <div class="py-4 flex flex-col gap-3 relative">
           <strong class="m-0 text-lg">{{t('sidebars.location-sidebar.form.addresses')}}</strong>
 
           <div v-if="check.checkParent.checkType.checkType === 'CampLocationCheck' && searchedLocations.length > 0" class="bg-lighterGreen p-3" >
@@ -46,7 +39,7 @@
 
           <div class="bg-lighterGreen p-2">{{t('sidebars.location-sidebar.form.search-map')}}</div>
           <search-input :loadingSubmit="patchLoading" v-model:loading="loading" name="search" :placeholder="t('sidebars.location-sidebar.form.search-map')" :repository="LocationSearchRepository" @fetchedOptions="fetchedSearchResults($event)" />
-          <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-10 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
+          <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-32 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
             <div v-for="(fetchedLocation, index) in fetchedLocationsToSelect" :key="fetchedLocation" :class="index === 1 ? 'border-t-10': ''" class="border-ligtGray hover:bg-lightGray p-2 pl-3 cursor-pointer border-b-2">
               <div class="flex flex-col" @click="addLocationPoint(fetchedLocation)">
                 <strong>
@@ -67,6 +60,13 @@
           :searchedLocation="searchedLocation" 
           v-model:center="check.value.centerLatLon"
           :check="check" />
+        </div>
+
+        <div class="">
+          <strong class="m-0 text-lg">{{t('sidebars.location-sidebar.form.contactPerson')}}</strong>
+          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''" name="contactName" :label="t('sidebars.location-sidebar.form.contactName')" />
+          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? '' : ''" name="contactPhone" :label="t('sidebars.location-sidebar.form.contactPhone')" />
+          <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'email' : 'email'" name="contactEmail" :label="t('sidebars.location-sidebar.form.contactEmail')" />
         </div>
 
         <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
@@ -240,6 +240,9 @@ export default defineComponent({
         check.value.value.centerLatitude = location.latLon[0] ? location.latLon[0] : check.value.value.centerLatitude
         check.value.value.centerLongitude = location.latLon[1] ? location.latLon[1] : check.value.value.centerLongitude
         check.value.value.centerLatLon = location.latLon
+        setTimeout(() => {
+          check.value.value.zoom = 15
+        }, 400)
       }
 
       if (searchedLocations.value.length === 0 && check?.value?.checkParent?.checkType?.checkType === 'CampLocationCheck') {
