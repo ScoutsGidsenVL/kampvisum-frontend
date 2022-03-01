@@ -1,7 +1,7 @@
 <template>
 <div class="hover-trigger cursor-pointer hover:bg-lightGray rounded-md p-2 -ml-2 ht2">
   <div>
-    <div class="flex">
+    <div class="flex items-center">
       <!-- STATE INDICATION -->
       <div>
         <svg v-if="simpleCheck.value === StatusState.CHECKED" class="fill-current text-green" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -22,13 +22,13 @@
         </p>
       </div>
       <!-- INFO -->
-      <div>
+      <div class="ml-1.5">
         <i-info :info="check.checkParent.explanation" />
       </div>
     </div>
     <!-- OPTIONS -->
-    <div class="hover-target">
-      <div @click="select(StatusState.CHECKED)" class="flex gap-4 hover:underline">
+    <div class="hover-target mt-1.5 pl-0.5">
+      <div @click="select(StatusState.CHECKED)" class="mb-0.5 flex gap-4 underline hover:text-green">
         <svg class="fill-current text-green iconSize" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path
             d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.393 7.5l-5.643 5.784-2.644-2.506-1.856 1.858 4.5 4.364 7.5-7.643-1.857-1.857z"
@@ -38,7 +38,7 @@
           Checked
         </div>
       </div>
-      <div @click="select(StatusState.NOT_APPLICABLE)" class="flex gap-4 hover:underline">
+      <div @click="select(StatusState.NOT_APPLICABLE)" class="mb-0.5 flex gap-4 underline hover:text-green">
         <svg class="iconSize" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="51.5" cy="51.5" r="46" stroke="#DC7700" stroke-width="11" />
           <line x1="19" y1="51.5" x2="84" y2="51.5" stroke="#DC7700" stroke-width="11" />
@@ -47,7 +47,7 @@
           Niet relevant
         </div>
       </div>
-      <div @click="select(StatusState.EMPTY)" class="flex gap-4 hover:underline">
+      <div @click="select(StatusState.EMPTY)" class=" mb-0.5 flex gap-4 underline hover:text-green">
       <i-empty-check class="iconSize" />
       <div>Leeg</div>
       </div>
@@ -158,8 +158,8 @@ export default defineComponent({
 
 .iconSize {
   margin-top: 2px;
-  width: 24px;
-  height: 24px;
+  width: 19px;
+  height: 19px;
 }
 
 .check-label {

@@ -1,6 +1,6 @@
 <template>
   <div class="h-96 w-full">
-    <l-map ref="myMap" class="z-0" v-model:zoom="check.value.zoom" :center="center" @update:center="centerUpdated" @click="addOnClick($event)">
+    <l-map ref="myMap" :options="{scrollWheelZoom: false}" class="z-0" v-model:zoom="check.value.zoom" :center="center" @update:center="centerUpdated" @click="addOnClick($event)">
       <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"></l-tile-layer>
 
       <div v-for="parentLocation in parentLocations" :key="parentLocation">
@@ -117,6 +117,11 @@ export default defineComponent({
       isWarningDisplayed.value = true
     }
 
+    const centerClickedLocation = (lat: any,lng: any) => {
+      let map = myMap.value.leafletObject
+      map.flyTo(latLng(lat, lng), 14)
+}
+
     const doMapStuff = () => {
       let map = myMap.value.leafletObject
       let locs: Array<any> = []
@@ -224,6 +229,7 @@ export default defineComponent({
     init()
 
     return {
+      centerClickedLocation,
       deleteMainLocationPoint,
       cancelLocationPoint,
       deleteLocationPoint,

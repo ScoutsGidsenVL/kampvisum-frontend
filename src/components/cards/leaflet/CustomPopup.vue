@@ -9,17 +9,17 @@
       <a class="text-sm" target="_blank" :href="'https://www.google.com/maps?q=' + location.address">{{ location.address }}</a>  
     </div>    
     <div class="bg-lighterGreen py-2 px-1 border-l-2 border-green flex flex-col gap-2">
-      <div class="flex gap-3 items-center">
+      <div v-if="parentLocation.contactName" class="flex gap-3 items-center">
         <i-person-green />
         <span>{{ parentLocation.contactName }}</span>
       </div>
 
-      <div class="flex gap-2 items-center">
+      <div v-if="parentLocation.contactPhone" class="flex gap-2 items-center">
         <i-phone-green />
         <a target="_blank" :href="'tel:' + parentLocation.contactPhone">{{ parentLocation.contactPhone }}</a>
       </div>
 
-      <div class="flex gap-2 items-center">
+      <div v-if="parentLocation.contactEmail" class="flex gap-2 items-center">
         <i-mail-green />
         <a target="_blank" :href="'mailto:' + parentLocation.contactEmail">{{ parentLocation.contactEmail }}</a>
       </div>
