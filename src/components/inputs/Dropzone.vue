@@ -2,10 +2,10 @@
   <div class="flex flex-col w-full">
     <div
       ref="dropzoneDiv"
-      class="bg-white w-full h-75-screen bg-white inline-block border-dashed border-4 border-black rounded p-5 cursor-pointer"
+      class="bg-white w-full h-75-screen bg-white inline-block border-dashed border-4 border-black rounded cursor-pointer"
       :class="{
-        'flex  justify-center items-center cursor-pointer': fileCount === 0,
-        'justify-items-center grid grid-cols-1 md:grid-cols-2 place-content-start gap-4 ':
+        'flex  justify-center items-center cursor-pointer p-3': fileCount === 0,
+        'grid grid-cols-1 md:grid-cols-4 place-content-start p-3 gap-4 ':
           fileCount !== 0,
       }"
     >
