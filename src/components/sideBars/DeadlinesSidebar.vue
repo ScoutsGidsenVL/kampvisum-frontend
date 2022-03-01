@@ -1,6 +1,6 @@
 <template>
   <div
-    class="z-50 bg-white shadow-md ml-3 rounded-md"
+    class="z-30 bg-white shadow-md ml-3 rounded-md"
     :class="{ 'md:max-w-md w-100 xs:w-11/12 xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }"
   >
     <!-- WHEN CLOSED -->
@@ -19,9 +19,14 @@
     <div class="h-screen" :class="{ 'd-flex p-3 flex-column': sidebar.state === SidebarState.OPEN, 'd-none fixed': sidebar.state === SidebarState.CLOSED }">
       <!-- DEADLINE DETAIL WHEN CLICKED ON AN DEADLINE-->
       <div v-if="isDeadlineDetail" class="w-100 flex flex-col justify-between xs:mt-20 md:mt-0">
+        <div class="flex justify-end mb-2">
+          <i-cross class="cursor-pointer" @click="closeSideBar()" />
+        </div>
         <div class="flex justify-between items-center">
           <h2>{{t('sidebars.deadline-sidebar.title')}}</h2>
-          <div class="underline cursor-pointer" @click="goBack()">{{t('sidebars.deadline-sidebar.return')}}</div>
+          <div class="flex gap-10 items-center">
+            <div class="underline cursor-pointer" @click="goBack()">{{t('sidebars.deadline-sidebar.return')}}</div>
+          </div>
         </div>
         <!-- CARD -->
         <div class="bg-white shadow-md p-2 mt-2">
@@ -88,11 +93,11 @@
 
       <!-- LIST OF DEADLINES TO CLICK ON -->
       <div v-if="!isDeadlineDetail">
-        <div class="w-100 flex items-center justify-between cursor-pointer xs:mt-20 md:mt-0" @click="closeSideBar()">
+        <div class="w-100 flex items-center justify-between xs:mt-20 md:mt-0">
           <div class="flex gap-3">
             <h2>{{t('sidebars.deadline-sidebar.title')}}</h2>
           </div>
-          <i-cross />
+          <i-cross class="cursor-pointer" @click="closeSideBar()" />
         </div>
 
         <div class="pt-3 flex flex-column gap-5">
