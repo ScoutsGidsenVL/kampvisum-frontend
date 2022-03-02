@@ -21,7 +21,6 @@
           <div class="w-100">
             <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
           </div>
-          {{selectedCampTypes}}
 
           <div v-if="sideBarState.state !== 'hide'" class="w-100 mt-4">
             <div v-for="campType in campTypes" :key="campType">
@@ -213,6 +212,13 @@ export default defineComponent({
           })
 
           setTimeout(() => {
+            selectedCampTypes.value && selectedCampTypes.value.forEach((sc: string) => {
+              console.log('checkbox-'+sc)
+              if (sc !== 'basis') {
+                // @ts-ignore
+                document.getElementById('checkbox-'+sc).checked = true
+              }
+            })
             selectedGroupSections.value.forEach((s: any) => {
               // @ts-ignore
               document.getElementById('checkbox-' + s).checked = true
