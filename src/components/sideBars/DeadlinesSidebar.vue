@@ -11,7 +11,7 @@
         </svg>
       </div>
       <div class="font-bold mt-10 -mb-32" style="writing-mode: vertical-rl;text-orientation: upright;">
-        DEADLINES
+        {{t('sidebars.deadline-sidebar.vertical-text')}}
       </div>
       <div class="flex h-screen justify-center items-center">
         <i-vertical-dots />

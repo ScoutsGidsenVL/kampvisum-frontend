@@ -53,7 +53,8 @@
         }
       },
       "deadlines": {
-        "important": "Belangrijk"
+        "important": "Belangrijk",
+        "title": "Deadlines"
       }
     }
   },
@@ -78,7 +79,8 @@
       "info": "Wat zijn deadlines",
       "actual-info": "hoe begin ik hieraan? hier kan je de registratie doen (volg daarvoor deadline Kampregistratie), ledenlijsten, ...",
       "fill-in": "Vul aan",
-      "notification-updated": "Deadline check is succesvol bewerkt"
+      "notification-updated": "Deadline check is succesvol bewerkt",
+      "vertical-text": "DEADLINES"
     },
     "navigation-sidebar": {
     },

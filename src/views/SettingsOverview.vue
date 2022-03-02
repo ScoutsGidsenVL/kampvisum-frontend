@@ -6,11 +6,11 @@
         {{ t('pages.settings.sections.title') }}
       </h3>
     </div>
-    <!-- <div @click="setTabState('deadlines')" class="text-center w-full cursor-pointer" :class="tabState === 'deadlines' ? 'text-white bg-green' : ''">
+    <div @click="setTabState('deadlines')" class="text-center w-full cursor-pointer" :class="tabState === 'deadlines' ? 'text-white bg-green' : ''">
       <h3 class="font-museo-sans font-semibold mt-2">
-        deadlines
+        {{ t('pages.settings.deadlines.title') }}
       </h3>
-    </div> -->
+    </div>
   </div>
 
   <!-- TO DISPLAY -->
