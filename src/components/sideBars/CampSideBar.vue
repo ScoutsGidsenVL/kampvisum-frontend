@@ -24,7 +24,7 @@
 
           <div v-if="sideBarState.state !== 'edit'" class="w-100 mt-4">
             <div v-for="campType in campTypes" :key="campType">
-              <custom-input v-model="selectedCampTypes" :disabled="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="campType.id" :label="campType.label" />
+              <custom-input v-model="selectedCampTypes" :disabled="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="campType.campType" :label="campType.label" />
             </div>
           </div>
 
