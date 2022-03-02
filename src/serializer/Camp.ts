@@ -38,7 +38,6 @@ export const CampDeserializer = (input: any): Camp => {
 }
 
 export const CampSerializer = (input: any): any => {
-  console.log('INPUT: ', input)
   const single: any = {
     name: input.name,
     start_date: input.startDate,
@@ -50,6 +49,10 @@ export const CampSerializer = (input: any): any => {
     arr.push({ camp_type: c })
   })
   // single.camp_types = arr
+<<<<<<< HEAD
   return {camp: single, camp_types: arr}
+=======
+  return { camp: single, camp_types: arr }
+>>>>>>> 74d0478bd6d68fad4c9ee2140ff47e071b4377b0
 }
 
