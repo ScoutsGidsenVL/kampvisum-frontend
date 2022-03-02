@@ -46,13 +46,9 @@ export const CampSerializer = (input: any): any => {
   }
   let arr: any[] = []
   input.campTypes && input.campTypes.forEach((c: string) => {
-    arr.push({ camp_type: c })
+    arr.push({ id: c })
   })
   // single.camp_types = arr
-<<<<<<< HEAD
-  return {camp: single, camp_types: arr}
-=======
   return { camp: single, camp_types: arr }
->>>>>>> 74d0478bd6d68fad4c9ee2140ff47e071b4377b0
 }
 
