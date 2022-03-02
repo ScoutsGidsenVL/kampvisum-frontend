@@ -38,7 +38,6 @@ export const CampDeserializer = (input: any): Camp => {
 }
 
 export const CampSerializer = (input: any): any => {
-  console.log('INPUT: ', input)
   const single: any = {
     name: input.name,
     start_date: input.startDate,
@@ -49,8 +48,7 @@ export const CampSerializer = (input: any): any => {
   input.campTypes && input.campTypes.forEach((c: string) => {
     arr.push({ id: c })
   })
-  single.camp_types = arr
-  console.log('SINGLE: ', single)
-  return {camp: single}
+  // single.camp_types = arr
+  return { camp: single, camp_types: arr }
 }
 
