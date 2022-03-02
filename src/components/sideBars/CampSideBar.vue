@@ -21,8 +21,9 @@
           <div class="w-100">
             <custom-input :disabled="isSubmitting" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.kampvisum-sidebar.input-fields.name')" />
           </div>
+          {{selectedCampTypes}}
 
-          <div v-if="sideBarState.state !== 'edit'" class="w-100 mt-4">
+          <div v-if="sideBarState.state !== 'hide'" class="w-100 mt-4">
             <div v-for="campType in campTypes" :key="campType">
               <custom-input v-model="selectedCampTypes" :disabled="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="campType.campType" :label="campType.label" />
             </div>
@@ -203,10 +204,10 @@ export default defineComponent({
             startDate: value.entity.camp.startDate,
             sections: value.entity.camp.sections,
           })
-          selectedCampType.value = value.entity.categorySet.categorySetParent.campType
+          // selectedCampType.value = value.entity.categorySet.categorySetParent.campType
           camp.value.sections = SectionObjectsToSectionStrings(value.entity.camp.sections)
           selectedGroupSections.value = SectionObjectsToSectionStrings(value.entity.camp.sections)
-          selectedCampTypes.value = []
+          selectedCampTypes.value = value.entity.campTypes.map((ct: CampType) => ct.campType)
           resetForm({
             values: camp.value,
           })
