@@ -40,7 +40,7 @@ export default defineComponent({
     })
 
     const options = ref<any>([{value: 'M', label: t('sidebars.participant-sidebar.filter.man')}, {value: 'F', label: t('sidebars.participant-sidebar.filter.woman')}, {value: 'X', label: t('sidebars.participant-sidebar.filter.other')}])
-    const filter = ref<Filter>({ gender: '', ageMin: '', ageMax: '' })
+    const filter = ref<Filter>({ gender: '', ageMin: '', ageMax: '', type: '' })
 
     watch(() => filter.value.gender, () => {
       emit('changedFilters', filter.value)

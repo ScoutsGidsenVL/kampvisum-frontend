@@ -1,5 +1,6 @@
 export interface Filter {
   gender: string,
   ageMin: string,
-  ageMax: string
+  ageMax: string,
+  type: string
 }

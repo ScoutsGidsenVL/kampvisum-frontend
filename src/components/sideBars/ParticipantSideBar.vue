@@ -159,7 +159,7 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const isPatching = ref<boolean>(false)
     const loading = ref<boolean>(false)
-    const filter = ref<Filter>()
+    const filter = ref<Filter>({ gender: '', ageMin: '', ageMax: '', type: props.check.value.participantCheckType })
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -230,7 +230,7 @@ export default defineComponent({
 
     const fetchedSearchResults = (results: Member[]) => {
       //ALSO CHECK ALREADY ADDED MEMBERS IN SEARCH RESULTS
-      props.check.value.forEach((alreadyAddedMember: Member) => {
+      props.check.value.participants.forEach((alreadyAddedMember: Member) => {
         results.forEach((member: Member) => {
           if (member.id === alreadyAddedMember.id) {
             member.isChecked = true
