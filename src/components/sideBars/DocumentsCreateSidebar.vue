@@ -23,21 +23,20 @@
           </div>
         </div>
         <div class="flex flex-col mb-1">
-          <span class="font-bold text-sm">{{t('checks.document-check.uploaded-files')}}</span>
+          <span class="font-bold text-sm">{{ t('checks.document-check.uploaded-files') }}</span>
         </div>
         <div class="pb-4">
-          <span v-show="filesUploaded.length === 0 && !isUploading">{{t('checks.document-check.no-uploaded-files')}}</span>
-          <file-item-component v-for="(file) in filesUploaded" :file="file" :key="file" :canBeChecked="true" />
+          <span v-show="filesUploaded.length === 0 && !isUploading">{{ t('checks.document-check.no-uploaded-files') }}</span>
+          <file-item-component v-for="file in filesUploaded" :file="file" :key="file" :canBeChecked="true" />
         </div>
 
         <div class="pb-4 flex flex-col">
-          <span class="font-bold text-sm">{{t('checks.document-check.search-files')}}</span>
+          <span class="font-bold text-sm">{{ t('checks.document-check.search-files') }}</span>
           <search-input v-model:loading="loading" name="search" :repository="FileRepository" :group="visum.groupGroupAdminId" @fetchedOptions="fetchedSearchResult($event)" />
         </div>
 
-
         <div>
-          <file-item-component v-for="(file) in filesToSelectFrom" :file="file" :key="file" :canBeChecked="true" />
+          <file-item-component v-for="file in filesToSelectFrom" :file="file" :key="file" :canBeChecked="true" />
         </div>
 
         <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
@@ -47,7 +46,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
-                {{sideBarState.state === 'edit' ? 'Bewerk' : 'Voeg toe'}}
+                {{ sideBarState.state === 'edit' ? 'Bewerk' : 'Voeg toe' }}
               </div>
             </template>
           </custom-button>
@@ -62,14 +61,14 @@ import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, Custo
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { FileCheckRepository } from '@/repositories/FileCheckRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
-import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
+import DeadlineCreateCard from '@/components/cards/DeadlineCreateCard.vue'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { FileRepository } from '@/repositories/FileRepository'
 import { useSelectionHelper } from '@/helpers/selectionHelper'
 import DateField from '@/components/semantics/DateField.vue'
 import { PostLocation } from '../../serializer/PostLocation'
-import { DeadlineItem } from '@/serializer/DeadlineItem'
+import { CustomDeadline } from '@/serializer/CustomDeadline'
 import { useUpload } from '../../composable/useUpload'
 import FileItemComponent from '../upload/FileItem.vue'
 import { useForm, ErrorMessage } from 'vee-validate'
@@ -87,7 +86,7 @@ export default defineComponent({
     'custom-header': CustomHeader,
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,
-    DeadlineItemCard,
+    DeadlineCreateCard,
     FileItemComponent,
     ErrorMessage,
     SearchInput,
@@ -130,7 +129,7 @@ export default defineComponent({
     },
     check: {
       type: Object as PropType<Check>,
-      required: true
+      required: true,
     },
     visum: {
       type: Object as PropType<Visum>,
@@ -177,14 +176,14 @@ export default defineComponent({
         })
     }
 
-    const items = ref<Array<DeadlineItem>>([{ category: '', label: ''}])
+    const items = ref<Array<CustomDeadline>>([{ category: '', label: '' }])
 
     const addItem = () => {
-      items.value.push({category: '', label: ''})
+      items.value.push({ category: '', label: '' })
     }
 
     const removeItemFromArray = (index: string) => {
-      items.value.splice(Number(index), 1);
+      items.value.splice(Number(index), 1)
     }
 
     const uploadedFile = (file: FileItem) => {
@@ -210,7 +209,7 @@ export default defineComponent({
 
       //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
       results.forEach((r: FileItem) => {
-        if (!(filesToSelectFrom.value.some((f: FileItem) => checkForIdMatch(f,r)))) {
+        if (!filesToSelectFrom.value.some((f: FileItem) => checkForIdMatch(f, r))) {
           filesToSelectFrom.value.push(r)
         }
       })

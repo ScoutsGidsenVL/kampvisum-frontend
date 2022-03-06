@@ -53,10 +53,10 @@
 import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
 import DateFieldDeadline from '@/components/semantics/DateFieldDeadline.vue'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
-import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
+import DeadlineCreateCard from '@/components/cards/DeadlineCreateCard.vue'
 import { DeadlineRepository } from '@/repositories/DeadlineRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { DeadlineItem } from '@/serializer/DeadlineItem'
+import { CustomDeadline } from '@/serializer/CustomDeadline'
 import { useForm, ErrorMessage } from 'vee-validate'
 import { Deadline } from '@/serializer/Deadline'
 import { Camp } from '../../serializer/Camp'
@@ -70,9 +70,9 @@ export default defineComponent({
     'custom-header': CustomHeader,
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,
-    DeadlineItemCard,
+    DeadlineCreateCard,
     ErrorMessage,
-    DateFieldDeadline
+    DateFieldDeadline,
   },
   props: {
     title: {
@@ -162,14 +162,14 @@ export default defineComponent({
     //     })
     // }
 
-    const items = ref<Array<DeadlineItem>>([{ category: '', label: ''}])
+    const items = ref<Array<CustomDeadline>>([{ category: '', label: '' }])
 
     const addItem = () => {
-      items.value.push({category: '', label: ''})
+      items.value.push({ category: '', label: '' })
     }
 
     const removeItemFromArray = (index: string) => {
-      items.value.splice(Number(index), 1);
+      items.value.splice(Number(index), 1)
     }
 
     return {
@@ -183,7 +183,7 @@ export default defineComponent({
       t,
       addItem,
       items,
-      removeItemFromArray
+      removeItemFromArray,
     }
   },
 })

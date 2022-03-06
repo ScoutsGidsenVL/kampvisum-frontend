@@ -10,8 +10,8 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
-      <div class="font-bold mt-10 -mb-32" style="writing-mode: vertical-rl;text-orientation: upright;">
-        {{t('sidebars.deadline-sidebar.vertical-text')}}
+      <div class="font-bold mt-10 -mb-32" style="writing-mode: vertical-rl; text-orientation: upright">
+        {{ t('sidebars.deadline-sidebar.vertical-text') }}
       </div>
       <div class="flex h-screen justify-center items-center">
         <i-vertical-dots />
@@ -26,9 +26,9 @@
           <i-cross class="cursor-pointer" @click="closeSideBar()" />
         </div>
         <div class="flex justify-between items-center">
-          <h2>{{t('sidebars.deadline-sidebar.title')}}</h2>
+          <h2>{{ t('sidebars.deadline-sidebar.title') }}</h2>
           <div class="flex gap-10 items-center">
-            <div class="underline cursor-pointer" @click="goBack()">{{t('sidebars.deadline-sidebar.return')}}</div>
+            <div class="underline cursor-pointer" @click="goBack()">{{ t('sidebars.deadline-sidebar.return') }}</div>
           </div>
         </div>
         <!-- CARD -->
@@ -43,7 +43,9 @@
             </div>
 
             <h4 class="text-green">
-              {{t('sidebars.deadline-sidebar.deadline')}}: {{ selectedDeadline.deadlineParent.dueDate.dateDay }}/{{ selectedDeadline.deadlineParent.dueDate.dateMonth }}/{{ selectedDeadline.deadlineParent.dueDate.dateYear }}
+              {{ t('sidebars.deadline-sidebar.deadline') }}: {{ selectedDeadline.deadlineParent.dueDate.dateDay }}/{{ selectedDeadline.deadlineParent.dueDate.dateMonth }}/{{
+                selectedDeadline.deadlineParent.dueDate.dateYear
+              }}
             </h4>
 
             <div class="my-2">
@@ -54,40 +56,43 @@
           </div>
 
           <div class="mt-3 ml-4">
-            <!-- CHECKS -->
-            <div class="mt-3 cursor-pointer" @click="navigateTowardsSection(linkedCheck.category.name, visum, linkedCheck.category.id, linkedCheck.id, route)" v-for="linkedCheck in selectedDeadline.linkedChecks" :key="linkedCheck">
-              <div class="flex gap-2">
-                <i-checked v-if="linkedCheck.state === 'CHECKED'" />
-                <i-empty-check v-else />
-                <p>{{ linkedCheck.label }}</p>
+            <!-- ITEMS -->
+            <div class="mt-3 cursor-pointer" v-for="deadlineItem in selectedDeadline.items" :key="deadlineItem">
+              <!-- CATEGORIES -->
+              <div class="mt-3" v-if="deadlineItem.deadlineItemParent.deadlineItemType === 'S'">
+                <div class="flex items-center gap-2">
+                  <i-checked v-if="deadlineItem.linkedSubCategory.state === 'CHECKED'" />
+                  <i-empty-check v-else />
+                  <p>{{ deadlineItem.linkedSubCategory.category.label }}</p>
+                </div>
+                <span
+                  v-if="deadlineItem.linkedSubCategory.state !== 'CHECKED'"
+                  @click="navigateTowardsSection(deadlineItem.linkedSubCategory.category.name, visum, deadlineItem.linkedSubCategory.category.id, deadlineItem.linkedSubCategory.id, route)"
+                  class="ml-4 text-green underline cursor-pointer"
+                  >{{ t('sidebars.deadline-sidebar.fill-in') }}</span
+                >
               </div>
-              <span
-                v-if="linkedCheck.state !== 'CHECKED'"
-                class="ml-4 text-green underline cursor-pointer"
-                >{{t('sidebars.deadline-sidebar.fill-in')}}</span
-              >
-            </div>
 
-            <!-- CATEGORIES -->
-            <div class="mt-3" v-for="linkedSubCategory in selectedDeadline.linkedSubCategories" :key="linkedSubCategory">
-              <div class="flex items-center gap-2">
-                <i-checked v-if="linkedSubCategory.state === 'CHECKED'" />
-                <i-empty-check v-else />
-                <p>{{ linkedSubCategory.label }}</p>
+              <!-- CHECKS -->
+              <div
+                class="mt-3"
+                v-if="deadlineItem.deadlineItemParent.deadlineItemType === 'C'"
+                @click="navigateTowardsSection(deadlineItem.linkedCheck.category.name, visum, deadlineItem.linkedCheck.category.id, deadlineItem.linkedCheck.id, route)"
+              >
+                <div class="flex gap-2">
+                  <i-checked v-if="deadlineItem.linkedCheck.state === 'CHECKED'" />
+                  <i-empty-check v-else />
+                  <p>{{ deadlineItem.linkedCheck.category.label }}</p>
+                </div>
+                <span v-if="deadlineItem.linkedCheck.state !== 'CHECKED'" class="ml-4 text-green underline cursor-pointer">{{ t('sidebars.deadline-sidebar.fill-in') }}</span>
               </div>
-              <span
-                v-if="linkedSubCategory.state !== 'CHECKED'"
-                @click="navigateTowardsSection(linkedSubCategory.category.name, visum, linkedSubCategory.category.id, linkedSubCategory.id, route)"
-                class="ml-4 text-green underline cursor-pointer"
-                >{{t('sidebars.deadline-sidebar.fill-in')}}</span
-              >
-            </div>
 
-            <!-- FLAGS -->
+              <!-- FLAGS -->
 
-            <div class="mt-3" v-for="flag in selectedDeadline.flags" :key="flag">
-              <div class="flex items-center gap-2">
-                <deadline-check :flag="flag" :isUpdatingFlag="isUpdatingFlag" @toggle="toggleFlag($event)" />
+              <div class="mt-3" v-if="deadlineItem.deadlineItemParent.deadlineItemType === 'D'">
+                <div class="flex items-center gap-2">
+                  <deadline-check :flag="flag" :isUpdatingFlag="isUpdatingFlag" @toggle="toggleFlag($event)" />
+                </div>
               </div>
             </div>
           </div>
@@ -98,7 +103,7 @@
       <div v-if="!isDeadlineDetail">
         <div class="w-100 flex items-center justify-between xs:mt-20 md:mt-0">
           <div class="flex gap-3">
-            <h2>{{t('sidebars.deadline-sidebar.title')}}</h2>
+            <h2>{{ t('sidebars.deadline-sidebar.title') }}</h2>
           </div>
           <i-cross class="cursor-pointer" @click="closeSideBar()" />
         </div>
@@ -210,7 +215,7 @@ export default defineComponent({
         .then((d: Array<any>) => {
           deadlines.value = d
           deadlines.value.forEach((dead: Deadline) => {
-            if (dead.deadlineParent && dead.deadlineParent.name === 'camp_registration') { 
+            if (dead.deadlineParent && dead.deadlineParent.name === 'camp_registration') {
               openDeadline(dead)
             }
           })
@@ -225,13 +230,11 @@ export default defineComponent({
           await RepositoryFactory.get(DeadlineRepository)
             .updateFlag(flag.id, { flag: flag.flag })
             .then((deadline: Deadline) => {
-              deadlines.value.map(
-                (dl: Deadline) => {
-                  if (dl.id === deadline.id) {
-                    dl.state = deadline.state
-                  }
+              deadlines.value.map((dl: Deadline) => {
+                if (dl.id === deadline.id) {
+                  dl.state = deadline.state
                 }
-              )
+              })
               triggerNotification(t('sidebars.deadline-sidebar.notification-updated'))
               isUpdatingFlag.value = false
             })
@@ -254,7 +257,7 @@ export default defineComponent({
       deadlines,
       goBack,
       route,
-      t
+      t,
     }
   },
 })

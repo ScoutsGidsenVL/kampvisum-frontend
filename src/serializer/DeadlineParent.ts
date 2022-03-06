@@ -1,33 +1,38 @@
 import { DueDate, DueDateDeserializer } from "./DueDate"
+import { Year, YearDeserializer } from "./Year"
+import { CampType, CampTypeDeserializer } from "./CampType"
+
 export interface DeadlineParent {
-  checks?: Array<any>
+  id?: string
   createdBy?: string
   createdOn?: string
-  deadlineType?: string
-  description?: string
-  dueDate?: DueDate
-  explanation?: string
-  id?: string
+  updatedBy?: string
+  updatedOn?: string
+  campYear?: Year
+  campTypes?: Array<CampType>
   isImportant: boolean
-  label?: string
+  dueDate?: DueDate
   name?: string
-  subCategpries?: any
+  label?: string
+  description?: string
+  explanation?: string
 }
 
 export const DeadlineParentDeserializer = (input: any): DeadlineParent => {
   const single: DeadlineParent = {
-    checks: input.checks ? input.checks : undefined,
+    id: input.id ? input.id : undefined,
     createdBy: input.created_by ? input.created_by : undefined,
     createdOn: input.created_on ? input.created_on : undefined,
-    deadlineType: input.deadline_type ? input.deadline_type : undefined,
-    description: input.description ? input.description : undefined,
-    dueDate: DueDateDeserializer(input.due_date),
-    explanation: input.explanation ? input.explanation : undefined,
-    id: input.id ? input.id : undefined,
+    updatedBy: input.updated_by ? input.updated_by : undefined,
+    updatedOn: input.updated_on ? input.updated_on : undefined,
+    campYear: input.camp_year ? YearDeserializer(input.camp_year) : undefined,
+    campTypes: input.camp_types ? input.camp_types.map((camp_type: any) => CampTypeDeserializer(camp_type)) : undefined,
     isImportant: input.is_important ? input.is_important : undefined,
-    label: input.label ? input.label : undefined,
+    dueDate: DueDateDeserializer(input.due_date),
     name: input.name ? input.name : undefined,
-    subCategpries: input.sub_categories ? input.sub_categories : undefined,
+    label: input.label ? input.label : undefined,
+    description: input.description ? input.description : undefined,
+    explanation: input.explanation ? input.explanation : undefined,
   }
 
   return single
