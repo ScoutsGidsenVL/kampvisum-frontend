@@ -154,8 +154,8 @@
       "instruction": "Sleep je documenten hier naartoe, of klik hier om ze op te laden",
     },
     "participant-check": {
-      "no-member": "Geen lid",
-      "no-members": "Geen leden",
+      "no-member": "leeg",
+      "no-members": "leeg",
       "add": "+ VOEG TOE",
       "add-without-plus": "VOEG TOE",
       "change": "+ WIJZIG",
