@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div @click="toggleFilterMenu()" class="my-1 flex justify-center xs:visible md:invisible">
+    <div v-if="checkIfIsMobileSize()" @click="toggleFilterMenu()" class="my-1 flex justify-center">
       <i-chevon-down v-if="!isFilterMenuOpen" />
       <i-chevon-up v-if="isFilterMenuOpen" />
     </div>
@@ -35,6 +35,7 @@ import { Filter } from '../../serializer/Filter'
 import Cross from '../icons/Cross.vue'
 import { useI18n } from 'vue-i18n'
 import IChevonUp from '../icons/IChevonUp.vue'
+import { usePhoneHelper } from '@/helpers/phoneHelper'
 
 export default defineComponent({
   components: { Cross, IChevonDown, IChevonUp },
@@ -42,10 +43,14 @@ export default defineComponent({
   props: {
   },
   setup (props, { emit }) {
-    const isFilterMenuOpen = ref<boolean>(false)
+const { checkIfIsMobileSize } = usePhoneHelper()
+
+    const isFilterMenuOpen = ref<boolean>(true)
 
     const closeFilterMenu = () => {
-      isFilterMenuOpen.value = false
+      if (checkIfIsMobileSize()) {
+        isFilterMenuOpen.value = false
+      }
     }
 
     const toggleFilterMenu = () => {
@@ -75,6 +80,7 @@ export default defineComponent({
     }
 
     return {
+      checkIfIsMobileSize,
       isFilterMenuOpen,
       toggleFilterMenu,
       closeFilterMenu,
