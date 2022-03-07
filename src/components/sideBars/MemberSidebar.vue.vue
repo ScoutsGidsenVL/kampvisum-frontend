@@ -18,10 +18,10 @@
         @submit.prevent="onSubmit"
       >
         <div class="px-4 pt-4 pb-1">
-          <participant-filter @changedFilters="changedFilters($event)" />
+          <participant-filter ref="filterChild" @changedFilters="changedFilters($event)" />
         </div>
         
-        <div class="p-4 mx-1">
+        <div @click="filterChild.closeFilterMenu" class="p-4 mx-1">
           <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search" :placeholder="t('checks.participant-check.search')" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
 
@@ -92,6 +92,7 @@ export default defineComponent({
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
+    const filterChild = ref<any>(null)
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const { displayCheck, checkForIdMatch } = useSelectionHelper()
     const fetchedMembers = ref<Member[]>([])
@@ -176,6 +177,7 @@ export default defineComponent({
       loading,
       filter,
       t,
+      filterChild
     }
   },
 })

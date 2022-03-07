@@ -7,14 +7,10 @@
 
       <div v-if="visums.length > 0"  @click="toggleIsdisplayCallToAction()" class="text-center border-t py-0.5 cursor-pointer">
         <div style="width:fit-content" class="m-auto" v-if="isdisplayCallToAction">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
-          </svg>
+          <i-chevon-up />
         </div>
         <div style="width:fit-content" class="m-auto" v-if="!isdisplayCallToAction">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-          </svg>
+          <i-chevon-down />
         </div>
       </div>
     </div>
@@ -22,12 +18,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, ref, PropType } from 'vue'
+import IChevonDown from '../icons/IChevonDown.vue'
+import IChevonUp from '../icons/IChevonUp.vue'
 import useVisum from '@/composable/useVisum'
+import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
-  name: 'MemberItem',
+  components: { IChevonUp, IChevonDown },
+  name: 'CallToAction',
   setup() {
     const { t } = useI18n({
       inheritLocale: true,
@@ -42,8 +41,8 @@ export default defineComponent({
     return {
       toggleIsdisplayCallToAction,
       isdisplayCallToAction,
+      visums,
       t,
-      visums
     }
   },
 })
