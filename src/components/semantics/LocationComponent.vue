@@ -17,10 +17,10 @@
     <parent-leaflet-map ref="child" v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @edit="edit($event)" />
 
     <location-create-sidebar
-      v-if="createSidebar.state === 'new' || createSidebar.state === 'edit'"
+      v-if="createSidebar.state === 'new' || createSidebar.state === 'edit' || createSidebar.state === 'search'"
       :parentLocations="check.value.locations"
       :check="check"
-      :title="t('checks.location-check.create')"
+      :title="createSidebar.state === 'new' ? t('checks.location-check.create') : createSidebar.state === 'edit' ? t('checks.location-check.edit') : createSidebar.state === 'search' ? t('checks.location-check.search') : '' "
       v-model:sideBarState="createSidebar"
       @actionSuccess="actionSuccess($event)"
     />
@@ -65,7 +65,7 @@ export default defineComponent({
 
     const openLocationCreateSidebar = (): void => {
       document.body.classList.add('overflow-hidden')
-      createSidebar.value = { state: 'new' }
+      createSidebar.value = { state: 'search' }
     }
 
     const actionSuccess = (action: { data: any; action: string }) => {

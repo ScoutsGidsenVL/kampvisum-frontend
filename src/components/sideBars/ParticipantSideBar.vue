@@ -98,7 +98,7 @@
           </div>
         </div>
         <div class="mt-5 py-4 px-4 absolute bottom-0 bg-white w-full">
-          <custom-button :disabled="!(fetchedMembers.some((f) => f.isChecked === true))" :isSubmitting="isPatching" text="VOEG TOE" />
+          <custom-button :disabled="!(fetchedMembers.some((f) => f.isChecked === true))" :isSubmitting="isPatching" :text="t('sidebars.participant-sidebar.form.add')" />
         </div>
       </form>
     </base-side-bar>

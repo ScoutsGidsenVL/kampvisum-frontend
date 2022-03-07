@@ -9,12 +9,14 @@
       name="LocationSidebar"
       :title="title"
       @hideSidebar="closeSideBar"
+      @options="changeSideBar"
       width="max-w-2xl"
+      :options="options"
     >
       <form
         id="locationForm"
         ref="formDiv"
-        :class="{ 'd-flex': sideBarState.state === 'new' || sideBarState.state === 'edit', 'd-none': sideBarState.state === 'list' }"
+        :class="{ 'd-flex': sideBarState.state === 'new' || sideBarState.state === 'edit', 'd-none': sideBarState.state === 'search' }"
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
         @submit.prevent="onSubmit"
       >
@@ -56,7 +58,7 @@
           @deleteLocationPoint="deleteLocationPoint($event)" 
           @cancelLocationPoint="cancelLocationPoint()" 
           @addLocationPoint="addLocationPoint($event)" 
-          v-if="sideBarState.state !== 'hide'" 
+          v-if="sideBarState.state === 'new' || sideBarState.state === 'edit'" 
           :searchedLocations="searchedLocations"  
           :searchedLocation="searchedLocation" 
           v-model:center="check.value.centerLatLon"
@@ -83,20 +85,46 @@
           </custom-button>
         </div>
       </form>
+
+       <!-- SEARCH -->
+      <form
+        id="SearchForm"
+        ref="searchFormDiv"
+        :class="{ 'd-none': sideBarState.state === 'new' || sideBarState.state === 'edit', 'd-flex': sideBarState.state === 'search' }"
+        class="flex-col h-full"
+        @submit.prevent="onSubmit"
+      >
+        <div class="p-4">
+          <search-input :filter="filter" v-model:loading="loading" name="search" :placeholder="t('sidebars.location-sidebar.search')" :repository="LocationRepository" @fetchedOptions="fetchedSearchResultsExistingLocations($event)" />
+        </div>
+
+        <div class="px-4">
+          <div v-for="(existingLocation) in existingLocations" :key="existingLocation">
+            <existing-location-item :existingLocation="existingLocation" :displayCheck="displayCheckLocation(false, existingLocation, existingLocations)" />
+          </div>
+        </div>
+       
+        <div class="mt-5 py-4 px-4 absolute bottom-0 bg-white w-full">
+          <custom-button :disabled="false" :isSubmitting="isPatching" :text="t('sidebars.location-sidebar.form.add')" />
+        </div>
+      </form>
     </base-side-bar>
   </div>
 </template>
 
 <script lang="ts">
-import { BaseSideBar, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
+import { BaseSideBar, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader, option } from 'vue-3-component-library'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
+import { LocationRepository } from '../../repositories/LocationRepository'
+import ExistingLocationItem from '../semantics/ExistingLocationItem.vue'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineItemCard from '@/components/cards/DeadlineItemCard.vue'
 import { SearchedLocation } from '../../serializer/SearchedLocation'
 import { useNotification } from '../../composable/useNotification'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
+import { useSelectionHelper } from '@/helpers/selectionHelper'
 import { PostLocation } from '../../serializer/PostLocation'
 import DateField from '@/components/semantics/DateField.vue'
 import { useForm, ErrorMessage } from 'vee-validate'
@@ -115,7 +143,8 @@ export default defineComponent({
     ErrorMessage,
     DateField,
     LeafletMap,
-    SearchInput
+    SearchInput,
+    ExistingLocationItem
   },
   props: {
     title: {
@@ -141,11 +170,25 @@ export default defineComponent({
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
+    const { displayCheckLocation } = useSelectionHelper()
+
+    const options = ref<option[]>([
+      { text: 'Zoek', value: 'search' },
+      { text: 'Nieuw', value: 'new' },
+    ])
+
+    const changeSideBar = (options: 'newLocationSidebar' | 'searchLocationSidebar') => {
+      if (options === 'newLocationSidebar') {
+        context.emit('update:sideBarState', { state: 'new' })
+      }
+      if (options === 'searchLocationSidebar') {
+        context.emit('update:sideBarState', { state: 'search' })
+      }
+    }
     
     // CLONE OBJECT
     const check = ref<Check>({...props.check})
-
-    const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
+    const selected = computed(() => (props.sideBarState.state === 'search' ? 'searchLocationSidebar' : 'newLocationSidebar'))
     const searchedLocations = ref<Array<SearchedLocation>>([])
     const searchedLocation = ref<SearchedLocation>({})
     const { triggerNotification } = useNotification()
@@ -187,17 +230,21 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
-      await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
-      handleSubmit(async (values: PostLocation) => {
-        patchLoading.value = true
-        values.zoom = check.value.value.zoom
-        values.centerLatLon = check.value.value.centerLatLon
-        values.centerLatitude = check.value.value.centerLatLon[0]
-        values.centerLongitude = check.value.value.centerLatLon[1]
-        sideBarState.value.state === 'edit' ?  values.id = sideBarState.value.entity.id : undefined 
-        await patchLocation(values)
-        closeSideBar()
-      })()
+      if (sideBarState.value.state === 'search') {
+        console.log('PATCH SELECTED IDS: ', existingLocations.value)
+      } else {
+        await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
+        handleSubmit(async (values: PostLocation) => {
+          patchLoading.value = true
+          values.zoom = check.value.value.zoom
+          values.centerLatLon = check.value.value.centerLatLon
+          values.centerLatitude = check.value.value.centerLatLon[0]
+          values.centerLongitude = check.value.value.centerLatLon[1]
+          sideBarState.value.state === 'edit' ?  values.id = sideBarState.value.entity.id : undefined 
+          await patchLocation(values)
+          closeSideBar()
+        })()
+      }
     }
 
     const patchLocation = async (location: PostLocation) => {
@@ -217,6 +264,12 @@ export default defineComponent({
     const fetchedSearchResults = (results: SearchedLocation[] ) => {
       fetchedLocationsToSelect.value = results
       loading.value = false
+    }
+
+    const existingLocations = ref<PostLocation[]>([])
+
+    const fetchedSearchResultsExistingLocations = (results: PostLocation[] ) => {
+      existingLocations.value = results
     }
 
     const resetSearchedLocation = () => {
@@ -245,8 +298,6 @@ export default defineComponent({
       if (searchedLocations.value.length === 0 && check?.value?.checkParent?.checkType?.checkType === 'CampLocationCheck') {
         location.isMainLocation = true
       }
-
-      console.log('location', location)
 
       searchedLocations.value.push(location)
       resetSearchedLocation()
@@ -280,14 +331,19 @@ export default defineComponent({
     }
 
     return {
+      fetchedSearchResultsExistingLocations,
       LocationSearchRepository,
       fetchedLocationsToSelect,
       fetchedSearchResults,
       cancelLocationPoint,
       deleteLocationPoint,
+      displayCheckLocation,
+      LocationRepository,
       searchedLocations,
+      existingLocations,
       searchedLocation,
       addLocationPoint,
+      changeSideBar,
       isSubmitting,
       sideBarState,
       closeSideBar,
@@ -296,12 +352,13 @@ export default defineComponent({
       addOnClick,
       selected,
       onSubmit,
-      child2,
       loading,
+      options,
+      child2,
       values,
       check,
+      init,
       t,
-      init
     }
   },
 })

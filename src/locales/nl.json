@@ -85,6 +85,7 @@
     "navigation-sidebar": {
     },
     "location-sidebar": {
+      "search": "Zoek op locatie",
       "form": {
         "name": "Naam locatie",
         "contactPerson": "Contactpersoon",
@@ -130,6 +131,7 @@
       "edit": "Bewerk",
       "add-location": "+ voeg locatie toe",
       "create": "Nieuw",
+      "search": "Zoek",
       "delete-warning-title": "Hoofdlocatie",
       "delete-warning": "Ben je zeker dat je de hoofdlocatie wil verwijderen?",
       "delete-warning-button-left": "annuleer",

@@ -11,6 +11,7 @@ export interface PostLocation {
   centerLatitude: number
   centerLongitude: number
   centerLatLon: Array<number>
+  isChecked?: boolean
 }
 
 export const PostLocationDeserializer = (input: any): PostLocation => {

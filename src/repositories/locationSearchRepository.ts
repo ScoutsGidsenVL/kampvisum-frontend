@@ -1,6 +1,6 @@
 import { BaseRepository } from '@/repositories/baseRepository'
 import { SearchedLocationDeserializer } from '@/serializer/SearchedLocation'
-import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { SearchedLocation } from '../serializer/SearchedLocation'
 
 export class LocationSearchRepository extends BaseRepository {
@@ -48,4 +48,14 @@ export class LocationSearchRepository extends BaseRepository {
       })
   }
 
+  searchExistingLocation(query: string): Promise<any> {
+    return this.get(`?term=${query}`, {}).then((response: any) => {
+      const array: any[] = []
+      response.results.forEach((result: any) => {
+        // result = MemberDeserializer(result)
+        array.push(result)
+      })
+      return array
+    })
+  }
 }
