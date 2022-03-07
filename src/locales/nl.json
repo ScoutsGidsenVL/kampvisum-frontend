@@ -87,6 +87,7 @@
     "location-sidebar": {
       "search": "Zoek op locatie",
       "form": {
+        "atleast-one": "Selecteer minstens 1 locatie",
         "name": "Naam locatie",
         "contactPerson": "Contactpersoon",
         "contactName": "Naam",
@@ -95,7 +96,7 @@
         "addresses": "Adres(sen)",
         "search-map": "Zoek een adres of duid het aan op de kaart.",
         "search-addres": "Zoek adres",
-        "main-location": "Hoofdlocatie",
+        "main-location": "Geselecteerde locatie",
         "add": "Voeg toe",
         "notification-patched": "Aanpassingen aan het kamp zijn succesvol opgeslagen!"
       }

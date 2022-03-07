@@ -8,7 +8,7 @@
     <div class="pb-3">
       <a class="text-sm" target="_blank" :href="'https://www.google.com/maps?q=' + location.address">{{ location.address }}</a>  
     </div>    
-    <div class="bg-lighterGreen py-2 px-1 border-l-2 border-green flex flex-col gap-2">
+    <div v-if="parentLocation.contactName || parentLocation.contactPhone || parentLocation.contactEmail" class="bg-lighterGreen py-2 px-1 border-l-2 border-green flex flex-col gap-2">
       <div v-if="parentLocation.contactName" class="flex gap-3 items-center">
         <i-person-green />
         <span>{{ parentLocation.contactName }}</span>

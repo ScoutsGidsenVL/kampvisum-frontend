@@ -11,7 +11,6 @@
       @hideSidebar="closeSideBar"
       @options="changeSideBar"
       width="max-w-2xl"
-      :options="options"
     >
       <form
         id="locationForm"
@@ -20,6 +19,7 @@
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
         @submit.prevent="onSubmit"
       >
+      
         <div class="mt-1flex flex-col gap-3">
           <div class="w-100">
             <custom-input :disabled="patchLoading" :type="InputTypes.TEXT" rules="required" name="name" :label="t('sidebars.location-sidebar.form.name')" />
@@ -28,11 +28,15 @@
 
         <div class="py-4 flex flex-col gap-3 relative">
           <strong class="m-0 text-lg">{{ t('sidebars.location-sidebar.form.addresses') }}</strong>
-
-          <div v-if="check.checkParent.checkType.checkType === 'CampLocationCheck' && searchedLocations.length > 0" class="bg-lighterGreen p-3">
-            <h4 class="">{{ t('sidebars.location-sidebar.form.main-location') }}</h4>
+          <div v-if="searchedLocations.length > 0" class="bg-lighterGreen p-3">
+            <div class="flex justify-between">
+              <h4 class="">{{ t('sidebars.location-sidebar.form.main-location') }}</h4>
+              <div>
+                <i-trash @click="clearLocation()" class="cursor-pointer hover:text-red" />
+              </div>
+            </div>
             <div v-for="searchedLocation in searchedLocations" :key="searchedLocation">
-              <div v-if="searchedLocation.isMainLocation">
+              <div>
                 <p class="mb-0 italic">{{ searchedLocation.name }}</p>
                 <a class="text-sm italic" target="_blank" :href="'https://www.google.com/maps?q=' + searchedLocation.address">{{ searchedLocation.address }}</a>
               </div>
@@ -41,6 +45,7 @@
 
           <div class="bg-lighterGreen p-2">{{ t('sidebars.location-sidebar.form.search-map') }}</div>
           <search-input
+            :disabled="values.locations.length !== 0"
             :loadingSubmit="patchLoading"
             v-model:loading="loading"
             name="search"
@@ -63,10 +68,9 @@
               </div>
             </div>
           </div>
-
           <leaflet-map 
           ref="child2"
-          @addOnClick="addOnClick($event)" 
+          @addOnClick="values.locations.length === 0 ? addOnClick($event) : null" 
           @deleteLocationPoint="deleteLocationPoint($event)" 
           @cancelLocationPoint="cancelLocationPoint()" 
           @addLocationPoint="addLocationPoint($event)" 
@@ -115,7 +119,6 @@
           </custom-button>
         </div>
       </form>
-
        <!-- SEARCH -->
       <form
         id="SearchForm"
@@ -132,10 +135,9 @@
           <div v-for="(existingLocation) in existingLocations" :key="existingLocation">
             <existing-location-item :existingLocation="existingLocation" :displayCheck="displayCheckLocation(false, existingLocation, existingLocations)" />
           </div>
-        </div>
-       
+        </div>       
         <div class="mt-5 py-4 px-4 absolute bottom-0 bg-white w-full">
-          <custom-button :disabled="false" :isSubmitting="isPatching" :text="t('sidebars.location-sidebar.form.add')" />
+          <custom-button :isSubmitting="isPatching" :text="t('sidebars.location-sidebar.form.add')" />
         </div>
       </form>
     </base-side-bar>
@@ -161,6 +163,7 @@ import { useForm, ErrorMessage } from 'vee-validate'
 import SearchInput from '../inputs/SearchInput.vue'
 import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
+import ITrash from '../icons/ITrash.vue'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -174,7 +177,8 @@ export default defineComponent({
     DateField,
     LeafletMap,
     SearchInput,
-    ExistingLocationItem
+    ExistingLocationItem,
+    ITrash
   },
   props: {
     title: {
@@ -261,20 +265,24 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
-      if (sideBarState.value.state === 'search') {
-        console.log('PATCH SELECTED IDS: ', existingLocations.value)
+      await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
+      if (searchedLocations.value.length !== 0) {
+        if (sideBarState.value.state === 'search') {
+          console.log('PATCH SELECTED IDS: ', existingLocations.value)
+        } else {
+          handleSubmit(async (values: PostLocation) => {
+            patchLoading.value = true
+            values.zoom = check.value.value.zoom
+            values.centerLatLon = check.value.value.centerLatLon
+            values.centerLatitude = check.value.value.centerLatLon[0]
+            values.centerLongitude = check.value.value.centerLatLon[1]
+            sideBarState.value.state === 'edit' ?  values.id = sideBarState.value.entity.id : undefined 
+            await patchLocation(values)
+            closeSideBar()
+          })()
+        }
       } else {
-        await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
-        handleSubmit(async (values: PostLocation) => {
-          patchLoading.value = true
-          values.zoom = check.value.value.zoom
-          values.centerLatLon = check.value.value.centerLatLon
-          values.centerLatitude = check.value.value.centerLatLon[0]
-          values.centerLongitude = check.value.value.centerLatLon[1]
-          sideBarState.value.state === 'edit' ?  values.id = sideBarState.value.entity.id : undefined 
-          await patchLocation(values)
-          closeSideBar()
-        })()
+        triggerNotification(t('sidebars.location-sidebar.form.atleast-one'))
       }
     }
 
@@ -361,6 +369,11 @@ export default defineComponent({
         })
     }
 
+    const clearLocation = () => {
+      searchedLocations.value = []
+      values.locations = []
+    }
+
     return {
       fetchedSearchResultsExistingLocations,
       LocationSearchRepository,
@@ -390,6 +403,7 @@ export default defineComponent({
       check,
       init,
       t,
+      clearLocation
     }
   },
 })

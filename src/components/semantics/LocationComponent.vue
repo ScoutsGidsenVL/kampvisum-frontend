@@ -65,7 +65,7 @@ export default defineComponent({
 
     const openLocationCreateSidebar = (): void => {
       document.body.classList.add('overflow-hidden')
-      createSidebar.value = { state: 'search' }
+      createSidebar.value = { state: 'new' }
     }
 
     const actionSuccess = (action: { data: any; action: string }) => {

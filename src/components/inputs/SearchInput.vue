@@ -11,7 +11,7 @@
       v-model="query"
       :placeholder="placeholder"
       type="text"
-      :disabled="loadingSubmit"
+      :disabled="loadingSubmit || disabled"
       :class="{ 'opacity-0': loadingSubmit }"
       class="appearance-none border rounded xs:w-72 md:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       @input="search()"
@@ -60,7 +60,8 @@ export default defineComponent({
     },
     group: String,
     start: String,
-    end: String
+    end: String,
+    disabled: Boolean,
   },
   setup(props, context) {
     let debounce: any

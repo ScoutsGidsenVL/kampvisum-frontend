@@ -72,6 +72,7 @@
 
 <script lang="ts">
 import { CustomButton, Warning, Loader } from 'vue-3-component-library'
+import CampCallToAction from '@/components/semantics/campCallToAction.vue'
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
@@ -80,12 +81,11 @@ import MultiSelect from '../components/inputs/MultiSelect.vue'
 import { useNotification } from '@/composable/useNotification'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 import { useNavigation } from '@/composable/useNavigation'
+import { SidebarState } from '@/helpers/infoBarHelper'
 import useVisum from '@/composable/useVisum'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
-import CampCallToAction from '@/components/semantics/campCallToAction.vue'
-import { SidebarState } from '@/helpers/infoBarHelper'
 
 export default defineComponent({
   name: 'KampvisumHome',
