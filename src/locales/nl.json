@@ -1,7 +1,7 @@
 {
   "title": "Kampkaft",
   "page-titles": {
-    "kampvisum": "Kampvisum",
+    "kampvisum": "Overzicht kampen",
     "settings": "Instellingen",
     "documents": "Documenten",
     "locations": "Locaties",
@@ -112,7 +112,7 @@
       "firstName": "Voornaam",
       "lastName": "Achternaam",
       "email": "E-mail",
-      "phone": "gsm-nummer",
+      "phone": "GSM-nummer",
       "city": "Stad",
       "postcode": "Postcode",
       "street": "Straat",
@@ -164,7 +164,7 @@
       "notification-deleted": "lid succesvol verwijderd uit de lijst",
       "remove": "verwijder",
       "search": "Zoek op naam",
-      "inActiveMember": "Geen scoutslid",
+      "inActiveMember": "verzekerd?",
       "paid": "betaald"
     },
     "number-check": {
