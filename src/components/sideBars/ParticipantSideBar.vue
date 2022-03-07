@@ -31,27 +31,27 @@
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="email" :label="t('sidebars.participant-sidebar.email')" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" name="email" :label="t('sidebars.participant-sidebar.email')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="phoneNumber" :label="t('sidebars.participant-sidebar.phone')" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" name="phoneNumber" :label="t('sidebars.participant-sidebar.phone')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="city" :label="t('sidebars.participant-sidebar.city')" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" name="city" :label="t('sidebars.participant-sidebar.city')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="postalCode" :label="t('sidebars.participant-sidebar.postcode')" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" name="postalCode" :label="t('sidebars.participant-sidebar.postcode')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" rules="required" name="street" :label="t('sidebars.participant-sidebar.street')" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" name="street" :label="t('sidebars.participant-sidebar.street')" />
           </div>
 
           <div class="w-100 mt-4">
-            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" maxlength="5" rules="required" name="number" :label="t('sidebars.participant-sidebar.nr')" />
+            <custom-input :disabled="isPatching" :type="InputTypes.TEXT" maxlength="5" name="number" :label="t('sidebars.participant-sidebar.nr')" />
           </div>
 
           <div class="w-100 mt-4">
@@ -68,7 +68,7 @@
         </div>
 
         <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
-          <custom-button :isSubmitting="isPatching" :text="sideBarState.state === 'edit' ? t('sidebars.participant-sidebar.edit') : t('sidebars.participant-sidebar.add')" />
+          <custom-button-small :isSubmitting="isPatching" :text="sideBarState.state === 'edit' ? t('sidebars.participant-sidebar.edit') : t('sidebars.participant-sidebar.add')" />
         </div>
       </form>
       <!-- SEARCH -->
@@ -98,7 +98,7 @@
           </div>
         </div>
         <div class="mt-5 py-4 px-4 absolute bottom-0 bg-white w-full">
-          <custom-button-small :disabled="!(fetchedMembers.some((f) => f.isChecked === true))" :isSubmitting="isPatching" :text="t('sidebars.participant-sidebar.form.add')" />
+          <CustomButtonSmall :disabled="!(fetchedMembers.some((f) => f.isChecked === true))" :isSubmitting="isPatching" :text="t('sidebars.participant-sidebar.form.add')" />
         </div>
       </form>
     </base-side-bar>
