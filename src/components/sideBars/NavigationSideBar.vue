@@ -32,7 +32,7 @@
               <div v-for="visum in visums" :key="visum">
                 <navigation-item :visum="visum" :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
                   <div v-for="category in visum.categorySet.categories" :key="category">
-                    <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" class="xs:text-sm md:text-md block cursor-pointer my-1 px-2" style="width: fit-content" :class="(category.id === route.params.id) ? 'text-green font-bold' : 'text-black'">
+                    <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id);closeSidebar()" class="xs:text-sm md:text-md block cursor-pointer my-1 px-2" style="width: fit-content" :class="(category.id === route.params.id) ? 'text-green font-bold' : 'text-black'">
                       {{ category.categoryParent.label }}
                     </a>
                   </div>
@@ -40,7 +40,7 @@
               </div>
             </div>
 
-            <navigation-item :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
+            <navigation-item @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
             <!-- <navigation-item link="/locaties" text="Locaties"/> -->
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
@@ -108,6 +108,10 @@ export default defineComponent({
       }
     }
 
+    const closeSidebar = () => {
+      sidebar.value.state = SidebarState.CLOSED
+    }
+
     const home = () => {
       router.push('/kampvisum-home/')
     }
@@ -124,6 +128,7 @@ export default defineComponent({
       isFetchingVisums,
       toggleSideBar,
       SidebarState,
+      closeSidebar,
       sidebar,
       route,
       visums,

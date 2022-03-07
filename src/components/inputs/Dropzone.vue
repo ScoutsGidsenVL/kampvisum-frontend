@@ -145,11 +145,12 @@
             url: `${baseUrl}files/`,
             headers: {},
             autoProcessQueue: false,
-            // acceptedFiles: '*',
+            acceptedFiles: '.jpg,.jpeg,.png,.webp,.odt,.ods,.odp,.docx,application/pdf,.pptx, .xlsx',
             previewTemplate: dropzonePreviewDiv.value?.outerHTML,
             uploadMultiple: true,
             parallelUploads: 99,
             maxFiles: 99,
+            maxFilesize: 20
           })
 
           myDropzone.on('totaluploadprogress', (progressDropzone: any) => {

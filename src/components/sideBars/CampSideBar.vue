@@ -31,6 +31,9 @@
           <div v-if="sideBarState.state !== 'hide'">
             <custom-header text="Takken die meegaan" type="h3" />
 
+            <loader color="lightGreen" size="10" :isLoading="isFetchingGroupSections" />
+
+
             <span name="sections">
               <ErrorMessage name="sections" class="text-red text-sm block mt-1 w-80" />
             </span>
@@ -50,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader, Loader } from 'vue-3-component-library'
 import { Section, SectionObjectsToSectionStrings } from '@/serializer/Section'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { CampTypeRepository } from '@/repositories/CampTypeRepository'
@@ -73,6 +76,7 @@ export default defineComponent({
     'custom-header': CustomHeader,
     ErrorMessage,
     MultiSelect,
+    Loader
   },
   props: {
     title: {
@@ -150,11 +154,15 @@ export default defineComponent({
         })
     }
 
+    const isFetchingGroupSections = ref<boolean>(false)
+
     const getGroupSections = async (groupId: string) => {
+      isFetchingGroupSections.value = true
       await RepositoryFactory.get(GroupRepository)
         .getGroupSections(groupId)
         .then((results: Section[]) => {
           groupSections.value = results
+          isFetchingGroupSections.value = false
         })
     }
 
@@ -243,7 +251,8 @@ export default defineComponent({
       isReload,
       values,
       t,
-      selectedCampTypes
+      selectedCampTypes,
+      isFetchingGroupSections
     }
   },
 })
