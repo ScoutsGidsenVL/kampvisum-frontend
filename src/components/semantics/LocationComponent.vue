@@ -4,7 +4,7 @@
     <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
     
     <div class="pb-3 mb-3">
-      <custom-button class="mx-3 mb-3" @click="openLocationCreateSidebar()" :text="t('checks.location-check.add-location')" /> 
+      <custom-button-small class="mx-3 mb-3" @click="openLocationCreateSidebar()" :text="t('checks.location-check.add-location')" /> 
       <div v-for="(location) in check.value.locations" :key="location">
         <div @click="centerInChildComponent(subLocation)" class="md:border-b-2 hover:text-green cursor-pointer" v-for="(subLocation) in location.locations" :key="subLocation">
           <div class="mx-3">

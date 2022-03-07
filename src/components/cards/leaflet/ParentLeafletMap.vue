@@ -24,11 +24,11 @@
         <slot name="create"></slot>
       </l-control>
       <l-control position="bottomleft" class="text-white" >
-        <custom-button class="text-white" @click="doMapStuff()">
+        <custom-button-small class="text-white" @click="doMapStuff()">
         <template v-slot:icon>
           <i-center />
         </template>
-        </custom-button>
+        </custom-button-small>
       </l-control>
     </l-map>
     <warning

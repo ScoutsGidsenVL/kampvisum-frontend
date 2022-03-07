@@ -100,11 +100,11 @@
       </div>
 
       <l-control position="bottomleft" class="text-white" >
-        <custom-button type="button" class="text-white" @click="doMapStuff()">
+        <custom-button-small type="button" class="text-white" @click="doMapStuff()">
         <template v-slot:icon>
           <i-center />
         </template>
-        </custom-button>
+        </custom-button-small>
       </l-control>
     </l-map>
     <warning title="Hoofdlocatie" :isLoading="isDeletingVisum" :isDisplayed="isWarningDisplayed" text="Ben je zeker de hoofdlocatie te willen verwijderen?" leftButton="annuleren" rightButton="verwijder" @leftButtonClicked="hideWarning()" @rightButtonClicked="deleteMainLocationPoint()" />

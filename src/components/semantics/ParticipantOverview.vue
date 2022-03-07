@@ -18,7 +18,7 @@
 
     <div class="flex pl-3">
       <div class="xs:w-100 md:w-40">
-        <custom-button
+        <custom-button-small
           @click="openMemberSidebar()"
           class="w-100 mt-4"
           :extraStyle="'w-100'"
