@@ -82,7 +82,7 @@
               </div>
 
 
-              <div v-if="check.checkParent.checkType.checkType === 'CampLocationCheck'" class="flex items-center gap-1">
+              <div v-if="check.checkParent.checkType.checkType === 'CampLocationCheck' && false" class="flex items-center gap-1">
                 <input :disabled="sL.isMainLocation" @click="checkMainLocation(index)" class="cursor-pointer" :value="true" v-model="sL.isMainLocation" type="checkbox" id="name" name="name">
                 <label @click="checkMainLocation(index)" class="cursor-pointer mt-2.5" for="name">Hoofdlocatie</label>
               </div>
@@ -92,7 +92,7 @@
               </div>
 
               <div class="text-red underline mt-3">
-                <span class="cursor-pointer" @click="sL.isMainLocation ? displayWarning() : deleteLocationPoint(index)">Verwijder</span>
+                <span class="cursor-pointer" @click="sL.isMainLocation && false ? displayWarning() : deleteLocationPoint(index)">Verwijder</span>
               </div>
             </div>
           </l-popup>
