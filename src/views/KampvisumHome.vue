@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div v-if="!isFetchingVisums" class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+    <div v-if="!isFetchingVisums" class="grid md:grid-cols-2 xs:grid-cols-1 gap-4">
       <camp-call-to-action :visums="visums" />
 
       <div v-for="visum in visums" :key="visum.id">
