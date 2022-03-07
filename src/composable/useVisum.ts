@@ -13,6 +13,7 @@ const useVisum = (): {
   clearVisums: () => void
   isFetchingVisums: Ref<boolean>
   navigateTowardsVisum: (vsium: Visum) => void
+  getVisumsAlphabetically: () => Visum[]
 } => {
   const getVisums = async (groupId: string, year: string) => {
     if (isFetchingVisums.value === false) {
@@ -30,6 +31,12 @@ const useVisum = (): {
     visums.value = []
   }
 
+  const getVisumsAlphabetically = (): Visum[] => {
+    let temp = ref<any>([])
+    temp.value = [...visums.value]
+    return temp.value.sort((a: Visum, b: Visum) => a.camp.name.localeCompare(b.camp.name))
+  }
+
   const navigateTowardsVisum = (visum: Visum) => {
     console.log('NAVIGATING...')
     router.push('/kamp/' + visum.id)
@@ -40,7 +47,8 @@ const useVisum = (): {
     getVisums,
     clearVisums,
     isFetchingVisums,
-    navigateTowardsVisum
+    navigateTowardsVisum,
+    getVisumsAlphabetically
   }
 }
 
