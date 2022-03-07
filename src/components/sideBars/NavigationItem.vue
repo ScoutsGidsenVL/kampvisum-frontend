@@ -16,6 +16,9 @@
       </div>
     </div>
     <div v-if="drawer.state === DrawerState.OPEN" class="ml-3">
+      <div @click="navigateTowardsVisum(visum.id);" class="ml-2 cursor-pointer hover:underline" :class="!route.params.id && route.params.campId ? 'text-green font-bold' : ''">
+        overzicht
+      </div>
       <slot /> 
     </div>
   </div>
@@ -26,6 +29,7 @@ import { defineComponent, ref, PropType } from 'vue'
 import router from '@/router'
 import { Visum } from '@/serializer/Visum'
 import { useRoute } from 'vue-router'
+import { useNavigation } from '@/composable/useNavigation'
 
 export enum DrawerState {
   OPEN = 'OPEN',
@@ -50,7 +54,7 @@ export default defineComponent({
   setup (props) {
     const route = useRoute()
     const drawer = ref<Drawer>({ state: DrawerState.CLOSED})
-  
+    const { navigateTowardsVisum } = useNavigation()
   if (props.visum) {
     if (props.visum.id === route.params.campId) {
       drawer.value.state = DrawerState.OPEN
@@ -83,7 +87,8 @@ export default defineComponent({
       DrawerState,
       navigate,
       drawer,
-      route
+      route,
+      navigateTowardsVisum
     }
   }
 })

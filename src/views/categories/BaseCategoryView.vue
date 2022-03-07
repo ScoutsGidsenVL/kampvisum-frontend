@@ -2,7 +2,7 @@
   <div v-if="category && visum" class="flex w-100 -mt-3">
     <div class="w-100">
       <div class="sticky top-20 bg-white z-40">
-        <page-header :title="route.meta.title" :subTitle="getSectionsTitle(visum.camp)" />
+        <page-header :title="route.meta.title" :subTitle="visum.camp.name" />
       </div>
 
       <div v-if="category && visum" class="w-100 flex pt-3">
