@@ -97,7 +97,7 @@
         "search-addres": "Zoek adres",
         "main-location": "Hoofdlocatie",
         "add": "Voeg toe",
-        "notification-patched": "Aanpassingen aan het kamp zijn succesvol opgeslagen!"
+        "notification-patched": "kamp is succesvol bewerkt"
       }
     },
     "participant-sidebar": {
@@ -125,7 +125,7 @@
     }
   },
   "checks": {
-    "notification-updated": "Aanpassingen aan het kamp zijn succesvol opgeslagen!",
+    "notification-updated": "kamp is succesvol bewerkt",
     "location-check": {
       "main-location": "hoofdlocatie",
       "edit": "Bewerk",
