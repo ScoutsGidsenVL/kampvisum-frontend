@@ -34,6 +34,7 @@ const useGroupAndYears = (): {
   )
 
   watch(selectedGroup, (group: Group) => {
+    console.log("SELECTED GROUP CHANGED: ", group.groupAdminId)
     getYearsForGroup(group.groupAdminId)
   })
 
