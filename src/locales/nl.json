@@ -98,7 +98,7 @@
         "search-addres": "Zoek adres",
         "main-location": "Geselecteerde locatie",
         "add": "Voeg toe",
-        "notification-patched": "Aanpassingen aan het kamp zijn succesvol opgeslagen!"
+        "notification-patched": "kamp is succesvol bewerkt"
       }
     },
     "participant-sidebar": {
@@ -126,7 +126,7 @@
     }
   },
   "checks": {
-    "notification-updated": "Aanpassingen aan het kamp zijn succesvol opgeslagen!",
+    "notification-updated": "kamp is succesvol bewerkt",
     "location-check": {
       "main-location": "hoofdlocatie",
       "edit": "Bewerk",
@@ -155,8 +155,8 @@
       "instruction": "Sleep je documenten hier naartoe, of klik hier om ze op te laden",
     },
     "participant-check": {
-      "no-member": "Geen lid",
-      "no-members": "Geen leden",
+      "no-member": "leeg",
+      "no-members": "leeg",
       "add": "+ VOEG TOE",
       "add-without-plus": "VOEG TOE",
       "change": "+ WIJZIG",
