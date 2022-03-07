@@ -1,18 +1,23 @@
 <template>
   <div class="hover-edit xs:rounded-md xs:shadow-md md:border-b-2 flex flex-col md:flex-row gap-3 md:gap-0 justify-between p-2.5 bg-white">
-    <div class="flex gap-3 items-center">
-      <i-person />
-      <div>
-        {{ participant.fullName }}
+    <div class="flex justify-between">
+      <div class="flex gap-3 items-center">
+        <i-person />
+        <div>
+          {{ participant.fullName }}
+        </div>
+        <div v-if="participant.inactiveMember || !participant.isMember" class="bg-red font-bold text-white rounded-full px-2">
+          {{t('checks.participant-check.inActiveMember')}}
+        </div>
+        <i-pencil @click="openEditForm(participant)" v-if="!participant.isMember" class="pencil" />
       </div>
-      <div v-if="participant.inactiveMember || !participant.isMember" class="bg-red font-bold text-white rounded-full px-2">
-        {{t('checks.participant-check.inActiveMember')}}
-      </div>
-      <i-pencil @click="openEditForm(participant)" v-if="!participant.isMember" class="pencil" />
-    </div>
 
-    <div class="flex justify-between md:gap-16 items-center">
-      <div v-if="check.checkParent.isMultiple" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
+      <div v-if="check.checkParent.isMultiple && checkIfIsMobileSize()" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
+        <i-trash />
+      </div>
+    </div>
+    <div class="flex xs:flex-row-reverse justify-between md:gap-16 items-center">
+      <div v-if="check.checkParent.isMultiple && !checkIfIsMobileSize()" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
         <i-trash />
       </div>
       <div class="flex gap-3 items-center">
@@ -20,7 +25,6 @@
           <input :disabled="isPatchingPayment"  class="cursor-pointer" :value="true" v-model="participant.hasPaid" type="checkbox" id="paid" name="paid">
           <label class="cursor-pointer m-0" for="paid">{{t('checks.participant-check.paid')}}</label>
         </div>
-
         <!-- <div>
           <i-info :info="'to check if someone has paid or not.'" />
         </div> -->
@@ -40,6 +44,7 @@ import { Check } from '@/serializer/Check'
 import ITrash from '../icons/ITrash.vue'
 import IInfo from '../icons/IInfo.vue'
 import { useI18n } from 'vue-i18n'
+import { usePhoneHelper } from '@/helpers/phoneHelper'
 
 export default defineComponent({
   name: 'MemberItem',
@@ -63,6 +68,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { checkIfIsMobileSize } = usePhoneHelper()
     const deleteFromList = async (p: Member) => {
       if (props.check.id) {
         await RepositoryFactory.get(ParticipantCheckRepository)
@@ -85,10 +91,8 @@ export default defineComponent({
     const isPatchingPayment = ref<boolean>(false)
 
     watch(() => props.participant.hasPaid, () => {
-      console.log('PATCH HAS PAID')
       if (props.check.id && !isPatchingPayment.value) {
         isPatchingPayment.value = true
-        console.log('wrapperId', props.participant)
         RepositoryFactory.get(ParticipantCheckRepository)
           .toggleHasPaid(props.check.id, props.participant.wrapperId)
           .then(() => {
@@ -98,6 +102,7 @@ export default defineComponent({
     })
 
     return {
+      checkIfIsMobileSize,
       isPatchingPayment,
       deleteFromList,
       openEditForm,
