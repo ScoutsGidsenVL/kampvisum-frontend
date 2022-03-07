@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader, Loader } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, InputTypes, CustomButtonSmall, CustomInput, scrollToFirstError, CustomHeader, Loader } from 'vue-3-component-library'
 import { Section, SectionObjectsToSectionStrings } from '@/serializer/Section'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { CampTypeRepository } from '@/repositories/CampTypeRepository'
@@ -72,7 +72,7 @@ export default defineComponent({
   components: {
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,
-    'custom-button': CustomButton,
+    'custom-button': CustomButtonSmall,
     'custom-header': CustomHeader,
     ErrorMessage,
     MultiSelect,

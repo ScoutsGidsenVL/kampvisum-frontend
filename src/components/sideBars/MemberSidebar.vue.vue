@@ -54,7 +54,7 @@ import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
 import { useSelectionHelper } from '../../helpers/selectionHelper'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { CustomButton } from 'vue-3-component-library'
+import { CustomButtonSmall } from 'vue-3-component-library'
 import SearchInput from '../inputs/SearchInput.vue'
 import { Member } from '@/serializer/Member'
 import { Check } from '@/serializer/Check'
@@ -70,7 +70,7 @@ export default defineComponent({
     'base-side-bar': BaseSideBar,
     SearchInput,
     MemberSidebarItem,
-    CustomButton,
+    CustomButtonSmall,
     ParticipantFilter
   },
   props: {

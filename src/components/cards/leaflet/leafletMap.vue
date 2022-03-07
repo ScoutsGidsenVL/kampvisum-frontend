@@ -120,7 +120,7 @@ import {
   LIcon,
   LMap,
 } from "@vue-leaflet/vue-leaflet";
-import { CustomInput, CustomButton, InputTypes, Warning } from 'vue-3-component-library'
+import { CustomInput, CustomButtonSmall, InputTypes, Warning } from 'vue-3-component-library'
 import { SearchedLocation } from '../../../serializer/SearchedLocation'
 import { defineComponent, ref, PropType, toRefs } from 'vue'
 import ICenter from "@/components/icons/ICenter.vue";
@@ -133,7 +133,7 @@ export default defineComponent ({
   components: {
     CustomPopup,
     CustomInput,
-    CustomButton,
+    CustomButtonSmall,
     LTileLayer,
     LMarker,
     Warning,

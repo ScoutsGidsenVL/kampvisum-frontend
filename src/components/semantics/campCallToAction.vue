@@ -1,9 +1,9 @@
 <template>
-  <div class="mt-3 md:col-span-2 xs:col-span-1">
-    <div style="width: fit-content" class="bg-green text-white rounded-sm">
+  <div class="mt-3 md:col-span-2 xs:col-span-1 text-center" style="width: 261px">
+    <div class="bg-green text-white rounded-sm">
       <h1 class="px-3" :class="(!isdisplayCallToAction) ? 'text-md mb-1 pt-1' : 'text-xl pt-3 mb-3'" >{{t('pages.kampvisum-overview.call-to-action-title')}}</h1>
       
-      <div v-if="isdisplayCallToAction || visums.length === 0" v-html="t('pages.kampvisum-overview.call-to-action')" class="px-3 pb-3"></div>
+      <div v-if="isdisplayCallToAction || visums.length === 0" v-html="t('pages.kampvisum-overview.call-to-action')" class="px-3 pb-3 text-left"></div>
 
       <div v-if="visums.length > 0"  @click="toggleIsdisplayCallToAction()" class="text-center border-t py-0.5 cursor-pointer">
         <div style="width:fit-content" class="m-auto" v-if="isdisplayCallToAction">

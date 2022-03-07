@@ -145,7 +145,7 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader, option } from 'vue-3-component-library'
+import { BaseSideBar, InputTypes, CustomButtonSmall, CustomInput, scrollToFirstError, CustomHeader, option } from 'vue-3-component-library'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
 import { LocationRepository } from '../../repositories/LocationRepository'
@@ -168,7 +168,7 @@ import ITrash from '../icons/ITrash.vue'
 export default defineComponent({
   name: 'LocationCreateSideBar',
   components: {
-    'custom-button': CustomButton,
+    'custom-button': CustomButtonSmall,
     'custom-header': CustomHeader,
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,

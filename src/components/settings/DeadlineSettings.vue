@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import DeadlineCreateSidebar from '../sideBars/DeadlineCreateSidebar.vue'
-import { CustomButton } from 'vue-3-component-library'
+import { CustomButtonSmall } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -22,7 +22,7 @@ export default defineComponent({
   name: 'DeadlineSettings',
   components: {
     DeadlineCreateSidebar,
-    CustomButton
+    CustomButtonSmall
   },
   setup () {
     const { t } = useI18n({

@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, CustomHeader } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, InputTypes, CustomButtonSmall, CustomInput, CustomHeader } from 'vue-3-component-library'
 import { LocationSearchRepository } from '../../repositories/locationSearchRepository'
 import { FileCheckRepository } from '@/repositories/FileCheckRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
@@ -82,7 +82,7 @@ import { useI18n } from 'vue-i18n'
 export default defineComponent({
   name: 'LocationCreateSideBar',
   components: {
-    'custom-button': CustomButton,
+    'custom-button': CustomButtonSmall,
     'custom-header': CustomHeader,
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,

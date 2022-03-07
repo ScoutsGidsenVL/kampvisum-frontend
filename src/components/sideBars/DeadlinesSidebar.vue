@@ -128,7 +128,7 @@ import DeadlineInfoCard from '@/components/cards/DeadlineInfoCard.vue'
 import { DeadlineRepository } from '@/repositories/DeadlineRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import DeadlineCard from '@/components/cards/DeadlineCard.vue'
-import { CustomButton, Loader } from 'vue-3-component-library'
+import { CustomButtonSmall, Loader } from 'vue-3-component-library'
 import { useNotification } from '@/composable/useNotification'
 import DeadlineCheck from '../cards/checks/DeadlineCheck.vue'
 import { useNavigation } from '@/composable/useNavigation'
@@ -160,7 +160,7 @@ export default defineComponent({
     'deadline-card': DeadlineCard,
     DeadlineImportantAlert,
     IVerticalDots,
-    CustomButton,
+    CustomButtonSmall,
     IEmptyCheck,
     IImportant,
     IChecked,

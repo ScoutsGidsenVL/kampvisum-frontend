@@ -36,7 +36,7 @@
 import ParticipantSidebar from '../sideBars/ParticipantSideBar.vue'
 import { useNotification } from '@/composable/useNotification'
 import MemberSidebar from '../sideBars/MemberSidebar.vue'
-import { CustomButton } from 'vue-3-component-library'
+import { CustomButtonSmall } from 'vue-3-component-library'
 import { defineComponent, ref, PropType } from 'vue'
 import Message, { ColorState } from './message.vue'
 import { Check } from '@/serializer/Check'
@@ -50,7 +50,7 @@ export default defineComponent({
   components: {
     Message,
     MemberItem,
-    CustomButton,
+    CustomButtonSmall,
     ParticipantSidebar,
     MemberSidebar,
   },

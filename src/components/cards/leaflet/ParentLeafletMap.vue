@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import { LMap, LTileLayer, LMarker, LIcon, LPopup, LControl } from '@vue-leaflet/vue-leaflet'
-import { CustomInput, CustomButton, InputTypes, Warning } from 'vue-3-component-library'
+import { CustomInput, CustomButtonSmall, InputTypes, Warning } from 'vue-3-component-library'
 import { SearchedLocation } from '../../../serializer/SearchedLocation'
 import { defineComponent, ref, PropType, toRefs, onMounted } from 'vue'
 import ICenter from '@/components/icons/ICenter.vue'
@@ -67,7 +67,7 @@ export default defineComponent({
     LIcon,
     LMap,
     Warning,
-    CustomButton,
+    CustomButtonSmall,
     ICenter
   },
   props: {

@@ -22,7 +22,7 @@
 import DocumentsCreateSidebar from '../sideBars/DocumentsCreateSidebar.vue'
 import { useNotification } from '@/composable/useNotification'
 import Message, { ColorState } from '../semantics/message.vue'
-import { CustomButton } from 'vue-3-component-library'
+import { CustomButtonSmall } from 'vue-3-component-library'
 import { defineComponent, ref, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
@@ -33,7 +33,7 @@ export default defineComponent({
   name: 'OverviewFiles',
   components: {
     'file-item': FileItem,
-    'custom-button': CustomButton,
+    'custom-button': CustomButtonSmall,
     DocumentsCreateSidebar,
     Message,
   },

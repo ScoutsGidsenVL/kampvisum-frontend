@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, InputTypes, CustomButtonSmall, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { SectionsRepository } from '@/repositories/SectionsRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
@@ -72,7 +72,7 @@ export default defineComponent({
   components: {
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,
-    'custom-button': CustomButton,
+    'custom-button': CustomButtonSmall,
     'custom-header': CustomHeader,
     MultiSelect,
   },

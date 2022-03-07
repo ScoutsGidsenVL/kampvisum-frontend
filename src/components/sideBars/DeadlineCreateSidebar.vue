@@ -50,7 +50,7 @@
 
 
 <script lang="ts">
-import { BaseSideBar, sideBarState, InputTypes, CustomButton, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, InputTypes, CustomButtonSmall, CustomInput, scrollToFirstError, CustomHeader } from 'vue-3-component-library'
 import DateFieldDeadline from '@/components/semantics/DateFieldDeadline.vue'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineCreateCard from '@/components/cards/DeadlineCreateCard.vue'
@@ -66,7 +66,7 @@ import { useI18n } from 'vue-i18n'
 export default defineComponent({
   name: 'CampSideBar',
   components: {
-    'custom-button': CustomButton,
+    'custom-button': CustomButtonSmall,
     'custom-header': CustomHeader,
     'base-side-bar': BaseSideBar,
     'custom-input': CustomInput,

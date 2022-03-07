@@ -106,7 +106,7 @@
 </template>
 
 <script lang="ts">
-import { BaseSideBar, InputTypes, CustomInput, CustomButton, option } from 'vue-3-component-library'
+import { BaseSideBar, InputTypes, CustomInput, CustomButtonSmall, option } from 'vue-3-component-library'
 import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { ParticipantRepository } from '@/repositories/ParticipantRepository'
@@ -129,7 +129,7 @@ export default defineComponent({
     'base-side-bar': BaseSideBar,
     SearchInput,
     CustomInput,
-    CustomButton,
+    CustomButtonSmall,
     MemberSidebarItem,
     ParticipantFilter,
   },

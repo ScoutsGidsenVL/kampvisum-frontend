@@ -27,13 +27,13 @@
     </div>
 
     <div class="pb-3 grid md:grid-cols-2 gap-3">
-      <multi-select v-if="years[0]" id="year" @addSelection="selectNewYear" value-prop="id" :options="years" :value="years[0]" :canClear="false" :canDeselect="false" />
+      <multi-select style="width: 261px" v-if="years[0]" id="year" @addSelection="selectNewYear" value-prop="id" :options="years" :value="years[0]" :canClear="false" :canDeselect="false" />
     </div>
 
     <div class="xs:w-100 md:w-80">
       <custom-button class="w-100" :extraStyle="'w-100'" @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
         <template v-slot:icon>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" style="margin-top: -3px" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
           </svg>
         </template>
@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { CustomButton, Warning, Loader } from 'vue-3-component-library'
+import { CustomButtonSmall, Warning, Loader } from 'vue-3-component-library'
 import CampCallToAction from '@/components/semantics/campCallToAction.vue'
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
@@ -91,7 +91,7 @@ export default defineComponent({
   name: 'KampvisumHome',
   components: {
     'camp-info-card': CampInfoCard,
-    'custom-button': CustomButton,
+    'custom-button': CustomButtonSmall,
     'camp-side-bar': CampSidebar,
     'multi-select': MultiSelect,
     warning: Warning,

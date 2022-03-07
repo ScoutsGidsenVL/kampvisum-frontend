@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { CustomButton, Loader, Warning } from 'vue-3-component-library'
+import { CustomButtonSmall, Loader, Warning } from 'vue-3-component-library'
 import { SectionsRepository } from '@/repositories/SectionsRepository'
 import { GroupRepository } from '@/repositories/groupRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
@@ -61,7 +61,7 @@ import useGroupAndYears from '@/composable/useGroupAndYears'
 export default defineComponent({
   components: {
     SectionSidebar,
-    CustomButton,
+    CustomButtonSmall,
     SectionItem,
     Loader,
     warning: Warning,
