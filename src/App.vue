@@ -14,11 +14,13 @@
             <router-view :key="$route.path" />
           </div>
         </div>
+        <div class="xs:pl-3.5">
+          <custom-footer class="bottom-0 w-100" />
+        </div>
       </div>
     </base-page>
     <notification />
   </div>
-  <!-- <custom-footer class="absolute w-full" /> -->
 </template>
 
 <script lang="ts">

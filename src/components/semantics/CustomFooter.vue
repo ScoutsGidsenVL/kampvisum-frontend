@@ -1,5 +1,5 @@
 <template>
-  <div class="footer-bottom py-4" style="z-index: 999">
+  <div class="footer-bottom py-4">
     <div class="container">
       <div class="footer-bottom__info row mb-4">
         <div class="col-12 col-lg-6">
@@ -30,10 +30,11 @@
                 <div>
                   <a href="https://www.hopper.be/" aria-label="Hopper" rel="noopener" target="_blank"
                     ><div>
+                      
                       <img
                         sizes="100vw"
-                        src="/sites/default/files/styles/medium/public/images/hopper_logo_wit_liggend.png?itok=Tr7Td_mm"
-                        srcset="/sites/default/files/styles/medium/public/images/hopper_logo_wit_liggend.png?itok=Tr7Td_mm 220w"
+                        src="https://www.scoutsengidsenvlaanderen.be/sites/default/files/styles/medium/public/images/hopper_logo_wit_liggend.png?itok=Tr7Td_mm"
+                        srcset="https://www.scoutsengidsenvlaanderen.be/sites/default/files/styles/medium/public/images/hopper_logo_wit_liggend.png?itok=Tr7Td_mm"
                         alt="logo hopper"
                         title="logo hopper"
                         class="img-fluid"
@@ -48,8 +49,8 @@
                     ><div>
                       <img
                         sizes="100vw"
-                        src="/sites/default/files/styles/medium/public/images/vlaanderen-verbeelding-werkt.png?itok=xsasDQEQ"
-                        srcset="/sites/default/files/styles/medium/public/images/vlaanderen-verbeelding-werkt.png?itok=xsasDQEQ 220w"
+                        src="https://www.scoutsengidsenvlaanderen.be/sites/default/files/styles/medium/public/images/vlaanderen-verbeelding-werkt.png?itok=xsasDQEQ"
+                        srcset="https://www.scoutsengidsenvlaanderen.be/sites/default/files/styles/medium/public/images/vlaanderen-verbeelding-werkt.png?itok=xsasDQEQ"
                         alt="Logo Vlaamse gemeenschap Vlaanderen verbeelding werkt"
                         title="vlaanderen.be"
                         class="img-fluid"
@@ -64,8 +65,8 @@
                     ><div>
                       <img
                         sizes="100vw"
-                        src="/sites/default/files/styles/medium/public/images/WW-LOGO_LABEL-icon_0.png?itok=oOl3viTM"
-                        srcset="/sites/default/files/styles/medium/public/images/WW-LOGO_LABEL-icon_0.png?itok=oOl3viTM 220w"
+                        src="https://www.scoutsengidsenvlaanderen.be/sites/default/files/styles/medium/public/images/WW-LOGO_LABEL-icon_0.png?itok=oOl3viTM"
+                        srcset="https://www.scoutsengidsenvlaanderen.be/sites/default/files/styles/medium/public/images/WW-LOGO_LABEL-icon_0.png?itok=oOl3viTM"
                         alt="WatWat logo"
                         title="WatWat logo"
                         class="img-fluid"

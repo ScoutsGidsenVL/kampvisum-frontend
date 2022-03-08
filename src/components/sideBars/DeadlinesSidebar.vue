@@ -4,7 +4,7 @@
     :class="{ 'md:max-w-md w-100 xs:w-full xs:fixed xs:top-0 xs:right-0 xs:h-full xs:z-50': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }"
   >
     <!-- WHEN CLOSED -->
-    <div @click="openSideBar()" class="w-8 h-screen fixed flex-column pt-3 cursor-pointer" :class="{ 'd-none': sidebar.state === SidebarState.OPEN, 'd-flex': sidebar.state === SidebarState.CLOSED }">
+    <div @click="openSideBar()" class="w-8 h-full fixed flex-column pt-3 cursor-pointer" :class="{ 'd-none': sidebar.state === SidebarState.OPEN, 'd-flex': sidebar.state === SidebarState.CLOSED }">
       <div class="flex justify-center items-center w-100 stroke-current text-red">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 xs:mr-1.5 md:mr-0" fill="none" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -13,13 +13,13 @@
       <div class="font-bold mt-10 -mb-32" style="writing-mode: vertical-rl; text-orientation: upright">
         {{ t('sidebars.deadline-sidebar.vertical-text') }}
       </div>
-      <div class="flex h-screen justify-center items-center">
+      <div class="flex h-full justify-center items-center">
         <i-vertical-dots />
       </div>
     </div>
 
     <!-- WHEN OPEN -->
-    <div class="h-screen" :class="{ 'd-flex p-3 flex-column': sidebar.state === SidebarState.OPEN, 'd-none fixed': sidebar.state === SidebarState.CLOSED }">
+    <div class="h-full" :class="{ 'd-flex p-3 flex-column': sidebar.state === SidebarState.OPEN, 'd-none fixed': sidebar.state === SidebarState.CLOSED }">
       <!-- DEADLINE DETAIL WHEN CLICKED ON AN DEADLINE-->
       <div v-if="isDeadlineDetail" class="w-100 flex flex-col justify-between xs:mt-4 md:mt-0">
         <div class="flex justify-end mb-2">
