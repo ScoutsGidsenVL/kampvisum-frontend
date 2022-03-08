@@ -4,11 +4,11 @@
     <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
     
     <div class="pb-3 mb-3">
-      <custom-button-small class="mx-3 mb-3" @click="openLocationCreateSidebar()" :text="t('checks.location-check.add-location')" /> 
+      <custom-button class="mx-3 mb-3" @click="openLocationCreateSidebar()" :text="t('checks.location-check.add-location')" /> 
       <div v-for="(location) in check.value.locations" :key="location">
-        <div @click="centerInChildComponent(subLocation)" class="md:border-b-2 hover:text-green cursor-pointer" v-for="(subLocation) in location.locations" :key="subLocation">
-          <div class="mx-3">
-            ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ subLocation.address }}
+        <div @click="centerInChildComponent(subLocation)" class="md:border-b-2 hover:text-green cursor-pointer bg-white" v-for="(subLocation) in location.locations" :key="subLocation">
+          <div class="p-2.5 flex items-center gap-3">
+            <i-marker /> ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ subLocation.address }}
           </div>
         </div>
       </div>
@@ -33,19 +33,21 @@ import ParentLeafletMap from '../cards/leaflet/ParentLeafletMap.vue'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import { defineComponent, ref, PropType, watch } from 'vue'
 import { useInfoBarHelper } from '@/helpers/infoBarHelper'
-import { CustomButtonSmall } from 'vue-3-component-library'
+import { CustomButton } from 'vue-3-component-library'
 import { Check } from '@/serializer/Check'
 import Message, { ColorState } from './message.vue'
 import { useI18n } from 'vue-i18n'
+import IMarker from '../icons/IMarker.vue'
 
 export default defineComponent({
   name: 'LocationComponent',
   components: {
     Message,
     LeafletMap,
-    CustomButtonSmall,
+    CustomButton,
     LocationCreateSidebar,
     ParentLeafletMap,
+    IMarker,
   },
   props: {
     check: {

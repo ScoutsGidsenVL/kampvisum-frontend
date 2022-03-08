@@ -210,8 +210,8 @@ export default defineComponent({
     const { displayCheckLocation } = useSelectionHelper()
 
     const options = ref<option[]>([
-      { text: 'Zoek', value: 'search' },
       { text: 'Nieuw', value: 'new' },
+      { text: 'Zoek', value: 'search' },
     ])
 
     const changeSideBar = (options: 'newLocationSidebar' | 'searchLocationSidebar') => {
