@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="xs:pl-3.5">
-          <custom-footer class="bottom-0 w-100" />
+          <custom-footer class="bottom-0 w-100 mt-60" />
         </div>
       </div>
     </base-page>

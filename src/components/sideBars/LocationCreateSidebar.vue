@@ -11,6 +11,7 @@
       @hideSidebar="closeSideBar"
       @options="changeSideBar"
       width="max-w-2xl"
+      :options="options"
     >
       <form
         id="locationForm"
@@ -131,7 +132,7 @@
           <search-input :filter="filter" v-model:loading="loading" name="search" :placeholder="t('sidebars.location-sidebar.search')" :repository="LocationRepository" @fetchedOptions="fetchedSearchResultsExistingLocations($event)" />
         </div>
 
-        <div class="px-4">
+        <div class="px-4 overflow-scroll	h-full">
           <div v-for="(existingLocation) in existingLocations" :key="existingLocation">
             <existing-location-item :existingLocation="existingLocation" :displayCheck="displayCheckLocation(false, existingLocation, existingLocations)" />
           </div>
@@ -265,11 +266,22 @@ export default defineComponent({
     }
 
     const onSubmit = async () => {
+      if (sideBarState.value.state === 'search') {
+        const selected: any = existingLocations.value.find((xl: PostLocation) => xl.isChecked === true)
+        console.log('selected: ', selected)
+        if (selected && selected.id) {
+          await RepositoryFactory.get(LocationCheckRepository)
+          .addSearched(props.check.endpoint,props.parentLocations.concat([{id: selected.id}]))
+          .then((p: any) => {
+            context.emit('actionSuccess', { data: p, action: 'PATCH' })
+            patchLoading.value = false
+            triggerNotification(t('sidebars.location-sidebar.form.notification-patched'))
+            closeSideBar()
+          })
+        }
+      }
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
       if (searchedLocations.value.length !== 0) {
-        if (sideBarState.value.state === 'search') {
-          console.log('PATCH SELECTED IDS: ', existingLocations.value)
-        } else {
           handleSubmit(async (values: PostLocation) => {
             patchLoading.value = true
             values.zoom = check.value.value.zoom
@@ -280,13 +292,12 @@ export default defineComponent({
             await patchLocation(values)
             closeSideBar()
           })()
-        }
-      } else {
+      } else if (sideBarState.value.state !== 'search') {
         triggerNotification(t('sidebars.location-sidebar.form.atleast-one'))
       }
     }
 
-    const patchLocation = async (location: PostLocation) => {
+    const patchLocation = async (location: any) => {
       await RepositoryFactory.get(LocationCheckRepository)
         .updateLocationCheck(props.check.endpoint, location, props.parentLocations)
         .then((p: any) => {
