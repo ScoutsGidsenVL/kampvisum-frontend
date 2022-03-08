@@ -2,9 +2,9 @@
   <div>
     <div @click="toggleDrawer()" class="py-2 d-flex justify-between">
       <div>
-        <strong @click="navigate()" class="xs:text-xs md:text-md cursor-pointer px-2" :class="highlight ? 'text-green font-bold' : ''">
+        <p @click="navigate()" class="font-bold xs:text-xs md:text-md cursor-pointer px-2" :class="highlight ? 'text-green font-bold' : ''">
           {{text}}
-        </strong>
+        </p>
       </div>
       <div v-if="!link" class="ml-3 cursor-pointer">
         <svg v-if="drawer.state === DrawerState.CLOSED" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
