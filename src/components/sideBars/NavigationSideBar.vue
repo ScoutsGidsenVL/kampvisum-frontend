@@ -1,7 +1,7 @@
 <template>
-  <div class="w-auto h-screen z-30">
-    <div class="d-flex h-screen" :class="{ 'md:w-98 xs:w-100': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
-      <div class="fixed d-flex" :class="{ 'md:w-98 xs:w-100': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
+  <div class="w-auto h-screen " :class="sidebar.state === SidebarState.OPEN ? 'z-50' : 'z-40'">
+    <div class="d-flex h-screen" :class="{ 'md:w-98 xs:w-full': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
+      <div class="fixed d-flex" :class="{ 'md:w-98 xs:w-full': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
         <div class="w-100 border-r-2 border-lightGray flex-column bg-gray h-screen px-4" :class="{ 'd-none': sidebar.state === SidebarState.CLOSED, 'd-flex': sidebar.state === SidebarState.OPEN }">
           <div @click="home()" class="mt-4 d-flex justify-between mb-3 items-center cursor-pointer">
             <i-logo />
@@ -31,7 +31,7 @@
               <!-- {{route.params}} -->
               <div v-if="visums.length > 0">
                 <div v-for="visum in visums" :key="visum">
-                  <navigation-item @click="closeSidebar()" :visum="visum" :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
+                  <navigation-item :visum="visum" :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
                     <div v-for="category in visum.categorySet.categories" :key="category">
                       <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id);closeSidebar()" class="xs:text-sm md:text-md block cursor-pointer my-1 px-2" style="width: fit-content" :class="(category.id === route.params.id) ? 'text-green font-bold' : 'text-black'">
                         {{ category.categoryParent.label }}

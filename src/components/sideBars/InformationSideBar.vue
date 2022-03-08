@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-lighterGreen z-30 mt-3" :class="{ 'md:w-99 mt-3 xs:w-11/12 xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }">
+  <div class="bg-lighterGreen md:z-30 md:mt-3" :class="{ 'md:w-99 xs:w-full xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED, 'xs:z-50': sidebar.state === SidebarState.OPEN}">
     <!-- WHEN CLOSED -->
     <div
       @click="openSideBar()"
@@ -26,8 +26,8 @@
       </div>
     </div>
 
-    <div class="h-screen" :class="{ 'd-flex md:w-98 p-3 xs:mt-16 md:mt-0 md:sticky md:top-56 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
-      <div class="w-100 flex xs:pt-28 justify-between">
+    <div class="h-screen" :class="{ 'd-flex md:w-98 p-3 xs:mt-4 md:mt-0 md:sticky md:top-56 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
+      <div class="w-100 flex justify-between">
         <div class="flex gap-3">
           <i-info-green :info="'setting the info in the information sidebar and open the information sidebar'" />
           <strong class="text-lg"> Info </strong>

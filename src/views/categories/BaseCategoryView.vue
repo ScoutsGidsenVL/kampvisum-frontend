@@ -1,7 +1,7 @@
 <template>
   <div v-if="category && visum" class="flex w-100 -mt-3">
     <div class="w-100">
-      <div class="sticky top-20 bg-white z-40">
+      <div class="sticky bg-white z-30" style="top: 81px">
         <page-header :title="route.meta.title" :subTitle="visum.camp.name" />
       </div>
 

@@ -1,7 +1,7 @@
 <template>
   <div
-    class="z-30 bg-white shadow-md ml-3 rounded-md"
-    :class="{ 'md:max-w-md w-100 xs:w-11/12 xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }"
+    class="bg-white shadow-md ml-3 rounded-md"
+    :class="{ 'md:max-w-md w-100 xs:w-full xs:fixed xs:top-0 xs:right-0 xs:h-full xs:z-50': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED }"
   >
     <!-- WHEN CLOSED -->
     <div @click="openSideBar()" class="w-8 h-screen fixed flex-column pt-3 cursor-pointer" :class="{ 'd-none': sidebar.state === SidebarState.OPEN, 'd-flex': sidebar.state === SidebarState.CLOSED }">
@@ -21,7 +21,7 @@
     <!-- WHEN OPEN -->
     <div class="h-screen" :class="{ 'd-flex p-3 flex-column': sidebar.state === SidebarState.OPEN, 'd-none fixed': sidebar.state === SidebarState.CLOSED }">
       <!-- DEADLINE DETAIL WHEN CLICKED ON AN DEADLINE-->
-      <div v-if="isDeadlineDetail" class="w-100 flex flex-col justify-between xs:mt-20 md:mt-0">
+      <div v-if="isDeadlineDetail" class="w-100 flex flex-col justify-between xs:mt-4 md:mt-0">
         <div class="flex justify-end mb-2">
           <i-cross class="cursor-pointer" @click="closeSideBar()" />
         </div>
@@ -101,7 +101,7 @@
 
       <!-- LIST OF DEADLINES TO CLICK ON -->
       <div v-if="!isDeadlineDetail">
-        <div class="w-100 flex items-center justify-between xs:mt-20 md:mt-0">
+        <div class="w-100 flex items-center justify-between xs:mt-4 md:mt-0">
           <div class="flex gap-3">
             <h2>{{ t('sidebars.deadline-sidebar.title') }}</h2>
           </div>

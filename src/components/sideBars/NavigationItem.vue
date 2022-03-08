@@ -16,8 +16,8 @@
       </div>
     </div>
     <div v-if="drawer.state === DrawerState.OPEN" class="ml-3">
-      <div @click="navigateTowardsVisum(visum.id);" class="ml-2 cursor-pointer hover:underline" :class="!route.params.id && route.params.campId ? 'text-green font-bold' : ''">
-        overzicht
+      <div @click="navigateTowardsVisum(visum.id);closeSidebar();" class="ml-2 cursor-pointer hover:underline" :class="!route.params.id && route.params.campId ? 'text-green font-bold' : ''">
+        {{t('sidebars.navigation-sidebar.overview')}}
       </div>
       <slot /> 
     </div>
@@ -30,6 +30,8 @@ import router from '@/router'
 import { Visum } from '@/serializer/Visum'
 import { useRoute } from 'vue-router'
 import { useNavigation } from '@/composable/useNavigation'
+import { useI18n } from 'vue-i18n'
+import { SidebarState } from '@/helpers/infoBarHelper'
 
 export enum DrawerState {
   OPEN = 'OPEN',
@@ -55,15 +57,15 @@ export default defineComponent({
     const route = useRoute()
     const drawer = ref<Drawer>({ state: DrawerState.CLOSED})
     const { navigateTowardsVisum } = useNavigation()
-  if (props.visum) {
-    if (props.visum.id === route.params.campId) {
-      drawer.value.state = DrawerState.OPEN
+    if (props.visum) {
+      if (props.visum.id === route.params.campId) {
+        drawer.value.state = DrawerState.OPEN
+      } else {
+        drawer.value.state = DrawerState.CLOSED
+      }
     } else {
-      drawer.value.state = DrawerState.CLOSED
+        drawer.value.state = DrawerState.CLOSED
     }
-  } else {
-      drawer.value.state = DrawerState.CLOSED
-  }
 
     const toggleDrawer = () => {
       if (!props.link) {
@@ -81,14 +83,26 @@ export default defineComponent({
     const navigate = () => {
       router.push(props.link ? props.link : '')
     }
+    const { sidebar } = useNavigation()
 
+
+    const closeSidebar = () => {
+      sidebar.value.state = SidebarState.CLOSED
+    }
+
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
     return {
+      navigateTowardsVisum,
       toggleDrawer,
       DrawerState,
       navigate,
       drawer,
       route,
-      navigateTowardsVisum
+      t,
+      closeSidebar
     }
   }
 })
