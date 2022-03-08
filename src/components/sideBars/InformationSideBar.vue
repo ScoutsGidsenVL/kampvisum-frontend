@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-lighterGreen md:z-30 md:mt-3" :class="{ 'md:w-99 xs:w-full xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED, 'xs:z-50': sidebar.state === SidebarState.OPEN}">
+  <div class="bg-lighterGreen md:z-20 md:mt-3" :class="{ 'md:w-99 xs:w-full xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED, 'xs:z-50': sidebar.state === SidebarState.OPEN}">
     <!-- WHEN CLOSED -->
     <div
       @click="openSideBar()"
