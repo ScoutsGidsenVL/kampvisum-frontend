@@ -62,7 +62,6 @@ export const SearchedLocationDeserializer = (input: any): SearchedLocation => {
     (input.properties.city ? input.properties.city + ', ' : input.properties.name + ', ') + 
     
     //COUNTRY & COUNTY
-    (input.properties.county ? '(' + input.properties.county + ') ' : '') +
     (input.properties.country ? input.properties.country + ' ' : '')
   }
 

@@ -31,7 +31,7 @@ export class LocationSearchRepository extends BaseRepository {
   private processErrorLoc(error: any): void {}
 
   search(query: string): Promise<SearchedLocation[]> {
-    return this.searchLocation(this.endpoint + query + '&limit=4', {}).then((response: { features:Array<any> }) => {
+    return this.searchLocation(this.endpoint + query + '&limit=4' + '&lang=en', {}).then((response: { features:Array<any> }) => {
       return response.features.map( x => SearchedLocationDeserializer(x))
     })
   }
