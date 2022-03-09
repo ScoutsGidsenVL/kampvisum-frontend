@@ -87,7 +87,7 @@
           <custom-input
             :disabled="patchLoading"
             :type="InputTypes.TEXT"
-            :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? 'required' : ''"
+            :rules="check.checkParent.checkType.checkType === 'CampLocationCheck' ? '' : ''"
             name="contactName"
             :label="t('sidebars.location-sidebar.form.contactName')"
           />

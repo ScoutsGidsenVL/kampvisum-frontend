@@ -3,7 +3,6 @@
     <h1 class="text-xl underline pb-3">{{ parentLocation.name }}</h1>
     <div class="flex gap-2 items-center">
       <h1 v-if="location.name" class="text-lg mt-1">{{ location.name }}</h1>
-      <div>{{location.latLon}}</div>
       <!-- <div v-if="location.isMainLocation" class="font-bold text-sm text-white bg-lightGreen m-0 rounded-full px-2 h-5">{{t('checks.location-check.main-location')}}</div> -->
     </div>
     <div class="pb-3">
