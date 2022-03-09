@@ -29,8 +29,8 @@
                 <loader color="lightGreen" size="10" :isLoading="isFetchingVisums" />
               </div>
               <!-- {{route.params}} -->
-              <div v-if="visums.length > 0">
-                <div v-for="visum in visums" :key="visum">
+              <div v-if="visumsAlphabetically.length > 0">
+                <div v-for="visum in visumsAlphabetically" :key="visum">
                   <navigation-item :visum="visum" :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
                     <div v-for="category in visum.categorySet.categories" :key="category">
                       <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id);closeSidebar()" class="xs:text-sm md:text-md block cursor-pointer my-1 px-2" style="width: fit-content" :class="(category.id === route.params.id) ? 'text-green font-bold' : 'text-black'">
@@ -89,7 +89,7 @@ export default defineComponent({
   name: 'NavigationSideBar',
   setup() {
     const route = useRoute()
-    const { isFetchingVisums, visums, getVisumsAlphabetically } = useVisum()
+    const { isFetchingVisums, visums, visumsAlphabetically } = useVisum()
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsCategory, sidebar } = useNavigation()
     const { setSelectedGroup, getAvailableGroups } = useGroupAndYears()
@@ -122,7 +122,7 @@ export default defineComponent({
     }
 
     return {
-      getVisumsAlphabetically,
+      visumsAlphabetically,
       navigateTowardsCategory,
       changeSelectedGroup,
       getAvailableGroups,
