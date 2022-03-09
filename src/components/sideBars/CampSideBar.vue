@@ -190,12 +190,12 @@ export default defineComponent({
       }, 1)
     }
 
-    getGroupSections(props.selectedGroupId)
     getCampTypes()
 
     watch(
       () => props.selectedGroupId,
       () => {
+        console.log('GET GROUP SECTIONS')
         getGroupSections(props.selectedGroupId)
       }
     )

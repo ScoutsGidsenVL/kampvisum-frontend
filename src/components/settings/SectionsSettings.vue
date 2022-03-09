@@ -52,7 +52,7 @@ import { GroupRepository } from '@/repositories/groupRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { useNotification } from '@/composable/useNotification'
 import SectionSidebar from '../sideBars/SectionSideBar.vue'
-import { defineComponent, watchEffect, ref } from 'vue'
+import { defineComponent, watch, ref } from 'vue'
 import SectionItem from '../semantics/SectionItem.vue'
 import { Section } from '@/serializer/Section'
 import { useI18n } from 'vue-i18n'
@@ -131,7 +131,12 @@ export default defineComponent({
       getGroupSections(selectedGroup.value.groupAdminId)
     }
 
-    watchEffect(() => getGroupSections(selectedGroup.value.groupAdminId))
+    watch(selectedGroup.value, () => {
+      console.log('GET SECTIONS')
+      getGroupSections(selectedGroup.value.groupAdminId)
+    })
+
+    // watchEffect(() => getGroupSections(selectedGroup.value.groupAdminId))
 
     return {
       sectionSideBarState,
