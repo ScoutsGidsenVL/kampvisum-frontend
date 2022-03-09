@@ -12,7 +12,7 @@
       />
     </div>
 
-    <div class="text-left pl-3 mt-3" v-if="check.value.length === 0">
+    <div class="text-left pl-3 mt-3" v-if="check.value.participants.length === 0">
       <p class="italic">{{ !check.checkParent.isMultiple ? t('checks.participant-check.no-member') : t('checks.participant-check.no-members') }}</p>
     </div>
 
@@ -22,7 +22,7 @@
           @click="openMemberSidebar()"
           class="w-100 mt-4"
           :extraStyle="'w-100'"
-          :text="check.value.length > 0 ? (check.checkParent.isMultiple ? t('checks.participant-check.add') : t('checks.participant-check.change')) : t('checks.participant-check.add')"
+          :text="check.value.participants.length > 0 ? (check.checkParent.isMultiple ? t('checks.participant-check.add') : t('checks.participant-check.change')) : t('checks.participant-check.add')"
         />
       </div>
     </div>
