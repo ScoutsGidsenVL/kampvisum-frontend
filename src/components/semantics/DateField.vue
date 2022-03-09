@@ -62,8 +62,8 @@ export default defineComponent({
 
     const initializeDateValues = () => {
       if (props.check?.value.startDate) {
-        dateValues.value.push(DateTime.fromFormat(props.check.value.startDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy').toLowerCase())
-        dateValues.value.push(DateTime.fromFormat(props.check.value.endDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy').toLowerCase())
+        dateValues.value.push(DateTime.fromFormat(props.check.value.startDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+        dateValues.value.push(DateTime.fromFormat(props.check.value.endDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
       }
     }
     initializeDateValues()
@@ -74,9 +74,14 @@ export default defineComponent({
     })
 
     const patchDurationDateCheck = async (dates: Array<string>) => {
-      dates.map((d, i) => dates[i] = DateTime.fromFormat(d, 'dd MMM. yyyy').toFormat('yyyy-MM-dd'))
+      const tmpDates: any = []
+      
+      dates.forEach((date) => {
+        tmpDates.push(DateTime.fromFormat(date, 'dd MMM yyyy', { locale: 'nl' }).toFormat('yyyy-MM-dd'))
+      })
+
       await RepositoryFactory.get(DurationDateCheckRepository)
-        .update(props.check.endpoint, dates)
+        .update(props.check.endpoint, tmpDates)
         .then((p: any) => {
           triggerNotification(t('checks.notification-updated'))
         })
