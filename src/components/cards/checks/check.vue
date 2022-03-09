@@ -132,8 +132,10 @@ export default defineComponent({
       simpleCheck.value.value = v
       patchCheck(simpleCheck.value)
       if (checkIfIsMobileSize()) { 
+        console.log('CHECK HOVER MOBILE TRIGGER 1')
         // @ts-ignore
         document.getElementById("check-hover").style.display = "none"
+        console.log('CHECK HOVER MOBILE TRIGGER 2')
       }
     }
 
