@@ -3,7 +3,7 @@ export interface SearchedLocation {
   name?: string,
   isMainLocation?: boolean,
   address?: string,
-  latLon?: Array<number>
+  latLon?: any
   latitude?: string
   longitude?: string
   properties?: Properties
@@ -70,13 +70,14 @@ export const SearchedLocationDeserializer = (input: any): SearchedLocation => {
 }
 
 export const SearchedLocationSerializer = (input: SearchedLocation): any => {
+  console.log('INPUT: ', input)
   const single: any = {
     id: input.id ? input.id : undefined,
     name: input.name,
     address: input.address,
     is_main_location: input.isMainLocation,
-    latitude: input.latitude,
-    longitude: input.longitude,
+    latitude: input.latLon ? input.latLon[0] : undefined,
+    longitude: input.latLon ? input.latLon[1] : undefined,
   }
   return single
 }

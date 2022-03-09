@@ -373,10 +373,7 @@ export default defineComponent({
         .reverseSearch(latLng)
         .then((result: any) => {
           searchedLocation.value = result
-          searchedLocation.value.latLon = latLng
-          if (searchedLocation.value.latLon) {
-            centerInChildComponent([latLng.lat, latLng.lng])
-          }
+          searchedLocation.value.latLon = [latLng.lat, latLng.lng]
         })
     }
 

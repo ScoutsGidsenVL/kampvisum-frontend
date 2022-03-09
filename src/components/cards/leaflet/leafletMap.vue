@@ -48,6 +48,10 @@
                 {{searchedLocation.address}}
               </div>
 
+              <div>
+                {{searchedLocation}}
+              </div>
+
               <div class="flex justify-between">
                 <div @click="addLocationPoint()" class="flex gap-3 text-lightGreen cursor-pointer">
                   <div class="underline">Voeg toe</div>
@@ -211,9 +215,7 @@ export default defineComponent ({
     }
 
     const addLocationPoint = () => {
-      console.log('CLICKER POINT ADD')
       emit('addLocationPoint', searchedLocation.value)
-      // isPopupOpen.value = false
     }
 
     const cancelLocationPoint = () => {
