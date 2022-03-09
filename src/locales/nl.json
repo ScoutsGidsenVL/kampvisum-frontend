@@ -2,7 +2,7 @@
   "title": "Kampkaft",
   "page-titles": {
     "kampvisum": "Overzicht kampen",
-    "settings": "Instellingen",
+    "settings": "Instellingen van je groep",
     "documents": "Documenten",
     "locations": "Locaties",
     "non-members": "Niet-leden"
@@ -64,7 +64,7 @@
       "input-fields": {
         "new": "Nieuw",
         "existing": "Bestaande kampen",
-        "name": "Naam",
+        "name": "Naam kamp",
         "start-date": "Startdatum",
         "end-date": "Einddatum"
       },
