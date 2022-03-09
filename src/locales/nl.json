@@ -127,6 +127,9 @@
     }
   },
   "checks": {
+    "ok": "OK",
+    "not-relevant": "Niet relevant",
+    "empty": "Leeg",
     "notification-updated": "kamp is succesvol bewerkt",
     "location-check": {
       "main-location": "hoofdlocatie",

@@ -35,7 +35,7 @@
           />
         </svg>
         <div>
-          Checked
+          {{t('checks.ok')}}
         </div>
       </div>
       <div @click="select(StatusState.NOT_APPLICABLE)" class="mb-0.5 flex gap-4 underline hover:text-green">
@@ -44,12 +44,14 @@
           <line x1="19" y1="51.5" x2="84" y2="51.5" stroke="#DC7700" stroke-width="11" />
         </svg>
         <div>
-          Niet relevant
+          {{t('checks.not-relevant')}}
         </div>
       </div>
       <div @click="select(StatusState.EMPTY)" class=" mb-0.5 flex gap-4 underline hover:text-green">
       <i-empty-check class="iconSize" />
-      <div>Leeg</div>
+      <div>
+          {{t('checks.empty')}}
+      </div>
       </div>
     </div>
   </div>
@@ -144,6 +146,7 @@ export default defineComponent({
       StatusState,
       toggle,
       select,
+      t
     }
   },
 })
