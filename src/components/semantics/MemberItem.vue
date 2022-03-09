@@ -17,10 +17,10 @@
       </div>
     </div>
     <div class="flex xs:flex-row-reverse justify-between md:gap-16 items-center">
-      <div v-if="check.checkParent.isMultiple && !checkIfIsMobileSize()" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
+      <div v-if="(check.checkParent.isMultiple && !checkIfIsMobileSize()) || (check.checkParent.checkType.checkType === 'ParticipantCheck')" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
         <i-trash />
       </div>
-      <div class="flex gap-3 items-center">
+      <div v-if="!(check.checkParent.checkType.checkType === 'ParticipantCheck')" class="flex gap-3 items-center">
         <div class="flex gap-2 items-center font-bold">
           <input :disabled="isPatchingPayment"  class="cursor-pointer" :value="true" v-model="participant.hasPaid" type="checkbox" id="paid" name="paid">
           <label class="cursor-pointer m-0" for="paid">{{t('checks.participant-check.paid')}}</label>
