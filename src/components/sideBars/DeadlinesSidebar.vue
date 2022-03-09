@@ -91,7 +91,7 @@
 
               <div class="mt-3" v-if="deadlineItem.deadlineItemParent.deadlineItemType === 'D'">
                 <div class="flex items-center gap-2">
-                  <deadline-check :flag="deadlineItem.flag" :isUpdatingFlag="isUpdatingFlag" @toggle="toggleFlag($event)" />
+                  <deadline-check :flag="deadlineItem.flag" :isUpdatingFlag="isUpdatingFlag" @toggle="toggleFlag($event, deadlineItem)" />
                 </div>
               </div>
             </div>
@@ -222,12 +222,12 @@ export default defineComponent({
         })
     }
     const { triggerNotification } = useNotification()
-    const toggleFlag = async (flag: Flag) => {
+    const toggleFlag = async (flag: Flag, deadline: Deadline) => {
       if (!isUpdatingFlag.value) {
         isUpdatingFlag.value = true
-        if (flag.id) {
+        if (flag.id && deadline.id) {
           await RepositoryFactory.get(DeadlineRepository)
-            .updateFlag(flag.id, { flag: flag.flag })
+            .updateFlag(deadline.id, flag.id, { flag: flag.flag })
             .then((deadline: Deadline) => {
               deadlines.value.map((dl: Deadline) => {
                 if (dl.id === deadline.id) {

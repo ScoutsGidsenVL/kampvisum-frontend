@@ -36,8 +36,8 @@ export class DeadlineRepository extends BaseRepository {
     })
   }
   
-  updateFlag(id: string, data: any) {
-    return this.patch(this.endpoint + 'flags/' + id, data).then((response: any) => {
+  updateFlag(deadlineId: string, id: string, data: any) {
+    return this.patch(this.endpoint + 'flags/' + deadlineId + '/' + id, data).then((response: any) => {
       return response
     })
   }
