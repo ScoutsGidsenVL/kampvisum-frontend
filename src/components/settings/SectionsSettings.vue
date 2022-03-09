@@ -131,12 +131,13 @@ export default defineComponent({
       getGroupSections(selectedGroup.value.groupAdminId)
     }
 
+    if (selectedGroup.value.groupAdminId) { 
+      getGroupSections(selectedGroup.value.groupAdminId)
+    }
     watch(selectedGroup.value, () => {
       console.log('GET SECTIONS')
       getGroupSections(selectedGroup.value.groupAdminId)
     })
-
-    // watchEffect(() => getGroupSections(selectedGroup.value.groupAdminId))
 
     return {
       sectionSideBarState,

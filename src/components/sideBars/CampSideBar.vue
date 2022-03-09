@@ -29,7 +29,7 @@
           </div>
 
           <div v-if="sideBarState.state !== 'hide'">
-            <custom-header text="Takken die meegaan" type="h3" />
+            <custom-header :text="t('sidebars.kampvisum-sidebar.sections-going')" type="h3" />
 
             <loader color="lightGreen" size="10" :isLoading="isFetchingGroupSections" />
 
@@ -191,7 +191,9 @@ export default defineComponent({
     }
 
     getCampTypes()
-
+    if (props.selectedGroupId) {
+      getGroupSections(props.selectedGroupId)
+    }
     watch(
       () => props.selectedGroupId,
       () => {

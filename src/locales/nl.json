@@ -61,6 +61,7 @@
   "sidebars": {
     "kampvisum-sidebar": {
       "title": "Kamp",
+      "sections-going": "Takken die meegaan",
       "input-fields": {
         "new": "Nieuw",
         "existing": "Bestaande kampen",
