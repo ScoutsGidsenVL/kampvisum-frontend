@@ -84,7 +84,7 @@
           <nav role="navigation" aria-labelledby="block-menu-service-menu" id="block-menu-service">
             <h2 class="visually-hidden" id="block-menu-service-menu">Service</h2>
             <ul>
-              <li><a href="/privacy" data-drupal-link-system-path="node/350">Privacyverklaring</a></li>
+              <li><a href="https://www.scoutsengidsenvlaanderen.be/privacy" data-drupal-link-system-path="node/350">Privacyverklaring</a></li>
             </ul>
           </nav>
         </div>
