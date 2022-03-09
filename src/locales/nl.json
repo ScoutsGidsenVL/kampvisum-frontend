@@ -64,7 +64,7 @@
       "input-fields": {
         "new": "Nieuw",
         "existing": "Bestaande kampen",
-        "name": "Naam",
+        "name": "Naam kamp",
         "start-date": "Startdatum",
         "end-date": "Einddatum"
       },
