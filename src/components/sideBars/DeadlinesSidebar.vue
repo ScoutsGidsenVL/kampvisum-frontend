@@ -91,7 +91,7 @@
 
               <div class="mt-3" v-if="deadlineItem.deadlineItemParent.deadlineItemType === 'D'">
                 <div class="flex items-center gap-2">
-                  <deadline-check :flag="deadlineItem.flag" :isUpdatingFlag="isUpdatingFlag" @toggle="toggleFlag($event, deadlineItem)" />
+                  <deadline-check :flag="deadlineItem.flag" :isUpdatingFlag="isUpdatingFlag" @toggle="toggleFlag($event, selectedDeadline)" />
                 </div>
               </div>
             </div>

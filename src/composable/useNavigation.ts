@@ -46,7 +46,9 @@ export const useNavigation = (): {
     const navigate = (name: string) => {
       router.push('/kamp/' + visum.id.toString() + '/' + name + '/' + categoryUuid + '/section/' + sectionId)
     }
+    console.log('nav1')
     navigate(name.toLowerCase())
+    console.log('nav2')
   }
 
   const goToHome = () => {

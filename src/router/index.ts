@@ -195,6 +195,10 @@ const routes: Array<RouteRecordRaw> = [
       homescreen: '/kampvisum-home',
     },
   },
+  // { 
+  //   path: "/:catchAll(.*)", // Unrecognized path automatically matches 404
+  //   redirect: '/kampvisum-home'
+  // }
 ]
 
 const router = createRouter({

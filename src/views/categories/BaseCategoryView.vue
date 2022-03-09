@@ -73,6 +73,7 @@ export default defineComponent({
         }
 
         if (route.params.sectionId) {
+          console.log('route.params.sectionId: ', route.params.sectionId)
           setTimeout(() => {
             jumpToId(route.params.sectionId)
           }, 200)
