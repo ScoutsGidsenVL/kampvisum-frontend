@@ -27,7 +27,7 @@
       </div>
     </div>
     <!-- OPTIONS -->
-    <div class="hover-target mt-1.5 pl-0.5">
+    <div id="check-hover" class="hover-target mt-1.5 pl-0.5">
       <div @click="select(StatusState.CHECKED)" class="mb-0.5 flex gap-4 underline hover:text-green">
         <svg class="fill-current text-green iconSize" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path
@@ -67,6 +67,7 @@ import { defineComponent, ref, PropType } from 'vue'
 import IInfo from '../../icons/IInfo.vue'
 import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
 import { useI18n } from 'vue-i18n'
+import { usePhoneHelper } from '@/helpers/phoneHelper'
 
 export enum StatusState {
   CHECKED = 'CHECKED',
@@ -124,9 +125,16 @@ export default defineComponent({
       }
     }
 
+    const { checkIfIsMobileSize } = usePhoneHelper()
+
+
     const select = (v: StatusState) => {
       simpleCheck.value.value = v
       patchCheck(simpleCheck.value)
+      if (checkIfIsMobileSize()) { 
+        // @ts-ignore
+        document.getElementById("check-hover").style.display = "none"
+      }
     }
 
     return {
