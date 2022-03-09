@@ -29,7 +29,6 @@ export const useNavigation = (): {
   }
 
   const navigateTowardsVisum = (visumId: string) => {
-    console.log('navigateTowardsVisum: ', visumId)
     const navigate = () => {
       router.push('/kamp/' + visumId)
     }

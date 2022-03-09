@@ -41,7 +41,6 @@ export default defineComponent({
     Loader,
   },
   setup() {
-    console.log('NAVIGATING TO HERE SUCCESS!')
     const { getSectionsTitle } = useSectionsHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const { getCampByRouteParam } = useCampHelper()

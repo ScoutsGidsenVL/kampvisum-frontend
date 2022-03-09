@@ -221,7 +221,6 @@ export default defineComponent({
 
           setTimeout(() => {
             selectedCampTypes.value && selectedCampTypes.value.forEach((sc: string) => {
-              console.log('checkbox-'+sc)
               if (sc !== 'basis') {
                 // @ts-ignore
                 document.getElementById('checkbox-'+sc).checked = true

@@ -268,7 +268,6 @@ export default defineComponent({
     const onSubmit = async () => {
       if (sideBarState.value.state === 'search') {
         const selected: any = existingLocations.value.find((xl: PostLocation) => xl.isChecked === true)
-        console.log('selected: ', selected)
         if (selected && selected.id) {
           await RepositoryFactory.get(LocationCheckRepository)
           .addSearched(props.check.endpoint,props.parentLocations.concat([{id: selected.id}]))

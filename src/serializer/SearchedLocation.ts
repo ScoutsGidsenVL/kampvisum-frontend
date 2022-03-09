@@ -70,7 +70,6 @@ export const SearchedLocationDeserializer = (input: any): SearchedLocation => {
 }
 
 export const SearchedLocationSerializer = (input: SearchedLocation): any => {
-  console.log('INPUT: ', input)
   const single: any = {
     id: input.id ? input.id : undefined,
     name: input.name,

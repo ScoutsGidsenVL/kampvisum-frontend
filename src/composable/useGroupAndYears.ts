@@ -10,6 +10,7 @@ const years = ref<Array<string>>([])
 const isFetchingYears = ref<boolean>(false)
 const selectedYear = ref<string | undefined>()
 const selectedGroup = ref<any>({ groupAdminId: '' })
+let debounce: any
 
 const useGroupAndYears = (): {
   years: Ref<Array<string>>
@@ -29,13 +30,18 @@ const useGroupAndYears = (): {
     (groups: Group[]) => {
       // Set to true for now, if you go to child page it will redirect to home.
       // implement way to set correct group if on child page
-      setSelectedGroup(groups[0], true)
+      clearTimeout(debounce)
+      debounce = setTimeout(() => {
+        setSelectedGroup(groups[0], true)
+      }, 100)
     }
   )
 
   watch(selectedGroup, (group: Group) => {
-    console.log("SELECTED GROUP CHANGED: ", group.groupAdminId)
-    getYearsForGroup(group.groupAdminId)
+    clearTimeout(debounce)
+      debounce = setTimeout(() => {
+        getYearsForGroup(group.groupAdminId)
+      }, 100)
   })
 
   watch(selectedYear, (year: string | undefined) => {

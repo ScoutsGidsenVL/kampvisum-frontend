@@ -38,7 +38,6 @@ const useVisum = (): {
   }
 
   const navigateTowardsVisum = (visum: Visum) => {
-    console.log('NAVIGATING...')
     router.push('/kamp/' + visum.id)
   }
 

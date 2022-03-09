@@ -12,7 +12,6 @@ export class LocationRepository extends BaseRepository {
       response.results.forEach((result: any) => {
         result = PostLocationDeserializer(result)
         array.push(result)
-        console.log('SEARCHED LOCATIONS:', array)
       })
       return array
     })
