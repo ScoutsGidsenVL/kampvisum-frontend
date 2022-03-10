@@ -3,12 +3,8 @@
     <l-map
       @popupclose="setPopupFalse()"
       :options="{scrollWheelZoom: false}"
-      ref="myMap"
+      ref="myMap2"
       class="z-0 border-2 border-black"
-      v-model="z"
-      v-model:zoom="check.value.zoom"
-      :center="center"
-      @update:center="centerUpdated"
       @click="addOnClick($event)"
     >
       <l-tile-layer
@@ -169,32 +165,14 @@ export default defineComponent ({
     }
   },
   setup (props, { emit }) {
-    const myMap = ref<any>(null)
+    const myMap2 = ref<any>(null)
     // THIS APPLICATION USES VUE3-LEAFLET BUT DOCUMENTATION IS ALMOST THE SAME AS VUE2-LEAFLET
     // https://vue2-leaflet.netlify.app/quickstart/
     const isWarningDisplayed = ref<Boolean>(false)
 
-    const isPopupOpen = ref<boolean>(false)
-
-    const setPopupFalse = () => {
-      // setTimeout(() => {
-      //   isPopupOpen.value = false
-      // }, 100)
-    }
-
     const centerClickedLocation = (lat: any,lng: any) => {
-      let map = myMap.value.leafletObject
+      let map = myMap2.value.leafletObject
       map.flyTo(latLng(lat, lng), 14)
-      // map.on('zoomend', function () {
-      //   // SEARCH
-      //   if (props.searchedLocations.length === 1) {
-      //     //@ts-ignore
-      //     document.querySelector("#locationForm > div.py-4.flex.flex-col.gap-3.relative > div.w-full > div > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-marker-pane.leaflet-zoom-hide > div").click()
-      //   } else {
-      //     //@ts-ignore
-      //     document.querySelector(`#locationForm > div.py-4.flex.flex-col.gap-3.relative > div.w-full > div > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-marker-pane.leaflet-zoom-hide > div:nth-child(${props.searchedLocations.length})`).click()
-      //   }
-      // })  
     }
 
     const displayWarning = () => {
@@ -277,7 +255,7 @@ export default defineComponent ({
         markerBounds.extend(latLng(loc[0],loc[1]))
       })
 
-      let map = myMap.value.leafletObject
+      let map = myMap2.value.leafletObject
       
       if (map) {
         map.fitBounds([[markerBounds.getSouth(),markerBounds.getWest()],[markerBounds.getNorth(),markerBounds.getEast()]])
@@ -308,11 +286,10 @@ export default defineComponent ({
       patchLatLng,
       hideWarning,
       InputTypes,
-      setPopupFalse,
       addOnClick,
       doMapStuff,
       toPatch,
-      myMap
+      myMap2
     }
   }
 })
