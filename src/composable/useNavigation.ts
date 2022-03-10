@@ -46,9 +46,7 @@ export const useNavigation = (): {
     const navigate = (name: string) => {
       router.push('/kamp/' + visum.id.toString() + '/' + name + '/' + categoryUuid + '/section/' + sectionId)
     }
-    console.log('nav1')
     navigate(name.toLowerCase())
-    console.log('nav2')
   }
 
   const goToHome = () => {
@@ -62,7 +60,7 @@ export const useNavigation = (): {
     // element.addClass('bg-red')
     document.getElementById(id).setAttribute('style', 'padding:5px; background-color: #FBCCD4; border: 2px solid #E00A1E')
     // @ts-ignore
-    const y = element.getBoundingClientRect().top - 130
+    const y = element.getBoundingClientRect().top - 230
     window.scrollTo({ top: y, behavior: 'smooth' })
   }
 

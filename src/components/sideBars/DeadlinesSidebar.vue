@@ -65,9 +65,10 @@
                   <i-empty-check v-else />
                   <p>{{ deadlineItem.linkedSubCategory.category.label }}</p>
                 </div>
+                
                 <span
                   v-if="deadlineItem.linkedSubCategory.state !== 'CHECKED'"
-                  @click="navigateTowardsSection(deadlineItem.linkedSubCategory.category.name, visum, deadlineItem.linkedSubCategory.category.id, deadlineItem.linkedSubCategory.id, route)"
+                  @click="navigateTowardsSection(deadlineItem.linkedSubCategory.category.category.name, visum, deadlineItem.linkedSubCategory.category.category.id, deadlineItem.linkedSubCategory.id, route)"
                   class="ml-4 text-green underline cursor-pointer"
                   >{{ t('sidebars.deadline-sidebar.fill-in') }}</span
                 >
@@ -77,7 +78,7 @@
               <div
                 class="mt-3"
                 v-if="deadlineItem.deadlineItemParent.deadlineItemType === 'C'"
-                @click="navigateTowardsSection(deadlineItem.linkedCheck.category.name, visum, deadlineItem.linkedCheck.category.id, deadlineItem.linkedCheck.id, route)"
+                @click="navigateTowardsSection(deadlineItem.linkedCheck.category.category.name, visum, deadlineItem.linkedCheck.category.category.id, deadlineItem.linkedCheck.id, route)"
               >
                 <div class="flex gap-2">
                   <i-checked v-if="deadlineItem.linkedCheck.state === 'CHECKED'" />

@@ -4,7 +4,7 @@
     <scouts-dummy-bar />
     <base-page class="scouts-bar-padding">
       <div>
-        <div class="sticky top-0 pl-4 py-2 bg-white z-40 border border-lightGray">
+        <div class="sticky top-0 pl-4 py-2 bg-white z-50 border border-lightGray">
           <bread-crumb :isInternetActive="isInternetActive" class="md:px-5 md:mx-3" :home="'/kampvisum-home/'" :router="router" :route="route" />
         </div>
         <div class="d-flex">
