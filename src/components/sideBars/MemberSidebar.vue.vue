@@ -25,7 +25,7 @@
           <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search" :placeholder="t('checks.participant-check.search')" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
 
-        <div class="mx-1 mb-72 overflow-y-auto">
+        <div v-if="filterChild && !filterChild.isFilterMenuOpen" class="mx-1 mb-72 overflow-y-auto">
           <div class="mx-4">
             <div
               v-for="(member, index) in fetchedMembers"
