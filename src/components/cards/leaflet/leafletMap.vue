@@ -1,7 +1,6 @@
 <template>
   <div class="w-full" style="height: 500px">
     <l-map
-      @popupclose="setPopupFalse()"
       :options="{scrollWheelZoom: false}"
       ref="myMap2"
       class="z-0 border-2 border-black"
@@ -42,10 +41,6 @@
 
               <div>
                 {{searchedLocation.address}}
-              </div>
-
-              <div>
-                {{searchedLocation}}
               </div>
 
               <div class="flex justify-between">
@@ -219,7 +214,6 @@ export default defineComponent ({
           s.isMainLocation = false
         }
       })
-
     }
 
     const addOnClick = (p: any) => {
