@@ -150,7 +150,7 @@
             uploadMultiple: true,
             parallelUploads: 99,
             maxFiles: 99,
-            maxFilesize: 20
+            // maxFilesize: 20
           })
 
           myDropzone.on('totaluploadprogress', (progressDropzone: any) => {
@@ -211,7 +211,7 @@
             uploading.value = true
             myDropzone.files.forEach(async (f: any) => {
               await delay(100)
-              uploadFile(f).then(() => uploading.value = false)
+              uploadFile(f).finally(() => uploading.value = false)
             })
 
             myDropzone.removeAllFiles()

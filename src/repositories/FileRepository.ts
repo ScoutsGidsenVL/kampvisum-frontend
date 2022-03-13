@@ -32,6 +32,8 @@ export class FileRepository extends BaseRepository {
     }
     return this.post(this.endpoint, fd, config).then((response: any) => {
       return FileDeserializer(response)
+    }).catch((error: any) => {
+      return error
     })
   }
 }
