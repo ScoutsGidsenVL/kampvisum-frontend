@@ -57,7 +57,9 @@
 
           <div class="mt-3 ml-4">
             <!-- ITEMS -->
-            <div class="mt-3 cursor-pointer" v-for="deadlineItem in selectedDeadline.items" :key="deadlineItem">
+            <div class="mt-3 cursor-pointer"
+            @click="navigateTowardsSection(deadlineItem.linkedSubCategory.category.category.name, visum, deadlineItem.linkedSubCategory.category.category.id, deadlineItem.linkedSubCategory.id, route)"
+            v-for="deadlineItem in selectedDeadline.items" :key="deadlineItem">
               <!-- CATEGORIES -->
               <div class="mt-3" v-if="deadlineItem.deadlineItemParent.deadlineItemType === 'S'">
                 <div class="flex items-center gap-2">
@@ -68,7 +70,6 @@
                 
                 <span
                   v-if="deadlineItem.linkedSubCategory.state !== 'CHECKED'"
-                  @click="navigateTowardsSection(deadlineItem.linkedSubCategory.category.category.name, visum, deadlineItem.linkedSubCategory.category.category.id, deadlineItem.linkedSubCategory.id, route)"
                   class="ml-4 text-green underline cursor-pointer"
                   >{{ t('sidebars.deadline-sidebar.fill-in') }}</span
                 >
