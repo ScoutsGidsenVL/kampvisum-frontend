@@ -85,7 +85,7 @@
         <div @click="filterChild2.closeFilterMenu" class="p-4">
           <search-input :filter="filter" v-model:loading="loading" name="search" :placeholder="t('sidebars.participant-sidebar.search')" :repository="ParticipantRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
-        <div class="mx-1 mb-72 overflow-y-auto">
+        <div v-if="filterChild2 && (!filterChild.isFilterMenuOpen || checkIfIsMobileSize() === false)" class="mx-1 mb-72 overflow-y-auto">
           <div class="mx-4">
             <div
               v-for="(member, index) in fetchedMembers"
@@ -122,6 +122,7 @@ import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import { usePhoneHelper } from '@/helpers/phoneHelper'
 
 export default defineComponent({
   name: 'ParticipantSideBar',
@@ -161,6 +162,7 @@ export default defineComponent({
     const isPatching = ref<boolean>(false)
     const loading = ref<boolean>(false)
     const filter = ref<Filter>({ gender: '', ageMin: '', ageMax: '', type: props.check.value.participantCheckType })
+    const { checkIfIsMobileSize } = usePhoneHelper()
 
     const { t } = useI18n({
       inheritLocale: true,
