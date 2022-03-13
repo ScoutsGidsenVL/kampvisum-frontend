@@ -1,5 +1,8 @@
+import useGroupAndYears from '@/composable/useGroupAndYears'
 import { BaseRepository } from '@/repositories/baseRepository'
 import { FileDeserializer, FileItem } from '@/serializer/FileItem'
+
+const { selectedGroup } = useGroupAndYears()
 
 export class FileRepository extends BaseRepository {
   id = '/files/'
@@ -7,8 +10,8 @@ export class FileRepository extends BaseRepository {
   deserializer = FileDeserializer
   serializer =  null
 
-  search(query: string, group?: string): Promise<any> {
-    return this.get(`/checks/file/search/?term=${query}&group=${group}`, {}).then((response: any) => {
+  search(query: string): Promise<any> {
+    return this.get(`/checks/file/search/?term=${query}&group=${selectedGroup.value.groupAdminId}`, {}).then((response: any) => {
       const array: any[] = []
       response.results.forEach((result: FileItem) => {
         result = this.deserializer(result)
