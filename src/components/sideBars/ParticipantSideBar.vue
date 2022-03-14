@@ -85,7 +85,7 @@
         <div @click="filterChild2.closeFilterMenu" class="p-4">
           <search-input :filter="filter" v-model:loading="loading" name="search" :placeholder="t('sidebars.participant-sidebar.search')" :repository="ParticipantRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
-        <div v-if="filterChild2 && (!filterChild.isFilterMenuOpen || checkIfIsMobileSize() === false)" class="mx-1 mb-72 overflow-y-auto">
+        <div v-if="filterChild2 && (!filterChild2.isFilterMenuOpen || checkIfIsMobileSize() === false)" class="mx-1 mb-72 overflow-y-auto">
           <div class="mx-4">
             <div
               v-for="(member, index) in fetchedMembers"
@@ -314,7 +314,8 @@ export default defineComponent({
       values,
       filter,
       t,
-      filterChild2
+      filterChild2,
+      checkIfIsMobileSize
     }
   },
 })

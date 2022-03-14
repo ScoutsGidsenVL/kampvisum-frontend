@@ -57,10 +57,14 @@ export const useNavigation = (): {
     // @ts-ignore
     const element = document.getElementById(id)
     // @ts-ignore
-    // element.addClass('bg-red')
-    document.getElementById(id).setAttribute('style', 'padding:5px; background-color: #FBCCD4; border: 2px solid #E00A1E')
+    if (element) {
+      element.setAttribute('style', 'padding:5px; background-color: #FBCCD4; border: 2px solid #E00A1E')
+    }
+    let y
     // @ts-ignore
-    const y = element.getBoundingClientRect().top - 230
+    if (element) {
+     y = element.getBoundingClientRect().top - 230
+    }
     window.scrollTo({ top: y, behavior: 'smooth' })
   }
 
