@@ -40,14 +40,14 @@ export default abstract class BaseApiRepository {
   getMinioFile(minioUrl: string) {
     const instance = this.axiosInstance
     return instance
-    .get(minioUrl)
-    .then(function (result: AxiosResponse) {
-      // Only return the data of response
-      return result.data
-    })
-    .catch((error: any) => {
-      return this.processError(error)
-    })
+      .get(minioUrl)
+      .then(function (result: AxiosResponse) {
+        // Only return the data of response
+        return result.data
+      })
+      .catch((error: any) => {
+        return this.processError(error)
+      })
   }
 
   protected get(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
@@ -113,7 +113,7 @@ export default abstract class BaseApiRepository {
 
   protected softDelete(endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
     config.data = data
-    
+
     return this.axiosInstance
       .delete(endpoint, config)
       .then(function (result: AxiosResponse) {
@@ -142,5 +142,5 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  private processError(error: any): void {}
+  private processError(error: any): void { }
 }

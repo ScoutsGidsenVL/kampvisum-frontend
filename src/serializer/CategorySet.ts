@@ -10,7 +10,7 @@ export interface CategorySet {
 export const CategorySetDeserializer = (input: any): CategorySet => {
   const single: CategorySet = {
     categorySetParent: input.parent ? CategorySetParentDeserializer(input.parent) : undefined,
-    categories: input.categories ? input.categories.map((c: any) => CategoryDeserializer(c)) : undefined,
+    categories: input.categories ? input.categories.filter((x: any) => x !== null).map((c: any) => CategoryDeserializer(c)) : undefined,
     id: input.id ? input.id : undefined
   }
   return single

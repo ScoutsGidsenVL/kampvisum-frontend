@@ -15,7 +15,7 @@ export const CategoryDeserializer = (input: any): Category => {
     camp: input.camp ? input.camp : undefined,
     visum: input.visum ? input.visum : undefined,
     id: input.id,
-    subCategories: input.sub_categories ? input.sub_categories.map((subCategory: any) => SubCategoryDeserializer(subCategory)) : [],
+    subCategories: input.sub_categories ? input.sub_categories.filter((x: any) => x !== null).map((subCategory: any) => SubCategoryDeserializer(subCategory)) : [],
     categoryParent: CategoryParentDeserializer(input.parent),
     state: input.state ? input.state : 'UNCHECKED'
   }
