@@ -2,6 +2,8 @@ import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
 import { OpenIdConnectInterceptors } from 'inuits-vuejs-oidc'
 import MasterConfig from '../models/config/masterConfig'
 import store from '@/store/store'
+import { useNotification } from '../composable/useNotification'
+const { triggerNotification } = useNotification()
 
 export default abstract class BaseApiRepository {
   private axiosInstance: AxiosInstance
@@ -142,5 +144,7 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  private processError(error: any): void { }
+  private processError(error: any): void {
+    triggerNotification(error.response.data.file[0])
+  }
 }
