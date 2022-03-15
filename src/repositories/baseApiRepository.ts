@@ -10,7 +10,6 @@ export default abstract class BaseApiRepository {
   private publicAxiosInstance: AxiosInstance
   abstract id: string
   private baseUrl: string
-  private getCalls: Array<any> = []
 
   constructor() {
     // const config: MasterConfig = getModule(configModule, store).config
@@ -55,19 +54,17 @@ export default abstract class BaseApiRepository {
 
 
   protected async get(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
-    let currentCalls = this.getCalls.length
+    if (config.headers.Authorization == undefined) {
+      console.log("config.header.AUTHORIZATION has NO BEARER")
+    } else {
+      console.log("config.header.Authorization has BEARER")
+    }
+    await config.headers.Authorization
 
-    this.getCalls.push({ "endpoint": endpoint })
-
-    await this.getCalls.length == currentCalls - 1
-
-    let _me = this
     const instance = publicCall && !store.getters['openid/isLoggedIn'] ? this.publicAxiosInstance : this.axiosInstance
     const result: any = instance
       .get(endpoint, config)
       .then(function (result: AxiosResponse) {
-        _me.getCalls.pop()
-
         // Only return the data of response
         return result.data
       })
