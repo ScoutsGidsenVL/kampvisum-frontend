@@ -191,6 +191,7 @@ export default defineComponent({
     }
 
     getCampTypes()
+    
     if (props.selectedGroupId) {
       getGroupSections(props.selectedGroupId)
     }

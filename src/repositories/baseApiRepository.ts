@@ -34,7 +34,7 @@ export default abstract class BaseApiRepository {
         function (response) {
           return response
         },
-        (error) => OpenIdConnectInterceptors.buildResponseErrorInterceptorCallback(error, store)
+        (error) => OpenIdConnectInterceptors.buildResponseErrorInterceptorCallback(error, store, this.axiosInstance)
       )
     }
   }
@@ -52,9 +52,9 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  protected get(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
+  protected async get(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
     const instance = publicCall && !store.getters['openid/isLoggedIn'] ? this.publicAxiosInstance : this.axiosInstance
-    return instance
+    return await instance
       .get(endpoint, config)
       .then(function (result: AxiosResponse) {
         // Only return the data of response
