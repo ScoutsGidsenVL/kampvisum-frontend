@@ -74,6 +74,8 @@ export default abstract class BaseApiRepository {
       .catch((error: any) => {
         return this.processError(error)
       })
+
+    return result
   }
 
   protected post(endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
