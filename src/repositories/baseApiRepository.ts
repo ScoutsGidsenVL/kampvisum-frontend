@@ -10,6 +10,8 @@ export default abstract class BaseApiRepository {
   private publicAxiosInstance: AxiosInstance
   abstract id: string
   private baseUrl: string
+  private getCalls: Array<any> = []
+  private handlingGetCall: Boolean = false
 
   constructor() {
     // const config: MasterConfig = getModule(configModule, store).config
@@ -52,12 +54,21 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  protected get(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
+
+  protected async get(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
+    let currentCalls = this.getCalls.length
+
+    this.getCalls.push({ "endpoint": endpoint })
+
+    await this.getCalls.length == currentCalls - 1
+
+    let _me = this
     const instance = publicCall && !store.getters['openid/isLoggedIn'] ? this.publicAxiosInstance : this.axiosInstance
-    return instance
+    const result: any = instance
       .get(endpoint, config)
       .then(function (result: AxiosResponse) {
         // Only return the data of response
+        _me.getCalls.pop()
         return result.data
       })
       .catch((error: any) => {
