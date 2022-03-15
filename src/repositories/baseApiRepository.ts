@@ -11,7 +11,6 @@ export default abstract class BaseApiRepository {
   abstract id: string
   private baseUrl: string
   private getCalls: Array<any> = []
-  private handlingGetCall: Boolean = false
 
   constructor() {
     // const config: MasterConfig = getModule(configModule, store).config
@@ -67,8 +66,9 @@ export default abstract class BaseApiRepository {
     const result: any = instance
       .get(endpoint, config)
       .then(function (result: AxiosResponse) {
-        // Only return the data of response
         _me.getCalls.pop()
+
+        // Only return the data of response
         return result.data
       })
       .catch((error: any) => {
