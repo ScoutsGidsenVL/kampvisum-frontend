@@ -34,7 +34,7 @@ export default abstract class BaseApiRepository {
         function (response) {
           return response
         },
-        (error) => OpenIdConnectInterceptors.buildResponseErrorInterceptorCallback(error, store, this.axiosInstance)
+        (error) => OpenIdConnectInterceptors.buildResponseErrorInterceptorCallback(error, store,this.axiosInstance)
       )
     }
   }
@@ -52,17 +52,9 @@ export default abstract class BaseApiRepository {
       })
   }
 
-
   protected async get(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
-    if (config.headers.Authorization == undefined) {
-      console.log("config.header.AUTHORIZATION has NO BEARER")
-    } else {
-      console.log("config.header.Authorization has BEARER")
-    }
-    await config.headers.Authorization
-
     const instance = publicCall && !store.getters['openid/isLoggedIn'] ? this.publicAxiosInstance : this.axiosInstance
-    const result: any = instance
+    return await instance
       .get(endpoint, config)
       .then(function (result: AxiosResponse) {
         // Only return the data of response
@@ -71,8 +63,6 @@ export default abstract class BaseApiRepository {
       .catch((error: any) => {
         return this.processError(error)
       })
-
-    return result
   }
 
   protected post(endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
