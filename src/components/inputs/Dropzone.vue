@@ -145,7 +145,7 @@
             url: `${baseUrl}files/`,
             headers: {},
             autoProcessQueue: false,
-            acceptedFiles: '.jpg,.jpeg,.png,.webp,.odt,.ods,.odp,.docx,application/pdf,.pptx, .xlsx',
+            acceptedFiles: '.jpg,.jpeg,.png,.webp,.odt,.ods,.odp,.docx,application/pdf,.pptx,.xlsx,.doc',
             previewTemplate: dropzonePreviewDiv.value?.outerHTML,
             uploadMultiple: true,
             parallelUploads: 99,
