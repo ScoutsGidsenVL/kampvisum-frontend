@@ -123,6 +123,7 @@ import { Visum } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'ParticipantSideBar',
@@ -186,6 +187,7 @@ export default defineComponent({
       }
 
       if (props.sideBarState.state === 'edit') {
+          values.groupGroupAdminId = selectedGroup.value.groupAdminId
           await updateParticipant(values)
       }
 
@@ -221,7 +223,10 @@ export default defineComponent({
         })
     }
 
+    const { selectedGroup } = useGroupAndYears()
+
     const postParticipant = async (participant: Member) => {
+      participant.groupGroupAdminId = selectedGroup.value.groupAdminId
       await RepositoryFactory.get(ParticipantRepository)
         .create(participant)
         .then((m: Member) => {

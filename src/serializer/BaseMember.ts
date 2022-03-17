@@ -25,11 +25,13 @@ export interface BaseMember {
 }
 
 export const BaseMemberDeserializer = (input: any, wId?:string, pStatus?: string): BaseMember => {
+  console.log('INPUT:', input)
   const single: BaseMember = {
     hasPaid: pStatus === 'Y' ? true : false,
     wrapperId: wId ? wId : '',
     id: input.id ? input.id : input.group_admin_id,
     groupAdminId: input.group_admin_id ? input.group_admin_id : undefined,
+    groupGroupAdminId: input.group_group_admin_id ? input.group_group_admin_id: undefined, 
     lastName: input.last_name,
     firstName: input.first_name,
     phoneNumber: input.phone_number ? input.phone_number.replace(/ /g, '') : undefined,
