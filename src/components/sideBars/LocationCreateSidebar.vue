@@ -44,7 +44,6 @@
             </div>
           </div>
 
-          <div class="bg-lighterGreen p-2">{{ t('sidebars.location-sidebar.form.search-map') }}</div>
           <search-input
             :disabled="values.locations.length !== 0"
             :loadingSubmit="patchLoading"
