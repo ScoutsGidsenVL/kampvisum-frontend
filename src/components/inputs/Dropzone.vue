@@ -219,7 +219,12 @@
 
           const uploadFile = async (file: any) => {
             await RepositoryFactory.get(FileRepository).uploadFile(file).then((responseFile: FileItem) => {
-              emit('uploadedFile', responseFile)
+              try {
+                emit('uploadedFile', responseFile)
+                console.log('TRY',)
+              } catch (error) {
+                console.log('CATCH - FILE UPLOAD ERROR: ', error)
+              }
             })
           }
         }
