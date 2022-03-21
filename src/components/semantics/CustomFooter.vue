@@ -88,16 +88,23 @@
             </ul>
           </nav>
         </div>
-        <div class="col-12 col-md-6 order-md-1">© 2022 Scouts en Gidsen Vlaanderen vzw ®</div>
+        <div class="col-12 col-md-6 order-md-1">© {{currentYear}} Scouts en Gidsen Vlaanderen vzw ®</div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+const { DateTime } = require("luxon");
 
 export default defineComponent({
   name: 'CustomFooter',
+  setup () {
+    const currentYear = ref<string>(DateTime.now().toFormat('yyyy'))  
+    return {
+      currentYear
+    }
+  }
 })
 </script>
