@@ -1,4 +1,12 @@
 <template>
+  <div class="flex flex-col pb-2 font-semibold italic">
+    <span class="text-sm">
+      {{listOfAllowed}}
+    </span>
+    <span class="text-sm">
+      Max: {{maxFileize}} MB
+    </span>
+  </div>
   <div class="flex flex-col w-full">
     <div
       ref="dropzoneDiv"
@@ -138,19 +146,20 @@
       const dropzoneDiv = ref<HTMLDivElement | undefined>(undefined)
       const baseUrl = `${config.api.baseUrl}/${config.api.apiSuffix}`
       const dropzonePreviewDiv = ref<HTMLDivElement | undefined>(undefined)
-
+      const listOfAllowed = '.jpg, .jpeg, .png, .webp, .odt, .ods, .odp, .docx, application/pdf, .pptx, .xlsx, .doc'
+      const maxFileize = 20
       onMounted(async () => {
         if (dropzoneDiv.value && dropzonePreviewDiv) {
           const myDropzone = new Dropzone(dropzoneDiv.value, {
             url: `${baseUrl}files/`,
             headers: {},
             autoProcessQueue: false,
-            acceptedFiles: '.jpg,.jpeg,.png,.webp,.odt,.ods,.odp,.docx,application/pdf,.pptx,.xlsx,.doc',
+            acceptedFiles: listOfAllowed,
             previewTemplate: dropzonePreviewDiv.value?.outerHTML,
             uploadMultiple: true,
             parallelUploads: 99,
             maxFiles: 99,
-            // maxFilesize: 20
+            maxFilesize: maxFileize
           })
 
           myDropzone.on('totaluploadprogress', (progressDropzone: any) => {
@@ -236,7 +245,9 @@
         uploading,
         fileCount,
         doUpload,
-        t
+        t,
+        listOfAllowed,
+        maxFileize
       }
     },
   })
