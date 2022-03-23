@@ -158,6 +158,7 @@
       "notification-deleted": "bestand succesvol verwijderd uit de lijst",
       "upload-files": "BESTANDEN UPLOADEN",
       "instruction": "Sleep je documenten hier naartoe, of klik hier om ze op te laden",
+      "allowed-files": "enkel .jpg, .jpeg, .png, .webp, .odt, .ods, .odp, .docx, .pdf, .pptx, .xlsx, .doc"
     },
     "participant-check": {
       "no-member": "leeg",
