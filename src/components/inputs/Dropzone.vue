@@ -1,10 +1,6 @@
 <template>
   <div class="flex flex-col pb-2 font-semibold italic">
     <span class="text-sm">
-      {{listOfAllowed}}
-    </span>
-    <span class="text-sm">
-      Max: {{maxFileize}} MB
     </span>
   </div>
   <div class="flex flex-col w-full">
@@ -39,7 +35,9 @@
           </svg>
         </span>
         <span class="text-xs text-black">
-          {{t('checks.document-check.instruction')}}
+          {{t('checks.document-check.instruction')}}<br>
+          {{t('checks.document-check.allowed-files')}}<br>
+          Max: {{maxFileize}} MB
         </span>
       </div>
     </div>

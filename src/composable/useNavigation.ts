@@ -58,7 +58,7 @@ export const useNavigation = (): {
     const element = document.getElementById(id)
     // @ts-ignore
     if (element) {
-      element.setAttribute('style', 'padding:5px; background-color: #FBCCD4; border: 2px solid #E00A1E')
+      element.setAttribute('style', 'border: 4px solid #000000')
     }
     let y
     // @ts-ignore
