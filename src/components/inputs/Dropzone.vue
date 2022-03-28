@@ -167,10 +167,11 @@ import { useNotification } from '@/composable/useNotification'
           myDropzone.on("error", function(file: any, message: any) {
             myDropzone.files.forEach((f: any) => {
               if (f.status !== 'error') {
-                myDropzone.emit("addedfile", f);
-                // setTimeout(() => {
-                //   myDropzone.emit("addedfile", f);
-                // },1)
+                // myDropzone.emit("addedfile", f);
+                setTimeout(() => {
+                  myDropzone.emit("addedfile", f);
+                  myDropzone.files.push(f)
+                },10)
               }
             });
             triggerNotification(message)
@@ -229,6 +230,7 @@ import { useNotification } from '@/composable/useNotification'
 
           doUpload.value = () => {
             uploading.value = true
+            console.log('myDropzone.files UPLOAD: ', myDropzone.files)
             myDropzone.files.forEach(async (f: any) => {
               await delay(100)
               uploadFile(f).finally(() => uploading.value = false)
