@@ -14,7 +14,7 @@
       }"
     >
       <div
-        v-show="fileCount === 0"
+        v-if="fileCount === 0"
         class="inline-block w-9/12 text-center"
         @click="() => dropzoneDiv && dropzoneDiv.click()"
       >
@@ -38,6 +38,7 @@
           {{t('checks.document-check.instruction')}}<br>
           {{t('checks.document-check.allowed-files')}}<br>
           Max: {{maxFileize}} MB
+          <!-- {{myDropzone.files}} -->
         </span>
       </div>
     </div>
@@ -163,7 +164,15 @@ import { useNotification } from '@/composable/useNotification'
             maxFilesize: maxFileize
           })
 
-          myDropzone.on("error", function(file: any, message: any) { 
+          myDropzone.on("error", function(file: any, message: any) {
+            myDropzone.files.forEach((f: any) => {
+              if (f.status !== 'error') {
+                myDropzone.emit("addedfile", f);
+                // setTimeout(() => {
+                //   myDropzone.emit("addedfile", f);
+                // },1)
+              }
+            });
             triggerNotification(message)
           });
 
@@ -178,18 +187,15 @@ import { useNotification } from '@/composable/useNotification'
             uploading.value && emit('update:progress', progress)
           })
 
-          const updateFileCount = () => {
-            if (myDropzone) {
-              fileCount.value = myDropzone?.files.length
-            }
-          }
-
           myDropzone.on('addedfile', (value: any) => {
-            updateFileCount()
+            console.log('addedfile')
+            // updateFileCount()
+            fileCount.value++
           })
 
           myDropzone.on('removedfile', (value: any) => {
-            updateFileCount()
+            // updateFileCount()
+            fileCount.value--
           })
 
           myDropzone.on(
@@ -232,14 +238,17 @@ import { useNotification } from '@/composable/useNotification'
           }
 
           const uploadFile = async (file: any) => {
-            await RepositoryFactory.get(FileRepository).uploadFile(file).then((responseFile: FileItem) => {
-              try {
-                emit('uploadedFile', responseFile)
-                console.log('TRY',)
-              } catch (error) {
-                console.log('CATCH - FILE UPLOAD ERROR: ', error)
-              }
-            })
+            if (file.status !== 'error') {
+              await RepositoryFactory.get(FileRepository).uploadFile(file).then((responseFile: FileItem) => {
+                try {
+                  emit('uploadedFile', responseFile)
+                  console.log('TRY',)
+                } catch (error) {
+                  console.log('CATCH - FILE UPLOAD ERROR: ', error)
+                }
+              })
+            }
+            
           }
         }
       })
