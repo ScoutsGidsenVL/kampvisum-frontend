@@ -119,6 +119,7 @@
   import Dropzone from 'dropzone'
   const delay = require('delay');
   import { useI18n } from 'vue-i18n'
+import { useNotification } from '@/composable/useNotification'
   
   export default defineComponent({
     name: 'Upload',
@@ -134,6 +135,8 @@
     },
     emits: ['update:progress', 'uploadedFile'],
     setup({}, { emit }) {
+    const { triggerNotification } = useNotification()
+      
       const { t } = useI18n({
         inheritLocale: true,
         useScope: 'local',
@@ -161,6 +164,10 @@
             maxFiles: 99,
             maxFilesize: maxFileize
           })
+
+          myDropzone.on("error", function(file: any, message: any) { 
+            triggerNotification(message)
+          });
 
           myDropzone.on('totaluploadprogress', (progressDropzone: any) => {
             const progress: progressType = {
