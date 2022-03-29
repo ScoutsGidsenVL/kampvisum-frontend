@@ -42,6 +42,13 @@ export const CheckDeserializer = (input: any): Check => {
     state: input.state ? input.state : 'UNCHECKED',
   }
 
+  if (single.checkParent?.checkType?.checkType === CheckTypes.NumberCheck) {
+    if (input.value) {
+      single.value = input.value.toString();
+    }
+    console.log('TO STRING?: ', input)
+  }
+
   if (single.checkParent?.checkType?.checkType === CheckTypes.DurationCheck) {
     single.value = ValueDeserializer(input.value)
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.CommentCheck) 
