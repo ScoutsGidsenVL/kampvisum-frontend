@@ -171,7 +171,9 @@
       "remove": "verwijder",
       "search": "Zoek op naam",
       "inActiveMember": "verzekerd?",
-      "paid": "betaald"
+      "paid": "betaald",
+      "no-email-part-1": "The following user",
+      "no-email-part-2": "has no email set."
     },
     "number-check": {
       "notification-patched": "aanpassingen opgeslagen"

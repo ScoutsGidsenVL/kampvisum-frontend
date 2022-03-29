@@ -64,6 +64,8 @@ import { useI18n } from 'vue-i18n'
 import ParticipantFilter from '../semantics/ParticipantFilter.vue'
 import { Filter } from '../../serializer/Filter'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
+import { BaseMember } from '@/serializer/BaseMember'
+import { useNotification } from '@/composable/useNotification'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -116,10 +118,28 @@ export default defineComponent({
       context.emit('update:sideBarState', { state: 'hide' })
     }
 
+    const { triggerNotification } = useNotification()
+
+
     const onSubmit = async () => {
-      handleSubmit(async () => {
-        patchMembers(fetchedMembers.value)
-      })()
+      let isNoEmail: boolean = false
+      
+      fetchedMembers.value.forEach((member: BaseMember) => {
+        if (member.isChecked) {
+          console.log('MEMBER: ', member)
+        } 
+        if (member.isChecked && !member.email) {
+          isNoEmail = true
+          triggerNotification(`${t('checks.participant-check.no-email-part-2')} ${member.fullName} ${t('checks.participant-check.no-email-part-2')}`)
+        }
+      })
+
+      if (isNoEmail === false) {
+        handleSubmit(async () => {
+          patchMembers(fetchedMembers.value)
+        })()
+      }
+      isNoEmail = false
     }
 
     const patchMembers = async (data: Member[]) => {

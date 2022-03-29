@@ -46,7 +46,7 @@ export const CheckDeserializer = (input: any): Check => {
     if (input.value) {
       single.value = input.value.toString();
     }
-    console.log('TO STRING?: ', input)
+    // console.log('TO STRING?: ', input)
   }
 
   if (single.checkParent?.checkType?.checkType === CheckTypes.DurationCheck) {
