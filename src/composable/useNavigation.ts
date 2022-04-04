@@ -37,14 +37,14 @@ export const useNavigation = (): {
 
   const navigateTowardsCategory = (name: string, visum: Visum, categoryUuid: string) => {
     const navigate = (name: string) => {
-      router.push('/kamp/' + visum.id.toString() + '/' + name + '/' + categoryUuid)
+      router.push('/kamp/' + visum.id.toString() + '/' + 'category' + '/' + categoryUuid)
     }
     navigate(name.toLowerCase())
   }
 
   const navigateTowardsSection = (name: string, visum: Visum, categoryUuid: string, sectionId: string) => {
     const navigate = (name: string) => {
-      router.push('/kamp/' + visum.id.toString() + '/' + name + '/' + categoryUuid + '/section/' + sectionId)
+      router.push('/kamp/' + visum.id.toString() + '/' + 'category' + '/' + categoryUuid + '/section/' + sectionId)
     }
     navigate(name.toLowerCase())
   }
