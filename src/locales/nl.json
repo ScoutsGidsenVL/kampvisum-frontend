@@ -158,7 +158,10 @@
       "notification-deleted": "bestand succesvol verwijderd uit de lijst",
       "upload-files": "BESTANDEN UPLOADEN",
       "instruction": "Sleep je documenten hier naartoe, of klik hier om ze op te laden",
-      "allowed-files": "enkel .jpg, .jpeg, .png, .webp, .odt, .ods, .odp, .docx, .pdf, .pptx, .xlsx, .doc"
+      "allowed-files": "enkel .jpg, .jpeg, .png, .webp, .odt, .ods, .odp, .docx, .pdf, .pptx, .xlsx, .doc",
+      "file-too-big-part-1": "File is too big",
+      "file-too-big-part-2": "Max filesize: 20 MiB.",
+      "file-type-incorrect": "You can't upload files of this type."
     },
     "participant-check": {
       "no-member": "leeg",

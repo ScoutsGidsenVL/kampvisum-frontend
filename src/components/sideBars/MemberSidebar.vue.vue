@@ -128,9 +128,9 @@ export default defineComponent({
         if (member.isChecked) {
           console.log('MEMBER: ', member)
         } 
-        if (member.isChecked && !member.email) {
+        if ((member.isChecked && !member.email) && (props?.check?.checkParent?.name === 'members_leaders_responsible_main' || props?.check?.checkParent?.name === 'members_leaders_responsible_adjunct')) {
           isNoEmail = true
-          triggerNotification(`${t('checks.participant-check.no-email-part-2')} ${member.fullName} ${t('checks.participant-check.no-email-part-2')}`)
+          triggerNotification(`${t('checks.participant-check.no-email-part-1')} ${member.fullName} ${t('checks.participant-check.no-email-part-2')}`)
         }
       })
 

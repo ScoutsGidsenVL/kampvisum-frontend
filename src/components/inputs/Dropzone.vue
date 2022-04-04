@@ -174,7 +174,16 @@ import { useNotification } from '@/composable/useNotification'
                 },10)
               }
             });
-            triggerNotification(message)
+            if (message.includes('File is too big')) {
+              let part1 = t('checks.document-check.file-too-big-part-1')
+              let part2 = message.substring(16, (message.indexOf('B') + 2))
+              let part3 = t('checks.document-check.file-too-big-part-2')
+              let sentence = `${part1} ${part2} ${part3}`
+              triggerNotification(sentence)
+            }
+            if (message.includes("You can't upload files of this type.")) {
+              triggerNotification(t('checks.document-check.file-type-incorrect'))
+            }
           });
 
           myDropzone.on('totaluploadprogress', (progressDropzone: any) => {
@@ -230,7 +239,6 @@ import { useNotification } from '@/composable/useNotification'
 
           doUpload.value = () => {
             uploading.value = true
-            console.log('myDropzone.files UPLOAD: ', myDropzone.files)
             myDropzone.files.forEach(async (f: any) => {
               await delay(100)
               uploadFile(f).finally(() => uploading.value = false)
@@ -244,9 +252,7 @@ import { useNotification } from '@/composable/useNotification'
               await RepositoryFactory.get(FileRepository).uploadFile(file).then((responseFile: FileItem) => {
                 try {
                   emit('uploadedFile', responseFile)
-                  console.log('TRY',)
                 } catch (error) {
-                  console.log('CATCH - FILE UPLOAD ERROR: ', error)
                 }
               })
             }
@@ -257,13 +263,13 @@ import { useNotification } from '@/composable/useNotification'
 
       return {
         dropzonePreviewDiv,
+        listOfAllowed,
         dropzoneDiv,
         uploading,
         fileCount,
+        maxFileize,
         doUpload,
         t,
-        listOfAllowed,
-        maxFileize
       }
     },
   })
