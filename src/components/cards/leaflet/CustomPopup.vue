@@ -33,12 +33,12 @@
         </svg>
       </div>
 
-      <!-- <div class="flex items-center gap-2 justify-center cursor-pointer text-red hover:text-lightRed">
+      <div @click="remove()" class="flex items-center gap-2 justify-center cursor-pointer text-red hover:text-lightRed">
         <p class="underline">Verwijder</p>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
         </svg>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -51,6 +51,9 @@ import IMailGreen from '@/components/icons/IMailGreen.vue'
 import { defineComponent, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
+import RepositoryFactory from '@/repositories/repositoryFactory'
+import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
+import { useNotification } from '@/composable/useNotification'
 
 
 export default defineComponent({
@@ -66,7 +69,7 @@ export default defineComponent({
       required: false
     },
     check: {
-      type: Object as PropType<Array<Check>>
+      type: Object as PropType<Check>
     },
   },
   setup (props, { emit }) {
@@ -78,7 +81,36 @@ export default defineComponent({
       document.body.classList.add('overflow-hidden')
       emit('edit', props.parentLocation)
     }
+    const { triggerNotification } = useNotification()
+
+
+     const patchLocation = async () => {
+      if (props?.check?.endpoint && props?.parentLocation) {
+
+        let newArray: any = []
+        props.check.value.locations.forEach((locationVal: any) => {
+          console.log('COMPARE: ', locationVal, props.parentLocation)
+          if (locationVal.id !== props.parentLocation.id) { 
+            newArray.push(locationVal)
+          }
+        })
+
+        console.log('NEW ARRAY: ', newArray)
+
+        await RepositoryFactory.get(LocationCheckRepository)
+        .updateLocationCheckRemove(props.check.endpoint, newArray)
+        .then((p: any) => {
+          // triggerNotification(t('sidebars.location-sidebar.form.notification-patched'))
+          triggerNotification('DELETED!!')
+        })
+      } 
+    }
+
+    const remove = () => {
+      patchLocation()
+    }
     return  {
+      remove,
       edit,
       t
     }

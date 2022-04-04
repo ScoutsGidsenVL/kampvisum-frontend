@@ -27,6 +27,12 @@ export class LocationCheckRepository extends BaseRepository {
     })
   }
 
+  updateLocationCheckRemove(url: string, parentLocations?: Array<any>) {
+    return this.patch(url, { locations: parentLocations }).then((response: any) => {
+      return this.deserializer(response)
+    })
+  }
+
   addSearched(url: string, parentLocations?: Array<any>) {
     let arr: Array<any> = []
     if (parentLocations) {
