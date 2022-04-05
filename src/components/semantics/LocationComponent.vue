@@ -1,8 +1,13 @@
 <template>
   <div class="pb-3">
 
-    <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
-    
+    <div class="flex gap-1 items-center">
+      <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
+      <div v-if="check.checkParent.explanation">
+        <i-info :info="check.checkParent.explanation" />
+      </div>
+    </div>
+
     <div class="pb-3 mb-3">
       <custom-button class="mx-3 mb-3" @click="openLocationCreateSidebar()" :text="t('checks.location-check.add-location')" /> 
       <div v-for="(location) in check.value.locations" :key="location">
@@ -38,6 +43,7 @@ import { Check } from '@/serializer/Check'
 import Message, { ColorState } from './message.vue'
 import { useI18n } from 'vue-i18n'
 import IMarker from '../icons/IMarker.vue'
+import IInfo from '../icons/IInfo.vue'
 
 export default defineComponent({
   name: 'LocationComponent',
@@ -48,6 +54,7 @@ export default defineComponent({
     LocationCreateSidebar,
     ParentLeafletMap,
     IMarker,
+    IInfo
   },
   props: {
     check: {
