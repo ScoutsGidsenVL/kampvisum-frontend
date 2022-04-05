@@ -1,9 +1,9 @@
 <template>
-  <div class="bg-lighterGreen md:z-20 md:mt-3" :class="{ 'md:w-99 xs:w-full xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED, 'xs:z-50': sidebar.state === SidebarState.OPEN}">
+  <div class="bg-lighterGreen md:z-20 md:mt-3 -mb-60" :class="{ 'md:w-99 xs:w-full xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED, 'xs:z-50': sidebar.state === SidebarState.OPEN}">
     <!-- WHEN CLOSED -->
     <div
       @click="openSideBar()"
-      class="w-8 h-screen-90 fixed flex-column pt-7 cursor-pointer sticky top-custom"
+      class="w-8 h-screen-90 fixed flex-column pt-7 cursor-pointer top-custom"
       :class="{ 'd-none': sidebar.state === SidebarState.OPEN, 'd-flex': sidebar.state === SidebarState.CLOSED }"
     >
       <div class="flex justify-center w-100">
@@ -14,8 +14,8 @@
           />
         </svg>
       </div>
-      <div class="h-screen flex flex-wrap justify-center content-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sticky -mt-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="h-screen flex flex-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sticky mt-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -26,20 +26,22 @@
       </div>
     </div>
 
-    <div class="h-screen" :class="{ 'd-flex md:w-98 p-3 xs:mt-4 md:mt-0 md:sticky md:top-56 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
-      <div class="w-100 flex justify-between">
-        <div class="flex gap-3">
-          <i-info-green :info="'setting the info in the information sidebar and open the information sidebar'" />
-          <strong class="text-lg"> Info </strong>
+    <div class="h-screen" :class="{ 'd-flex xs:w-98 md:w-99 p-3 xs:mt-4 md:mt-0 md:top-56 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
+      <div class="md:fixed md:w-98">
+        <div class="xs:w-4/5 flex justify-between">
+          <div class="flex gap-3">
+            <i-info-green :info="'setting the info in the information sidebar and open the information sidebar'" />
+            <strong class="text-lg"> Info </strong>
+          </div>
+          <svg @click="closeSideBar()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="cursor-pointer bi bi-x-lg stroke-current stroke-1 text-black" viewBox="0 0 16 16">
+            <path
+              d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"
+            />
+          </svg>
         </div>
-        <svg @click="closeSideBar()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="cursor-pointer bi bi-x-lg stroke-current stroke-1 text-black" viewBox="0 0 16 16">
-          <path
-            d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"
-          />
-        </svg>
+        <slot />
+        <div v-html="info" class="break-words mt-4 text-justify"></div>
       </div>
-      <slot />
-      <div v-html="info" class="break-words mt-4 text-justify"></div>
     </div>
   </div>
 </template>
@@ -110,7 +112,7 @@ header {
 }
 
 .top-custom {
-  top: 150px;
+  top: 150;
 }
 
 .h-screen-90 {
