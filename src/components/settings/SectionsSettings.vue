@@ -135,7 +135,6 @@ export default defineComponent({
       getGroupSections(selectedGroup.value.groupAdminId)
     }
     watch(selectedGroup.value, () => {
-      console.log('GET SECTIONS')
       getGroupSections(selectedGroup.value.groupAdminId)
     })
 

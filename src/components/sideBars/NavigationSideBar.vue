@@ -8,7 +8,8 @@
             <h1 class="text-2xl mt-1.5">{{ t('title') }}</h1>
           </div>
 
-          <div class="my-3">
+          <div v-if="selectedGroup.groupAdminId !== ''" class="my-3">
+            {{selectedGroup}}
             <multi-select
               v-if="getAvailableGroups()"
               id="groupSelector"
@@ -17,7 +18,7 @@
               track-by="fullName"
               value-prop="groupAdminId"
               :options="getAvailableGroups()"
-              :value="getAvailableGroups()[0]"
+              :value="selectedGroup"
               :canClear="false"
               :canDeselect="false"
             />
@@ -92,7 +93,7 @@ export default defineComponent({
     const { isFetchingVisums, visums, visumsAlphabetically } = useVisum()
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsCategory, sidebar } = useNavigation()
-    const { setSelectedGroup, getAvailableGroups } = useGroupAndYears()
+    const { setSelectedGroup, getAvailableGroups, selectedGroup } = useGroupAndYears()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -122,6 +123,7 @@ export default defineComponent({
     }
 
     return {
+      selectedGroup,
       visumsAlphabetically,
       navigateTowardsCategory,
       changeSelectedGroup,

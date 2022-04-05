@@ -198,7 +198,6 @@ export default defineComponent({
     watch(
       () => props.selectedGroupId,
       () => {
-        console.log('GET GROUP SECTIONS')
         getGroupSections(props.selectedGroupId)
       }
     )

@@ -228,8 +228,6 @@ export default defineComponent({
       if (!isUpdatingFlag.value) {
         isUpdatingFlag.value = true
         if (flag.id && deadline.id) {
-          console.log('RICARDO TOGGLE FLAG 1: ', flag)
-          console.log('RICARDO TOGGLE FLAG 2: ', deadline)
           await RepositoryFactory.get(DeadlineRepository)
             .updateFlag(deadline.id, flag.id, { flag: flag.flag })
             .then((deadline: Deadline) => {

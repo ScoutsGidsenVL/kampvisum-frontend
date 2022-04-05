@@ -25,7 +25,6 @@ export interface BaseMember {
 }
 
 export const BaseMemberDeserializer = (input: any, wId?:string, pStatus?: string): BaseMember => {
-  // console.log('INPUT:', input)
   const single: BaseMember = {
     hasPaid: pStatus === 'Y' ? true : false,
     wrapperId: wId ? wId : '',

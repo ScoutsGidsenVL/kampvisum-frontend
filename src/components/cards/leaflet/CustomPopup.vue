@@ -89,13 +89,10 @@ export default defineComponent({
 
         let newArray: any = []
         props.check.value.locations.forEach((locationVal: any) => {
-          console.log('COMPARE: ', locationVal, props.parentLocation)
           if (locationVal.id !== props.parentLocation.id) { 
             newArray.push(locationVal)
           }
         })
-
-        console.log('NEW ARRAY: ', newArray)
 
         await RepositoryFactory.get(LocationCheckRepository)
         .updateLocationCheckRemove(props.check.endpoint, newArray)

@@ -4,7 +4,6 @@ import { Group } from '@/serializer/Group'
 import store from '../store/store'
 import { ref, Ref, watch } from 'vue'
 import useVisum from './useVisum'
-import { useNavigation } from './useNavigation'
 
 const years = ref<Array<string>>([])
 const isFetchingYears = ref<boolean>(false)
@@ -23,7 +22,6 @@ const useGroupAndYears = (): {
   getAvailableGroups: () => Group[]
 } => {
   const { getVisums, clearVisums } = useVisum()
-  const { goToHome } = useNavigation()
 
   watch(
     () => store.getters.user.scoutsGroups,
@@ -32,7 +30,9 @@ const useGroupAndYears = (): {
       // implement way to set correct group if on child page
       clearTimeout(debounce)
       debounce = setTimeout(() => {
-        setSelectedGroup(groups[0], true)
+        if (window.location.pathname === '/kampvisum-home/') {
+          setSelectedGroup(groups[0], true)
+        }
       }, 100)
     }
   )
@@ -59,9 +59,6 @@ const useGroupAndYears = (): {
     years.value = []
     selectedYear.value = undefined
     clearVisums()
-    if (backToHome) {
-      goToHome()
-    }
     return group
   }
 

@@ -198,7 +198,6 @@ import { useNotification } from '@/composable/useNotification'
           })
 
           myDropzone.on('addedfile', (value: any) => {
-            console.log('addedfile')
             // updateFileCount()
             fileCount.value++
           })
