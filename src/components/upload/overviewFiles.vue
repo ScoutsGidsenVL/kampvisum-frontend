@@ -2,7 +2,6 @@
   <div class="pb-0">
     <div class="flex gap-1 items-center">
       <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
-    
       <div v-if="check.checkParent.explanation">
         <i-info :info="check.checkParent.explanation" />
       </div>

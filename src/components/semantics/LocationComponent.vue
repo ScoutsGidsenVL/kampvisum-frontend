@@ -39,20 +39,20 @@ import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import { defineComponent, ref, PropType, watch } from 'vue'
 import { useInfoBarHelper } from '@/helpers/infoBarHelper'
 import { CustomButton } from 'vue-3-component-library'
-import { Check } from '@/serializer/Check'
 import Message, { ColorState } from './message.vue'
-import { useI18n } from 'vue-i18n'
+import { Check } from '@/serializer/Check'
 import IMarker from '../icons/IMarker.vue'
 import IInfo from '../icons/IInfo.vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'LocationComponent',
   components: {
-    Message,
-    LeafletMap,
-    CustomButton,
     LocationCreateSidebar,
     ParentLeafletMap,
+    CustomButton,
+    LeafletMap,
+    Message,
     IMarker,
     IInfo
   },
