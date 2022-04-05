@@ -30,7 +30,7 @@ const useGroupAndYears = (): {
       // implement way to set correct group if on child page
       clearTimeout(debounce)
       debounce = setTimeout(() => {
-        if (window.location.pathname === '/kampvisum-home/') {
+        if (window.location.pathname.includes('kampvisum-home')) {
           setSelectedGroup(groups[0], true)
         }
       }, 100)
