@@ -1,6 +1,13 @@
 <template>
   <div class="pb-0">
-    <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
+    <div class="flex gap-1 items-center">
+      <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
+    
+      <div v-if="check.checkParent.explanation">
+        <i-info :info="check.checkParent.explanation" />
+      </div>
+    </div>
+
     <div v-for="file in check.value" :key="file">
       <file-item :file="file" :check="check" @actionSuccess="actionSuccess($event)" />
     </div>
@@ -28,6 +35,7 @@ import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
 import FileItem from './FileItem.vue'
 import { useI18n } from 'vue-i18n'
+import IInfo from '../icons/IInfo.vue'
 
 export default defineComponent({
   name: 'OverviewFiles',
@@ -36,6 +44,7 @@ export default defineComponent({
     'custom-button': CustomButtonSmall,
     DocumentsCreateSidebar,
     Message,
+    IInfo
   },
   props: {
     check: {
