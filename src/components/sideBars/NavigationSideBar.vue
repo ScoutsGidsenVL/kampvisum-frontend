@@ -9,7 +9,6 @@
           </div>
 
           <div v-if="selectedGroup.groupAdminId !== ''" class="my-3">
-            {{selectedGroup}}
             <multi-select
               v-if="getAvailableGroups()"
               id="groupSelector"
