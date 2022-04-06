@@ -159,9 +159,9 @@
       "upload-files": "BESTANDEN UPLOADEN",
       "instruction": "Sleep je documenten hier naartoe, of klik hier om ze op te laden",
       "allowed-files": "enkel .jpg, .jpeg, .png, .webp, .odt, .ods, .odp, .docx, .pdf, .pptx, .xlsx, .doc",
-      "file-too-big-part-1": "File is too big",
-      "file-too-big-part-2": "Max filesize: 20 MiB.",
-      "file-type-incorrect": "You can't upload files of this type."
+      "file-too-big-part-1": "Te groot bestand",
+      "file-too-big-part-2": "Max. 20 MB",
+      "file-type-incorrect": "Dit bestandstype is niet toegelaten"
     },
     "participant-check": {
       "no-member": "leeg",
@@ -175,8 +175,8 @@
       "search": "Zoek op naam",
       "inActiveMember": "verzekerd?",
       "paid": "betaald",
-      "no-email-part-1": "The following user",
-      "no-email-part-2": "has no email set."
+      "no-email-part-1": "Kan",
+      "no-email-part-2": "niet toevoegen, heeft geen e-mailadres in de Groepsadministratie"
     },
     "number-check": {
       "notification-patched": "aanpassingen opgeslagen"
