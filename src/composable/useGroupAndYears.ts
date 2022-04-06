@@ -45,7 +45,6 @@ const useGroupAndYears = (): {
   })
 
   watch(selectedYear, (year: string | undefined) => {
-    console.log('*******:', year)
     year && getVisums(selectedGroup.value.groupAdminId, year)
   })
 
