@@ -59,6 +59,9 @@ export interface Group {
   readonly showMembersImproved?: boolean;
   readonly type?: string;
   readonly website?: string;
+  readonly isDistrictCommissioner?: boolean;
+  readonly isGroupLeader?: boolean;
+  readonly isLeader?: boolean;
 }
 
 export const GroupDeserializer = (input: any): Group => {
@@ -76,7 +79,10 @@ export const GroupDeserializer = (input: any): Group => {
     onlyLeaders: input.only_leaders ? input.only_leaders : undefined, 
     showMembersImproved: input.show_members_improved ? input.show_members_improved : undefined,
     type: input.type ? input.type : undefined,
-    website: input.website ? input.website : undefined
+    website: input.website ? input.website : undefined,
+    isDistrictCommissioner: input.is_district_commissioner ? input.is_district_commissioner : false,
+    isGroupLeader: input.is_group_leader ? input.is_group_leader : false, 
+    isLeader: input.is_leader ? input.is_leader : false
   }
 
   return single
