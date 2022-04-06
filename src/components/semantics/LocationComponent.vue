@@ -88,7 +88,6 @@ export default defineComponent({
     }
 
     const rl = () => {
-        console.log('DELETED')
         emit('rl', true)
     }
 
