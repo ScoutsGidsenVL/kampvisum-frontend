@@ -45,6 +45,7 @@ const useGroupAndYears = (): {
   })
 
   watch(selectedYear, (year: string | undefined) => {
+    console.log('*******:', year)
     year && getVisums(selectedGroup.value.groupAdminId, year)
   })
 
@@ -58,15 +59,18 @@ const useGroupAndYears = (): {
     //If group changes reset year, visums an go to home
     years.value = []
     selectedYear.value = undefined
-    clearVisums()
     return group
   }
 
   const getYearsForGroup = async (groupId: string) => {
+    clearVisums()
     isFetchingYears.value = true
     await RepositoryFactory.get(CampRepository)
       .getGroupYears(groupId)
       .then((yearsOutput: Array<string>) => {
+        if (yearsOutput.length === 0) { 
+          clearVisums()
+        }
         years.value = yearsOutput
         setSelectedYear(yearsOutput[0])
         isFetchingYears.value = false

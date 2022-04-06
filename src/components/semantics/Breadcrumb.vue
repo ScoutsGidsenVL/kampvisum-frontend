@@ -78,10 +78,12 @@ export default defineComponent({
   setup(props) {
     const route = props.route
     const { breadcrumbs } = useNavigation()
-    const { selectedGroup, selectedYear } = useGroupAndYears()
-    const { getVisums } = useVisum()
-    const navigateHome = () => {
+    const { selectedGroup, selectedYear, getYearsForGroup } = useGroupAndYears()
+    const { getVisums, isFetchingVisums } = useVisum()
+
+    const navigateHome = async () => {
       props.router.push(props.home)
+      await getYearsForGroup(selectedGroup.value.groupAdminId)
       selectedYear.value && getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
     }
 
