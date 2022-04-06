@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <parent-leaflet-map ref="child" v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @edit="edit($event)" />
+    <parent-leaflet-map ref="child" v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @rl="rl($event)" @edit="edit($event)" />
 
     <location-create-sidebar
       v-if="createSidebar.state === 'new' || createSidebar.state === 'edit' || createSidebar.state === 'search'"
@@ -87,6 +87,11 @@ export default defineComponent({
       }
     }
 
+    const rl = () => {
+        console.log('DELETED')
+        emit('rl', true)
+    }
+
     const reloadMapComponent = () => {
       isReloading.value = true
       setTimeout(() => {
@@ -118,7 +123,8 @@ export default defineComponent({
       ColorState,
       edit,
       child,
-      t
+      t,
+      rl
     }
   },
 })

@@ -97,8 +97,8 @@ export default defineComponent({
         await RepositoryFactory.get(LocationCheckRepository)
         .updateLocationCheckRemove(props.check.endpoint, newArray)
         .then((p: any) => {
-          // triggerNotification(t('sidebars.location-sidebar.form.notification-patched'))
-          triggerNotification('DELETED!!')
+          triggerNotification(t('sidebars.location-sidebar.form.notification-patched'))
+          emit('rl', true)
         })
       } 
     }
