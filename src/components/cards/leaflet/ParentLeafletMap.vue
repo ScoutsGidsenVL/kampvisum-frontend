@@ -15,7 +15,7 @@
               </svg>
             </l-icon>
             <l-popup class="w-60">
-              <custom-popup :location="parentSubLocation" :parentLocation="parentLocation" :check="check" @edit="edit($event)" />
+              <custom-popup :location="parentSubLocation" :parentLocation="parentLocation" :check="check" @edit="edit($event)" @rl="rl($event)" />
             </l-popup>
           </l-marker>
         </div>
@@ -228,7 +228,12 @@ export default defineComponent({
 
     init()
 
+    const rl = () => {
+        emit('rl', true)
+    }
+
     return {
+      rl,
       centerClickedLocation,
       deleteMainLocationPoint,
       cancelLocationPoint,
