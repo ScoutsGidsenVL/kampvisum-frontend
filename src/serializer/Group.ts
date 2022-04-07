@@ -84,6 +84,7 @@ export const GroupDeserializer = (input: any): Group => {
     isGroupLeader: input.is_group_leader ? input.is_group_leader : false, 
     isSectionLeader: input.is_section_leader ? input.is_section_leader : false
   }
+  
 
   return single
 }

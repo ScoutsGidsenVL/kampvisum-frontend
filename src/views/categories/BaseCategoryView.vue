@@ -1,5 +1,5 @@
 <template>
-  <div v-if="category && visum" class="flex w-100 -mt-3">
+  <div v-if="category && visum && (selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner)" class="flex w-100 -mt-3">
     <div class="w-100">
       <div class="sticky bg-white z-30" style="top: 81px">
         <page-header :title="category.categoryParent.label" :subTitle="visum.camp.name" />
@@ -16,7 +16,9 @@
     </div>
   </div>
 
-  <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum">
+  <forbidden />
+
+  <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum && (selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner)">
     <div class="text-center">
       <loader color="lightGreen" size="20" :isLoading="isFetchingVisum" />
     </div>
@@ -37,6 +39,8 @@ import { Visum } from '../../serializer/Visum'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useNavigation } from '@/composable/useNavigation'
+import useGroupAndYears from '@/composable/useGroupAndYears'
+import Forbidden from '@/components/semantics/Forbidden.vue'
 
 export default defineComponent({
   name: 'BaseCategoryView',
@@ -45,6 +49,7 @@ export default defineComponent({
     PageHeader,
     InformationSideBar,
     Loader,
+    Forbidden,
   },
   setup() {
     const route = useRoute()
@@ -57,6 +62,7 @@ export default defineComponent({
     const isFetchingVisum = ref<boolean>(true)
     const { jumpToId } = useNavigation()
     const { setBreadcrumbs } = useNavigation()
+    const { selectedGroup } = useGroupAndYears()
 
     const fetchCategory = () => {
       getCategoryByRouteParam().then((c: Category) => {
@@ -131,6 +137,7 @@ export default defineComponent({
       openSidebar,
       category,
       sidebar,
+      selectedGroup,
       route,
       visum,
       rl,

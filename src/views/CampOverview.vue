@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visum" class="p-3">
+  <div v-if="visum && (selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner)" class="p-3">
     <h1>{{ visum.camp.name }}</h1>
 
     <h4 class="inline text-green font-aglet font-light">
@@ -14,11 +14,12 @@
       </div>
       <deadlines-sidebar :visum="visum" :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
     </div>
-
     <engagement v-if="visum && false" :visum="visum" />
-
   </div>
-  <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum">
+
+  <forbidden />
+
+  <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum && (selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner)">
     <div class="text-center">
       <loader color="lightGreen" size="20" :isLoading="isFetchingVisum" />
     </div>
@@ -28,14 +29,16 @@
 <script lang="ts">
 import DeadlinesSideBar, { Sidebar, SidebarState } from '@/components/sideBars/DeadlinesSidebar.vue'
 import CategoryInfoCard from '../components/cards/CategoryInfoCard.vue'
+import Engagement from '../components/semantics/Engagement.vue'
 import { useSectionsHelper } from '../helpers/sectionsHelper'
+import useGroupAndYears from '@/composable/useGroupAndYears'
+import Forbidden from '@/components/semantics/Forbidden.vue'
 import { useNavigation } from '@/composable/useNavigation'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { useCampHelper } from '../helpers/campHelper'
 import { Loader } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
-import Engagement from '../components/semantics/Engagement.vue'
 
 export default defineComponent({
   name: 'CampOverview',
@@ -43,7 +46,8 @@ export default defineComponent({
     'category-info-card': CategoryInfoCard,
     'deadlines-sidebar': DeadlinesSideBar,
     Loader,
-    Engagement
+    Engagement,
+    Forbidden
   },
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
@@ -53,6 +57,8 @@ export default defineComponent({
     window.scrollTo({ top: 0, behavior: 'auto' })
     const visum = ref<Visum>()
     const isFetchingVisum = ref<boolean>(true)
+    const { selectedGroup } = useGroupAndYears()
+
 
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
@@ -77,6 +83,7 @@ export default defineComponent({
       openSidebar,
       sidebar,
       visum,
+      selectedGroup
     }
   },
 })

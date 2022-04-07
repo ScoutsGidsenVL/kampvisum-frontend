@@ -1,12 +1,17 @@
 export interface Engagement {
-  readonly id?: string
-  readonly leaders?: string
-  readonly groupLeaders?: string
-  readonly districtCommisioner?: string
+  readonly id: string
+  readonly leaders?: EngagementUser
+  readonly groupLeaders?: EngagementUser
+  readonly districtCommisioner?: EngagementUser
   readonly approved?: boolean
   readonly canSign?: boolean
   readonly leadersCanSign?: boolean
   readonly districtCommisionerCanSign?: boolean
+}
+
+export interface EngagementUser {
+  firstName?: string,
+  lastName?: string
 }
 
 export interface Approval {
@@ -26,9 +31,9 @@ interface GroupAdmin {
 export const EngagementDeserializer = (input: any): Engagement => {
   const single: Engagement = {
     id: input.id ? input.id : undefined,
-    leaders: input.leaders ? input.leaders : undefined,
-    groupLeaders: input.group_leaders ? input.group_leaders : undefined,
-    districtCommisioner: input.district_commisioner ? input.district_commisioner : undefined,
+    leaders: input.leaders ? EngagementUserDeserializer(input.leaders) : undefined,
+    groupLeaders: input.group_leaders ? EngagementUserDeserializer(input.group_leaders) : undefined,
+    districtCommisioner: input.district_commisioner ? EngagementUserDeserializer(input.district_commisioner) : undefined,
     approved: input.approved ? input.approved : false,
     canSign: input.can_sign ? input.can_sign : false,
     leadersCanSign: input.leaders_can_sign ? input.leaders_can_sign : false,
@@ -49,6 +54,14 @@ export const SignatureSerializer = (input: Signature): any => {
     leaders: input.leaders ? GroupAdminSerializer(input.leaders) : {},
     group_leaders: input.groupLeaders ? GroupAdminSerializer(input.groupLeaders) : {},
     district_commisioner: input.districtCommisioner ? GroupAdminSerializer(input.districtCommisioner) : {}
+  }
+  return single
+}
+
+export const EngagementUserDeserializer = (input: any): EngagementUser => {
+  const single: any = {
+    firstName: input.first_name ? input.first_name : undefined,
+    lastName: input.last_name ? input.last_name : undefined
   }
   return single
 }
