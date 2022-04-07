@@ -56,8 +56,6 @@ import { Engagement } from '@/serializer/Engagement'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
 
-
-
 export default defineComponent({
   name: 'Engagement',
   components: {
