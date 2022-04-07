@@ -15,7 +15,7 @@
       <deadlines-sidebar :visum="visum" :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
     </div>
 
-    <engagement v-if="visum && false" :visum="visum" />
+    <engagement v-if="visum" :visum="visum" />
 
   </div>
   <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum">

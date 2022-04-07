@@ -18,15 +18,9 @@ export class EngagementRepository extends BaseRepository {
 
 
   signVisum(visum: Visum): Promise<any> {
-    const data: Signature = {
-      leaders: { groupAdminId: '' },
-      groupLeaders: {},
-      districtCommisioner: {}
-    }
-
-    return this.update(visum.id, SignatureSerializer(data)).then((response: Engagement) => {
+    return this.patch(this.endpoint + visum.engagement.id + '/', undefined).then((response: any) => {
       console.log('Response Engagement Signature: ', response)
-      return response
+      return this.deserializer(response)
     })
   }
 
