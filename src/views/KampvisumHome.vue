@@ -48,9 +48,9 @@
       </div>
     </div>
 
-    <div v-if="!isFetchingVisums" class="grid md:grid-cols-2 xs:grid-cols-1 gap-4">
+    <div v-if="!isFetchingVisums">
       <camp-call-to-action v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner" :visums="visums" />
-      <div v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner">
+      <div class="grid md:grid-cols-2 xs:grid-cols-1 gap-4" v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner">
         <div  v-for="visum in visums" :key="visum.id">
           <camp-info-card class="mt-5" :visum="visum">
             <template v-slot:buttons>
