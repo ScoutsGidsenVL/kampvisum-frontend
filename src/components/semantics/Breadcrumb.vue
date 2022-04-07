@@ -83,6 +83,7 @@ export default defineComponent({
 
     const navigateHome = async () => {
       props.router.push(props.home)
+      // window.location.pathname = '/kampvisum-home'
       await getYearsForGroup(selectedGroup.value.groupAdminId)
       selectedYear.value && getVisums(selectedGroup.value, selectedYear.value)
     }
