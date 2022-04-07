@@ -14,6 +14,9 @@
       </div>
       <deadlines-sidebar :visum="visum" :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
     </div>
+
+    <engagement v-if="visum && false" :visum="visum" />
+
   </div>
   <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum">
     <div class="text-center">
@@ -32,6 +35,7 @@ import { useCampHelper } from '../helpers/campHelper'
 import { Loader } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
+import Engagement from '../components/semantics/Engagement.vue'
 
 export default defineComponent({
   name: 'CampOverview',
@@ -39,6 +43,7 @@ export default defineComponent({
     'category-info-card': CategoryInfoCard,
     'deadlines-sidebar': DeadlinesSideBar,
     Loader,
+    Engagement
   },
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
