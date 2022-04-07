@@ -45,7 +45,7 @@ const useGroupAndYears = (): {
   })
 
   watch(selectedYear, (year: string | undefined) => {
-    year && getVisums(selectedGroup.value.groupAdminId, year)
+    year && getVisums(selectedGroup.value, year)
   })
 
   const setSelectedYear = (year: string) => {

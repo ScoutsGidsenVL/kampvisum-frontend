@@ -84,7 +84,7 @@ export default defineComponent({
     const navigateHome = async () => {
       props.router.push(props.home)
       await getYearsForGroup(selectedGroup.value.groupAdminId)
-      selectedYear.value && getVisums(selectedGroup.value.groupAdminId, selectedYear.value)
+      selectedYear.value && getVisums(selectedGroup.value, selectedYear.value)
     }
 
     const navigateToCrumb = (selectedBreadcrumb: breadcrumb) => {

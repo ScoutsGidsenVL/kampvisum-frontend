@@ -1,5 +1,5 @@
 <template>
-  <div v-if="selectedGroup.isDistrictCommissioner || selectedGroup.isSectionLeader || selectedGroup.isGroupLeader">
+  <div v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner">
     <!-- keuring -->
     <div class="xs:w-100 md:w-80 mt-3">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="sign()" :isSubmitting="false" :text="'kamp goedkeuren'">

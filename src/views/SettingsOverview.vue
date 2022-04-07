@@ -1,23 +1,26 @@
 <template>
-  <!-- TABS -->
-  <div class="flex -ml-8 -mr-8 bg-white border-gray border border-5">
-    <div @click="setTabState('sections')" class="text-center w-full cursor-pointer" :class="tabState === 'sections' ? 'text-white bg-green' : ''">
-      <h3 class="font-semibold font-museo mt-2">
-        {{ t('pages.settings.sections.title') }}
-      </h3>
+  <div v-if="(selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner)">
+    <!-- TABS -->
+    <div class="flex -ml-8 -mr-8 bg-white border-gray border border-5">
+      <div @click="setTabState('sections')" class="text-center w-full cursor-pointer" :class="tabState === 'sections' ? 'text-white bg-green' : ''">
+        <h3 class="font-semibold font-museo mt-2">
+          {{ t('pages.settings.sections.title') }}
+        </h3>
+      </div>
+      <!-- <div @click="setTabState('deadlines')" class="text-center w-full cursor-pointer" :class="tabState === 'deadlines' ? 'text-white bg-green' : ''">
+        <h3 class="font-museo-sans font-semibold mt-2">
+          {{ t('pages.settings.deadlines.title') }}
+        </h3>
+      </div> -->
     </div>
-    <!-- <div @click="setTabState('deadlines')" class="text-center w-full cursor-pointer" :class="tabState === 'deadlines' ? 'text-white bg-green' : ''">
-      <h3 class="font-museo-sans font-semibold mt-2">
-        {{ t('pages.settings.deadlines.title') }}
-      </h3>
-    </div> -->
-  </div>
 
-  <!-- TO DISPLAY -->
-  <div class="p-3">
-    <sections-settings v-if="tabState === 'sections'" />
-    <deadline-settings v-if="tabState === 'deadlines'" />
+    <!-- TO DISPLAY -->
+    <div class="p-3">
+      <sections-settings v-if="tabState === 'sections'" />
+      <deadline-settings v-if="tabState === 'deadlines'" />
+    </div>
   </div>
+  <forbidden />
 </template>
 
 <script lang="ts">
@@ -26,15 +29,19 @@ import DeadlineSettings from '@/components/settings/DeadlineSettings.vue'
 import { defineComponent, ref } from 'vue'
 import { useNavigation } from '@/composable/useNavigation'
 import { useI18n } from 'vue-i18n'
+import useGroupAndYears from '@/composable/useGroupAndYears'
+import Forbidden from '@/components/semantics/Forbidden.vue'
 
 export default defineComponent({
-  components: { SectionsSettings, DeadlineSettings },
+  components: { SectionsSettings, DeadlineSettings, Forbidden },
   name: 'SettingsOverview',
   setup() {
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
     })
+
+    const { selectedGroup } = useGroupAndYears()
 
     const { setBreadcrumbs } = useNavigation()
     const tabState = ref<string>('sections')
@@ -45,6 +52,7 @@ export default defineComponent({
     setBreadcrumbs([{ title: 'instellingen', name: 'instellingen', uuid: '' }])
 
     return {
+      selectedGroup,
       tabState,
       setTabState,
       t,

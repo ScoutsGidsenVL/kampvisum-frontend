@@ -23,13 +23,13 @@
             />
           </div>
 
-          <div class="top-44 w-auto">
+          <div v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner" class="top-44 w-auto">
             <div>
               <div class="text-center">
                 <loader color="lightGreen" size="10" :isLoading="isFetchingVisums" />
               </div>
               <!-- {{route.params}} -->
-              <div v-if="visumsAlphabetically.length > 0">
+              <div  v-if="visumsAlphabetically.length > 0">
                 <div v-for="visum in visumsAlphabetically" :key="visum">
                   <navigation-item :visum="visum" :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
                     <div v-for="category in visum.categorySet.categories" :key="category">
@@ -39,6 +39,9 @@
                     </div>
                   </navigation-item>
                 </div>
+              </div>
+              <div class="ml-2 italic text-sm py-3" v-if="visumsAlphabetically.length === 0 && !isFetchingVisums">
+                {{t('no-camps')}}
               </div>
             </div>
 
