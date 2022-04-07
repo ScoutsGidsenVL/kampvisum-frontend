@@ -8,7 +8,7 @@
 
     <!-- engagement -->
     <div class="md:w-1/3 xs:w-96 bg-lighterGreen mt-3 p-3 shadow-md">
-      <h1 class="text-xl mb-0 mt-0">Kamp engagement</h1>
+      <h1 class="text-xl mb-0 mt-0">{{t('engagement.title')}}</h1>
 
       <div class="mt-3 flex gap-2 flex-col">
         <!-- LEADER -->
@@ -45,15 +45,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, toRefs } from 'vue'
-import IChecked from '@/components/icons/IChecked.vue'
+import { EngagementRepository } from '@/repositories/EngagementRepository'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
 import useGroupAndYears from '@/composable/useGroupAndYears'
-import RepositoryFactory from '@/repositories/repositoryFactory'
-import { EngagementRepository } from '@/repositories/EngagementRepository'
+import { CustomButtonSmall } from 'vue-3-component-library'
+import { defineComponent, PropType, toRefs } from 'vue'
+import IChecked from '@/components/icons/IChecked.vue'
 import { Engagement } from '@/serializer/Engagement'
 import { Visum } from '@/serializer/Visum'
-import { CustomButtonSmall } from 'vue-3-component-library'
+import { useI18n } from 'vue-i18n'
+
 
 
 export default defineComponent({
@@ -70,6 +72,11 @@ export default defineComponent({
     },
   },
   setup(props: any) {
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
+
     const { visum } = toRefs(props)
     const { selectedGroup } = useGroupAndYears()
     const sign = () => {
@@ -86,6 +93,7 @@ export default defineComponent({
       selectedGroup,
       visum,
       sign,
+      t
     }
   },
 })

@@ -182,5 +182,9 @@
       "notification-patched": "aanpassingen opgeslagen"
     }
   },
-  "no-camps": "Geen kampen"
+  "no-camps": "Geen kampen",
+  "forbidden": "Je hebt niet de juiste rechten om deze pagina te zien. Als je denkt dat dat fout is, contacteer dan je verantwoordelijke groepsadministratie (VGA) zodat die het kan goedzetten in de Groepsadministratie.",
+  "engagement": {
+    "title": "Kamp engagement"
+  }
 }
