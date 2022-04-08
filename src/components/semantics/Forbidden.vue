@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-5" v-if="!selectedGroup.isSectionLeader && !selectedGroup.isGroupLeader && !selectedGroup.isDistrictCommissioner">
+  <div class="flex flex-col gap-5" v-if="selectedGroup.groupAdminId !== '' && (!selectedGroup.isSectionLeader && !selectedGroup.isGroupLeader && !selectedGroup.isDistrictCommissioner)">
     <div class="text-xl text-center">
       {{t('forbidden')}}
     </div>
