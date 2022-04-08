@@ -1,5 +1,5 @@
 <template>
-  <div v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner">
+  <div v-if="(selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner) && visum.state === VisumStates.SIGNABLE">
     <!-- keuring -->
     <div class="xs:w-100 md:w-80 mt-3">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="sign()" :isSubmitting="false" :text="'kamp goedkeuren'">
@@ -36,11 +36,6 @@
         </div>
       </div>
     </div>
-
-    <pre class="mt-5">
-        {{ visum.engagement }}
-      </pre
-    >
   </div>
 </template>
 
@@ -53,10 +48,8 @@ import { CustomButtonSmall } from 'vue-3-component-library'
 import { defineComponent, PropType, toRefs } from 'vue'
 import IChecked from '@/components/icons/IChecked.vue'
 import { Engagement } from '@/serializer/Engagement'
-import { Visum } from '@/serializer/Visum'
+import { Visum, VisumStates } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
-
-
 
 export default defineComponent({
   name: 'Engagement',
@@ -90,6 +83,7 @@ export default defineComponent({
       })
 
     return {
+      VisumStates,
       selectedGroup,
       visum,
       sign,

@@ -122,6 +122,9 @@ export default defineComponent({
 
     const changeSelectedGroup = (group: Group) => {
       setSelectedGroup(group)
+      if (!window.location.pathname.includes('kampvisum-home')) {
+        home()
+      }
     }
 
     return {
