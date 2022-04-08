@@ -35,7 +35,7 @@ export const useCampHelper = (): {
         })
 
         if (selectedGroup.value.groupAdminId !== c.groupGroupAdminId) { 
-          goToHome()
+          // goToHome()
         }
 
         return c
