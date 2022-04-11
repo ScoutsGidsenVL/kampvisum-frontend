@@ -95,11 +95,11 @@ const routes: Array<RouteRecordRaw> = [
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
     },
+  },
+  { 
+    path: "/:catchAll(.*)",
+    redirect: '/kampvisum-home'
   }
-  // { 
-  //   path: "/:catchAll(.*)", // Unrecognized path automatically matches 404
-  //   redirect: '/kampvisum-home'
-  // }
 ]
 
 const router = createRouter({

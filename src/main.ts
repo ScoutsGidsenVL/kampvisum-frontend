@@ -59,9 +59,14 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
   }
 
   store.dispatch('setConfig', configFile)
+  
+  let redirectUrl = sessionStorage.getItem('redirectUrl')
+  console.log('URL: ',  window.location.pathname)
+  if (!redirectUrl) {
+    sessionStorage.setItem('redirectUrl', window.location.pathname)
+  }
 
   router.beforeEach((to: any, from: any, next: any) => {
-    localStorage.setItem('TO', to.fullPath);    
     if (to.meta.requiresOpenIdAuth === true) {
       if (store.getters.isLoaded === false) {
         RepositoryFactory.get(AuthRepository)

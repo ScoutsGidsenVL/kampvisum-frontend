@@ -26,6 +26,7 @@ export default defineComponent({
     let code = params.get('code')
 
     if (code) {
+      //set location where user wanted to go within application
       // Fetch the tokens and remove the url params on succes and redirect to /#/ no history mode path
       store.dispatch('fetchTokens', code).then(() => {
         const url = new URL(location.toString())
@@ -34,7 +35,10 @@ export default defineComponent({
         window.location.replace(url.toString())
       })
     } else {
-      router.push('/kampvisum-home')
+      let redirectUrl = sessionStorage.getItem('redirectUrl')
+      if (redirectUrl) {
+        router.push(redirectUrl === '/' ? '/kampvisum-home' : redirectUrl)  
+      }
     }
   },
 })
