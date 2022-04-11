@@ -2,7 +2,7 @@
   <div class="w-auto h-screen " :class="sidebar.state === SidebarState.OPEN ? 'xs:z-50 md:z-40' : 'z-40'">
     <div class="d-flex h-screen" :class="{ 'md:w-98 xs:w-full': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
       <div class="fixed d-flex" :class="{ 'md:w-98 xs:w-full': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
-        <div class="overflow-y-auto  pb-5 w-100 border-r-2 border-lightGray flex-column bg-gray h-screen px-4" :class="{ 'd-none': sidebar.state === SidebarState.CLOSED, 'd-flex': sidebar.state === SidebarState.OPEN }">
+        <div class="overflow-y-auto  pb-20 w-100 border-r-2 border-lightGray flex-column bg-gray h-screen px-4" :class="{ 'd-none': sidebar.state === SidebarState.CLOSED, 'd-flex': sidebar.state === SidebarState.OPEN }">
           <div @click="home()" class="mt-4 d-flex justify-between mb-3 items-center cursor-pointer">
             <i-logo />
             <h1 class="text-2xl mt-1.5">{{ t('title') }}</h1>
