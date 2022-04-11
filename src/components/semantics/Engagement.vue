@@ -2,7 +2,7 @@
   <div v-if="visum.state === VisumStates.SIGNABLE">
     <!-- keuring -->
     <div class="xs:w-100 md:w-80 mt-3">
-      <custom-button-small class="w-100" :extraStyle="'w-100'" @click="sign()" :isSubmitting="false" :text="'kamp goedkeuren'">
+      <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="'kamp goedkeuren'">
       </custom-button-small>
     </div>
 
@@ -36,27 +36,40 @@
         </div>
       </div>
     </div>
+
+    <warning
+      :title="t('engagement.warning-title') + `${visum.engagement.leaders?.firstName} ${visum.engagement.leaders?.lastName}`"
+      :isLoading="isSigning"
+      :isDisplayed="isWarningDisplayed"
+      :text="t('engagement.warning-text')"
+      :leftButton="t('engagement.warning-left-button')"
+      :rightButton="t('engagement.warning-right-button')"
+      @leftButtonClicked="sign()"
+      @rightButtonClicked="hideWarning()"
+    />
+
   </div>
 </template>
 
 <script lang="ts">
 import { EngagementRepository } from '@/repositories/EngagementRepository'
+import { CustomButtonSmall, Warning } from 'vue-3-component-library'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
 import useGroupAndYears from '@/composable/useGroupAndYears'
-import { CustomButtonSmall } from 'vue-3-component-library'
-import { defineComponent, PropType, toRefs } from 'vue'
+import { defineComponent, PropType, toRefs, ref } from 'vue'
+import { Visum, VisumStates } from '@/serializer/Visum'
 import IChecked from '@/components/icons/IChecked.vue'
 import { Engagement } from '@/serializer/Engagement'
-import { Visum, VisumStates } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'Engagement',
   components: {
-    IChecked,
+    CustomButtonSmall,
     IEmptyCheck,
-    CustomButtonSmall
+    IChecked,
+    Warning
   },
   props: {
     visum: {
@@ -70,21 +83,42 @@ export default defineComponent({
       useScope: 'local',
     })
 
+    const isWarningDisplayed = ref<boolean>(false)
+    const isSigning = ref<boolean>(false)
     const { visum } = toRefs(props)
     const { selectedGroup } = useGroupAndYears()
     const sign = () => {
-      RepositoryFactory.get(EngagementRepository).signVisum(props.visum)
+      isSigning.value = true
+      RepositoryFactory.get(EngagementRepository).signVisum(props.visum).then(() => { 
+        isSigning.value = false
+        hideWarning()
+        getEngagementState()
+      })
     }
 
-    RepositoryFactory.get(EngagementRepository)
+    const getEngagementState = () => {
+      RepositoryFactory.get(EngagementRepository)
       .getById(props.visum.engagement.id)
       .then((response: Engagement) => {
-        console.log('GET ENGAGEMENT STATUS: ', response)
+        visum.value.engagement = response
       })
+    }
+
+    const hideWarning = () => {
+      isWarningDisplayed.value = false
+    }
+
+    const displayWarning = () => {
+      isWarningDisplayed.value = true
+    }
 
     return {
-      VisumStates,
+      isSigning,
+      isWarningDisplayed,
+      displayWarning,
+      hideWarning,
       selectedGroup,
+      VisumStates,
       visum,
       sign,
       t
