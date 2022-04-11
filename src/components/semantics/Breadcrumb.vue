@@ -79,13 +79,13 @@ export default defineComponent({
     const route = props.route
     const { breadcrumbs } = useNavigation()
     const { selectedGroup, selectedYear, getYearsForGroup } = useGroupAndYears()
-    const { getVisums, isFetchingVisums } = useVisum()
+    const { getVisums } = useVisum()
 
     const navigateHome = async () => {
       props.router.push(props.home)
       // window.location.pathname = '/kampvisum-home'
       await getYearsForGroup(selectedGroup.value.groupAdminId)
-      selectedYear.value && getVisums(selectedGroup.value, selectedYear.value)
+      getVisums(selectedGroup.value, selectedYear.value)
     }
 
     const navigateToCrumb = (selectedBreadcrumb: breadcrumb) => {

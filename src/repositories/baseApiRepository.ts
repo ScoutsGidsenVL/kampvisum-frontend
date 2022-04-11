@@ -3,7 +3,7 @@ import { OpenIdConnectInterceptors } from 'inuits-vuejs-oidc'
 import MasterConfig from '../models/config/masterConfig'
 import store from '@/store/store'
 import { useNotification } from '../composable/useNotification'
-const { triggerNotification } = useNotification()
+const { triggerNotification, isForbidden } = useNotification()
 
 export default abstract class BaseApiRepository {
   private axiosInstance: AxiosInstance
@@ -57,6 +57,7 @@ export default abstract class BaseApiRepository {
     return await instance
       .get(endpoint, config)
       .then(function (result: AxiosResponse) {
+        isForbidden.value = false
         // Only return the data of response
         return result.data
       })
@@ -145,6 +146,11 @@ export default abstract class BaseApiRepository {
   }
 
   private processError(error: any): void {
-    triggerNotification(error.response.data.file[0])
+    if (error.response?.data?.file) { 
+      triggerNotification(error.response.data.file[0])
+    }
+    if (error.response.status === 403) {
+      isForbidden.value = true
+    }
   }
 }

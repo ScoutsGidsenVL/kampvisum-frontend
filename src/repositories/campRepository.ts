@@ -12,9 +12,11 @@ export class CampRepository extends BaseRepository {
   getArray(pagination?: string): Promise<any> {
     return this.get(this.endpoint + pagination, {}).then((response: ArrayResult) => {
       const array: any[] = []
-      response.results.forEach((result: Visum) => {
-        array.push(this.deserializer(result))
-      })
+      if (response?.results) { 
+        response.results.forEach((result: Visum) => {
+          array.push(this.deserializer(result))
+        })
+      }
       return array
     })
   }
