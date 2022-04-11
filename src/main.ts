@@ -39,6 +39,8 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
 
   configFile = new MasterConfig().deserialize(configFile)
 
+
+
   if (configFile.oidc && configFile.oidc.baseUrl && configFile.oidc.clientId) {
     // @ts-ignore
     app.use(OpenIdConnectPlugin, {
@@ -53,7 +55,7 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
         authorizedRedirectRoute: '/',
         serverTokenEndpoint: 'token/',
         serverRefreshEndpoint: 'refresh/',
-        InternalRedirectUrl: configFile.oidc.internalRedirectUrl ? configFile.oidc.internalRedirectUrl : '/',
+        InternalRedirectUrl: configFile.oidc.internalRedirectUrl ? configFile.oidc.internalRedirectUrl : '/start',
       },
     })
   }
@@ -61,7 +63,6 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
   store.dispatch('setConfig', configFile)
   
   let redirectUrl = sessionStorage.getItem('redirectUrl')
-  console.log('URL: ',  window.location.pathname)
   if (!redirectUrl) {
     sessionStorage.setItem('redirectUrl', window.location.pathname)
   }
