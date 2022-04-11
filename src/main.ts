@@ -55,7 +55,7 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
         authorizedRedirectRoute: '/',
         serverTokenEndpoint: 'token/',
         serverRefreshEndpoint: 'refresh/',
-        InternalRedirectUrl: configFile.oidc.internalRedirectUrl ? configFile.oidc.internalRedirectUrl : '/start',
+        InternalRedirectUrl: configFile.oidc.internalRedirectUrl ? configFile.oidc.internalRedirectUrl : 'start',
       },
     })
   }
