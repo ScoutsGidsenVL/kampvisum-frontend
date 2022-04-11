@@ -26,12 +26,12 @@
       {{t('pages.kampvisum-overview.change-group')}}
     </div>
 
-    <div v-if="!isForbidden" class="pb-3 grid md:grid-cols-2 gap-3">
+    <div v-if="!isForbidden && !isFetchingVisums" class="pb-3 grid md:grid-cols-2 gap-3">
       <multi-select style="width: 261px" v-if="years[0]" id="year" @addSelection="selectNewYear" value-prop="id" :options="years" :value="years[0]" :canClear="false" :canDeselect="false" />
     </div>
 
     <div class="xs:w-100 md:w-80">
-      <custom-button v-if="!isForbidden" class="w-100" :extraStyle="'w-100'" @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
+      <custom-button v-if="!isForbidden && !isFetchingVisums" class="w-100" :extraStyle="'w-100'" @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
         <template v-slot:icon>
           <svg xmlns="http://www.w3.org/2000/svg" style="margin-top: -3px" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />

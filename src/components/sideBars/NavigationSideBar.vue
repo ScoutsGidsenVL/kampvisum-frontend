@@ -45,7 +45,7 @@
               </div>
             </div>
 
-            <navigation-item v-if="!isForbidden" @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
+            <navigation-item v-if="!isForbidden && !isFetchingVisums" @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
             <!-- <navigation-item link="/locaties" text="Locaties"/> -->
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
