@@ -2,12 +2,14 @@ import { ref, Ref } from 'vue'
 
 const isDisplayingNotification = ref<boolean>(false)
 const message = ref<string>('Aanpassingen aan het kamp zijn succesvol opgeslagen!')
+const isForbidden = ref<boolean>(false)
 
 export const useNotification = (): {
   isDisplayingNotification: Ref<boolean>
   message: Ref<string>
   triggerNotification: (m?: string) => void
   setMessage: (m: string) => void
+  isForbidden: Ref<boolean>
 } => {
 
   const triggerNotification = (m?: string) => {
@@ -29,6 +31,7 @@ export const useNotification = (): {
     isDisplayingNotification,
     message,
     setMessage,
-    triggerNotification
+    triggerNotification,
+    isForbidden
   }
 }

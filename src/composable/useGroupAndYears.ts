@@ -7,13 +7,13 @@ import useVisum from './useVisum'
 
 const years = ref<Array<string>>([])
 const isFetchingYears = ref<boolean>(false)
-const selectedYear = ref<string | undefined>()
+const selectedYear = ref<string>('')
 const selectedGroup = ref<any>({ groupAdminId: '' })
 let debounce: any
 
 const useGroupAndYears = (): {
   years: Ref<Array<string>>
-  selectedYear: Ref<string | undefined>
+  selectedYear: Ref<string>
   getYearsForGroup: (groupId: string) => Promise<void>
   isFetchingYears: Ref<boolean>
   setSelectedYear: (year: string) => string
@@ -41,11 +41,13 @@ const useGroupAndYears = (): {
     clearTimeout(debounce)
       debounce = setTimeout(() => {
         getYearsForGroup(group.groupAdminId)
+        console.log('selector: ', group.groupAdminId)
       }, 100)
   })
 
-  watch(selectedYear, (year: string | undefined) => {
-    year && getVisums(selectedGroup.value, year)
+  watch(selectedYear, (year: string) => {
+    console.log('trigger: ', year)
+    getVisums(selectedGroup.value, year)
   })
 
   const setSelectedYear = (year: string) => {
@@ -57,7 +59,7 @@ const useGroupAndYears = (): {
     selectedGroup.value = group
     //If group changes reset year, visums an go to home
     years.value = []
-    selectedYear.value = undefined
+    selectedYear.value = ''
     return group
   }
 
@@ -71,7 +73,14 @@ const useGroupAndYears = (): {
           clearVisums()
         }
         years.value = yearsOutput
-        setSelectedYear(yearsOutput[0])
+
+        if (yearsOutput[0]) {
+          setSelectedYear(yearsOutput[0])
+        } else {
+          // IF RESPONSE IS EMPTY YEAR ARRAY
+          getVisums(selectedGroup.value, '')
+        }
+
         isFetchingYears.value = false
       })
   }

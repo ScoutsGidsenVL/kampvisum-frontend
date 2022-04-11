@@ -1,5 +1,5 @@
 <template>
-  <div v-if="(selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner)">
+  <div v-if="!isForbidden">
     <!-- TABS -->
     <div class="flex -ml-8 -mr-8 bg-white border-gray border border-5">
       <div @click="setTabState('sections')" class="text-center w-full cursor-pointer" :class="tabState === 'sections' ? 'text-white bg-green' : ''">
@@ -26,11 +26,12 @@
 <script lang="ts">
 import SectionsSettings from '@/components/settings/SectionsSettings.vue'
 import DeadlineSettings from '@/components/settings/DeadlineSettings.vue'
-import { defineComponent, ref } from 'vue'
-import { useNavigation } from '@/composable/useNavigation'
-import { useI18n } from 'vue-i18n'
+import { useNotification } from '@/composable/useNotification'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 import Forbidden from '@/components/semantics/Forbidden.vue'
+import { useNavigation } from '@/composable/useNavigation'
+import { defineComponent, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   components: { SectionsSettings, DeadlineSettings, Forbidden },
@@ -40,6 +41,8 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
+
+    const { isForbidden } = useNotification()
 
     const { selectedGroup } = useGroupAndYears()
 
@@ -53,8 +56,9 @@ export default defineComponent({
 
     return {
       selectedGroup,
-      tabState,
       setTabState,
+      isForbidden,
+      tabState,
       t,
     }
   },

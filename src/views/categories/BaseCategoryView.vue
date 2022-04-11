@@ -1,5 +1,5 @@
 <template>
-  <div v-if="category && visum && (selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner)" class="flex w-100 -mt-3">
+  <div v-if="category && visum && !isForbidden" class="flex w-100 -mt-3">
     <div class="w-100">
       <div class="sticky bg-white z-30" style="top: 81px">
         <page-header :title="category.categoryParent.label" :subTitle="visum.camp.name" />
@@ -18,7 +18,7 @@
 
   <forbidden />
 
-  <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum && (selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner)">
+  <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum && !isForbidden">
     <div class="text-center">
       <loader color="lightGreen" size="20" :isLoading="isFetchingVisum" />
     </div>
@@ -31,6 +31,10 @@ import BaseSubcategoryCard from '../../components/cards/BaseSubcategoryCard.vue'
 import InformationSideBar from '@/components/sideBars/InformationSideBar.vue'
 import PageHeader from '../../components/semantics/PageHeader.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
+import { useNotification } from '@/composable/useNotification'
+import useGroupAndYears from '@/composable/useGroupAndYears'
+import Forbidden from '@/components/semantics/Forbidden.vue'
+import { useNavigation } from '@/composable/useNavigation'
 import { useCampHelper } from '../../helpers/campHelper'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { Category } from '@/serializer/Category'
@@ -38,9 +42,6 @@ import { Loader } from 'vue-3-component-library'
 import { Visum } from '../../serializer/Visum'
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useNavigation } from '@/composable/useNavigation'
-import useGroupAndYears from '@/composable/useGroupAndYears'
-import Forbidden from '@/components/semantics/Forbidden.vue'
 
 export default defineComponent({
   name: 'BaseCategoryView',
@@ -63,6 +64,7 @@ export default defineComponent({
     const { jumpToId } = useNavigation()
     const { setBreadcrumbs } = useNavigation()
     const { selectedGroup } = useGroupAndYears()
+    const { isForbidden } = useNotification()
 
     const fetchCategory = () => {
       getCategoryByRouteParam().then((c: Category) => {
@@ -133,11 +135,12 @@ export default defineComponent({
     return {
       getSectionsTitle,
       isFetchingVisum,
+      selectedGroup,
       closeSidebar,
       openSidebar,
+      isForbidden,
       category,
       sidebar,
-      selectedGroup,
       route,
       visum,
       rl,

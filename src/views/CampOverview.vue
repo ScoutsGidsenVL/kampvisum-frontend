@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visum && (selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner)" class="p-3">
+  <div v-if="visum && !isForbidden" class="p-3">
     <h1>{{ visum.camp.name }}</h1>
 
     <h4 class="inline text-green font-aglet font-light">
@@ -14,12 +14,12 @@
       </div>
       <deadlines-sidebar :visum="visum" :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
     </div>
-    <engagement v-if="visum" :visum="visum" />
+    <engagement v-if="visum && false" :visum="visum" />
   </div>
 
   <forbidden />
 
-  <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum && (selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner)">
+  <div class="h-screen -m-16 grid content-center" v-if="isFetchingVisum && !isForbidden">
     <div class="text-center">
       <loader color="lightGreen" size="20" :isLoading="isFetchingVisum" />
     </div>
@@ -39,6 +39,7 @@ import { useCampHelper } from '../helpers/campHelper'
 import { Loader } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
+import { useNotification } from '@/composable/useNotification'
 
 export default defineComponent({
   name: 'CampOverview',
@@ -58,6 +59,7 @@ export default defineComponent({
     const visum = ref<Visum>()
     const isFetchingVisum = ref<boolean>(true)
     const { selectedGroup } = useGroupAndYears()
+    const { isForbidden } = useNotification()
 
 
     getCampByRouteParam().then((v: Visum) => {
@@ -83,7 +85,8 @@ export default defineComponent({
       openSidebar,
       sidebar,
       visum,
-      selectedGroup
+      selectedGroup,
+      isForbidden
     }
   },
 })

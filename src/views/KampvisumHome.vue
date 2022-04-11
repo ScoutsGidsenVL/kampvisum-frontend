@@ -26,12 +26,12 @@
       {{t('pages.kampvisum-overview.change-group')}}
     </div>
 
-    <div v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner" class="pb-3 grid md:grid-cols-2 gap-3">
+    <div v-if="!isForbidden && !isFetchingVisums" class="pb-3 grid md:grid-cols-2 gap-3">
       <multi-select style="width: 261px" v-if="years[0]" id="year" @addSelection="selectNewYear" value-prop="id" :options="years" :value="years[0]" :canClear="false" :canDeselect="false" />
     </div>
 
     <div class="xs:w-100 md:w-80">
-      <custom-button v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner" class="w-100" :extraStyle="'w-100'" @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
+      <custom-button v-if="!isForbidden && !isFetchingVisums" class="w-100" :extraStyle="'w-100'" @click="openCampSideBar()" :isSubmitting="false" :text="t('pages.kampvisum-overview.create-camp-button')">
         <template v-slot:icon>
           <svg xmlns="http://www.w3.org/2000/svg" style="margin-top: -3px" class="h-5 w-5 inline ml-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
@@ -43,22 +43,22 @@
     <forbidden />
 
     <div class="h-screen -m-56 grid content-center" v-if="isFetchingVisums">
-      <div v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner" class="text-center">
+      <div class="text-center">
         <loader color="lightGreen" size="20" :isLoading="isFetchingVisums" />
       </div>
     </div>
 
     <div v-if="!isFetchingVisums">
-      <camp-call-to-action v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner" :visums="visums" />
-      <div class="grid md:grid-cols-2 xs:grid-cols-1 gap-4" v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner">
+      <camp-call-to-action v-if="!isForbidden" :visums="visums" />
+      <div class="grid md:grid-cols-2 xs:grid-cols-1 gap-4">
         <div  v-for="visum in visums" :key="visum.id">
           <camp-info-card class="mt-5" :visum="visum">
             <template v-slot:buttons>
-              <svg v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner" @click.stop="editVisum(visum)" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hover:text-lightGreen cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+              <svg @click.stop="editVisum(visum)" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hover:text-lightGreen cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
               </svg>
 
-              <svg v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner" @click.stop="displayWarning(visum)" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hover:text-red cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+              <svg @click.stop="displayWarning(visum)" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hover:text-red cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fill-rule="evenodd"
                   d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
@@ -83,13 +83,13 @@ import { CampRepository } from '@/repositories/campRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
 import { useNotification } from '@/composable/useNotification'
 import useGroupAndYears from '@/composable/useGroupAndYears'
+import Forbidden from '@/components/semantics/Forbidden.vue'
 import { useNavigation } from '@/composable/useNavigation'
 import { SidebarState } from '@/helpers/infoBarHelper'
 import useVisum from '@/composable/useVisum'
 import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
-import Forbidden from '@/components/semantics/Forbidden.vue'
 
 export default defineComponent({
   name: 'KampvisumHome',
@@ -115,7 +115,7 @@ export default defineComponent({
     const { setBreadcrumbs, sidebar } = useNavigation()
     const { selectedGroup, selectedYear, years, setSelectedYear, getYearsForGroup } = useGroupAndYears()
     const { visums, isFetchingVisums, getVisums, navigateTowardsVisum } = useVisum()
-    const { triggerNotification } = useNotification()
+    const { triggerNotification, isForbidden } = useNotification()
 
     setBreadcrumbs([])
 
@@ -132,7 +132,6 @@ export default defineComponent({
         RepositoryFactory.get(CampRepository)
           .removeById(visumToBeDeleted.value.id)
           .then(() => {
-            selectedYear.value &&
               getVisums(selectedGroup.value, selectedYear.value).then(() => {
                 isDeletingVisum.value = false
                 isWarningDisplayed.value = false
@@ -166,7 +165,7 @@ export default defineComponent({
       if (!selectedYear.value) {
         await getYearsForGroup(selectedGroup.value.groupAdminId)
       }
-      selectedYear.value && getVisums(selectedGroup.value, selectedYear.value)
+      getVisums(selectedGroup.value, selectedYear.value)
     }
 
     const selectNewYear = (year: string) => {
@@ -180,8 +179,6 @@ export default defineComponent({
     }
 
     return {
-      SidebarState,
-      sidebar,
       navigateTowardsVisum,
       isWarningDisplayed,
       isFetchingVisums,
@@ -194,9 +191,12 @@ export default defineComponent({
       actionSuccess,
       selectNewYear,
       shineSelector,
+      SidebarState,
       hideWarning,
       deleteCamp,
+      isForbidden,
       editVisum,
+      sidebar,
       visums,
       years,
       t,

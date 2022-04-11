@@ -23,7 +23,7 @@
             />
           </div>
 
-          <div v-if="selectedGroup.isSectionLeader || selectedGroup.isGroupLeader || selectedGroup.isDistrictCommissioner" class="top-44 w-auto">
+          <div v-if="!isForbidden" class="top-44 w-auto">
             <div>
               <div class="text-center">
                 <loader color="lightGreen" size="10" :isLoading="isFetchingVisums" />
@@ -45,7 +45,7 @@
               </div>
             </div>
 
-            <navigation-item @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
+            <navigation-item v-if="!isForbidden && !isFetchingVisums" @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
             <!-- <navigation-item link="/locaties" text="Locaties"/> -->
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
@@ -67,20 +67,21 @@
 </template>
 
 <script lang="ts">
-import router from '@/router'
 import MultiSelect from '../../components/inputs/MultiSelect.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
-import { SidebarState } from '@/helpers/infoBarHelper'
 import { useNavigation } from '../../composable/useNavigation'
+import { useNotification } from '@/composable/useNotification'
 import useGroupAndYears from '@/composable/useGroupAndYears'
+import { SidebarState } from '@/helpers/infoBarHelper'
 import NavigationItem from './NavigationItem.vue'
 import { Loader } from 'vue-3-component-library'
 import useVisum from '../../composable/useVisum'
-import { defineComponent } from 'vue'
 import { Group } from '@/serializer/Group'
 import ILogo from '../icons/ILogo.vue'
-import { useI18n } from 'vue-i18n'
+import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import router from '@/router'
 
 export default defineComponent({
   components: {
@@ -96,6 +97,8 @@ export default defineComponent({
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsCategory, sidebar } = useNavigation()
     const { setSelectedGroup, getAvailableGroups, selectedGroup } = useGroupAndYears()
+    const { isForbidden } = useNotification()
+    
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -128,19 +131,20 @@ export default defineComponent({
     }
 
     return {
-      selectedGroup,
-      visumsAlphabetically,
       navigateTowardsCategory,
+      visumsAlphabetically,
       changeSelectedGroup,
       getAvailableGroups,
       getSectionsTitle,
       isFetchingVisums,
+      selectedGroup,
       toggleSideBar,
       SidebarState,
       closeSidebar,
+      isForbidden,
       sidebar,
-      route,
       visums,
+      route,
       home,
       t,
     }
