@@ -36,7 +36,8 @@ export default defineComponent({
     } else {
       let redirectUrl = sessionStorage.getItem('redirectUrl')
       if (redirectUrl) {
-        router.push(redirectUrl === '/start' ? '/kampvisum-home' : redirectUrl)  
+        // router.push(redirectUrl === '/start' ? '/kampvisum-home' : redirectUrl)  
+        router.push('kampvisum-home')
       }
     }
   },
