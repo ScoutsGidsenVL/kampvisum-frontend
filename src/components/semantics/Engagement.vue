@@ -15,7 +15,7 @@
         <div class="flex gap-2 items-center" :class="!visum.engagement.leaders ? 'opacity-50' : ''">
           <i-empty-check v-if="!visum.engagement.leaders" />
           <i-checked v-else />
-          <strong>Leiding</strong>
+          <strong>{{t('engagement.leaders')}}</strong>
           {{ visum.engagement.leaders?.firstName }} {{ visum.engagement.leaders?.lastName }}
         </div>
 
@@ -23,7 +23,7 @@
         <div class="flex gap-2 items-center" :class="!visum.engagement.groupLeaders ? 'opacity-50' : ''">
           <i-empty-check v-if="!visum.engagement.groupLeaders" />
           <i-checked v-else />
-          <strong>Groepsleiding</strong>
+          <strong>{{t('engagement.group-leaders')}}</strong>
           {{ visum.engagement.groupLeaders?.firstName }} {{ visum.engagement.groupLeaders?.lastName }}
         </div>
 
@@ -31,7 +31,7 @@
         <div class="flex text-grey gap-2 items-center" :class="!visum.engagement.districtCommisioner ? 'opacity-50' : ''">
           <i-empty-check v-if="!visum.engagement.districtCommisioner" />
           <i-checked v-else />
-          <strong>DC</strong>
+          <strong>{{t('engagement.dc')}}</strong>
           {{ visum.engagement.districtCommisioner?.firstName }} {{ visum.engagement.districtCommisioner?.lastName }}
         </div>
       </div>

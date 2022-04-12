@@ -47,10 +47,10 @@ export default defineComponent({
   name: 'BaseCategoryView',
   components: {
     BaseSubcategoryCard,
-    PageHeader,
     InformationSideBar,
-    Loader,
+    PageHeader,
     Forbidden,
+    Loader,
   },
   setup() {
     const route = useRoute()

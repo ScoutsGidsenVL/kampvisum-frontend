@@ -3,6 +3,7 @@
     <div class="pt-3 border border-lightGray flex gap-0 flex-col">
       <header-subcategory-card :subCategory="subCategory" @openSidebar="openSidebar()" />
       <check-switch @rl="rl($event)" v-for="check in checks" :key="check" :visum="visum" :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
+      <feedback v-if="true || selectedGroup.isDistrictCommissioner && visum.engagement.approved" :subCategory="subCategory" :visum="visum" />
     </div>
   </div>
 </template>
@@ -15,6 +16,8 @@ import { SubCategory } from '@/serializer/SubCategory'
 import { defineComponent, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
+import Feedback from '../semantics/Feedback.vue'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'BaseSubcategoryCard',
@@ -22,6 +25,7 @@ export default defineComponent({
     'check-switch': CheckSwitch,
     'header-subcategory-card': HeaderSubcategoryCard,
     'litepie-datepicker': LitepieDatepicker,
+    Feedback,
   },
   props: {
     subCategory: {
@@ -35,6 +39,9 @@ export default defineComponent({
     checks: Array as PropType<Check[]>,
   },
   setup(props, { emit }) {
+    const { selectedGroup } = useGroupAndYears()
+
+
     const openSidebar = () => {
       emit('openSidebar')
     }
@@ -45,6 +52,7 @@ export default defineComponent({
 
     return {
       openSidebar,
+      selectedGroup,
       rl,
     }
   },

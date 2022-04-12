@@ -8,6 +8,7 @@ export interface Category {
   subCategories?: SubCategory
   categoryParent: CategoryParent
   state: string
+  notes?: string
 }
 
 export const CategoryDeserializer = (input: any): Category => {
@@ -17,7 +18,8 @@ export const CategoryDeserializer = (input: any): Category => {
     id: input.id,
     subCategories: input.sub_categories ? input.sub_categories.filter((x: any) => x !== null).map((subCategory: any) => SubCategoryDeserializer(subCategory)) : [],
     categoryParent: CategoryParentDeserializer(input.parent),
-    state: input.state ? input.state : 'UNCHECKED'
+    state: input.state ? input.state : 'UNCHECKED',
+    notes: input.notes ? input.notes : 'Here are DC Notes'
   }
 
   return single

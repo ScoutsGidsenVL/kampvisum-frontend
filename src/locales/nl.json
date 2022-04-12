@@ -185,10 +185,21 @@
   "no-camps": "Geen kampen",
   "forbidden": "Je hebt niet de juiste rechten om deze pagina te zien. Als je denkt dat dat fout is, contacteer dan je verantwoordelijke groepsadministratie (VGA) zodat die het kan goedzetten in de Groepsadministratie.",
   "engagement": {
+    "leaders": "Leiders",
+    "group-leaders": "Groepsleiding",
+    "dc": "DC",
     "title": "Kamp engagement",
     "warning-title": "",
     "warning-text": "Ga je ermee akkoord dat je alles hebt nagelezen en er een fijn kamp zult van maken?",
     "warning-left-button": "Akkoord",
-    "warning-right-button": "Annuleren"
+    "warning-right-button": "Annuleren",
+    "feedback": "Feedback",
+    "feedback-ok": "ok",
+    "feedback-not-ok": "niet ok",
+    "feedback-declined": "afgekeurd",
+    "feedback-notification": "feedback bewerkt!"
+
+
+
   }
 }
