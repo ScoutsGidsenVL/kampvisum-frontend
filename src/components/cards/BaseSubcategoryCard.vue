@@ -3,7 +3,7 @@
     <div class="pt-3 border border-lightGray flex gap-0 flex-col">
       <header-subcategory-card :subCategory="subCategory" @openSidebar="openSidebar()" />
       <check-switch @rl="rl($event)" v-for="check in checks" :key="check" :visum="visum" :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
-      <feedback v-if="true || selectedGroup.isDistrictCommissioner && visum.engagement.approved" :subCategory="subCategory" :visum="visum" />
+      <feedback v-if="false || selectedGroup.isDistrictCommissioner && visum.engagement.approved" :subCategory="subCategory" :visum="visum" />
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visum.state === VisumStates.SIGNABLE">
+  <div v-if="visum.state === VisumStates.SIGNABLE && false">
     <!-- keuring -->
     <div class="xs:w-100 md:w-80 mt-3">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="'kamp goedkeuren'">
@@ -16,7 +16,7 @@
           <i-empty-check v-if="!visum.engagement.leaders" />
           <i-checked v-else />
           <strong>{{t('engagement.leaders')}}</strong>
-          {{ visum.engagement.leaders?.firstName }} {{ visum.engagement.leaders?.lastName }}
+          {{  }} {{  }}
         </div>
 
         <!-- GROUP LEADER -->
@@ -36,9 +36,8 @@
         </div>
       </div>
     </div>
-
     <warning
-      :title="t('engagement.warning-title') + `${visum.engagement.leaders?.firstName} ${visum.engagement.leaders?.lastName}`"
+      :title="t('engagement.warning-title') + `${user.firstName} ${user.lastName}`"
       :isLoading="isSigning"
       :isDisplayed="isWarningDisplayed"
       :text="t('engagement.warning-text')"
@@ -62,6 +61,7 @@ import { Visum, VisumStates } from '@/serializer/Visum'
 import IChecked from '@/components/icons/IChecked.vue'
 import { Engagement } from '@/serializer/Engagement'
 import { useI18n } from 'vue-i18n'
+import store from '../../store/store'
 
 export default defineComponent({
   name: 'Engagement',
@@ -82,7 +82,7 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
-
+    const user = store.getters.user
     const isWarningDisplayed = ref<boolean>(false)
     const isSigning = ref<boolean>(false)
     const { visum } = toRefs(props)
@@ -121,7 +121,8 @@ export default defineComponent({
       VisumStates,
       visum,
       sign,
-      t
+      t,
+      user
     }
   },
 })
