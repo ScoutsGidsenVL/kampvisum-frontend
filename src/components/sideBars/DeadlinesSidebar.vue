@@ -217,7 +217,7 @@ export default defineComponent({
           deadlines.value = d
           deadlines.value.forEach((dead: Deadline) => {
             if (dead.deadlineParent && dead.deadlineParent.name === 'camp_registration') {
-              openDeadline(dead)
+              // openDeadline(dead)
             }
           })
           isFetchingDeadlines.value = false
