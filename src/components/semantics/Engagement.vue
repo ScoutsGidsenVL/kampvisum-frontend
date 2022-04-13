@@ -89,11 +89,13 @@ export default defineComponent({
     const { selectedGroup } = useGroupAndYears()
     const sign = () => {
       isSigning.value = true
-      RepositoryFactory.get(EngagementRepository).signVisum(props.visum).then(() => { 
-        isSigning.value = false
-        hideWarning()
-        getEngagementState()
-      })
+      if (props.visum.engagement) {
+        RepositoryFactory.get(EngagementRepository).signVisum(props.visum.engagement).then(() => { 
+          isSigning.value = false
+          hideWarning()
+          getEngagementState()
+        })
+      }
     }
 
     const getEngagementState = () => {

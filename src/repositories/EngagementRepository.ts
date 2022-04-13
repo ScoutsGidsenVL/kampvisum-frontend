@@ -16,12 +16,10 @@ export class EngagementRepository extends BaseRepository {
     })
   }
 
-
-  signVisum(visum: Visum): Promise<any> {
-    return this.patch(this.endpoint + visum.engagement.id + '/', undefined).then((response: any) => {
-      console.log('Response Engagement Signature: ', response)
-      return this.deserializer(response)
-    })
+  signVisum(engagement: Engagement): Promise<any> {
+      return this.patch(this.endpoint + engagement.id + '/', undefined).then((response: any) => {
+        console.log('Response Engagement Signature: ', response)
+        return this.deserializer(response)
+      })
   }
-
 }

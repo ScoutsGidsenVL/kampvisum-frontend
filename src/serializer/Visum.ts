@@ -11,7 +11,7 @@ export interface Visum {
   readonly camp: Camp
   readonly categorySet: CategorySet
   readonly id: string
-  readonly engagement: Engagement
+  readonly engagement?: Engagement
   readonly state: string
   groupGroupAdminId: string
   campTypes: Array<CampType>
@@ -22,7 +22,7 @@ export const VisumDeserializer = (input: any): Visum => {
     campTypes: input.camp_types ? input.camp_types.map((ct: any) => CampTypeDeserializer(ct)) : undefined,
     camp: CampDeserializer(input.camp),
     categorySet: CategorySetDeserializer(input.category_set),
-    engagement: EngagementDeserializer(input.engagement),
+    engagement: input.engagement ? EngagementDeserializer(input.engagement) : undefined,
     state: input.state ? input.state : undefined,
     id: input.id ? input.id : undefined,
     groupGroupAdminId: input.group_group_admin_id
