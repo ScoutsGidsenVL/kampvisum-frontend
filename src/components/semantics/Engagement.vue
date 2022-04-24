@@ -1,39 +1,45 @@
 <template>
-  <div v-if="visum.state === VisumStates.SIGNABLE && false">
+  <div v-if="visum.state === VisumStates.SIGNABLE && true">
     <!-- keuring -->
     <div class="xs:w-100 md:w-80 mt-3">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="'kamp goedkeuren'">
       </custom-button-small>
     </div>
 
-    <!-- engagement -->
-    <div class="md:w-1/3 xs:w-96 bg-lighterGreen mt-3 p-3 shadow-md">
-      <h1 class="text-xl mb-0 mt-0">{{t('engagement.title')}}</h1>
+    <div class="flex flex-column">
+      <!-- engagement -->
+      <div class="md:w-1/3 xs:w-96 bg-lighterGreen mt-3 p-3 shadow-md">
+        <h1 class="text-xl mb-0 mt-0">{{t('engagement.title')}}</h1>
 
-      <div class="mt-3 flex gap-2 flex-col">
-        <!-- LEADER -->
-        <div class="flex gap-2 items-center" :class="!visum.engagement.leaders ? 'opacity-50' : ''">
-          <i-empty-check v-if="!visum.engagement.leaders" />
-          <i-checked v-else />
-          <strong>{{t('engagement.leaders')}}</strong>
-          {{  }} {{  }}
-        </div>
+        <div class="mt-3 flex gap-2 flex-col">
+          <!-- LEADER -->
+          <div class="flex gap-2 items-center" :class="!visum.engagement.leaders ? 'opacity-50' : ''">
+            <i-empty-check v-if="!visum.engagement.leaders" />
+            <i-checked v-else />
+            <strong>{{t('engagement.leaders')}}</strong>
+            {{ visum.engagement.leaders?.firstName }} {{ visum.engagement.leaders?.lastName }}
+          </div>
 
-        <!-- GROUP LEADER -->
-        <div class="flex gap-2 items-center" :class="!visum.engagement.groupLeaders ? 'opacity-50' : ''">
-          <i-empty-check v-if="!visum.engagement.groupLeaders" />
-          <i-checked v-else />
-          <strong>{{t('engagement.group-leaders')}}</strong>
-          {{ visum.engagement.groupLeaders?.firstName }} {{ visum.engagement.groupLeaders?.lastName }}
-        </div>
+          <!-- GROUP LEADER -->
+          <div class="flex gap-2 items-center" :class="!visum.engagement.groupLeaders ? 'opacity-50' : ''">
+            <i-empty-check v-if="!visum.engagement.groupLeaders" />
+            <i-checked v-else />
+            <strong>{{t('engagement.group-leaders')}}</strong>
+            {{ visum.engagement.groupLeaders?.firstName }} {{ visum.engagement.groupLeaders?.lastName }}
+          </div>
 
-        <!-- DC -->
-        <div class="flex text-grey gap-2 items-center" :class="!visum.engagement.districtCommisioner ? 'opacity-50' : ''">
-          <i-empty-check v-if="!visum.engagement.districtCommisioner" />
-          <i-checked v-else />
-          <strong>{{t('engagement.dc')}}</strong>
-          {{ visum.engagement.districtCommisioner?.firstName }} {{ visum.engagement.districtCommisioner?.lastName }}
+          <!-- DC -->
+          <div class="flex text-grey gap-2 items-center" :class="!visum.engagement.districtCommisioner ? 'opacity-50' : ''">
+            <i-empty-check v-if="!visum.engagement.districtCommisioner" />
+            <i-checked v-else />
+            <strong>{{t('engagement.dc')}}</strong>
+            {{ visum.engagement.districtCommisioner?.firstName }} {{ visum.engagement.districtCommisioner?.lastName }}
+          </div>
         </div>
+      </div>
+
+      <div class="mt-3 md:w-1/3 xs:w-96">
+        <dc-notes :visum="visum" />
       </div>
     </div>
     <warning
@@ -62,6 +68,7 @@ import IChecked from '@/components/icons/IChecked.vue'
 import { Engagement } from '@/serializer/Engagement'
 import { useI18n } from 'vue-i18n'
 import store from '../../store/store'
+import DcNotes from './DcNotes.vue'
 
 export default defineComponent({
   name: 'Engagement',
@@ -69,7 +76,8 @@ export default defineComponent({
     CustomButtonSmall,
     IEmptyCheck,
     IChecked,
-    Warning
+    Warning,
+    DcNotes
   },
   props: {
     visum: {

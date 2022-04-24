@@ -5,20 +5,20 @@
       <custom-input @changedTextArea="changedTextArea($event)" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="'feedback'" />
     </div>
     <div class="flex gap-4 mt-2">
-      <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.OK)" >
-        <i-checked v-if="selection === StatusFeedbackState.OK" />
+      <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.APPROVED)" >
+        <i-checked v-if="selection === StatusFeedbackState.APPROVED" />
         <i-empty-check v-else />
         {{t('engagement.feedback-ok')}}
       </div>
 
-      <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.NOT_OK)">
-        <i-checked v-if="selection === StatusFeedbackState.NOT_OK" />
+      <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.APPROVED_FEEDBACK)">
+        <i-checked v-if="selection === StatusFeedbackState.APPROVED_FEEDBACK" />
         <i-empty-check v-else />
         {{t('engagement.feedback-not-ok')}}
       </div>
 
-      <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.DECLINED)">
-        <i-checked v-if="selection === StatusFeedbackState.DECLINED" />
+      <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.DISAPPROVED)">
+        <i-checked v-if="selection === StatusFeedbackState.DISAPPROVED" />
         <i-empty-check v-else />
         {{t('engagement.feedback-declined')}}
       </div>
@@ -36,6 +36,8 @@ import IChecked from '../icons/IChecked.vue'
 import { Visum } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import { CampRepository } from '@/repositories/campRepository'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 
 export default defineComponent({
   name: 'Feedback',
@@ -67,20 +69,25 @@ export default defineComponent({
       initialValues: { feedback: props.subCategory.feedback ? props.subCategory.feedback : '' },
     })
 
-    const patchFeedbackCheck = async (feedback: string) => {
-      triggerNotification(t('engagement.feedback-notification'))
-    }
-
     enum StatusFeedbackState {
-      OK = 'OK',
-      NOT_OK = 'NOT_OK',
-      DECLINED = 'DECLINED',
+      UNDECIDED = 'U',
+      APPROVED = 'A',
+      APPROVED_FEEDBACK ='N',
+      DISAPPROVED = 'D',
+      FEEDBACK_RESOLVED = 'F'
     }
 
-    const selection = ref<string>('')
+    const selection = ref<string>(props.subCategory.approval ? props.subCategory.approval : StatusFeedbackState.UNDECIDED)
 
     const select = (v: StatusFeedbackState) => {
       selection.value = v
+      if (props.subCategory.id) {
+        RepositoryFactory.get(CampRepository)
+        .patchCategoryApproval(props.subCategory.id, selection.value)
+        .then(() => {
+          triggerNotification(t('engagement.feedback-notification'))
+        })
+      }
       triggerNotification(t('engagement.feedback-notification'))
     }
 
@@ -89,7 +96,13 @@ export default defineComponent({
       () => {
         clearTimeout(debounce)
         debounce = setTimeout(() => {
-          patchFeedbackCheck(values.feedback)
+          if (props.subCategory.id) {
+          RepositoryFactory.get(CampRepository)
+          .patchCategoryFeedback(props.subCategory.id, values.feedback)
+          .then(() => {
+            triggerNotification(t('engagement.feedback-notification'))
+          })
+          }
         }, 1000)
       }
     )

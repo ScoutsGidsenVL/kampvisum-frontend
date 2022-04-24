@@ -3,7 +3,7 @@
     <div class="pt-3 border border-lightGray flex gap-0 flex-col">
       <header-subcategory-card :subCategory="subCategory" @openSidebar="openSidebar()" />
       <check-switch @rl="rl($event)" v-for="check in checks" :key="check" :visum="visum" :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
-      <feedback v-if="false || selectedGroup.isDistrictCommissioner && visum.engagement.approved" :subCategory="subCategory" :visum="visum" />
+      <feedback v-if="selectedGroup.isDistrictCommissioner && visum.state === VisumStates.SIGNABLE && visum.engagement.leaders && visum.engagement.groupLeaders " :subCategory="subCategory" :visum="visum" />
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@ const LitepieDatepicker = require('litepie-datepicker')
 import { SubCategory } from '@/serializer/SubCategory'
 import { defineComponent, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
-import { Visum } from '@/serializer/Visum'
+import { Visum, VisumStates } from '@/serializer/Visum'
 import Feedback from '../semantics/Feedback.vue'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 
@@ -54,6 +54,7 @@ export default defineComponent({
       openSidebar,
       selectedGroup,
       rl,
+      VisumStates
     }
   },
 })

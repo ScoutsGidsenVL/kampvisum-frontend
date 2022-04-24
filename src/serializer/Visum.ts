@@ -15,6 +15,7 @@ export interface Visum {
   readonly state: string
   groupGroupAdminId: string
   campTypes: Array<CampType>
+  notes?: string
 }
 
 export const VisumDeserializer = (input: any): Visum => {
@@ -25,7 +26,8 @@ export const VisumDeserializer = (input: any): Visum => {
     engagement: input.engagement ? EngagementDeserializer(input.engagement) : undefined,
     state: input.state ? input.state : undefined,
     id: input.id ? input.id : undefined,
-    groupGroupAdminId: input.group_group_admin_id
+    groupGroupAdminId: input.group_group_admin_id,
+    notes: input.notes ? input.notes : ''
   }
   return single
 }

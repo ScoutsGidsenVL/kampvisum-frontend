@@ -22,9 +22,25 @@ export class CampRepository extends BaseRepository {
   }
 
   getGroupYears(groupId: string): Promise<any> {
-    // return this.get(this.endpoint + groupId + '/years', {}).then((response: []) => {
     return this.get(this.id + groupId + '/years/', {}).then((response: []) => {
       return response
     })
   }
-}
+
+  patchCategoryFeedback(subCategoryId: string, feedback: string): Promise<any> {
+    return this.patch(`${this.endpoint}${subCategoryId}/feedback`, { feedback: feedback }).then((response: any) => {
+      return response
+    })
+  }
+
+  patchCategoryApproval(subCategoryId: string, approval: string): Promise<any> {
+    return this.patch(`${this.endpoint}${subCategoryId}/approval`, { approval: approval }).then((response: any) => {
+      return response
+    })
+  }
+
+  patchVisumNotes(visumId: string, notes: string): Promise<any> {
+    return this.patch(`${this.endpoint}${visumId}/notes`, { notes: notes }).then((response: any) => {
+      return response
+    })
+  }}

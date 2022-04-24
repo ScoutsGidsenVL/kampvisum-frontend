@@ -197,9 +197,8 @@
     "feedback-ok": "ok",
     "feedback-not-ok": "niet ok",
     "feedback-declined": "afgekeurd",
-    "feedback-notification": "feedback bewerkt!"
-
-
-
+    "feedback-notification": "feedback bewerkt!",
+    "notes-notification": "commentaar bewerkt!",
+    "internal": "Commentaar intern. (Enkel zichtbaar voor DC's)"
   }
 }

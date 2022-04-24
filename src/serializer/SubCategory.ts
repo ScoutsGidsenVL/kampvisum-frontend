@@ -10,6 +10,7 @@ export interface SubCategory {
   name?: string
   label?: string
   feedback?: string
+  approval?: string
 }
 
 export const SubCategoryDeserializer = (input: any): SubCategory => {
@@ -21,7 +22,8 @@ export const SubCategoryDeserializer = (input: any): SubCategory => {
     category: input.category ? DeadlineCategoryDeserializer(input.category) : undefined,
     name: input.name ? input.name : undefined,
     label: input.label ? input.label : undefined,
-    feedback: input.feedback ? input.feedback : 'Feedback op een subcategory!'
+    feedback: input.feedback ? input.feedback : '',
+    approval: input.approval ? input.approval : 'U'
   }
   return single
 }
