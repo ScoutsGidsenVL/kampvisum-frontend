@@ -43,4 +43,18 @@ export class CampRepository extends BaseRepository {
     return this.patch(`${this.endpoint}${visumId}/notes`, { notes: notes }).then((response: any) => {
       return response
     })
-  }}
+  }
+
+  patchVisumHandleFeedback(subCategoryId: string): Promise<any> {
+    return this.patch(`${this.endpoint}${subCategoryId}/handle_feedback`, {}).then((response: any) => {
+      return response
+    })
+  }
+
+  patchVisumHandleFeedbackGlobal(visumId: string): Promise<any> {
+    return this.patch(`${this.endpoint}${visumId}/global_handle_feedback`, {}).then((response: any) => {
+      return response
+    })
+  }
+
+}

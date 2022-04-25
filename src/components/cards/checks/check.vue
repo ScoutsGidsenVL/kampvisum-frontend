@@ -153,6 +153,7 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
+    
     const simpleCheck = ref<SimpleCheck>(CheckDeserializer(props.check))
     const { triggerNotification } = useNotification()
 

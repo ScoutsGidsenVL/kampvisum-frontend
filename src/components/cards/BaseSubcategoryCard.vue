@@ -2,8 +2,23 @@
   <div :id="subCategory.id">
     <div class="pt-3 border border-lightGray flex gap-0 flex-col">
       <header-subcategory-card :subCategory="subCategory" @openSidebar="openSidebar()" />
+        <message
+        v-if="(subCategory.approval === StatusFeedbackState.APPROVED && subCategory.feedback)
+        || subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK 
+        || subCategory.approval === StatusFeedbackState.DISAPPROVED"
+        class="my-3" 
+        :title="t('engagement.feedback-dc')" 
+        :text="subCategory.feedback" 
+        :color="
+        (subCategory.approval === StatusFeedbackState.APPROVED) ? {state: ColorState.SUCCES} : 
+        subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK ? {state: ColorState.WARNING} : 
+        subCategory.approval === StatusFeedbackState.DISAPPROVED ? {state: ColorState.DANGER} : {state: ColorState.SUCCES}"
+        :hasCheck="true"
+        :subCategory="subCategory" 
+        @rl="rl($event)"
+        />
       <check-switch @rl="rl($event)" v-for="check in checks" :key="check" :visum="visum" :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
-      <feedback v-if="selectedGroup.isDistrictCommissioner && visum.state === VisumStates.SIGNABLE && visum.engagement.leaders && visum.engagement.groupLeaders " :subCategory="subCategory" :visum="visum" />
+      <feedback @rl="rl($event)" v-if="selectedGroup.isDistrictCommissioner && visum.state !== VisumStates.DATA_REQUIRED && visum.engagement.leaders && visum.engagement.groupLeaders" :subCategory="subCategory" :visum="visum" />
     </div>
   </div>
 </template>
@@ -16,8 +31,10 @@ import { SubCategory } from '@/serializer/SubCategory'
 import { defineComponent, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
 import { Visum, VisumStates } from '@/serializer/Visum'
-import Feedback from '../semantics/Feedback.vue'
+import Feedback, {StatusFeedbackState} from '../semantics/Feedback.vue'
+import Message, {ColorState} from '../semantics/message.vue'
 import useGroupAndYears from '@/composable/useGroupAndYears'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'BaseSubcategoryCard',
@@ -26,6 +43,7 @@ export default defineComponent({
     'header-subcategory-card': HeaderSubcategoryCard,
     'litepie-datepicker': LitepieDatepicker,
     Feedback,
+    Message
   },
   props: {
     subCategory: {
@@ -41,6 +59,10 @@ export default defineComponent({
   setup(props, { emit }) {
     const { selectedGroup } = useGroupAndYears()
 
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
 
     const openSidebar = () => {
       emit('openSidebar')
@@ -51,10 +73,13 @@ export default defineComponent({
     }
 
     return {
-      openSidebar,
+      StatusFeedbackState,
       selectedGroup,
+      openSidebar,
+      VisumStates,
+      ColorState,
       rl,
-      VisumStates
+      t,
     }
   },
 })

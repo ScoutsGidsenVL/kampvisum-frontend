@@ -4,7 +4,10 @@ import { CategorySet, CategorySetDeserializer } from "./CategorySet"
 import { Engagement, EngagementDeserializer } from "./Engagement"
 
 export enum VisumStates {
-  SIGNABLE = "SIGNABLE"
+  SIGNABLE = "SIGNABLE",
+  NOT_SIGNABLE = "NOT_SIGNABLE",
+  DATA_REQUIRED = "DATA_REQUIRED",
+  FEEDBACK_HANDLED = "FEEDBACK_HANDLED"
 }
 
 export interface Visum {

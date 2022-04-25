@@ -31,8 +31,9 @@ export interface Check {
 }
 
 export const CheckDeserializer = (input: any): Check => {
+
   const single: Check = {
-    id: input.id,
+    id: input.id ? input.id : undefined,
     checkParent: input.parent ? CheckParentDeserializer(input.parent) : undefined,
     endpoint: input.endpoint ? input.endpoint : undefined,
     category: input.category ? DeadlineCategoryDeserializer(input.category) : undefined,

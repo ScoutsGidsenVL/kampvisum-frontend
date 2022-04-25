@@ -2,13 +2,18 @@
   <div @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen" style="height: 300px">
     <div class="z-2">
       <h2 class="mb-3 mt-0 text-xl font-semibold font-museo">{{ category.categoryParent.label }}</h2>
-      <div v-if="visum.state === VisumStates.SIGNABLE && false" class="font-bold bg-lighterGreen p-2 -m-2" style="width:fit-content">DC</div>
+      <div v-if="visum.state === !VisumStates.DATA_REQUIRED && false" class="font-bold bg-lighterGreen p-2 -m-2" style="width:fit-content">DC</div>
 
       <div style="width:fit-content" @click.stop="navigateTowardsSubCategory(category, subCategory)" v-for="subCategory in category.subCategories" :key="subCategory" class="d-flex gap-3 my-2.5 items-center group">
         <!-- DC CHECKS -->
-        <div v-if="visum.state === VisumStates.SIGNABLE && false" class="bg-lighterGreen p-2 -m-2">
-          <i-checked v-if="subCategory.state === 'CHECKED'" />
-          <i-empty-check v-if="subCategory.state === 'UNCHECKED'" />    
+        <div v-if="visum.state !== (VisumStates.DATA_REQUIRED) 
+        && selectedGroup.isDistrictCommissioner 
+        && visum.engagement.leaders 
+        && visum.engagement.groupLeaders" class="bg-lighterGreen p-2 -m-2">
+          <i-checked v-if="subCategory.approval === StatusFeedbackState.APPROVED || subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED" />
+          <i-empty-check v-if="subCategory.approval === StatusFeedbackState.UNDECIDED" /> 
+          <i-checked-cross v-if="subCategory.approval === StatusFeedbackState.DISAPPROVED" /> 
+          <i-check-warning v-if="subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK" />  
         </div>
 
         <!-- OTHER CHECKS-->
@@ -30,10 +35,13 @@ import IChecked from '../icons/IChecked.vue'
 import { Visum, VisumStates } from '@/serializer/Visum'
 import { useRoute } from 'vue-router'
 import router from '@/router'
-
+import useGroupAndYears from '@/composable/useGroupAndYears'
+import {StatusFeedbackState} from '../semantics/Feedback.vue'
+import ICheckedCross from '../icons/ICheckedCross.vue'
+import ICheckWarning from '../icons/ICheckWarning.vue'
 export default defineComponent({
   name: 'CategoryInfoCard',
-  components: { IEmptyCheck, IChecked },
+  components: { IEmptyCheck, IChecked, ICheckedCross, ICheckWarning },
   props: {
     category: {
       type: Object as PropType<Category>,
@@ -47,6 +55,7 @@ export default defineComponent({
   setup() {
     const { navigateTowardsCategory } = useNavigation()
     const route = useRoute()
+    const { selectedGroup } = useGroupAndYears()
 
     const navigateTowardsSubCategory = (category: Category) => {
       router.push('/kamp/' + route.params.campId.toString() + '/category/' + category.id)
@@ -56,7 +65,9 @@ export default defineComponent({
       navigateTowardsSubCategory,
       navigateTowardsCategory,
       route,
-      VisumStates
+      VisumStates,
+      selectedGroup,
+      StatusFeedbackState
     }
   },
 })

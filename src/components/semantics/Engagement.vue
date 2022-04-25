@@ -1,8 +1,14 @@
 <template>
-  <div v-if="visum.state === VisumStates.SIGNABLE && true">
-    <!-- keuring -->
-    <div class="xs:w-100 md:w-80 mt-3">
-      <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="'kamp goedkeuren'">
+  <div v-if="visum.state !== VisumStates.DATA_REQUIRED">
+    <!-- SIGNABLE -->
+    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.SIGNABLE">
+      <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.approve-camp')">
+      </custom-button-small>
+    </div>
+
+    <!-- APPROVE FEEDBACK -->
+    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.FEEDBACK_HANDLED">
+      <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.feedback-handled')">
       </custom-button-small>
     </div>
 
@@ -49,7 +55,7 @@
       :text="t('engagement.warning-text')"
       :leftButton="t('engagement.warning-left-button')"
       :rightButton="t('engagement.warning-right-button')"
-      @leftButtonClicked="sign()"
+      @leftButtonClicked="handler()"
       @rightButtonClicked="hideWarning()"
     />
 
@@ -60,6 +66,7 @@
 import { EngagementRepository } from '@/repositories/EngagementRepository'
 import { CustomButtonSmall, Warning } from 'vue-3-component-library'
 import RepositoryFactory from '@/repositories/repositoryFactory'
+import {CampRepository} from '@/repositories/campRepository'
 import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 import { defineComponent, PropType, toRefs, ref } from 'vue'
@@ -95,10 +102,27 @@ export default defineComponent({
     const isSigning = ref<boolean>(false)
     const { visum } = toRefs(props)
     const { selectedGroup } = useGroupAndYears()
+
     const sign = () => {
       isSigning.value = true
       if (props.visum.engagement) {
         RepositoryFactory.get(EngagementRepository).signVisum(props.visum.engagement).then(() => { 
+          isSigning.value = false
+          hideWarning()
+          getEngagementState()
+        })
+      }
+    }
+
+    const handler = () => {
+      if (props.visum.state === VisumStates.SIGNABLE) { sign() }
+      if (props.visum.state === VisumStates.FEEDBACK_HANDLED) { handleFeedback()}
+    }
+
+    const handleFeedback = () => {
+      isSigning.value = true
+      if (props.visum.id) {
+        RepositoryFactory.get(CampRepository).patchVisumHandleFeedbackGlobal(props.visum.id).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -132,7 +156,8 @@ export default defineComponent({
       visum,
       sign,
       t,
-      user
+      user,
+      handler
     }
   },
 })

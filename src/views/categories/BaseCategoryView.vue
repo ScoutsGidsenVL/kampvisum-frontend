@@ -130,7 +130,7 @@ export default defineComponent({
 
     fetchVisum()
 
-    fetchCategory()
+    // fetchCategory()
 
     return {
       getSectionsTitle,

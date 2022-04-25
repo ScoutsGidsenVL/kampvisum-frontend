@@ -199,6 +199,11 @@
     "feedback-declined": "afgekeurd",
     "feedback-notification": "feedback bewerkt!",
     "notes-notification": "commentaar bewerkt!",
-    "internal": "Commentaar intern. (Enkel zichtbaar voor DC's)"
+    "internal": "Commentaar intern. (Enkel zichtbaar voor DC's)",
+    "feedback-dc": "Feedback DC",
+    "ok": "Ok",
+    "feedback-ackknowledged": "Feedback Ackknowledged",
+    "approve-camp": "Kamp goedkeuren",
+    "feedback-handled": "Feedback verwerkt"
   }
 }

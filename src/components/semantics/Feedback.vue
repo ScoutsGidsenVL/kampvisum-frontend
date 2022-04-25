@@ -28,7 +28,9 @@
 
 <script lang="ts">
 import { InputTypes, CustomInput } from 'vue-3-component-library'
+import RepositoryFactory from '@/repositories/repositoryFactory'
 import { useNotification } from '@/composable/useNotification'
+import { CampRepository } from '@/repositories/campRepository'
 import { defineComponent, PropType, watch, ref } from 'vue'
 import { SubCategory } from '@/serializer/SubCategory'
 import IEmptyCheck from '../icons/IEmptyCheck.vue'
@@ -36,8 +38,14 @@ import IChecked from '../icons/IChecked.vue'
 import { Visum } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
-import { CampRepository } from '@/repositories/campRepository'
-import RepositoryFactory from '@/repositories/repositoryFactory'
+
+export enum StatusFeedbackState {
+      UNDECIDED = 'U',
+      APPROVED = 'A',
+      APPROVED_FEEDBACK ='N',
+      DISAPPROVED = 'D',
+      FEEDBACK_RESOLVED = 'F'
+    }
 
 export default defineComponent({
   name: 'Feedback',
@@ -56,7 +64,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup (props) {
+  setup (props, {emit}) {
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -69,14 +77,6 @@ export default defineComponent({
       initialValues: { feedback: props.subCategory.feedback ? props.subCategory.feedback : '' },
     })
 
-    enum StatusFeedbackState {
-      UNDECIDED = 'U',
-      APPROVED = 'A',
-      APPROVED_FEEDBACK ='N',
-      DISAPPROVED = 'D',
-      FEEDBACK_RESOLVED = 'F'
-    }
-
     const selection = ref<string>(props.subCategory.approval ? props.subCategory.approval : StatusFeedbackState.UNDECIDED)
 
     const select = (v: StatusFeedbackState) => {
@@ -86,9 +86,9 @@ export default defineComponent({
         .patchCategoryApproval(props.subCategory.id, selection.value)
         .then(() => {
           triggerNotification(t('engagement.feedback-notification'))
+          rl()
         })
       }
-      triggerNotification(t('engagement.feedback-notification'))
     }
 
     watch(
@@ -101,11 +101,16 @@ export default defineComponent({
           .patchCategoryFeedback(props.subCategory.id, values.feedback)
           .then(() => {
             triggerNotification(t('engagement.feedback-notification'))
+            rl()
           })
           }
         }, 1000)
       }
     )
+
+    const rl = () => {
+      emit('rl', true)
+    }
 
     return {
       StatusFeedbackState,
