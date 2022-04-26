@@ -145,12 +145,16 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  private processError(error: any): void {
+  private processError(error: any): any {
     if (error.response?.data?.file) { 
       triggerNotification(error.response.data.file[0])
     }
     if (error.response.status === 403) {
       isForbidden.value = true
+    }
+    if (error.response.data[0] === 'DC can only sign after leaders and group leaders have signed') {
+      triggerNotification('DC can only sign after leaders and group leaders have signed')
+      return true
     }
   }
 }

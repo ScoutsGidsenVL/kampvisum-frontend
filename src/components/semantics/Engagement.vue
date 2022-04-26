@@ -49,12 +49,12 @@
       </div>
     </div>
     <warning
-      :title="t('engagement.warning-title') + `${user.firstName} ${user.lastName}`"
+      :title="`${user.firstName} ${user.lastName}`"
       :isLoading="isSigning"
       :isDisplayed="isWarningDisplayed"
-      :text="t('engagement.warning-text')"
-      :leftButton="t('engagement.warning-left-button')"
-      :rightButton="t('engagement.warning-right-button')"
+      :text="warningText()"
+      :leftButton="warningButtonLeft()"
+      :rightButton="warningButtonRight()"
       @leftButtonClicked="handler()"
       @rightButtonClicked="hideWarning()"
     />
@@ -106,7 +106,18 @@ export default defineComponent({
     const sign = () => {
       isSigning.value = true
       if (props.visum.engagement) {
-        RepositoryFactory.get(EngagementRepository).signVisum(props.visum.engagement).then(() => { 
+        RepositoryFactory.get(EngagementRepository).signVisum(props.visum.engagement).then((x: any) => { 
+          isSigning.value = false
+          hideWarning()
+          getEngagementState()
+        })
+      }
+    }
+
+    const signAsDc = () => {
+      isSigning.value = true
+      if (props.visum.engagement) {
+        RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(props.visum.id).then((x: any) => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -115,8 +126,9 @@ export default defineComponent({
     }
 
     const handler = () => {
-      if (props.visum.state === VisumStates.SIGNABLE) { sign() }
-      if (props.visum.state === VisumStates.FEEDBACK_HANDLED) { handleFeedback()}
+      if (props.visum.state === VisumStates.SIGNABLE && props.visum.engagement.groupLeaders && selectedGroup.value.isDistrictCommissioner) { signAsDc() } 
+      else if (props.visum.state === VisumStates.SIGNABLE) { sign() } 
+      else if (props.visum.state === VisumStates.FEEDBACK_HANDLED) { handleFeedback()}
     }
 
     const handleFeedback = () => {
@@ -146,6 +158,39 @@ export default defineComponent({
       isWarningDisplayed.value = true
     }
 
+    const warningText = (): string => {
+       if (selectedGroup.value.isDistrictCommissioner) {
+        return t('engagement.warning-text-dc')
+      } else if (selectedGroup.value.isGroupLeader) {
+        return t('engagement.warning-text-group-leader')
+      } else if (selectedGroup.value.isSectionLeader) {
+        return t('engagement.warning-text-leader')
+      }
+      return ''
+    }
+
+    const warningButtonLeft = (): string => {
+      if (selectedGroup.value.isDistrictCommissioner) {
+        return t('engagement.warning-left-button-dc')
+      } else if (selectedGroup.value.isGroupLeader) {
+        return t('engagement.warning-left-button-group-leader')
+      } else if (selectedGroup.value.isSectionLeader) {
+        return t('engagement.warning-left-button-leader')
+      }
+      return ''
+    }
+
+    const warningButtonRight = (): string => {
+      if (selectedGroup.value.isDistrictCommissioner) {
+        return t('engagement.warning-right-button-dc')
+      } else if (selectedGroup.value.isGroupLeader) {
+        return t('engagement.warning-right-button-group-leader')
+      } else if (selectedGroup.value.isSectionLeader) {
+        return t('engagement.warning-right-button-leader')
+      }
+      return ''
+    }
+
     return {
       isSigning,
       isWarningDisplayed,
@@ -157,7 +202,10 @@ export default defineComponent({
       sign,
       t,
       user,
-      handler
+      handler,
+      warningText,
+      warningButtonRight,
+      warningButtonLeft
     }
   },
 })
