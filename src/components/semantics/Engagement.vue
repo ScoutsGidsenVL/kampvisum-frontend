@@ -1,7 +1,14 @@
 <template>
-  <div v-if="visum.state !== VisumStates.DATA_REQUIRED">
+  <div>
     <!-- SIGNABLE -->
-    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.SIGNABLE">
+    <div class="xs:w-100 md:w-80 mt-3" v-if="
+    (visum.state === VisumStates.SIGNABLE || visum.state === VisumStates.DATA_REQUIRED) &&
+    (
+      !visum.engagement.leaders && selectedGroup.isSectionLeader ||
+      !visum.engagement.groupLeaders && selectedGroup.isGroupLeader ||
+      visum.engagement.groupLeaders && selectedGroup.isDistrictCommissioner
+    )
+    ">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.approve-camp')">
       </custom-button-small>
     </div>
@@ -133,14 +140,14 @@ export default defineComponent({
 
     const handler = () => {
       if (props.visum.engagement.groupLeaders && selectedGroup.value.isDistrictCommissioner) { 
-        if (props.visum.state === VisumStates.SIGNABLE) {
+        if (props.visum.state === VisumStates.SIGNABLE || props.visum.state === VisumStates.DATA_REQUIRED) {
           signAsDc()
         }
         if (props.visum.state === VisumStates.NOT_SIGNABLE) {
           //DO DISAPPROVE CALL
         }
       } 
-      else if (props.visum.state === VisumStates.SIGNABLE) { sign() } 
+      else if (props.visum.state === VisumStates.SIGNABLE || props.visum.state === VisumStates.DATA_REQUIRED) { sign() } 
       else if (props.visum.state === VisumStates.FEEDBACK_HANDLED) { handleFeedback()}
     }
 
@@ -172,34 +179,47 @@ export default defineComponent({
     }
 
     const warningText = (): string => {
-       if (selectedGroup.value.isDistrictCommissioner) {
-        return t('engagement.warning-text-dc')
-      } else if (selectedGroup.value.isGroupLeader) {
-        return t('engagement.warning-text-group-leader')
-      } else if (selectedGroup.value.isSectionLeader) {
+      if (!props.visum.engagement.leaders) {
         return t('engagement.warning-text-leader')
       }
+      if (props.visum.engagement.leaders && !props.visum.engagement.groupLeaders) {
+        return t('engagement.warning-text-group-leader')
+      }
+      if (props.visum.engagement.leaders && props.visum.engagement.groupLeaders) {
+        return t('engagement.warning-text-dc')
+      }
+      //  if (selectedGroup.value.isDistrictCommissioner && props.visum.groupLeaders) {
+      //   return t('engagement.warning-text-dc')
+      // } else if (selectedGroup.value.isGroupLeader) {
+      //   return t('engagement.warning-text-group-leader')
+      // } else if (selectedGroup.value.isSectionLeader) {
+      //   return t('engagement.warning-text-leader')
+      // }
       return ''
     }
 
     const warningButtonLeft = (): string => {
-      if (selectedGroup.value.isDistrictCommissioner) {
-        return t('engagement.warning-left-button-dc')
-      } else if (selectedGroup.value.isGroupLeader) {
-        return t('engagement.warning-left-button-group-leader')
-      } else if (selectedGroup.value.isSectionLeader) {
+      if (!props.visum.engagement.leaders) {
         return t('engagement.warning-left-button-leader')
+      }
+      if (props.visum.engagement.leaders && !props.visum.engagement.groupLeaders) {
+        return t('engagement.warning-left-button-group-leader')
+      }
+      if (props.visum.engagement.leaders && props.visum.engagement.groupLeaders) {
+        return t('engagement.warning-left-button-dc')
       }
       return ''
     }
 
     const warningButtonRight = (): string => {
-      if (selectedGroup.value.isDistrictCommissioner) {
-        return t('engagement.warning-right-button-dc')
-      } else if (selectedGroup.value.isGroupLeader) {
-        return t('engagement.warning-right-button-group-leader')
-      } else if (selectedGroup.value.isSectionLeader) {
+      if (!props.visum.engagement.leaders) {
         return t('engagement.warning-right-button-leader')
+      }
+      if (props.visum.engagement.leaders && !props.visum.engagement.groupLeaders) {
+        return t('engagement.warning-right-button-group-leader')
+      }
+      if (props.visum.engagement.leaders && props.visum.engagement.groupLeaders) {
+        return t('engagement.warning-right-button-dc')
       }
       return ''
     }
