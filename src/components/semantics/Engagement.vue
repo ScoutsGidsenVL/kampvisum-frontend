@@ -12,6 +12,12 @@
       </custom-button-small>
     </div>
 
+    <!-- DISAPPROVE -->
+    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE">
+      <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.disapprove-camp')">
+      </custom-button-small>
+    </div>
+
     <div class="flex flex-column">
       <!-- engagement -->
       <div class="md:w-1/3 xs:w-96 bg-lighterGreen mt-3 p-3 shadow-md">
@@ -126,7 +132,14 @@ export default defineComponent({
     }
 
     const handler = () => {
-      if (props.visum.state === VisumStates.SIGNABLE && props.visum.engagement.groupLeaders && selectedGroup.value.isDistrictCommissioner) { signAsDc() } 
+      if (props.visum.engagement.groupLeaders && selectedGroup.value.isDistrictCommissioner) { 
+        if (props.visum.state === VisumStates.SIGNABLE) {
+          signAsDc()
+        }
+        if (props.visum.state === VisumStates.NOT_SIGNABLE) {
+          //DO DISAPPROVE CALL
+        }
+      } 
       else if (props.visum.state === VisumStates.SIGNABLE) { sign() } 
       else if (props.visum.state === VisumStates.FEEDBACK_HANDLED) { handleFeedback()}
     }

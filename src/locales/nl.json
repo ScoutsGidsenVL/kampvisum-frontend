@@ -209,6 +209,7 @@
     "ok": "Ok",
     "feedback-ackknowledged": "Feedback Ackknowledged",
     "approve-camp": "Kamp goedkeuren",
-    "feedback-handled": "Feedback verwerkt"
+    "feedback-handled": "Feedback verwerkt",
+    "disapprove-camp": "Kamp afkeuren"
   }
 }
