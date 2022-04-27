@@ -13,15 +13,21 @@
         selectedGroup.isDistrictCommissioner 
         && visum.engagement.leaders 
         && visum.engagement.groupLeaders" class="bg-lighterGreen p-2 -m-2">
-          <i-checked v-if="subCategory.approval === StatusFeedbackState.APPROVED || subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED" />
+          <i-checked v-if="subCategory.approval === StatusFeedbackState.APPROVED" />
           <i-empty-check v-if="subCategory.approval === StatusFeedbackState.UNDECIDED" /> 
-          <i-checked-cross v-if="subCategory.approval === StatusFeedbackState.DISAPPROVED" /> 
+          <i-checked-cross v-if="subCategory.approval === StatusFeedbackState.DISAPPROVED || subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED" /> 
           <i-check-warning v-if="subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK" />  
         </div>
 
         <!-- OTHER CHECKS-->
-        <i-checked v-if="subCategory.state === 'CHECKED'" />
-        <i-empty-check v-if="subCategory.state === 'UNCHECKED'" />
+        <i-checked-cross v-if="subCategory.approval === StatusFeedbackState.DISAPPROVED" />
+        <i-check-warning v-if="subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK" />  
+          <i-checked v-if="subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED" />
+        <div v-if="!(subCategory.approval === StatusFeedbackState.DISAPPROVED) && !(subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK) && !(subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED)">
+          <i-checked v-if="subCategory.state === 'CHECKED'" />
+          <i-empty-check v-if="subCategory.state === 'UNCHECKED'" />
+        </div>
+        
         <h4 class="group-hover:underline mb-0 ml-0 text-md font-museo font-medium">{{ subCategory.subCategoryParent.label }}</h4>
       </div>
 

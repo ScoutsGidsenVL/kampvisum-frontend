@@ -2,7 +2,7 @@
   <div>
     <!-- SIGNABLE -->
     <div class="xs:w-100 md:w-80 mt-3" v-if="
-    (visum.state === VisumStates.SIGNABLE || visum.state === VisumStates.DATA_REQUIRED) &&
+    (visum.state === VisumStates.SIGNABLE || visum.state === VisumStates.DATA_REQUIRED || visum.state === VisumStates.FEEDBACK_HANDLED) &&
     (
       !visum.engagement.leaders && selectedGroup.isSectionLeader ||
       !visum.engagement.groupLeaders && selectedGroup.isGroupLeader ||
@@ -14,16 +14,16 @@
     </div>
 
     <!-- APPROVE FEEDBACK -->
-    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.FEEDBACK_HANDLED">
+    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE ">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.feedback-handled')">
       </custom-button-small>
     </div>
 
     <!-- DISAPPROVE -->
-    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE && selectedGroup.isDistrictCommissioner">
+    <!-- <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE && selectedGroup.isDistrictCommissioner">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.disapprove-camp')">
       </custom-button-small>
-    </div>
+    </div> -->
 
     <div class="flex flex-column">
       <!-- engagement -->

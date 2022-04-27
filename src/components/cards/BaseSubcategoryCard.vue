@@ -13,7 +13,7 @@
         (subCategory.approval === StatusFeedbackState.APPROVED) ? {state: ColorState.SUCCES} : 
         subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK ? {state: ColorState.WARNING} : 
         subCategory.approval === StatusFeedbackState.DISAPPROVED ? {state: ColorState.DANGER} : {state: ColorState.SUCCES}"
-        :hasCheck="true"
+        :hasCheck="(subCategory.approval === StatusFeedbackState.DISAPPROVED)"
         :subCategory="subCategory" 
         @rl="rl($event)"
         />
