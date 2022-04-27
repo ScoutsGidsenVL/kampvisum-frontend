@@ -141,6 +141,7 @@ export default defineComponent({
     const handler = () => {
       if (props.visum.engagement.groupLeaders && selectedGroup.value.isDistrictCommissioner) { 
         if (props.visum.state === VisumStates.SIGNABLE || props.visum.state === VisumStates.DATA_REQUIRED) {
+          sign()
           signAsDc()
         }
         if (props.visum.state === VisumStates.NOT_SIGNABLE) {
