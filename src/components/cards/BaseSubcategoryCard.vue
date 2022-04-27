@@ -5,20 +5,22 @@
         <message
         v-if="(subCategory.approval === StatusFeedbackState.APPROVED && subCategory.feedback)
         || subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK 
-        || subCategory.approval === StatusFeedbackState.DISAPPROVED"
+        || subCategory.approval === StatusFeedbackState.DISAPPROVED
+        || subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED"
         class="my-3" 
         :title="t('engagement.feedback-dc')" 
         :text="subCategory.feedback" 
         :color="
+        (subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED) ? {state: ColorState.SUCCES} : 
         (subCategory.approval === StatusFeedbackState.APPROVED) ? {state: ColorState.SUCCES} : 
         subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK ? {state: ColorState.WARNING} : 
         subCategory.approval === StatusFeedbackState.DISAPPROVED ? {state: ColorState.DANGER} : {state: ColorState.SUCCES}"
-        :hasCheck="true"
+        :hasCheck="(subCategory.approval === StatusFeedbackState.DISAPPROVED || subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK)"
         :subCategory="subCategory" 
         @rl="rl($event)"
         />
       <check-switch @rl="rl($event)" v-for="check in checks" :key="check" :visum="visum" :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
-      <feedback @rl="rl($event)" v-if="selectedGroup.isDistrictCommissioner && visum.state !== VisumStates.DATA_REQUIRED && visum.engagement.leaders && visum.engagement.groupLeaders" :subCategory="subCategory" :visum="visum" />
+      <feedback @rl="rl($event)" v-if="selectedGroup.isDistrictCommissioner && visum.engagement.leaders && visum.engagement.groupLeaders" :subCategory="subCategory" :visum="visum" />
     </div>
   </div>
 </template>

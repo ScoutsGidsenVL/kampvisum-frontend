@@ -2,7 +2,7 @@
   <div>
     <!-- SIGNABLE -->
     <div class="xs:w-100 md:w-80 mt-3" v-if="
-    (visum.state === VisumStates.SIGNABLE || visum.state === VisumStates.DATA_REQUIRED) &&
+    (visum.state === VisumStates.SIGNABLE || visum.state === VisumStates.DATA_REQUIRED || visum.state === VisumStates.FEEDBACK_HANDLED) &&
     (
       !visum.engagement.leaders && selectedGroup.isSectionLeader ||
       !visum.engagement.groupLeaders && selectedGroup.isGroupLeader ||
@@ -14,16 +14,16 @@
     </div>
 
     <!-- APPROVE FEEDBACK -->
-    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.FEEDBACK_HANDLED">
+    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.feedback-handled')">
       </custom-button-small>
     </div>
 
     <!-- DISAPPROVE -->
-    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE">
+    <!-- <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE && selectedGroup.isDistrictCommissioner">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.disapprove-camp')">
       </custom-button-small>
-    </div>
+    </div> -->
 
     <div class="flex flex-column">
       <!-- engagement -->
@@ -86,9 +86,9 @@ import { defineComponent, PropType, toRefs, ref } from 'vue'
 import { Visum, VisumStates } from '@/serializer/Visum'
 import IChecked from '@/components/icons/IChecked.vue'
 import { Engagement } from '@/serializer/Engagement'
-import { useI18n } from 'vue-i18n'
 import store from '../../store/store'
 import DcNotes from './DcNotes.vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'Engagement',
@@ -105,7 +105,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props: any) {
+  setup(props: any, {emit}) {
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -119,7 +119,7 @@ export default defineComponent({
     const sign = () => {
       isSigning.value = true
       if (props.visum.engagement) {
-        RepositoryFactory.get(EngagementRepository).signVisum(props.visum.engagement).then((x: any) => { 
+        RepositoryFactory.get(EngagementRepository).signVisum(props.visum.engagement).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -127,10 +127,10 @@ export default defineComponent({
       }
     }
 
-    const signAsDc = () => {
+    const visumApprovalGlobal = () => {
       isSigning.value = true
       if (props.visum.engagement) {
-        RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(props.visum.id).then((x: any) => { 
+        RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(props.visum.id).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -139,25 +139,25 @@ export default defineComponent({
     }
 
     const handler = () => {
-      if (props.visum.engagement.groupLeaders && selectedGroup.value.isDistrictCommissioner) { 
-        if (props.visum.state === VisumStates.SIGNABLE || props.visum.state === VisumStates.DATA_REQUIRED) {
-          signAsDc()
+      if (props.visum.state !== VisumStates.NOT_SIGNABLE) {
+        sign()
+
+        if (props.visum.engagement.groupLeaders && selectedGroup.value.isDistrictCommissioner) {
+          visumApprovalGlobal()
         }
-        if (props.visum.state === VisumStates.NOT_SIGNABLE) {
-          //DO DISAPPROVE CALL
-        }
+      } else {
+          VisumHandleFeedbackGlobal()
       } 
-      else if (props.visum.state === VisumStates.SIGNABLE || props.visum.state === VisumStates.DATA_REQUIRED) { sign() } 
-      else if (props.visum.state === VisumStates.FEEDBACK_HANDLED) { handleFeedback()}
     }
 
-    const handleFeedback = () => {
+    const VisumHandleFeedbackGlobal = () => {
       isSigning.value = true
       if (props.visum.id) {
         RepositoryFactory.get(CampRepository).patchVisumHandleFeedbackGlobal(props.visum.id).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
+          rl()
         })
       }
     }
@@ -179,6 +179,9 @@ export default defineComponent({
     }
 
     const warningText = (): string => {
+      if (props.visum.state === VisumStates.NOT_SIGNABLE) {
+        return t('engagement.warning-text-feedback-handled')
+      }
       if (!props.visum.engagement.leaders) {
         return t('engagement.warning-text-leader')
       }
@@ -188,17 +191,13 @@ export default defineComponent({
       if (props.visum.engagement.leaders && props.visum.engagement.groupLeaders) {
         return t('engagement.warning-text-dc')
       }
-      //  if (selectedGroup.value.isDistrictCommissioner && props.visum.groupLeaders) {
-      //   return t('engagement.warning-text-dc')
-      // } else if (selectedGroup.value.isGroupLeader) {
-      //   return t('engagement.warning-text-group-leader')
-      // } else if (selectedGroup.value.isSectionLeader) {
-      //   return t('engagement.warning-text-leader')
-      // }
       return ''
     }
 
     const warningButtonLeft = (): string => {
+      if (props.visum.state === VisumStates.NOT_SIGNABLE) {
+        return t('engagement.warning-left-button-feedback-handled')
+      }
       if (!props.visum.engagement.leaders) {
         return t('engagement.warning-left-button-leader')
       }
@@ -212,6 +211,9 @@ export default defineComponent({
     }
 
     const warningButtonRight = (): string => {
+      if (props.visum.state === VisumStates.NOT_SIGNABLE) {
+        return t('engagement.warning-right-button-feedback-handled')
+      }
       if (!props.visum.engagement.leaders) {
         return t('engagement.warning-right-button-leader')
       }
@@ -224,21 +226,26 @@ export default defineComponent({
       return ''
     }
 
+    const rl = () => {
+      emit('rl', true)
+    }
+
     return {
-      isSigning,
       isWarningDisplayed,
+      warningButtonRight,
+      warningButtonLeft,
       displayWarning,
-      hideWarning,
       selectedGroup,
+      hideWarning,
       VisumStates,
+      warningText,
+      isSigning,
+      handler,
       visum,
       sign,
-      t,
       user,
-      handler,
-      warningText,
-      warningButtonRight,
-      warningButtonLeft
+      rl,
+      t,
     }
   },
 })

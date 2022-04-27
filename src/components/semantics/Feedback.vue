@@ -1,12 +1,13 @@
 <template>
-  <div class="p-3">
+  <div class="p-3 bg-lighterGreen border-l-4 border-lightGreen">
     <strong>{{t('engagement.feedback')}}</strong>
+    
     <div>
       <custom-input @changedTextArea="changedTextArea($event)" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="'feedback'" />
     </div>
     <div class="flex gap-4 mt-2">
       <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.APPROVED)" >
-        <i-checked v-if="selection === StatusFeedbackState.APPROVED" />
+        <i-checked v-if="selection === StatusFeedbackState.APPROVED || selection === StatusFeedbackState.FEEDBACK_RESOLVED" />
         <i-empty-check v-else />
         {{t('engagement.feedback-ok')}}
       </div>

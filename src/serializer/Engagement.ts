@@ -33,7 +33,7 @@ export const EngagementDeserializer = (input: any): Engagement => {
     id: input.id ? input.id : undefined,
     leaders: input.leaders ? EngagementUserDeserializer(input.leaders) : undefined,
     groupLeaders: input.group_leaders ? EngagementUserDeserializer(input.group_leaders) : undefined,
-    districtCommisioner: input.district_commisioner ? EngagementUserDeserializer(input.district_commisioner) : undefined,
+    districtCommisioner: input.district_commissioner ? EngagementUserDeserializer(input.district_commissioner) : undefined,
     approved: input.approved ? input.approved : false,
     canSign: input.can_sign ? input.can_sign : false,
     leadersCanSign: input.leaders_can_sign ? input.leaders_can_sign : false,
