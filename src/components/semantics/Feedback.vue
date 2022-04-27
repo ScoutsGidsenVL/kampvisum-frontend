@@ -5,7 +5,7 @@
     <div>
       <custom-input @changedTextArea="changedTextArea($event)" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="'feedback'" />
     </div>
-    <div class="flex gap-4 mt-2">
+    <div class="flex gap-4 mt-2" v-if="visum.state !== VisumStates.APPROVED">
       <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.APPROVED)" >
         <i-checked v-if="selection === StatusFeedbackState.APPROVED || selection === StatusFeedbackState.FEEDBACK_RESOLVED" />
         <i-empty-check v-else />
@@ -36,7 +36,7 @@ import { defineComponent, PropType, watch, ref } from 'vue'
 import { SubCategory } from '@/serializer/SubCategory'
 import IEmptyCheck from '../icons/IEmptyCheck.vue'
 import IChecked from '../icons/IChecked.vue'
-import { Visum } from '@/serializer/Visum'
+import { Visum, VisumStates } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 
@@ -117,6 +117,7 @@ export default defineComponent({
       StatusFeedbackState,
       InputTypes,
       selection,
+      VisumStates,
       values,
       select,
       t
