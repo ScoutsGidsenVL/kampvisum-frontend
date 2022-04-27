@@ -20,7 +20,7 @@
     </div>
 
     <!-- DISAPPROVE -->
-    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE">
+    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE && selectedGroup.isDistrictCommissioner">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.disapprove-camp')">
       </custom-button-small>
     </div>
@@ -86,9 +86,9 @@ import { defineComponent, PropType, toRefs, ref } from 'vue'
 import { Visum, VisumStates } from '@/serializer/Visum'
 import IChecked from '@/components/icons/IChecked.vue'
 import { Engagement } from '@/serializer/Engagement'
-import { useI18n } from 'vue-i18n'
 import store from '../../store/store'
 import DcNotes from './DcNotes.vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'Engagement',
@@ -119,7 +119,7 @@ export default defineComponent({
     const sign = () => {
       isSigning.value = true
       if (props.visum.engagement) {
-        RepositoryFactory.get(EngagementRepository).signVisum(props.visum.engagement).then((x: any) => { 
+        RepositoryFactory.get(EngagementRepository).signVisum(props.visum.engagement).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -130,7 +130,18 @@ export default defineComponent({
     const signAsDc = () => {
       isSigning.value = true
       if (props.visum.engagement) {
-        RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(props.visum.id).then((x: any) => { 
+        RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(props.visum.id).then(() => { 
+          isSigning.value = false
+          hideWarning()
+          getEngagementState()
+        })
+      }
+    }
+
+    const disapproval = () => {
+      isSigning.value = true
+      if (props.visum.engagement) {
+        RepositoryFactory.get(CampRepository).patchVisumDisapproval(props.visum.id).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -149,7 +160,12 @@ export default defineComponent({
         }
       } 
       else if (props.visum.state === VisumStates.SIGNABLE || props.visum.state === VisumStates.DATA_REQUIRED) { sign() } 
-      else if (props.visum.state === VisumStates.FEEDBACK_HANDLED) { handleFeedback()}
+      if (props.visum.state === VisumStates.FEEDBACK_HANDLED) { 
+        handleFeedback()
+      }
+      if (props.visum.state === VisumStates.NOT_SIGNABLE && selectedGroup.value.isDistrictCommissioner) {
+        disapproval()
+      }
     }
 
     const handleFeedback = () => {
@@ -180,6 +196,12 @@ export default defineComponent({
     }
 
     const warningText = (): string => {
+      if (props.visum.state === VisumStates.NOT_SIGNABLE) {
+        return t('engagement.warning-text-dc-disapprove')
+      }
+      if (props.visum.state === VisumStates.FEEDBACK_HANDLED) {
+        return t('engagement.warning-text-feedback-handled')
+      }
       if (!props.visum.engagement.leaders) {
         return t('engagement.warning-text-leader')
       }
@@ -189,17 +211,16 @@ export default defineComponent({
       if (props.visum.engagement.leaders && props.visum.engagement.groupLeaders) {
         return t('engagement.warning-text-dc')
       }
-      //  if (selectedGroup.value.isDistrictCommissioner && props.visum.groupLeaders) {
-      //   return t('engagement.warning-text-dc')
-      // } else if (selectedGroup.value.isGroupLeader) {
-      //   return t('engagement.warning-text-group-leader')
-      // } else if (selectedGroup.value.isSectionLeader) {
-      //   return t('engagement.warning-text-leader')
-      // }
       return ''
     }
 
     const warningButtonLeft = (): string => {
+      if (props.visum.state === VisumStates.NOT_SIGNABLE) {
+        return t('engagement.warning-left-button-dc-disapprove')
+      }
+      if (props.visum.state === VisumStates.FEEDBACK_HANDLED) {
+        return t('engagement.warning-left-button-feedback-handled')
+      }
       if (!props.visum.engagement.leaders) {
         return t('engagement.warning-left-button-leader')
       }
@@ -213,6 +234,12 @@ export default defineComponent({
     }
 
     const warningButtonRight = (): string => {
+      if (props.visum.state === VisumStates.NOT_SIGNABLE) {
+        return t('engagement.warning-right-button-dc-disapprove')
+      }
+       if (props.visum.state === VisumStates.FEEDBACK_HANDLED) {
+        return t('engagement.warning-right-button-feedback-handled')
+      }
       if (!props.visum.engagement.leaders) {
         return t('engagement.warning-right-button-leader')
       }
@@ -226,20 +253,20 @@ export default defineComponent({
     }
 
     return {
-      isSigning,
       isWarningDisplayed,
+      warningButtonRight,
+      warningButtonLeft,
       displayWarning,
-      hideWarning,
       selectedGroup,
+      hideWarning,
       VisumStates,
+      warningText,
+      isSigning,
+      handler,
       visum,
       sign,
-      t,
       user,
-      handler,
-      warningText,
-      warningButtonRight,
-      warningButtonLeft
+      t,
     }
   },
 })

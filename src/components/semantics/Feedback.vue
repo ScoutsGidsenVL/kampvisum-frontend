@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3">
+  <div class="p-3 bg-lighterGreen border-l-4 border-lightGreen">
     <strong>{{t('engagement.feedback')}}</strong>
     <div>
       <custom-input @changedTextArea="changedTextArea($event)" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="'feedback'" />

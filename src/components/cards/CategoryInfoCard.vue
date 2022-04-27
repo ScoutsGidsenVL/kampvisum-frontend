@@ -2,12 +2,15 @@
   <div @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen" style="height: 300px">
     <div class="z-2">
       <h2 class="mb-3 mt-0 text-xl font-semibold font-museo">{{ category.categoryParent.label }}</h2>
-      <div v-if="visum.state === !VisumStates.DATA_REQUIRED && false" class="font-bold bg-lighterGreen p-2 -m-2" style="width:fit-content">DC</div>
+      <div v-if="
+        selectedGroup.isDistrictCommissioner 
+        && visum.engagement.leaders 
+        && visum.engagement.groupLeaders" class="font-bold bg-lighterGreen p-2 -m-2" style="width:fit-content">DC</div>
 
       <div style="width:fit-content" @click.stop="navigateTowardsSubCategory(category, subCategory)" v-for="subCategory in category.subCategories" :key="subCategory" class="d-flex gap-3 my-2.5 items-center group">
         <!-- DC CHECKS -->
-        <div v-if="visum.state !== (VisumStates.DATA_REQUIRED) 
-        && selectedGroup.isDistrictCommissioner 
+        <div v-if="
+        selectedGroup.isDistrictCommissioner 
         && visum.engagement.leaders 
         && visum.engagement.groupLeaders" class="bg-lighterGreen p-2 -m-2">
           <i-checked v-if="subCategory.approval === StatusFeedbackState.APPROVED || subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED" />

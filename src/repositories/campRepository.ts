@@ -63,4 +63,10 @@ export class CampRepository extends BaseRepository {
     })
   }
 
+  patchVisumDisapproval(visumId: string): Promise<any> {
+    return this.patch(`${this.endpoint}${visumId}/global_disapproval`, {}).then((response: any) => {
+      return response
+    })
+  }
+
 }
