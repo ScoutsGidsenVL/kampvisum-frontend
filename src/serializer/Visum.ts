@@ -8,6 +8,7 @@ export enum VisumStates {
   NOT_SIGNABLE = "NOT_SIGNABLE",
   DATA_REQUIRED = "DATA_REQUIRED",
   FEEDBACK_HANDLED = "FEEDBACK_HANDLED",
+  APPROVED = "APPROVED"
 }
 
 export interface Visum {

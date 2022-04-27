@@ -14,7 +14,7 @@
     </div>
 
     <!-- APPROVE FEEDBACK -->
-    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE ">
+    <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.feedback-handled')">
       </custom-button-small>
     </div>
@@ -105,7 +105,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props: any) {
+  setup(props: any, {emit}) {
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -127,7 +127,7 @@ export default defineComponent({
       }
     }
 
-    const signAsDc = () => {
+    const visumApprovalGlobal = () => {
       isSigning.value = true
       if (props.visum.engagement) {
         RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(props.visum.id).then(() => { 
@@ -138,43 +138,26 @@ export default defineComponent({
       }
     }
 
-    const disapproval = () => {
-      isSigning.value = true
-      if (props.visum.engagement) {
-        RepositoryFactory.get(CampRepository).patchVisumDisapproval(props.visum.id).then(() => { 
-          isSigning.value = false
-          hideWarning()
-          getEngagementState()
-        })
-      }
-    }
-
     const handler = () => {
-      if (props.visum.engagement.groupLeaders && selectedGroup.value.isDistrictCommissioner) { 
-        if (props.visum.state === VisumStates.SIGNABLE || props.visum.state === VisumStates.DATA_REQUIRED) {
-          sign()
-          signAsDc()
+      if (props.visum.state !== VisumStates.NOT_SIGNABLE) {
+        sign()
+
+        if (props.visum.engagement.groupLeaders && selectedGroup.value.isDistrictCommissioner) {
+          visumApprovalGlobal()
         }
-        if (props.visum.state === VisumStates.NOT_SIGNABLE) {
-          //DO DISAPPROVE CALL
-        }
+      } else {
+          VisumHandleFeedbackGlobal()
       } 
-      else if (props.visum.state === VisumStates.SIGNABLE || props.visum.state === VisumStates.DATA_REQUIRED) { sign() } 
-      if (props.visum.state === VisumStates.FEEDBACK_HANDLED) { 
-        handleFeedback()
-      }
-      if (props.visum.state === VisumStates.NOT_SIGNABLE && selectedGroup.value.isDistrictCommissioner) {
-        disapproval()
-      }
     }
 
-    const handleFeedback = () => {
+    const VisumHandleFeedbackGlobal = () => {
       isSigning.value = true
       if (props.visum.id) {
         RepositoryFactory.get(CampRepository).patchVisumHandleFeedbackGlobal(props.visum.id).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
+          rl()
         })
       }
     }
@@ -197,9 +180,6 @@ export default defineComponent({
 
     const warningText = (): string => {
       if (props.visum.state === VisumStates.NOT_SIGNABLE) {
-        return t('engagement.warning-text-dc-disapprove')
-      }
-      if (props.visum.state === VisumStates.FEEDBACK_HANDLED) {
         return t('engagement.warning-text-feedback-handled')
       }
       if (!props.visum.engagement.leaders) {
@@ -216,9 +196,6 @@ export default defineComponent({
 
     const warningButtonLeft = (): string => {
       if (props.visum.state === VisumStates.NOT_SIGNABLE) {
-        return t('engagement.warning-left-button-dc-disapprove')
-      }
-      if (props.visum.state === VisumStates.FEEDBACK_HANDLED) {
         return t('engagement.warning-left-button-feedback-handled')
       }
       if (!props.visum.engagement.leaders) {
@@ -235,9 +212,6 @@ export default defineComponent({
 
     const warningButtonRight = (): string => {
       if (props.visum.state === VisumStates.NOT_SIGNABLE) {
-        return t('engagement.warning-right-button-dc-disapprove')
-      }
-       if (props.visum.state === VisumStates.FEEDBACK_HANDLED) {
         return t('engagement.warning-right-button-feedback-handled')
       }
       if (!props.visum.engagement.leaders) {
@@ -250,6 +224,10 @@ export default defineComponent({
         return t('engagement.warning-right-button-dc')
       }
       return ''
+    }
+
+    const rl = () => {
+      emit('rl', true)
     }
 
     return {
@@ -266,6 +244,7 @@ export default defineComponent({
       visum,
       sign,
       user,
+      rl,
       t,
     }
   },

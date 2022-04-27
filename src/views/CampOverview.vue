@@ -14,7 +14,7 @@
       </div>
       <deadlines-sidebar :visum="visum" :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
     </div>
-    <engagement :visum="visum" />
+    <engagement  @rl="rl($event)" :visum="visum" />
   </div>
 
   <forbidden />
@@ -78,6 +78,13 @@ export default defineComponent({
       sidebar.value.state = SidebarState.OPEN
     }
 
+    const rl = () => {
+      getCampByRouteParam().then((v: Visum) => {
+        visum.value = v
+        isFetchingVisum.value = false
+      })
+    }
+
     return {
       getSectionsTitle,
       isFetchingVisum,
@@ -86,7 +93,8 @@ export default defineComponent({
       sidebar,
       visum,
       selectedGroup,
-      isForbidden
+      isForbidden,
+      rl
     }
   },
 })
