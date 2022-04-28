@@ -7,19 +7,19 @@
     </div>
     <div class="flex gap-4 mt-2">
       <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.APPROVED)" >
-        <i-checked v-if="selection === StatusFeedbackState.APPROVED || selection === StatusFeedbackState.FEEDBACK_RESOLVED" />
+        <i-checked v-if="(selection === StatusFeedbackState.APPROVED)" />
         <i-empty-check v-else />
         {{t('engagement.feedback-ok')}}
       </div>
 
       <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.APPROVED_FEEDBACK)">
-        <i-checked v-if="selection === StatusFeedbackState.APPROVED_FEEDBACK" />
+        <i-check-warning v-if="(selection === StatusFeedbackState.APPROVED_FEEDBACK) || (selection === StatusFeedbackState.FEEDBACK_READ)" />
         <i-empty-check v-else />
         {{t('engagement.feedback-not-ok')}}
       </div>
 
       <div class="flex gap-2 cursor-pointer" @click="select(StatusFeedbackState.DISAPPROVED)">
-        <i-checked v-if="selection === StatusFeedbackState.DISAPPROVED" />
+        <i-check-cross v-if="(selection === StatusFeedbackState.DISAPPROVED) || (selection === StatusFeedbackState.FEEDBACK_RESOLVED)" />
         <i-empty-check v-else />
         {{t('engagement.feedback-declined')}}
       </div>
@@ -33,19 +33,22 @@ import RepositoryFactory from '@/repositories/repositoryFactory'
 import { useNotification } from '@/composable/useNotification'
 import { CampRepository } from '@/repositories/campRepository'
 import { defineComponent, PropType, watch, ref } from 'vue'
+import { Visum, VisumStates } from '@/serializer/Visum'
 import { SubCategory } from '@/serializer/SubCategory'
+import ICheckWarning from '../icons/ICheckWarning.vue'
+import ICheckCross from '../icons/ICheckedCross.vue'
 import IEmptyCheck from '../icons/IEmptyCheck.vue'
 import IChecked from '../icons/IChecked.vue'
-import { Visum, VisumStates } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 
 export enum StatusFeedbackState {
+      FEEDBACK_RESOLVED = 'F',
+      APPROVED_FEEDBACK ='N',
+      FEEDBACK_READ = 'R',
+      DISAPPROVED = 'D',
       UNDECIDED = 'U',
       APPROVED = 'A',
-      APPROVED_FEEDBACK ='N',
-      DISAPPROVED = 'D',
-      FEEDBACK_RESOLVED = 'F'
     }
 
 export default defineComponent({
@@ -53,7 +56,9 @@ export default defineComponent({
   components: {
     CustomInput,
     IEmptyCheck,
-    IChecked
+    IChecked,
+    ICheckWarning,
+    ICheckCross
   },
   props: {
     subCategory: {

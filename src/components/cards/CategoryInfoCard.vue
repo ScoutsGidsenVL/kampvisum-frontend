@@ -16,14 +16,21 @@
           <i-checked v-if="subCategory.approval === StatusFeedbackState.APPROVED" />
           <i-empty-check v-if="subCategory.approval === StatusFeedbackState.UNDECIDED" /> 
           <i-checked-cross v-if="subCategory.approval === StatusFeedbackState.DISAPPROVED || subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED" /> 
-          <i-check-warning v-if="subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK" />  
+          <i-check-warning v-if="subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK" /> 
+          <i-check-warning v-if="subCategory.approval === StatusFeedbackState.FEEDBACK_READ" />
         </div>
 
         <!-- OTHER CHECKS-->
+        <i-checked v-if="(subCategory.approval === StatusFeedbackState.APPROVED) || (subCategory.approval === StatusFeedbackState.FEEDBACK_READ)" />
         <i-checked-cross v-if="subCategory.approval === StatusFeedbackState.DISAPPROVED" />
         <i-check-warning v-if="subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK" />  
           <i-checked v-if="subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED" />
-        <div v-if="!(subCategory.approval === StatusFeedbackState.DISAPPROVED) && !(subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK) && !(subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED)">
+        <div v-if="
+        !(subCategory.approval === StatusFeedbackState.DISAPPROVED) 
+        && !(subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK) 
+        && !(subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED) 
+        && !(subCategory.approval === StatusFeedbackState.APPROVED)
+        && !(subCategory.approval === StatusFeedbackState.FEEDBACK_READ)">
           <i-checked v-if="subCategory.state === 'CHECKED'" />
           <i-empty-check v-if="subCategory.state === 'UNCHECKED'" />
         </div>

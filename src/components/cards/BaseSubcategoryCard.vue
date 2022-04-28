@@ -6,12 +6,14 @@
         v-if="(subCategory.approval === StatusFeedbackState.APPROVED && subCategory.feedback)
         || subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK 
         || subCategory.approval === StatusFeedbackState.DISAPPROVED
-        || subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED"
+        || subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED
+        || subCategory.approval === StatusFeedbackState.FEEDBACK_READ"
         class="my-3" 
         :title="t('engagement.feedback-dc')" 
         :text="subCategory.feedback" 
         :color="
         (subCategory.approval === StatusFeedbackState.FEEDBACK_RESOLVED) ? {state: ColorState.SUCCES} : 
+        (subCategory.approval === StatusFeedbackState.FEEDBACK_READ) ? {state: ColorState.SUCCES} : 
         (subCategory.approval === StatusFeedbackState.APPROVED) ? {state: ColorState.SUCCES} : 
         subCategory.approval === StatusFeedbackState.APPROVED_FEEDBACK ? {state: ColorState.WARNING} : 
         subCategory.approval === StatusFeedbackState.DISAPPROVED ? {state: ColorState.DANGER} : {state: ColorState.SUCCES}"
