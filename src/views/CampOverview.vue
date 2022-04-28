@@ -6,6 +6,16 @@
       {{ getSectionsTitle(visum.camp) }}
     </h4>
     <hr />
+      <message
+        v-if="(visum.state === VisumStates.NOT_SIGNABLE) || (visum.state === VisumStates.FEEDBACK_HANDLED)"
+        class="my-3" 
+        :title="visum.state === VisumStates.NOT_SIGNABLE ? t('engagement.title-not-signable') : t('engagement.title-feedback-handled')" 
+        :text="visum.state === VisumStates.NOT_SIGNABLE ? t('engagement.message-not-signable') : t('engagement.message-feedback-handled')" 
+        :color="
+        visum.state === VisumStates.FEEDBACK_HANDLED ? {state: ColorState.WARNING} : 
+        visum.state === VisumStates.NOT_SIGNABLE ? {state: ColorState.DANGER} : {state: ColorState.SUCCES}"
+        :hasCheck="false"
+        />
     <div class="w-100 flex">
       <div class="w-100 grid xl:grid-cols-2 gap-4" style="height: fit-content !important">
         <div v-for="category in visum.categorySet.categories" :key="category">
@@ -38,8 +48,10 @@ import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { useCampHelper } from '../helpers/campHelper'
 import { Loader } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
-import { Visum } from '@/serializer/Visum'
+import { Visum, VisumStates} from '@/serializer/Visum'
 import { useNotification } from '@/composable/useNotification'
+import Message, {ColorState} from '../components/semantics/message.vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'CampOverview',
@@ -48,7 +60,8 @@ export default defineComponent({
     'deadlines-sidebar': DeadlinesSideBar,
     Loader,
     Engagement,
-    Forbidden
+    Forbidden,
+    Message
   },
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
@@ -61,6 +74,10 @@ export default defineComponent({
     const { selectedGroup } = useGroupAndYears()
     const { isForbidden } = useNotification()
 
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
 
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
@@ -94,7 +111,10 @@ export default defineComponent({
       visum,
       selectedGroup,
       isForbidden,
-      rl
+      rl,
+      ColorState,
+      VisumStates,
+      t
     }
   },
 })
