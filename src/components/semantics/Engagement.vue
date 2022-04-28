@@ -58,7 +58,7 @@
       </div>
 
       <div class="mt-3 md:w-1/3 xs:w-96">
-        <dc-notes :visum="visum" />
+        <dc-notes v-if="selectedGroup.isDistrictCommissioner" :visum="visum" />
       </div>
     </div>
     <warning
