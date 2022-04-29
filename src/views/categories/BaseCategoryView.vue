@@ -124,8 +124,12 @@ export default defineComponent({
     }
 
     const rl = () => {
-      fetchCategory()
-      fetchVisum()
+      // fetchCategory()
+      // fetchVisum()
+       getCampByRouteParam().then((v: Visum) => {
+        visum.value = v
+        category.value = visum.value.categorySet.categories.find((c: Category) => c.id === route.params.id)
+       })
     }
 
     fetchVisum()
