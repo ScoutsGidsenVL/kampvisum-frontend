@@ -216,10 +216,18 @@
     "feedback-ackknowledged": "Feedback gecheckt",
     "approve-camp": "Kamp goedkeuren",
     "feedback-handled": "Feedback verwerkt",
-    "disapprove-camp": "Kamp afkeuren",
-    "title-not-signable": "Kamp afgekeurd",
-    "message-not-signable": "Bekijk de feedback",
-    "title-feedback-handled": "Opmerkingen",
-    "message-feedback-handled": "Bekijk de feedback"
+    "disapprove-camp": "Kamp afkeuren"
+  },
+  "global-camp-state": {
+    "title-ACCEPTED": "Kamp goedgekeurd",
+    "msg-ACCEPTED": "",
+    "title-FEEDBACK": "Kamp met feeback",
+    "msg-FEEDBACK": "Bekijk de feedback",
+    "title-DISAPPROVED": "Kamp afgekeurd",
+    "msg-DISAPPROVED": "Bekijk de feedback",
+    "title-INPROGRESS": "Kamp in opbouw",
+    "msg-INPROGRESS": "",
+    "title-READYFORDC": "Kamp klaar voor DC",
+    "msg-READYFORDC": ""
   }
 }
