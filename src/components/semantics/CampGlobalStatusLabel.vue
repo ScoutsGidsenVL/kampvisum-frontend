@@ -46,7 +46,7 @@ export default defineComponent({
         'FEEDBACK':ColorState.WARNING,
         'DISAPPROVED':ColorState.DANGER,
         'INPROGRESS':ColorState.GRAY,
-        'READYFORDC': ColorState.SUCCES
+        'READYFORDC': ColorState.GRAY
     }
 
     const showTextLabel = (state: GlobalVisumState) => {
