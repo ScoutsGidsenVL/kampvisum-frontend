@@ -218,8 +218,8 @@
     "feedback-handled": "Feedback verwerkt",
     "disapprove-camp": "Kamp afkeuren",
     "title-not-signable": "Kamp afgekeurd",
-    "message-not-signable": "Bekijk de feedback",
+    "message-not-signable": "Klik op de categorie met het kruisje om de feedback van je DC te zien",
     "title-feedback-handled": "Opmerkingen",
-    "message-feedback-handled": "Bekijk de feedback"
+    "message-feedback-handled": "Klik op de categorie met het uitroepteken om de feedback van je DC te zien"
   }
 }
