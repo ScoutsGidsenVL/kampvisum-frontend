@@ -29,6 +29,7 @@
           {{ category.categoryParent.label }}
         </h4>
       </div>
+     <camp-global-status-label :visum="visum" />
     </div>
   </div>
 </template>
@@ -41,10 +42,11 @@ import { Visum } from '../../serializer/Visum'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 import useVisum from '@/composable/useVisum'
+import CampGlobalStatusLabel from '@/components/semantics/CampGlobalStatusLabel.vue'
 
 export default defineComponent({
   name: 'CampInfoCard',
-  components: {},
+  components: {CampGlobalStatusLabel},
   props: {
     visum: {
       type: Object as PropType<Visum>,

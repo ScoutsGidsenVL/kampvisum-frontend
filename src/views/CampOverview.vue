@@ -6,16 +6,7 @@
       {{ getSectionsTitle(visum.camp) }}
     </h4>
     <hr />
-      <message
-        v-if="(visum.state === VisumStates.NOT_SIGNABLE) || (visum.state === VisumStates.FEEDBACK_HANDLED)"
-        class="my-3" 
-        :title="visum.state === VisumStates.NOT_SIGNABLE ? t('engagement.title-not-signable') : t('engagement.title-feedback-handled')" 
-        :text="visum.state === VisumStates.NOT_SIGNABLE ? t('engagement.message-not-signable') : t('engagement.message-feedback-handled')" 
-        :color="
-        visum.state === VisumStates.FEEDBACK_HANDLED ? {state: ColorState.WARNING} : 
-        visum.state === VisumStates.NOT_SIGNABLE ? {state: ColorState.DANGER} : {state: ColorState.SUCCES}"
-        :hasCheck="false"
-        />
+    <camp-global-status-label :visum="visum" :showText="true" />
     <div class="w-100 flex">
       <div class="w-100 grid xl:grid-cols-2 gap-4" style="height: fit-content !important">
         <div v-for="category in visum.categorySet.categories" :key="category">
@@ -50,8 +41,9 @@ import { Loader } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
 import { Visum, VisumStates} from '@/serializer/Visum'
 import { useNotification } from '@/composable/useNotification'
-import Message, {ColorState} from '../components/semantics/message.vue'
 import { useI18n } from 'vue-i18n'
+import useVisum from '@/composable/useVisum'
+import CampGlobalStatusLabel from '@/components/semantics/CampGlobalStatusLabel.vue'
 
 export default defineComponent({
   name: 'CampOverview',
@@ -61,7 +53,7 @@ export default defineComponent({
     Loader,
     Engagement,
     Forbidden,
-    Message
+    CampGlobalStatusLabel
   },
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
@@ -78,6 +70,8 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
+
+    const { getGlobalVisumState } = useVisum()
 
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
@@ -103,6 +97,7 @@ export default defineComponent({
     }
 
     return {
+      getGlobalVisumState,
       getSectionsTitle,
       isFetchingVisum,
       closeSidebar,
@@ -112,7 +107,6 @@ export default defineComponent({
       selectedGroup,
       isForbidden,
       rl,
-      ColorState,
       VisumStates,
       t
     }
