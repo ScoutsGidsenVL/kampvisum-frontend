@@ -55,6 +55,7 @@ const useVisum = (): {
     //Check if subcategory has feedback state
     try {
       visum.categorySet.categories.forEach((cat: Category) => {
+        //@ts-ignore @Ricardo, check typing base interfaces
         cat.subCategories && cat.subCategories.forEach((subCat: SubCategory ) => {
           if(subCat.approval === StatusFeedbackState.APPROVED_FEEDBACK){
             throw 'Break'
