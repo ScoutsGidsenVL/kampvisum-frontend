@@ -30,7 +30,6 @@ const useVisum = (): {
         .then((visumsOutput: Visum[]) => {
           visums.value = visumsOutput
           visumsAlphabetically.value = [...visumsOutput]
-          visumsAlphabetically.value.sort((a: Visum, b: Visum) => a.camp.name.localeCompare(b.camp.name))
           isFetchingVisums.value = false
         })
     }
