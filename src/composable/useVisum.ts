@@ -66,7 +66,7 @@ const useVisum = (): {
     }
 
     //If camp is accepted show green badge
-    if(visum.state === VisumStates.APPROVED) {
+    if(visum.state === VisumStates.APPROVED || (visum.state === VisumStates.FEEDBACK_HANDLED && visum.engagement?.districtCommisioner)) {
       return 'ACCEPTED'
     }
 
