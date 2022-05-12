@@ -13,6 +13,10 @@
       </custom-button-small>
     </div>
 
+    <div class="mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE">
+      {{t('engagement.feedback-handled-extra')}}
+    </div>
+
     <!-- APPROVE FEEDBACK -->
     <div class="xs:w-100 md:w-80 mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE">
       <custom-button-small class="w-100" :extraStyle="'w-100'" @click="displayWarning()" :isSubmitting="false" :text="t('engagement.feedback-handled')">

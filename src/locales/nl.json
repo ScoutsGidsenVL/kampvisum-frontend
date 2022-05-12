@@ -216,6 +216,7 @@
     "feedback-ackknowledged": "Feedback gecheckt",
     "approve-camp": "Kamp goedkeuren",
     "feedback-handled": "Feedback verwerkt",
+    "feedback-handled-extra": "Kamp afgekeurd, de leiding moet nu eerst de feedback verwerken",
     "disapprove-camp": "Kamp afkeuren"
   },
   "global-camp-state": {
