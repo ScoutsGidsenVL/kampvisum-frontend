@@ -15,6 +15,7 @@ const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSE
 
 
 export const useNavigation = (): {
+  navigateTowardsPassport: (visumId:string) => void
   navigateTowardsCategory: (name: string, visum: Visum, categoryUuid: string) => void
   navigateTowardsSection: (name: string, visum: Visum, categoryUuid: string, sectionId: string) => void
   jumpToId: (id: string | string[]) => void
@@ -70,8 +71,16 @@ export const useNavigation = (): {
     window.scrollTo({ top: y, behavior: 'smooth' })
   }
 
+  const navigateTowardsPassport = (visumId: string) => {
+    const navigate = () => {
+      router.push('/kamp/' + visumId + '/paspoort')
+    }
+    navigate()
+  }
+
   return {
     navigateTowardsCategory,
+    navigateTowardsPassport,
     navigateTowardsSection,
     navigateTowardsVisum,
     setBreadcrumbs,

@@ -141,7 +141,8 @@
       "delete-warning-title": "Hoofdlocatie",
       "delete-warning": "Ben je zeker dat je de hoofdlocatie wil verwijderen?",
       "delete-warning-button-left": "annuleer",
-      "delete-warning-button-right": "verwijder"
+      "delete-warning-button-right": "verwijder",
+      "no-locations": "Geen locaties"
     },
     "document-check": {
       "no-document": "Geen document",
@@ -217,7 +218,7 @@
     "approve-camp": "Kamp goedkeuren",
     "feedback-handled": "Feedback verwerkt",
     "feedback-handled-extra": "Kamp afgekeurd, de leiding moet nu eerst de feedback verwerken",
-    "disapprove-camp": "Kamp afkeuren"
+    "disapprove-camp": "Kamp afkeuren",
   },
   "global-camp-state": {
     "title-ACCEPTED": "Kamp goedgekeurd",
@@ -230,5 +231,8 @@
     "msg-INPROGRESS": "",
     "title-READYFORDC": "Kamp klaar voor DC",
     "msg-READYFORDC": ""
+  },
+  "passport": {
+    "no-end-date":"Nog geen einddatum ingesteld."
   }
 }

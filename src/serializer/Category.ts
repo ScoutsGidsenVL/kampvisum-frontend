@@ -5,7 +5,7 @@ export interface Category {
   camp?: { name: string }
   visum?: { id: string }
   id?: string
-  subCategories?: SubCategory
+  subCategories?: SubCategory[]
   categoryParent: CategoryParent
   state: string
   notes?: string

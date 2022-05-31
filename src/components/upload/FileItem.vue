@@ -17,7 +17,7 @@
             </svg>
           </div>
 
-          <div v-if="!canBeChecked" @click="deleteFromList(file)" class="flex gap-2 cursor-pointer">
+          <div v-if="!canBeChecked && canBeDeleted" @click="deleteFromList(file)" class="flex gap-2 cursor-pointer">
             <p class="underline text-xs text-darkGray hover:text-black">{{t('checks.document-check.remove')}}</p>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 stroke-current text-red" fill="none" viewBox="0 0 24 24">
               <path
@@ -84,6 +84,10 @@ export default defineComponent({
       type: Object as PropType<Check>,
       required: true,
     },
+    canBeDeleted: {
+      type: Boolean,
+      default: true
+    }
   },
   setup(props, { emit }) {
     const { t } = useI18n({

@@ -30,11 +30,14 @@
         </h4>
       </div>
      <camp-global-status-label :visum="visum" />
+      <custom-button class="w-100 bg-green" @click.stop="navigateTowardsPassport(visum.id)" :extraStyle="'w-100'" :text="'bekijk paspoort'">
+      </custom-button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { CustomButtonSmall } from 'vue-3-component-library'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { useNavigation } from '../../composable/useNavigation'
 import { defineComponent, PropType } from 'vue'
@@ -46,7 +49,10 @@ import CampGlobalStatusLabel from '@/components/semantics/CampGlobalStatusLabel.
 
 export default defineComponent({
   name: 'CampInfoCard',
-  components: {CampGlobalStatusLabel},
+  components: {
+    CampGlobalStatusLabel, 
+    'custom-button': CustomButtonSmall,
+  },
   props: {
     visum: {
       type: Object as PropType<Visum>,
@@ -55,12 +61,13 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute()
-    const { navigateTowardsCategory } = useNavigation()
+    const { navigateTowardsCategory, navigateTowardsPassport } = useNavigation()
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsVisum } = useVisum()
 
     return {
       navigateTowardsCategory,
+      navigateTowardsPassport,
       navigateTowardsVisum,
       getSectionsTitle,
       route,

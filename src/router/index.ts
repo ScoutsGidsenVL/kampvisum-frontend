@@ -1,9 +1,13 @@
+import PassportDocumentsOverview from '@/views/PassportDocumentsOverview.vue'
+import PassportLocationsOverview from '@/views/PassportLocationsOverview.vue'
+import PassportMembersOverview from '@/views/PassportMembersOverview.vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import BaseCategoryView from '@/views/categories/BaseCategoryView.vue'
-import SettingsOverview from '@/views/SettingsOverview.vue'
+import NonMembersOverview from '@/views/NonMembersOverview.vue'
 import DocumentsOverview from '@/views/DocumentsOverview.vue'
 import LocationsOverview from '@/views/LocationsOverview.vue'
-import NonMembersOverview from '@/views/NonMembersOverview.vue'
+import SettingsOverview from '@/views/SettingsOverview.vue'
+import PassportOverview from '@/views/PassportOverview.vue'
 import KampvisumHome from '@/views/KampvisumHome.vue'
 import CampOverview from '@/views/CampOverview.vue'
 import StartView from '@/components/start.vue'
@@ -66,9 +70,45 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/kamp/:campId?',
+    path: '/kamp/:campId?/',
     name: 'Kamp',
     component: CampOverview,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/paspoort/',
+    name: 'Paspoort',
+    component: PassportOverview,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/paspoort/documenten',
+    name: 'PaspoortDocumenten',
+    component: PassportDocumentsOverview,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/paspoort/locaties',
+    name: 'PaspoortLocaties',
+    component: PassportLocationsOverview,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/kampvisum-home',
+    },
+  },
+  {
+    path: '/kamp/:campId?/paspoort/leden',
+    name: 'PaspoortLeden',
+    component: PassportMembersOverview,
     meta: {
       requiresOpenIdAuth: true,
       homescreen: '/kampvisum-home',
