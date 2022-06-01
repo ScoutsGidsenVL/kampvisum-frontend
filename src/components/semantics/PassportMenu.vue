@@ -40,6 +40,7 @@ export default defineComponent({
     title: String
   },
   setup () {
+    window.scrollTo({ top: 0, behavior: 'auto' })
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',

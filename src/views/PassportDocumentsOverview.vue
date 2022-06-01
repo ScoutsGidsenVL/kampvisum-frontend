@@ -1,5 +1,8 @@
 <template>
-  <passport-nav-header :visum="visum" :title="'Documenten'" />
+  <passport-nav-header :visum="visum" :title="t('passport.documents')" />
+  <div class="text-center">
+    <loader color="lightGreen" size="20" :isLoading="isFetchingVisum" />
+  </div>
   <div v-if="visum" id="documents-container" class="p-3 flex flex-col gap-5">
 
     <div v-for="category in visum.categorySet.categories" :key="category" >
@@ -25,7 +28,7 @@
             <div v-for="check in subCategory.checks" :key="check">
               <div v-if="check.checkParent.checkType.checkType === 'FileUploadCheck'">
                 <div v-for="file in check.value" :key="file">
-                  <file-item :canBeDeleted="true" :file="file" :check="check" @actionSuccess="actionSuccess($event)" />
+                  <file-item :canBeDeleted="false" :file="file" :check="check" @actionSuccess="actionSuccess($event)" />
                 </div>
 
               </div>
@@ -57,17 +60,19 @@ import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
+import { Loader } from 'vue-3-component-library'
 
 export default defineComponent({
-  components: {PassportOverviewItem, IPhoneGreen, ITime, PassportNavHeader, PassportMenu, ICalendar, IMarker, IShield, IEuro, IUsers, IPuzzle, FileItem},
+  components: {PassportOverviewItem, IPhoneGreen, Loader, ITime, PassportNavHeader, PassportMenu, ICalendar, IMarker, IShield, IEuro, IUsers, IPuzzle, FileItem},
   name: 'PassportDocumentsOverview',
   setup() {
-
+    const isFetchingVisum = ref<boolean>(true)
     const { getCampByRouteParam } = useCampHelper()
     const visum = ref<Visum>()
 
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
+      isFetchingVisum.value = false
     })
 
     const checkIfFilesAvailable = (subCategories: SubCategory[]) => {
@@ -93,6 +98,7 @@ export default defineComponent({
     return {
       t,
       visum,
+      isFetchingVisum,
       checkIfFilesAvailable
     }
   },

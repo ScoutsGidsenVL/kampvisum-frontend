@@ -1,5 +1,8 @@
 <template>
-  <passport-nav-header :visum="visum" :title="'Locaties'" />
+  <passport-nav-header :visum="visum" :title="t('passport.locations')" />
+  <div class="text-center">
+    <loader color="lightGreen" size="20" :isLoading="isFetchingVisum" />
+  </div>
   <div v-if="visum" id="locations-container" class="p-3 flex flex-col gap-3">
 
     <div v-for="category in visum.categorySet.categories" :key="category" >
@@ -47,9 +50,11 @@ import { useI18n } from 'vue-i18n'
 import LocationListItem from '@/components/semantics/LocationListItem.vue'
 import { SubCategory } from '@/serializer/SubCategory'
 import { Check } from '@/serializer/Check'
+import { Loader } from 'vue-3-component-library'
 
 export default defineComponent({
   components: {
+    Loader,
     PassportOverviewItem, 
     PassportNavHeader, 
     PassportMenu, 
@@ -61,12 +66,14 @@ export default defineComponent({
   },
   name: 'PassportLocationsOverview',
   setup() {
+    const isFetchingVisum = ref<boolean>(true)
 
     const { getCampByRouteParam } = useCampHelper()
     const visum = ref<Visum>()
 
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
+      isFetchingVisum.value = false
     })
 
     const checkIfLocationsAvailable = (subCategories: SubCategory[]) => {
@@ -92,7 +99,8 @@ export default defineComponent({
     return {
       t,
       visum,
-      checkIfLocationsAvailable
+      checkIfLocationsAvailable,
+      isFetchingVisum
     }
   },
 })

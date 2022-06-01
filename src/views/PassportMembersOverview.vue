@@ -1,11 +1,14 @@
 <template>
-  <passport-nav-header :visum="visum" :title="'Leden'" />
+  <passport-nav-header :visum="visum" :title="t('passport.members')" />
+  <div class="text-center">
+    <loader color="lightGreen" size="20" :isLoading="isFetchingVisum" />
+  </div>
   <div v-if="visum" id="locations-container" class="px-3">
     <div v-for="category in visum.categorySet.categories" :key="category" >
       <!-- LEDEN -->
       <passport-menu 
         v-if="category.categoryParent.name === 'members_leaders'" 
-        :title="'Leden'"
+        :title="t('passport.menu-members')"
       >
         <template v-slot:title-icon>
           <i-users />
@@ -26,6 +29,9 @@
                   </div>
                   <hr>
                 </div>
+                <div class="text-center" v-if="check.value.participants.length === 0">
+                  {{t('passport.no-members')}}
+                </div>
               </div>
             </div>
           </div>
@@ -36,7 +42,7 @@
       <passport-menu 
         class="mt-3"
         v-if="category.categoryParent.name === 'members_leaders'" 
-        :title="'Fouriers'"
+        :title="t('passport.menu-fouriers')"
       >
         <template v-slot:title-icon>
           <i-users />
@@ -56,6 +62,9 @@
                     {{participant.email}} {{participant.phoneNumber}} 
                   </div>
                   <hr>
+                </div>
+                <div class="text-center" v-if="check.value.participants.length === 0">
+                  {{t('passport.no-fouriers')}}
                 </div>
               </div>
             </div>
@@ -81,6 +90,7 @@ import { defineComponent, ref } from 'vue'
 import { Visum } from '@/serializer/Visum'
 import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
+import { Loader } from 'vue-3-component-library'
 
 export default defineComponent({
   components: {
@@ -91,16 +101,18 @@ export default defineComponent({
     IShield, 
     ITime, 
     IMarker,
-    LocationListItem
+    LocationListItem,
+    Loader
   },
   name: 'PassportMembersOverview',
   setup() {
-
+    const isFetchingVisum = ref<boolean>(true)
     const { getCampByRouteParam } = useCampHelper()
     const visum = ref<Visum>()
 
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
+      isFetchingVisum.value = false
     })
 
     const checkIfLocationsAvailable = (subCategories: SubCategory[]) => {
@@ -126,7 +138,8 @@ export default defineComponent({
     return {
       t,
       visum,
-      checkIfLocationsAvailable
+      checkIfLocationsAvailable,
+      isFetchingVisum
     }
   },
 })

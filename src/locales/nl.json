@@ -233,6 +233,13 @@
     "msg-READYFORDC": ""
   },
   "passport": {
-    "no-end-date":"Nog geen einddatum ingesteld."
+    "no-end-date":"Nog geen einddatum ingesteld.",
+    "locations": "Locaties",
+    "documents": "Documenten",
+    "members": "Leden",
+    "menu-members": "Leden",
+    "menu-fouriers": "Fouriers",
+    "no-fouriers": "Geen fouriers",
+    "no-members": "Geen leden"
   }
 }
