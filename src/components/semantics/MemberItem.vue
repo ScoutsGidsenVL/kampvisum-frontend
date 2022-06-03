@@ -9,6 +9,9 @@
         <div v-if="participant.inactiveMember || !participant.isMember" class="bg-red font-bold text-white rounded-full px-2">
           {{t('checks.participant-check.inActiveMember')}}
         </div>
+        <div v-if="!isMin21(participant) && check.checkParent.name === 'members_leaders_responsible_21_year_old'" class="bg-red font-bold text-white rounded-full px-2">
+          {{t('checks.participant-check.not-21')}}
+        </div>
         <i-pencil @click="openEditForm(participant)" v-if="!participant.isMember" class="pencil" />
       </div>
       <div v-if="check.checkParent.isMultiple && checkIfIsMobileSize()" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
@@ -100,12 +103,24 @@ export default defineComponent({
       }
     })
 
+
+    const isMin21 = (participant: Member) => {
+      const currentYear = new Date().getFullYear();
+      var x = currentYear - Number(participant.birthDate.slice(0,4))
+      if (x >= 21 ) {
+        return true
+      } else {
+        return false
+      }
+    }
+
     return {
       checkIfIsMobileSize,
       isPatchingPayment,
       deleteFromList,
       openEditForm,
-      t
+      t,
+      isMin21
     }
   },
 })
