@@ -18,25 +18,24 @@ pipeline {
     }
 
     stage('archive') {
-      steps {
-        archiveArtifacts  'frontend.zip'
-
-        script{
-            def artifactory = Artifactory.server 'artifactory'
-
-            def uploadSpec = '''{
-              "files": [
-                {
-                  "pattern": "frontend.zip",
-                  "target": "kampvisum-frontend/${BRANCH_NAME}/${BUILD_ID}/"
-                }
-             ]
-            }'''
-
-            def buildInfo = artifactory.upload spec: uploadSpec
-
-            artifactory.publishBuildInfo buildInfo
+      when {
+        anyOf {
+          branch "production"
+          branch "staging"
         }
+      }
+      steps {
+        rtUpload (
+          serverId: 'artifactory',
+          spec: '''{
+            "files": [
+              {
+                "pattern": "frontend.zip",
+                "target": "kampvisum-frontend/${BRANCH_NAME}/${BUILD_ID}/"
+              }
+           ]
+          }'''
+        )
       }
     }
 
