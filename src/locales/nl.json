@@ -234,6 +234,7 @@
     "msg-READYFORDC": ""
   },
   "passport": {
+    "view-passport": "bekijk paspoort",
     "no-end-date":"Nog geen einddatum ingesteld.",
     "locations": "Locaties",
     "documents": "Documenten",

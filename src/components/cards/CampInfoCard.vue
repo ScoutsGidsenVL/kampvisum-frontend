@@ -30,7 +30,7 @@
         </h4>
       </div>
      <camp-global-status-label :visum="visum" />
-      <custom-button class="w-100 bg-green" @click.stop="navigateTowardsPassport(visum.id)" :extraStyle="'w-100'" :text="'bekijk paspoort'">
+      <custom-button class="w-100 bg-green" @click.stop="navigateTowardsPassport(visum.id)" :extraStyle="'w-100'" :text="t('passport.view-passport')">
       </custom-button>
     </div>
   </div>
@@ -46,6 +46,7 @@ import { useRoute } from 'vue-router'
 import router from '@/router'
 import useVisum from '@/composable/useVisum'
 import CampGlobalStatusLabel from '@/components/semantics/CampGlobalStatusLabel.vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'CampInfoCard',
@@ -65,12 +66,18 @@ export default defineComponent({
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsVisum } = useVisum()
 
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
+
     return {
       navigateTowardsCategory,
       navigateTowardsPassport,
       navigateTowardsVisum,
       getSectionsTitle,
       route,
+      t
     }
   },
 })

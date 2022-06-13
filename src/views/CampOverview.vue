@@ -16,6 +16,9 @@
       <deadlines-sidebar :visum="visum" :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
     </div>
     <engagement  @rl="rl($event)" :visum="visum" />
+
+    <custom-button class="w-100 bg-green" @click.stop="navigateTowardsPassport(visum.id)" :extraStyle="'w-100'" :text="t('passport.view-passport')">
+    </custom-button>
   </div>
 
   <forbidden />
@@ -37,7 +40,7 @@ import Forbidden from '@/components/semantics/Forbidden.vue'
 import { useNavigation } from '@/composable/useNavigation'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { useCampHelper } from '../helpers/campHelper'
-import { Loader } from 'vue-3-component-library'
+import { Loader, CustomButtonSmall } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
 import { Visum, VisumStates} from '@/serializer/Visum'
 import { useNotification } from '@/composable/useNotification'
@@ -53,14 +56,15 @@ export default defineComponent({
     Loader,
     Engagement,
     Forbidden,
-    CampGlobalStatusLabel
+    CampGlobalStatusLabel,
+    'custom-button': CustomButtonSmall,
   },
   setup() {
+    window.scrollTo({ top: 0, behavior: 'auto' })
     const { getSectionsTitle } = useSectionsHelper()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const { getCampByRouteParam } = useCampHelper()
-    const { setBreadcrumbs } = useNavigation()
-    window.scrollTo({ top: 0, behavior: 'auto' })
+    const { setBreadcrumbs, navigateTowardsPassport } = useNavigation()
     const visum = ref<Visum>()
     const isFetchingVisum = ref<boolean>(true)
     const { selectedGroup } = useGroupAndYears()
@@ -108,7 +112,8 @@ export default defineComponent({
       isForbidden,
       rl,
       VisumStates,
-      t
+      t,
+      navigateTowardsPassport
     }
   },
 })
