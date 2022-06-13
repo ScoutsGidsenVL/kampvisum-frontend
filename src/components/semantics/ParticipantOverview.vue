@@ -1,6 +1,11 @@
 <template>
   <div class="pb-3">
-    <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
+    <div class="flex gap-2 items-center">
+      <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
+      <div v-if="check.checkParent.explanation">
+        <i-info :info="check.checkParent.explanation" />
+      </div>
+    </div>
     <div class="">
       <member-item
         v-for="participant in check.value.participants"
@@ -44,6 +49,8 @@ import { Visum } from '@/serializer/Visum'
 import MemberItem from './MemberItem.vue'
 import { Member } from '@/serializer/Member'
 import { useI18n } from 'vue-i18n'
+import IInfo from '../icons/IInfo.vue'
+
 
 export default defineComponent({
   name: 'MembersOverview',
@@ -53,6 +60,7 @@ export default defineComponent({
     CustomButtonSmall,
     ParticipantSidebar,
     MemberSidebar,
+    IInfo
   },
   props: {
     check: {
