@@ -46,6 +46,8 @@ export default defineComponent({
       useScope: 'local',
     })
 
+    window.scrollTo({ top: 0, behavior: 'auto' })
+
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
       daysRemaining()
