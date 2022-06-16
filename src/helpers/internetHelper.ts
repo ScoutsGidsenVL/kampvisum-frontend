@@ -1,5 +1,5 @@
 import { Ref, ref } from "vue"
-const isInternetActive = ref<Boolean>(false)
+const isInternetActive = ref<Boolean>(navigator.onLine)
 
 export const useInternetHelper = (): {
   checkIfInternetActive: () => void,
@@ -7,7 +7,6 @@ export const useInternetHelper = (): {
 } => {
 
   const checkIfInternetActive = async () => {
-    // const isOnline = require('is-online')
 
     const setTokenIfOffline = (state: boolean) => {
       if (!state) {
@@ -16,21 +15,13 @@ export const useInternetHelper = (): {
       } 
     }
 
-    // FIRST TIME
-  //  await isOnline().then((x: any) => {
-  //     isInternetActive.value = x
-  //     setTokenIfOffline(x)
-  //     // console.log('INTERNET IS', isInternetActive.value ? ' ONLINE' : ' OFFLINE')
-  //   })
-
-    isInternetActive.value = navigator.onLine
     setTokenIfOffline(navigator.onLine)
     
-    // LOOP
     setInterval(() => {
       isInternetActive.value = navigator.onLine
+      console.log(navigator.onLine)
       setTokenIfOffline(navigator.onLine)
-    }, 500);
+    }, 5000);
   }
 
   return {

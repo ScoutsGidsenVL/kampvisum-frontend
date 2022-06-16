@@ -46,7 +46,6 @@ export default defineComponent({
   },
   setup() {
     const { checkIfInternetActive, isInternetActive } = useInternetHelper()
-
     const route = useRoute()
 
     checkIfInternetActive()
