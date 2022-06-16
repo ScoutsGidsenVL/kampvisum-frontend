@@ -6,25 +6,26 @@ export const useInternetHelper = (): {
   isInternetActive:  Ref<Boolean>
 } => {
 
-  const checkIfInternetActive = () => {
+  const checkIfInternetActive = async () => {
     const isOnline = require('is-online')
-    //FIRST TIME
-    // isOnline().then((x: any) => {
-    //   isInternetActive.value = x
-    //   console.log('INTERNET IS', isInternetActive.value ? ' ONLINE' : ' OFFLINE')
-    // })
+
+    // FIRST TIME
+   await isOnline().then((x: any) => {
+      isInternetActive.value = x
+      console.log('INTERNET IS', isInternetActive.value ? ' ONLINE' : ' OFFLINE')
+    })
     
-    //LOOP
-    // setInterval(() => {
-    //   isOnline().then((x: any) => {
-    //     isInternetActive.value = x
-    //     console.log('INTERNET IS', isInternetActive.value ? ' ONLINE' : ' OFFLINE')
-    //   })
-    // }, 20000);
+    // LOOP
+    setInterval(() => {
+      isOnline().then((x: any) => {
+        isInternetActive.value = x
+        console.log('INTERNET IS', isInternetActive.value ? ' ONLINE' : ' OFFLINE')
+      })
+    }, 90000);
   }
 
   return {
     checkIfInternetActive,
-    isInternetActive
+    isInternetActive,
   }
 }

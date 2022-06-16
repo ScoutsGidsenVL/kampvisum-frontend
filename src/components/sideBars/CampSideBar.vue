@@ -189,7 +189,6 @@ export default defineComponent({
         isReload.value = false
       }, 1)
     }
-
     getCampTypes()
     
     if (props.selectedGroupId) {

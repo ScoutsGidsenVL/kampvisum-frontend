@@ -2,6 +2,7 @@ import { CampDeserializer, CampSerializer, Camp } from '@/serializer/Camp'
 import { BaseRepository } from '@/repositories/baseRepository'
 import { ArrayResult } from '@/interfaces/ArrayResult'
 import { Visum, VisumDeserializer } from '@/serializer/Visum'
+import { useInternetHelper } from '@/helpers/internetHelper'
 
 export class CampRepository extends BaseRepository {
   id = '/camps/'
@@ -22,6 +23,8 @@ export class CampRepository extends BaseRepository {
   }
 
   getGroupYears(groupId: string): Promise<any> {
+    const { isInternetActive } = useInternetHelper()
+    
     return this.get(this.id + groupId + '/years/', {}).then((response: []) => {
       return response
     })

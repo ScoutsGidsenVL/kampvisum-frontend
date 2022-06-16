@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-3 md:col-span-2 xs:col-span-1 text-center" style="width: 261px">
+  <div class="mt-3 md:col-span-2 xs:col-span-1 text-center" style="max-width: 261px">
     <div class="bg-green text-white rounded-sm">
       <h1 class="px-3" :class="(!isdisplayCallToAction) ? 'text-md mb-1 pt-1' : 'text-xl pt-3 mb-3'" >{{t('pages.kampvisum-overview.call-to-action-title')}}</h1>
       

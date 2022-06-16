@@ -11,10 +11,14 @@ import store from './store/store'
 import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
+import { useInternetHelper } from './helpers/internetHelper'
 
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require('./locales/nl.json')
+const { checkIfInternetActive, isInternetActive } = useInternetHelper()
+checkIfInternetActive()
 new StaticFileRepository().getFile('config.json').then((result: any) => {
+
   const i18n = createI18n({
     legacy: false,
     locale: 'nl',
@@ -39,8 +43,6 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
 
   configFile = new MasterConfig().deserialize(configFile)
 
-
-
   if (configFile.oidc && configFile.oidc.baseUrl && configFile.oidc.clientId) {
     // @ts-ignore
     app.use(OpenIdConnectPlugin, {
@@ -61,18 +63,28 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
   }
 
   store.dispatch('setConfig', configFile)
-  
+
   let redirectUrl = sessionStorage.getItem('redirectUrl')
   if (!redirectUrl) {
     sessionStorage.setItem('redirectUrl', window.location.pathname)
   }
 
   router.beforeEach((to: any, from: any, next: any) => {
+
+    console.log('isInternetActive', isInternetActive.value)
+
+    if (to.fullPath === '/start' && !isInternetActive.value) {
+      sessionStorage.setItem('oidc-access-token', 'offline');
+      sessionStorage.setItem('oidc-refresh-token', 'offline');
+      window.location.replace('/kampvisum-home')
+    }
+    
     if (to.meta.requiresOpenIdAuth === true) {
       if (store.getters.isLoaded === false) {
         RepositoryFactory.get(AuthRepository)
         .me()
         .then((user: any) => {
+          console.log('FETCHED RESULT USER: ', user)
           store.dispatch('setUser', user).then(() => {
             next(to.fullPath)
           })
