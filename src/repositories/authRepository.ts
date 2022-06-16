@@ -8,8 +8,6 @@ export default class AuthRepository extends BaseApiRepository {
   me(): Promise<UserModel> {
     const { isInternetActive } = useInternetHelper()
 
-    console.log('isInternetActive', isInternetActive.value)
-
     if (isInternetActive.value) {
       return this.get('/auth/me/').then((input: any) => {
         console.log('OUTPUT: ', UserModel.deserialize(input))
