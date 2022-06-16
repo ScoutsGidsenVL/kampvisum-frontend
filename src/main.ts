@@ -71,13 +71,15 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
 
   router.beforeEach((to: any, from: any, next: any) => {
 
-    console.log('isInternetActive', isInternetActive.value)
+    sessionStorage.setItem('oidc-access-token', 'undefined');
+    sessionStorage.setItem('oidc-refresh-token', 'undefined');
+    // console.log('isInternetActive!!!', isInternetActive.value)
 
-    if (to.fullPath === '/start' && !isInternetActive.value) {
-      sessionStorage.setItem('oidc-access-token', 'offline');
-      sessionStorage.setItem('oidc-refresh-token', 'offline');
-      window.location.replace('/kampvisum-home')
-    }
+    // if (to.fullPath === '/start' && !isInternetActive.value) {
+    //   sessionStorage.setItem('oidc-access-token', 'offline');
+    //   sessionStorage.setItem('oidc-refresh-token', 'offline');
+    //   window.location.replace('/kampvisum-home')
+    // }
     
     if (to.meta.requiresOpenIdAuth === true) {
       if (store.getters.isLoaded === false) {

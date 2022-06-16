@@ -5,7 +5,6 @@ import MasterConfig from './models/config/masterConfig'
 let configFile
 
 new StaticFileRepository().getFile('config.json').then((result: any) => {
-  console.log('TEST SERVICE WORKER')
   configFile = new MasterConfig().deserialize(result)
   if (true) {
     console.log('register: ', `${configFile.frontend.baseUrl}/service-worker.js`)
