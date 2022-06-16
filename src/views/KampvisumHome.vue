@@ -27,7 +27,7 @@
     </div>
 
     <div v-if="!isForbidden && !isFetchingVisums" class="pb-3 grid md:grid-cols-2 gap-3">
-      <multi-select style="width: 261px" v-if="years[0]" id="year" @addSelection="selectNewYear" value-prop="id" :options="years" :value="years[0]" :canClear="false" :canDeselect="false" />
+      <multi-select style="max-width: 261px" v-if="years[0]" id="year" @addSelection="selectNewYear" value-prop="id" :options="years" :value="years[0]" :canClear="false" :canDeselect="false" />
     </div>
 
     <div class="xs:w-100 md:w-80">

@@ -22,7 +22,7 @@
           <a v-if="breadcrumb && breadcrumb.title">{{ breadcrumb.title }}</a>
         </li>
       </div>
-      <div v-if="false" class="pr-2">
+      <div class="pr-2">
         <!-- WIFI ON  -->
         <svg v-if="isInternetActive" class="fill-current text-green" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
           <g data-name="Layer 99">

@@ -2,6 +2,7 @@ import { GroupDeserializer, GroupSerializer } from '@/serializer/Group'
 import { BaseRepository } from '@/repositories/baseRepository'
 import { Section, SectionDeserializer } from '@/serializer/Section'
 import { ArrayResult } from '@/interfaces/ArrayResult'
+import { useInternetHelper } from '@/helpers/internetHelper'
 
 export class GroupRepository extends BaseRepository {
   id = '/groups/'
@@ -20,6 +21,9 @@ export class GroupRepository extends BaseRepository {
   }
 
   getGroupSections(groupId: string): Promise<any> {
+    const { isInternetActive } = useInternetHelper()
+
+  if (isInternetActive.value) {
     return this.get(`/sections/${groupId}/`, {}).then((response: ArrayResult) => {
       const array: any[] = []
       response.results.forEach((result: Section) => {
@@ -27,6 +31,10 @@ export class GroupRepository extends BaseRepository {
       })
       return array
     })
+  } else {
+    return new Promise<any>((resolve, reject) => {
+      resolve(true)
+    })
   }
-
+  }
 }
