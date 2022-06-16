@@ -7,7 +7,7 @@ export const useInternetHelper = (): {
 } => {
 
   const checkIfInternetActive = async () => {
-    const isOnline = require('is-online')
+    // const isOnline = require('is-online')
 
     const setTokenIfOffline = (state: boolean) => {
       if (!state) {
@@ -17,20 +17,20 @@ export const useInternetHelper = (): {
     }
 
     // FIRST TIME
-   await isOnline().then((x: any) => {
-      isInternetActive.value = x
-      setTokenIfOffline(x)
-      // console.log('INTERNET IS', isInternetActive.value ? ' ONLINE' : ' OFFLINE')
-    })
+  //  await isOnline().then((x: any) => {
+  //     isInternetActive.value = x
+  //     setTokenIfOffline(x)
+  //     // console.log('INTERNET IS', isInternetActive.value ? ' ONLINE' : ' OFFLINE')
+  //   })
+
+    isInternetActive.value = navigator.onLine
+    setTokenIfOffline(navigator.onLine)
     
     // LOOP
     setInterval(() => {
-      isOnline().then((x: any) => {
-        isInternetActive.value = x
-        setTokenIfOffline(x)
-        // console.log('INTERNET IS', isInternetActive.value ? ' ONLINE' : ' OFFLINE')
-      })
-    }, 3000);
+      isInternetActive.value = navigator.onLine
+      setTokenIfOffline(navigator.onLine)
+    }, 500);
   }
 
   return {
