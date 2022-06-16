@@ -1,5 +1,5 @@
 import { Ref, ref } from "vue"
-const isInternetActive = ref<Boolean>(navigator.onLine)
+const isInternetActive = ref<Boolean>(true)
 
 export const useInternetHelper = (): {
   checkIfInternetActive: () => void,
@@ -15,12 +15,12 @@ export const useInternetHelper = (): {
       } 
     }
 
-    setTokenIfOffline(navigator.onLine)
+    setTokenIfOffline(true)
     
     setInterval(() => {
-      isInternetActive.value = navigator.onLine
-      console.log(navigator.onLine)
-      setTokenIfOffline(navigator.onLine)
+      isInternetActive.value = true
+      console.log(true)
+      setTokenIfOffline(true)
     }, 5000);
   }
 
