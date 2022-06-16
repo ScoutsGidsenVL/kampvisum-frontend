@@ -4,22 +4,14 @@ import MasterConfig from './models/config/masterConfig'
 
 let configFile
 
-const assets = [
-  '/',
-  '/index.html',
-  '/js/app.js',
-  '/css/styles.css'
-]
-
-
 new StaticFileRepository().getFile('config.json').then((result: any) => {
   configFile = new MasterConfig().deserialize(result)
-  if (true) {
     register(`${configFile.frontend.baseUrl}/service-worker.js`, {
       ready () {
-        caches.open('scouts-cache').then(cache => {
-          cache.addAll(assets)
-        })
+        console.log(
+          'App is being served from cache by a service worker.\n' +
+          'For more details, visit https://goo.gl/AFskqB'
+        )
       },
       registered () {
         console.log('Service worker has been registered.')
@@ -40,10 +32,6 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
         console.error('Error during service worker registration:', error)
       }
     })
-
-    // self.addEventListener
-
-  }
 })
 
 

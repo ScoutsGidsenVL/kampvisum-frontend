@@ -21,7 +21,7 @@ export class CampTypeRepository extends BaseRepository {
       })
     } else {
       return new Promise<any>((resolve, reject) => {
-        resolve(true)
+        resolve([])
       })
     }
          

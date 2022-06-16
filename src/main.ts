@@ -11,12 +11,9 @@ import './registerServiceWorker'
 import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
-import { useInternetHelper } from './helpers/internetHelper'
 
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require('./locales/nl.json')
-const { checkIfInternetActive, isInternetActive } = useInternetHelper()
-checkIfInternetActive()
 new StaticFileRepository().getFile('config.json').then((result: any) => {
 
   const i18n = createI18n({
@@ -71,15 +68,8 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
 
   router.beforeEach((to: any, from: any, next: any) => {
 
-    sessionStorage.setItem('oidc-access-token', 'undefined');
-    sessionStorage.setItem('oidc-refresh-token', 'undefined');
-    // console.log('isInternetActive!!!', isInternetActive.value)
-
-    // if (to.fullPath === '/start' && !isInternetActive.value) {
-    //   sessionStorage.setItem('oidc-access-token', 'offline');
-    //   sessionStorage.setItem('oidc-refresh-token', 'offline');
-    //   window.location.replace('/kampvisum-home')
-    // }
+    // sessionStorage.setItem('oidc-access-token', 'none');
+    // sessionStorage.setItem('oidc-refresh-token', 'none');
     
     if (to.meta.requiresOpenIdAuth === true) {
       if (store.getters.isLoaded === false) {
