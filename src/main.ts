@@ -15,84 +15,88 @@ import { useInternetHelper } from './helpers/internetHelper'
 
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require('./locales/nl.json')
-
 const { isInternetActive } = useInternetHelper()
-isInternetActive.value = navigator.onLine
+const isOnline = require('is-online')
 
-new StaticFileRepository().getFile('config.json').then((result: any) => {
+isOnline().then((isOnlineResult: any) => {
+  console.log('IS INTERNET INIT', isOnlineResult)
+  isInternetActive.value = isOnlineResult
+  new StaticFileRepository().getFile('config.json').then((result: any) => {
 
-  const i18n = createI18n({
-    legacy: false,
-    locale: 'nl',
-    fallbackLocale: 'nl',
-    globalInjection: true,
-    fallbackWarn: false,
-    missingWarn: false,
-    messages: {
-      nl: nl.default,
-    },
-  })
-
-  const app = createApp(App)
-    .use(i18n)
-    .use(VueLuxon, {
-      output: {
-        locale: 'nl',
+    const i18n = createI18n({
+      legacy: false,
+      locale: 'nl',
+      fallbackLocale: 'nl',
+      globalInjection: true,
+      fallbackWarn: false,
+      missingWarn: false,
+      messages: {
+        nl: nl.default,
       },
     })
-
-  let configFile = result
-
-  configFile = new MasterConfig().deserialize(configFile)
-
-  if (configFile.oidc && configFile.oidc.baseUrl && configFile.oidc.clientId) {
-    // @ts-ignore
-    app.use(OpenIdConnectPlugin, {
-      store: store,
-      router: router,
-      configuration: {
-        baseUrl: configFile.oidc.baseUrl,
-        serverBaseUrl: configFile.oidc.serverBaseUrl,
-        authEndpoint: configFile.oidc.authEndpoint ? configFile.oidc.authEndpoint : 'auth',
-        logoutEndpoint: configFile.oidc.logoutEndpoint ? configFile.oidc.logoutEndpoint : 'logout',
-        clientId: configFile.oidc.clientId,
-        authorizedRedirectRoute: '/',
-        serverTokenEndpoint: 'token/',
-        serverRefreshEndpoint: 'refresh/',
-        InternalRedirectUrl: configFile.oidc.internalRedirectUrl ? configFile.oidc.internalRedirectUrl : '/',
-      },
-    })
-  }
-
-  store.dispatch('setConfig', configFile)
-
-  let redirectUrl = sessionStorage.getItem('redirectUrl')
-  if (!redirectUrl) {
-    sessionStorage.setItem('redirectUrl', window.location.pathname)
-  }
-
-  router.beforeEach((to: any, from: any, next: any) => {
-
-    // sessionStorage.setItem('oidc-access-token', 'none');
-    // sessionStorage.setItem('oidc-refresh-token', 'none');
-    
-    if (to.meta.requiresOpenIdAuth === true) {
-      if (store.getters.isLoaded === false) {
-        RepositoryFactory.get(AuthRepository)
-        .me()
-        .then((user: any) => {
-          console.log('FETCHED RESULT USER: ', user)
-          store.dispatch('setUser', user).then(() => {
-            next(to.fullPath)
+  
+    const app = createApp(App)
+      .use(i18n)
+      .use(VueLuxon, {
+        output: {
+          locale: 'nl',
+        },
+      })
+  
+    let configFile = result
+  
+    configFile = new MasterConfig().deserialize(configFile)
+  
+    if (configFile.oidc && configFile.oidc.baseUrl && configFile.oidc.clientId) {
+      // @ts-ignore
+      app.use(OpenIdConnectPlugin, {
+        store: store,
+        router: router,
+        configuration: {
+          baseUrl: configFile.oidc.baseUrl,
+          serverBaseUrl: configFile.oidc.serverBaseUrl,
+          authEndpoint: configFile.oidc.authEndpoint ? configFile.oidc.authEndpoint : 'auth',
+          logoutEndpoint: configFile.oidc.logoutEndpoint ? configFile.oidc.logoutEndpoint : 'logout',
+          clientId: configFile.oidc.clientId,
+          authorizedRedirectRoute: '/',
+          serverTokenEndpoint: 'token/',
+          serverRefreshEndpoint: 'refresh/',
+          InternalRedirectUrl: configFile.oidc.internalRedirectUrl ? configFile.oidc.internalRedirectUrl : '/',
+        },
+      })
+    }
+  
+    store.dispatch('setConfig', configFile)
+  
+    let redirectUrl = sessionStorage.getItem('redirectUrl')
+    if (!redirectUrl) {
+      sessionStorage.setItem('redirectUrl', window.location.pathname)
+    }
+  
+    router.beforeEach((to: any, from: any, next: any) => {
+  
+      // sessionStorage.setItem('oidc-access-token', 'none');
+      // sessionStorage.setItem('oidc-refresh-token', 'none');
+      
+      if (to.meta.requiresOpenIdAuth === true) {
+        if (store.getters.isLoaded === false) {
+          RepositoryFactory.get(AuthRepository)
+          .me()
+          .then((user: any) => {
+            console.log('FETCHED RESULT USER: ', user)
+            store.dispatch('setUser', user).then(() => {
+              next(to.fullPath)
+            })
           })
-        })
+        } else {
+          next()
+        }
       } else {
         next()
       }
-    } else {
-      next()
-    }
-  })
-
-  app.use(router).use(store).mount('#app')
+    })
+  
+    app.use(router).use(store).mount('#app')
+  })  
 })
+
