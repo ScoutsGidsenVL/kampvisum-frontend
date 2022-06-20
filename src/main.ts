@@ -11,10 +11,13 @@ import './registerServiceWorker'
 import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
+import { useInternetHelper } from './helpers/internetHelper'
 
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require('./locales/nl.json')
 
+const { isInternetActive } = useInternetHelper()
+isInternetActive.value = navigator.onLine
 
 new StaticFileRepository().getFile('config.json').then((result: any) => {
 
