@@ -7,6 +7,8 @@ export const useInternetHelper = (): {
 } => {
 
   const checkIfInternetActive = async () => {
+    const isOnline = require('is-online')
+
 
     const setTokenIfOffline = (state: boolean) => {
       if (!state) {
@@ -15,12 +17,16 @@ export const useInternetHelper = (): {
       } 
     }
 
-    setTokenIfOffline(true)
+    isOnline().then((result: boolean) => {
+      isInternetActive.value = result;
+      setTokenIfOffline(result)
+    })
     
     setInterval(() => {
-      isInternetActive.value = true
-      console.log(true)
-      setTokenIfOffline(true)
+      isOnline().then((result: boolean) => {
+        isInternetActive.value = result;
+        setTokenIfOffline(result)
+      })
     }, 5000);
   }
 

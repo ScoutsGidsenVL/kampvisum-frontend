@@ -86,7 +86,6 @@ export default class AuthRepository extends BaseApiRepository {
               1
           ]
       }
-
         const userResult = UserModel.deserialize(user)
         console.log('userResult ', userResult)
         resolve(userResult)

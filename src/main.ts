@@ -14,6 +14,8 @@ import App from './App.vue'
 
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require('./locales/nl.json')
+
+
 new StaticFileRepository().getFile('config.json').then((result: any) => {
 
   const i18n = createI18n({
@@ -54,7 +56,7 @@ new StaticFileRepository().getFile('config.json').then((result: any) => {
         authorizedRedirectRoute: '/',
         serverTokenEndpoint: 'token/',
         serverRefreshEndpoint: 'refresh/',
-        InternalRedirectUrl: configFile.oidc.internalRedirectUrl ? configFile.oidc.internalRedirectUrl : 'start',
+        InternalRedirectUrl: configFile.oidc.internalRedirectUrl ? configFile.oidc.internalRedirectUrl : '/',
       },
     })
   }
