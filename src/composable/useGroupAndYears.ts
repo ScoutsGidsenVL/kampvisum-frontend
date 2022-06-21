@@ -41,12 +41,10 @@ const useGroupAndYears = (): {
     clearTimeout(debounce)
       debounce = setTimeout(() => {
         getYearsForGroup(group.groupAdminId)
-        console.log('selector: ', group.groupAdminId)
       }, 100)
   })
 
   watch(selectedYear, (year: string) => {
-    console.log('trigger: ', year)
     getVisums(selectedGroup.value, year)
   })
 

@@ -1,0 +1,17 @@
+{
+  "frontend": {
+    "baseUrl": "http://localhost:8040"
+  },
+  "api": {
+    "baseUrl": "http://localhost:8001",
+    "apiSuffix": "api/"
+  },
+  "oidc": {
+    "baseUrl": "https://login.scoutsengidsenvlaanderen.be/auth/realms/scouts",
+    "serverBaseUrl": "http://localhost:8001/api/oidc",
+    "authEndpoint": "protocol/openid-connect/auth",
+    "logoutEndpoint": "",
+    "clientId": "werkwinkeldatabank",
+    "internalRedirectUrl": "/"
+  }
+}

@@ -2,9 +2,22 @@
   <div v-if="visum" class="p-3">
     <h1>{{ visum.camp.name }}</h1>
 
+
     <h4 class="inline text-green font-aglet font-light">
       {{ getSectionsTitle(visum.camp) }}
     </h4>
+
+    <div v-if="isInternetActive">
+      <div v-if="!idbVisum" class="mt-3 bg-orange hover:bg-lightOrange text-center py-2 cursor-pointer">
+        <div @click="setVisumOffline()">{{t('passport.download-camp-offline')}}</div>
+      </div>
+
+      <div v-if="idbVisum?.camp?.updatedOn" class="mt-3 text-center py-2">
+        <!-- UPDATED ON WERKT NIET? -->
+        <div v-if="!isObjEq(visum, idbVisum)" @click="syncVisumOffline()" class="bg-orange hover:bg-lightOrange cursor-pointer">{{t('passport.sync-camp-offline')}}</div>
+        <div v-if="isObjEq(visum, idbVisum)" class="bg-lightGreen">{{t('passport.success-camp-offline')}}</div>
+      </div>
+    </div>
 
     <div class="border border-lightGray p-3 flex items-center gap-2 my-3">
       <i-time /> <div v-if="remainingDays">Nog {{remainingDays}} dagen kamp</div> <div v-else>{{t('passport.no-end-date')}}</div>
@@ -30,6 +43,8 @@ import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IPhoneGreen from '@/components/icons/IPhoneGreen.vue'
 import ITime from '@/components/icons/ITime.vue'
+import { useOfflineData } from '@/composable/useOfflineData'
+import { useInternetHelper } from '@/helpers/internetHelper'
 const { DateTime } = require("luxon");
 
 export default defineComponent({
@@ -38,7 +53,12 @@ export default defineComponent({
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
     const { getCampByRouteParam } = useCampHelper()
+    const { addVisum, getVisums, getVisum, updateVisum } = useOfflineData()
+    const { isInternetActive } = useInternetHelper()
+
     const visum = ref<any>()
+    const idbVisum = ref<any>(null)
+
     const remainingDays = ref<string>('0')
 
     const { t } = useI18n({
@@ -51,6 +71,9 @@ export default defineComponent({
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
       daysRemaining()
+      getVisum(visum.value.id).then((result) => {
+        idbVisum.value = result
+      })
     })
 
     function daysRemaining() {
@@ -64,12 +87,41 @@ export default defineComponent({
       }
     }
 
+    const setVisumOffline = () => {
+      addVisum(JSON.parse(JSON.stringify(visum.value))).then(() => {
+        getVisum(visum.value.id).then((result) => {
+          idbVisum.value = result
+        })
+      })
+    }
+
+    const syncVisumOffline = () => {
+      updateVisum(JSON.parse(JSON.stringify(visum.value))).then(() => {
+        getVisum(visum.value.id).then((result) => {
+          idbVisum.value = result
+        })
+      })
+    }
+
+    const isObjEq = (val1:any, val2:any) => {
+      if (JSON.stringify(val1) === JSON.stringify(val2)) {
+        return true
+      } else {
+        return false
+      }
+    }
+
     return {
       t,
       visum,
       getSectionsTitle,
       remainingDays,
-      
+      setVisumOffline,
+      getVisums,
+      idbVisum,
+      isInternetActive,
+      syncVisumOffline,
+      isObjEq
     }
   },
 })
