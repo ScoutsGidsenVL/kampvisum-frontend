@@ -12,14 +12,17 @@ import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
 import { useInternetHelper } from './helpers/internetHelper'
+import { useOfflineData } from './composable/useOfflineData'
 
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require('./locales/nl.json')
 const { isInternetActive } = useInternetHelper()
 const isOnline = require('is-online')
+const { initDb } = useOfflineData()
+
+initDb()
 
 isOnline().then((isOnlineResult: any) => {
-  console.log('IS INTERNET INIT', isOnlineResult)
   isInternetActive.value = isOnlineResult
   new StaticFileRepository().getFile('config.json').then((result: any) => {
 
@@ -73,17 +76,12 @@ isOnline().then((isOnlineResult: any) => {
       sessionStorage.setItem('redirectUrl', window.location.pathname)
     }
   
-    router.beforeEach((to: any, from: any, next: any) => {
-  
-      // sessionStorage.setItem('oidc-access-token', 'none');
-      // sessionStorage.setItem('oidc-refresh-token', 'none');
-      
+    router.beforeEach((to: any, from: any, next: any) => {    
       if (to.meta.requiresOpenIdAuth === true) {
         if (store.getters.isLoaded === false) {
           RepositoryFactory.get(AuthRepository)
           .me()
           .then((user: any) => {
-            console.log('FETCHED RESULT USER: ', user)
             store.dispatch('setUser', user).then(() => {
               next(to.fullPath)
             })
@@ -95,7 +93,6 @@ isOnline().then((isOnlineResult: any) => {
         next()
       }
     })
-  
     app.use(router).use(store).mount('#app')
   })  
 })

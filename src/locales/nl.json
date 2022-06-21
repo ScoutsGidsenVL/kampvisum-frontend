@@ -219,7 +219,7 @@
     "approve-camp": "Kamp goedkeuren",
     "feedback-handled": "Feedback verwerkt",
     "feedback-handled-extra": "Kamp afgekeurd, de leiding moet nu eerst de feedback verwerken",
-    "disapprove-camp": "Kamp afkeuren",
+    "disapprove-camp": "Kamp afkeuren"
   },
   "global-camp-state": {
     "title-ACCEPTED": "Kamp goedgekeurd",
@@ -242,6 +242,9 @@
     "menu-members": "Leden",
     "menu-fouriers": "Fouriers",
     "no-fouriers": "Geen fouriers",
-    "no-members": "Geen leden"
+    "no-members": "Geen leden",
+    "download-camp-offline": "Download camp offline",
+    "sync-camp-offline": "Sync camp",
+    "success-camp-offline": "Camp is synced"
   }
 }

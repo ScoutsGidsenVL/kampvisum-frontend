@@ -9,24 +9,27 @@ export const useInternetHelper = (): {
   const checkIfInternetActive = async () => {
     const isOnline = require('is-online')
 
-
     const setTokenIfOffline = (state: boolean) => {
       if (!state) {
         sessionStorage.setItem('oidc-access-token', 'offline');
         sessionStorage.setItem('oidc-refresh-token', 'offline');
-      } 
+      }
     }
 
-    isOnline().then((result: boolean) => {
-      isInternetActive.value = result;
-      setTokenIfOffline(result)
-    })
-    
-    setInterval(() => {
+    const checkInternet = () => {
       isOnline().then((result: boolean) => {
+        if (isInternetActive.value !== result) {
+          window.location.replace('/')
+        }
         isInternetActive.value = result;
         setTokenIfOffline(result)
       })
+    }
+    
+    checkInternet()
+
+    setInterval(() => {
+      checkInternet()
     }, 5000);
   }
 

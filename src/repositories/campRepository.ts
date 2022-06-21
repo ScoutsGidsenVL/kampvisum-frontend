@@ -3,6 +3,7 @@ import { BaseRepository } from '@/repositories/baseRepository'
 import { ArrayResult } from '@/interfaces/ArrayResult'
 import { Visum, VisumDeserializer } from '@/serializer/Visum'
 import { useInternetHelper } from '@/helpers/internetHelper'
+import { useOfflineData } from '@/composable/useOfflineData'
 
 const localVisums = {
     "count": 1,
@@ -3409,18 +3410,21 @@ export class CampRepository extends BaseRepository {
   }
 
   getGroupYears(groupId: string): Promise<any> {
+    const { updateYears, getYears } = useOfflineData()
     const { isInternetActive } = useInternetHelper()
+
     if (isInternetActive.value) {
       return this.get(this.id + groupId + '/years/', {}).then((response: []) => {
+        updateYears(response)
         return response
       })
     } else {
       return new Promise<Array<number>>((resolve, reject): void => {
-        const yearsResult = [2022]
-        resolve(yearsResult)
+        getYears().then((result: any) => {
+            resolve(result)
+        })
       })
     }
-    
   }
 
   getById(id: string): Promise<any> {
