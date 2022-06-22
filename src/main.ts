@@ -7,20 +7,20 @@ import 'vue-3-component-library/lib/index.css'
 import { createI18n } from 'vue-i18n'
 const VueLuxon = require('vue-luxon')
 import store from './store/store'
-import './registerServiceWorker'
+// import './registerServiceWorker'
 import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
 import { useInternetHelper } from './helpers/internetHelper'
-import { useOfflineData } from './composable/useOfflineData'
+// import { useOfflineData } from './composable/useOfflineData'
 
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require('./locales/nl.json')
 const { isInternetActive } = useInternetHelper()
 const isOnline = require('is-online')
-const { initDb } = useOfflineData()
+// const { initDb } = useOfflineData()
 
-initDb()
+// initDb()
 
 isOnline().then((isOnlineResult: any) => {
   isInternetActive.value = isOnlineResult
