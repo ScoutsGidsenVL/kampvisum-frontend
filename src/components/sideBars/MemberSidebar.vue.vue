@@ -25,13 +25,13 @@
           <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search" :placeholder="t('checks.participant-check.search')" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
 
-        <div v-if="fetchedMembers.length > 0" class="flex justify-end px-4 pb-3">
+        <div v-if="fetchedMembers.length > 0 && check.value.participantCheckType === 'M'" class="flex justify-end px-4 pb-3">
           <div @click="selectAllFetchedMembers()" class="bg-green text-white px-2 py-1 cursor-pointer" style="width: fit-content">
             {{t('sidebars.member-sidebar.select-all')}}
           </div>
         </div>
 
-        <div class="text-center py-5">
+        <div v-if="loading" class="text-center py-5">
           <loader color="lightGreen" size="10" :isLoading="loading" />
         </div>
 
@@ -210,8 +210,9 @@ export default defineComponent({
           loading.value = false
         })
     }
-
-    fetchInitMembers()
+    if (props.check.value.participantCheckType === 'M') {
+      fetchInitMembers()
+    }
 
     return {
       selectAllFetchedMembers,
