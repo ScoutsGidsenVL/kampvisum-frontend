@@ -86,6 +86,9 @@
     "navigation-sidebar": {
       "overview": "Overzicht"
     },
+    "member-sidebar": {
+      "select-all": "Alles selecteren"
+    },
     "location-sidebar": {
       "search": "Zoek op locatie",
       "form": {

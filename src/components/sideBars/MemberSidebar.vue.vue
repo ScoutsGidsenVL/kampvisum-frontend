@@ -25,6 +25,12 @@
           <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search" :placeholder="t('checks.participant-check.search')" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
 
+        <div v-if="fetchedMembers.length > 0" class="flex justify-end px-4 pb-3">
+          <div @click="selectAllFetchedMembers()" class="bg-green text-white px-2 py-1 cursor-pointer" style="width: fit-content">
+            {{t('sidebars.member-sidebar.select-all')}}
+          </div>
+        </div>
+
         <div v-if="filterChild && (!filterChild.isFilterMenuOpen || checkIfIsMobileSize() === false)" class="mx-1 mb-72 overflow-y-auto">
           <div class="mx-4">
             <div
@@ -184,7 +190,14 @@ export default defineComponent({
       })
     }
 
+    const selectAllFetchedMembers = () => {
+      fetchedMembers.value.forEach((fetchedMember) => {
+        fetchedMember.isChecked = true
+      })
+    }
+
     return {
+      selectAllFetchedMembers,
       fetchedSearchResults,
       MemberRepository,
       fetchedMembers,
