@@ -20,7 +20,7 @@
         <div class="px-4 pt-4 pb-1">
           <participant-filter ref="filterChild" @changedFilters="changedFilters($event)" />
         </div>
-        
+
         <div @click="filterChild.closeFilterMenu" class="p-4 mx-1">
           <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search" :placeholder="t('checks.participant-check.search')" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
         </div>
@@ -29,6 +29,10 @@
           <div @click="selectAllFetchedMembers()" class="bg-green text-white px-2 py-1 cursor-pointer" style="width: fit-content">
             {{t('sidebars.member-sidebar.select-all')}}
           </div>
+        </div>
+
+        <div class="text-center py-5">
+          <loader color="lightGreen" size="10" :isLoading="loading" />
         </div>
 
         <div v-if="filterChild && (!filterChild.isFilterMenuOpen || checkIfIsMobileSize() === false)" class="mx-1 mb-72 overflow-y-auto">
@@ -54,7 +58,7 @@
 
 <script lang="ts">
 import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
-import { BaseSideBar, sideBarState, InputTypes } from 'vue-3-component-library'
+import { BaseSideBar, sideBarState, InputTypes, Loader } from 'vue-3-component-library'
 import { MemberRepository } from '../../repositories/MemberRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
@@ -80,7 +84,8 @@ export default defineComponent({
     SearchInput,
     MemberSidebarItem,
     CustomButtonSmall,
-    ParticipantFilter
+    ParticipantFilter,
+    Loader
   },
   props: {
     sideBarState: {
@@ -108,6 +113,7 @@ export default defineComponent({
     const { sideBarState } = toRefs(props)
     const isPatching = ref<boolean>(false)
     const loading = ref<boolean>(false)
+    const isInit = ref<boolean>(false)
     const { handleSubmit} = useForm()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const { t } = useI18n({
@@ -191,10 +197,21 @@ export default defineComponent({
     }
 
     const selectAllFetchedMembers = () => {
-      fetchedMembers.value.forEach((fetchedMember) => {
+      fetchedMembers.value.forEach((fetchedMember: any) => {
         fetchedMember.isChecked = true
       })
     }
+
+    const fetchInitMembers = async () => {
+      loading.value = true
+        await RepositoryFactory.get(MemberRepository)
+        .search('', '').then((results) => {
+          fetchedMembers.value = results
+          loading.value = false
+        })
+    }
+
+    fetchInitMembers()
 
     return {
       selectAllFetchedMembers,
@@ -213,7 +230,8 @@ export default defineComponent({
       filter,
       t,
       filterChild,
-      checkIfIsMobileSize
+      checkIfIsMobileSize,
+      isInit
     }
   },
 })
