@@ -45,7 +45,7 @@
               </div>
             </div>
 
-            <navigation-item v-if="!isForbidden && !isFetchingVisums" @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
+            <navigation-item v-if="!isForbidden && !isFetchingVisums && isInternetActive" @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
             <!-- <navigation-item link="/locaties" text="Locaties"/> -->
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
@@ -82,6 +82,7 @@ import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
+import { useInternetHelper } from '@/helpers/internetHelper'
 
 export default defineComponent({
   components: {
@@ -92,6 +93,7 @@ export default defineComponent({
   },
   name: 'NavigationSideBar',
   setup() {
+    const { isInternetActive } = useInternetHelper()
     const route = useRoute()
     const { isFetchingVisums, visums, visumsAlphabetically } = useVisum()
     const { getSectionsTitle } = useSectionsHelper()
@@ -136,6 +138,7 @@ export default defineComponent({
       changeSelectedGroup,
       getAvailableGroups,
       getSectionsTitle,
+      isInternetActive,
       isFetchingVisums,
       selectedGroup,
       toggleSideBar,

@@ -1,4 +1,5 @@
 import { Sidebar, SidebarState } from '@/helpers/infoBarHelper'
+import { useInternetHelper } from '@/helpers/internetHelper'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import router from '@/router'
 import { Visum } from '@/serializer/Visum'
@@ -30,17 +31,24 @@ export const useNavigation = (): {
   }
 
   const navigateTowardsVisum = (visumId: string) => {
-    const navigate = () => {
-      router.push('/kamp/' + visumId)
+    const { isInternetActive } = useInternetHelper()
+    if (isInternetActive.value) {
+      const navigate = () => {
+        router.push('/kamp/' + visumId)
+      }
+      navigate()
     }
-    navigate()
   }
 
   const navigateTowardsCategory = (name: string, visum: Visum, categoryUuid: string) => {
-    const navigate = (name: string) => {
-      router.push('/kamp/' + visum.id.toString() + '/' + 'category' + '/' + categoryUuid)
+    const { isInternetActive } = useInternetHelper()
+
+    if (isInternetActive.value) {
+      const navigate = (name: string) => {
+        router.push('/kamp/' + visum.id.toString() + '/' + 'category' + '/' + categoryUuid)
+      }
+      navigate(name.toLowerCase())
     }
-    navigate(name.toLowerCase())
   }
 
   const navigateTowardsSection = (name: string, visum: Visum, categoryUuid: string, sectionId: string) => {

@@ -243,8 +243,8 @@
     "menu-fouriers": "Fouriers",
     "no-fouriers": "Geen fouriers",
     "no-members": "Geen leden",
-    "download-camp-offline": "Download camp offline",
-    "sync-camp-offline": "Sync camp",
-    "success-camp-offline": "Camp is synced"
+    "download-camp-offline": "Download camp offline met bestanden",
+    "sync-camp-offline": "Sync camp offline met bestanden",
+    "success-camp-offline": "Camp is synced offline"
   }
 }
