@@ -1,5 +1,5 @@
 <template>
-  <div @click="navigateTowardsVisum(visum)" class="p-3 cursor-pointer shadow-md rounded-md hover:bg-lighterGreen">
+  <div @click="navigateTowardsVisum(visum)" class="p-3 shadow-md rounded-md" :class="isInternetActive ? 'cursor-pointer hover:bg-lighterGreen' : ''">
     <div class="z-2">
       <div class="flex justify-between">
         <h3 class="text-lg text-green mb-1 font-normal">
@@ -25,12 +25,12 @@
             />
           </svg>
         </div>
-        <h4 class="group-hover:underline mb-0 ml-0 xs:text-base text-md font-museo font-medium">
+        <h4 class="mb-0 ml-0 xs:text-base text-md font-museo font-medium" :class="isInternetActive ? 'group-hover:underline' : ''">
           {{ category.categoryParent.label }}
         </h4>
       </div>
      <camp-global-status-label :visum="visum" />
-      <custom-button class="w-100 bg-green" @click.stop="navigateTowardsPassport(visum.id)" :extraStyle="'w-100'" :text="t('passport.view-passport')">
+      <custom-button class="w-100 bg-green cursor-pointer" @click.stop="navigateTowardsPassport(visum.id)" :extraStyle="'w-100'" :text="t('passport.view-passport')">
       </custom-button>
     </div>
   </div>
@@ -47,6 +47,7 @@ import router from '@/router'
 import useVisum from '@/composable/useVisum'
 import CampGlobalStatusLabel from '@/components/semantics/CampGlobalStatusLabel.vue'
 import { useI18n } from 'vue-i18n'
+import { useInternetHelper } from '@/helpers/internetHelper'
 
 export default defineComponent({
   name: 'CampInfoCard',
@@ -61,6 +62,7 @@ export default defineComponent({
     },
   },
   setup() {
+    const { isInternetActive } = useInternetHelper()
     const route = useRoute()
     const { navigateTowardsCategory, navigateTowardsPassport } = useNavigation()
     const { getSectionsTitle } = useSectionsHelper()
@@ -77,6 +79,7 @@ export default defineComponent({
       navigateTowardsVisum,
       getSectionsTitle,
       route,
+      isInternetActive,
       t
     }
   },

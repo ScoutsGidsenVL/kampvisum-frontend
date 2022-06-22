@@ -6,6 +6,7 @@ import router from '@/router'
 import { Category } from '@/serializer/Category'
 import { SubCategory } from '@/serializer/SubCategory'
 import {StatusFeedbackState} from '@/components/semantics/Feedback.vue'
+import { useInternetHelper } from '@/helpers/internetHelper'
 
 const visums = ref<Visum[]>([])
 const visumsAlphabetically = ref<Visum[]>([])
@@ -41,8 +42,10 @@ const useVisum = (): {
   }
 
   const navigateTowardsVisum = (visum: Visum) => {
-    console.log('TEST: ', visum)
-    router.push('/kamp/' + visum.id)
+    const { isInternetActive } = useInternetHelper()
+    if (isInternetActive.value) {
+      router.push('/kamp/' + visum.id)
+    }
   }
 
   const getGlobalVisumState = (visum: Visum) :  GlobalVisumState => {
