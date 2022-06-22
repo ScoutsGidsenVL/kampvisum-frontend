@@ -77,7 +77,7 @@ export default defineComponent({
     }
 
     const doCall = () => {
-      if (query.value) {
+      if (query.value !== null || query.value !== undefined) {
         RepositoryFactory.get(props.repository)
           .search(query.value, props.group ? props.group : '', props.filter ? props.filter : undefined)
           .then((results: any) => {
