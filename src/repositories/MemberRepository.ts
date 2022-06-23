@@ -14,7 +14,7 @@ export class MemberRepository extends BaseRepository {
   search(query: string, group?: string, filter?: Filter): Promise<any> {
     return this.get(`${this.endpoint}all/?term=${query}${(group ? `/${group}` : '')}${filter && filter.gender ? '&gender=' + filter.gender : ''}${filter && filter.ageMin ? `&min_age=${filter.ageMin}` : ''}${filter && filter.ageMax ? `&max_age=${filter.ageMax}` : ''}${filter && filter.type ? `&type=${filter.type}` : ''}&group=${selectedGroup.value.groupAdminId}`, {}).then((response: any) => {
       const array: any[] = []
-      response.results.forEach((result: Member) => {
+      response.forEach((result: Member) => {
         result = MemberDeserializer(result)
         array.push(result)
       })
