@@ -127,6 +127,7 @@ export default defineComponent({
     }
 
     const closeSideBar = () => {
+
       context.emit('update:sideBarState', { state: 'hide' })
     }
 
@@ -167,13 +168,11 @@ export default defineComponent({
     const fetchedSearchResults = (results: Member[]) => {
       const finalResult: any = []
       //ALSO CHECK ALREADY ADDED MEMBERS IN SEARCH RESULTS
-      props.check.value.participants.forEach((alreadyAddedMember: Member) => {
-        results.forEach((member: Member, index: number) => {
-          if (!(member.id === alreadyAddedMember.id)) {
-            finalResult.push(member)
-          }
-        })
-      });
+      results.forEach((member: Member) => {
+        if (!props.check.value.participants.some((res: any) => res.id.replaceAll('-', '') === member.id.replaceAll('-', ''))) {
+          finalResult.push(member)
+        }
+      })
 
       loading.value = false
       //KEEP THE CHECKED MEMBERS
@@ -207,14 +206,11 @@ export default defineComponent({
       loading.value = true
         await RepositoryFactory.get(MemberRepository)
         .search('', '').then((results) => {
-          props.check.value.participants.forEach((alreadyAddedMember: Member) => {
-            results.forEach((member: Member) => {
-              if (!(member.id === alreadyAddedMember.id)) {
-                finalResult.push(member)
-              }
-            })
-          });
-
+          results.forEach((member: Member) => {
+            if (!props.check.value.participants.some((res: any) => res.id.replaceAll('-', '') === member.id.replaceAll('-', ''))) {
+              finalResult.push(member)
+            }
+          })
           fetchedMembers.value = finalResult
           loading.value = false
         })
