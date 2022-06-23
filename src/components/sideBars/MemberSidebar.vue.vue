@@ -132,7 +132,6 @@ export default defineComponent({
 
     const { triggerNotification } = useNotification()
 
-
     const onSubmit = async () => {
       let isNoEmail: boolean = false
       
@@ -166,11 +165,12 @@ export default defineComponent({
     }
 
     const fetchedSearchResults = (results: Member[]) => {
+      const finalResult: any = []
       //ALSO CHECK ALREADY ADDED MEMBERS IN SEARCH RESULTS
       props.check.value.participants.forEach((alreadyAddedMember: Member) => {
-        results.forEach((member: Member) => {
-          if (member.id === alreadyAddedMember.id) {
-            member.isChecked = true
+        results.forEach((member: Member, index: number) => {
+          if (!(member.id === alreadyAddedMember.id)) {
+            finalResult.push(member)
           }
         })
       });
@@ -189,7 +189,7 @@ export default defineComponent({
       fetchedMembers.value = checkedMembers
 
       //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
-      results.forEach((r: Member) => {
+      finalResult.forEach((r: Member) => {
         if (!(fetchedMembers.value.some((f: Member) => checkForIdMatch(f,r)))) {
           fetchedMembers.value.push(r)
         }
@@ -203,13 +203,23 @@ export default defineComponent({
     }
 
     const fetchInitMembers = async () => {
+      const finalResult: any = []
       loading.value = true
         await RepositoryFactory.get(MemberRepository)
         .search('', '').then((results) => {
-          fetchedMembers.value = results
+          props.check.value.participants.forEach((alreadyAddedMember: Member) => {
+            results.forEach((member: Member) => {
+              if (!(member.id === alreadyAddedMember.id)) {
+                finalResult.push(member)
+              }
+            })
+          });
+
+          fetchedMembers.value = finalResult
           loading.value = false
         })
     }
+
     if (props.check.value.participantCheckType === 'M') {
       fetchInitMembers()
     }
