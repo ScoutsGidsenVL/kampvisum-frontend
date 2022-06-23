@@ -61,7 +61,7 @@ const { checkIfIsMobileSize } = usePhoneHelper()
       useScope: 'local',
     })
 
-    const options = ref<any>([{value: 'M', label: t('sidebars.participant-sidebar.filter.man')}, {value: 'F', label: t('sidebars.participant-sidebar.filter.woman')}, {value: 'X', label: t('sidebars.participant-sidebar.filter.other')}])
+    const options = ref<any>([{value: 'M', label: t('sidebars.participant-sidebar.filter.man')}, {value: 'V', label: t('sidebars.participant-sidebar.filter.woman')}, {value: 'X', label: t('sidebars.participant-sidebar.filter.other')}])
     const filter = ref<Filter>({ gender: '', ageMin: '', ageMax: '', type: '' })
 
     watch(() => filter.value.gender, () => {
