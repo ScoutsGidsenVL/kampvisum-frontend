@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="flex xs:flex-row-reverse justify-between md:gap-16 items-center">
-      <div v-if="((check.checkParent.isMultiple && !checkIfIsMobileSize()) || (check.checkParent.checkType.checkType === 'ParticipantCheck')) && (check.checkParent.name !== 'members_leaders_responsible_21_year_old') && (check.checkParent.name !== 'members_leaders_responsible_adjunct') && (check.checkParent.name !== 'members_leaders_responsible_main')" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
+      <div v-if="(check.checkParent.isMultiple && !checkIfIsMobileSize())" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
         <i-trash />
       </div>
       <div v-if="!(check.checkParent.checkType.checkType === 'ParticipantCheck')" class="flex gap-3 items-center">
