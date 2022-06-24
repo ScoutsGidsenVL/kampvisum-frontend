@@ -7,7 +7,7 @@
       {{ getSectionsTitle(visum.camp) }}
     </h4>
 
-    <div v-if="isInternetActive && false">
+    <div v-if="isInternetActive">
       <div v-if="!idbVisum" class="mt-3 bg-orange hover:bg-lightOrange text-center py-2 cursor-pointer">
         <div @click="setVisumOffline()">{{t('passport.download-camp-offline')}}</div>
       </div>
@@ -43,7 +43,7 @@ import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IPhoneGreen from '@/components/icons/IPhoneGreen.vue'
 import ITime from '@/components/icons/ITime.vue'
-// import { useOfflineData } from '@/composable/useOfflineData'
+import { useOfflineData } from '@/composable/useOfflineData'
 import { useInternetHelper } from '@/helpers/internetHelper'
 const { DateTime } = require("luxon");
 
@@ -53,7 +53,7 @@ export default defineComponent({
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
     const { getCampByRouteParam } = useCampHelper()
-    // const { addVisum, getVisums, getVisum, updateVisum } = useOfflineData()
+    const { addVisum, getVisums, getVisum, updateVisum } = useOfflineData()
     const { isInternetActive } = useInternetHelper()
 
     const visum = ref<any>()
@@ -71,9 +71,9 @@ export default defineComponent({
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
       daysRemaining()
-      // getVisum(visum.value.id).then((result) => {
-      //   idbVisum.value = result
-      // })
+      getVisum(visum.value.id).then((result) => {
+        idbVisum.value = result
+      })
     })
 
     function daysRemaining() {
@@ -88,19 +88,19 @@ export default defineComponent({
     }
 
     const setVisumOffline = () => {
-      // addVisum(JSON.parse(JSON.stringify(visum.value))).then(() => {
-      //   getVisum(visum.value.id).then((result) => {
-      //     idbVisum.value = result
-      //   })
-      // })
+      addVisum(JSON.parse(JSON.stringify(visum.value))).then(() => {
+        getVisum(visum.value.id).then((result) => {
+          idbVisum.value = result
+        })
+      })
     }
 
     const syncVisumOffline = () => {
-      // updateVisum(JSON.parse(JSON.stringify(visum.value))).then(() => {
-      //   getVisum(visum.value.id).then((result) => {
-      //     idbVisum.value = result
-      //   })
-      // })
+      updateVisum(JSON.parse(JSON.stringify(visum.value))).then(() => {
+        getVisum(visum.value.id).then((result) => {
+          idbVisum.value = result
+        })
+      })
     }
 
     const isObjEq = (val1:any, val2:any) => {
@@ -117,7 +117,7 @@ export default defineComponent({
       getSectionsTitle,
       remainingDays,
       setVisumOffline,
-      // getVisums,
+      getVisums,
       idbVisum,
       isInternetActive,
       syncVisumOffline,
