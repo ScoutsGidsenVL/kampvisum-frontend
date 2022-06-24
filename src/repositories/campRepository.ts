@@ -3,7 +3,7 @@ import { BaseRepository } from '@/repositories/baseRepository'
 import { ArrayResult } from '@/interfaces/ArrayResult'
 import { Visum, VisumDeserializer } from '@/serializer/Visum'
 import { useInternetHelper } from '@/helpers/internetHelper'
-// import { useOfflineData } from '@/composable/useOfflineData'
+import { useOfflineData } from '@/composable/useOfflineData'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export class CampRepository extends BaseRepository {
@@ -14,7 +14,7 @@ export class CampRepository extends BaseRepository {
 
   getArray(pagination?: string): Promise<any> {
     const { isInternetActive } = useInternetHelper()
-    // const { getVisums } = useOfflineData()
+    const { getVisums } = useOfflineData()
     const { selectedGroup, selectedYear } = useGroupAndYears()
 
     if (isInternetActive.value) {
@@ -30,44 +30,44 @@ export class CampRepository extends BaseRepository {
     } else {
         console.log('PAGINATION: ', pagination)
         return new Promise<any>((resolve): void => {
-        // getVisums().then((results) => {
-        //     let data: Array<Visum> = []
-        //     if (results) {
-        //         results.forEach((v: Visum) => {
-        //             if (v.camp.year.year === selectedYear.value && v.groupGroupAdminId === selectedGroup.value.groupAdminId) {
-        //                 data.push(v)
-        //             }
-        //         })
-        //     }
+        getVisums().then((results) => {
+            let data: Array<Visum> = []
+            if (results) {
+                results.forEach((v: Visum) => {
+                    if (v.camp.year.year === selectedYear.value && v.groupGroupAdminId === selectedGroup.value.groupAdminId) {
+                        data.push(v)
+                    }
+                })
+            }
 
-        //     resolve(data)
-        // })  
+            resolve(data)
+        })  
     })
     }
     
   }
 
   getGroupYears(groupId: string): Promise<any> {
-    // const { updateYears, getYears } = useOfflineData()
+    const { updateYears, getYears } = useOfflineData()
     const { isInternetActive } = useInternetHelper()
 
     if (isInternetActive.value) {
       return this.get(this.id + groupId + '/years/', {}).then((response: []) => {
-        // updateYears(response)
+        updateYears(response)
         return response
       })
     } else {
       return new Promise<Array<number>>((resolve, reject): void => {
-        // getYears().then((result: any) => {
-        //     resolve(result)
-        // })
+        getYears().then((result: any) => {
+            resolve(result)
+        })
       })
     }
   }
 
   getById(id: string): Promise<any> {
     const { isInternetActive } = useInternetHelper()
-    // const { getVisum } = useOfflineData()
+    const { getVisum } = useOfflineData()
 
 
     if (isInternetActive.value) {
@@ -76,9 +76,9 @@ export class CampRepository extends BaseRepository {
     })
     } else {
         return new Promise<any>((resolve) => {
-            // getVisum(id.replace('/', '')).then((result: Visum) => {
-            //     resolve(result)
-            // })
+            getVisum(id.replace('/', '')).then((result: Visum) => {
+                resolve(result)
+            })
         })
     }
   }
