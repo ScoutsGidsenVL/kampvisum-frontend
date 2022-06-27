@@ -69,8 +69,9 @@ import { FileRepository } from '@/repositories/FileRepository'
 import { FileItem } from '@/serializer/FileItem'
 import { defineComponent, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
-const { saveAs } = require('file-saver')
 import { useI18n } from 'vue-i18n'
+import { useInternetHelper } from '@/helpers/internetHelper'
+import { useOfflineData } from '@/composable/useOfflineData'
 
 export default defineComponent({
   name: 'FileItem',
@@ -94,17 +95,27 @@ export default defineComponent({
       inheritLocale: true,
       useScope: 'local',
     })
+
+    const { isInternetActive } = useInternetHelper()
+    const { getFile } = useOfflineData()
+
     const downloadFile = (id: string) => {
-      RepositoryFactory.get(FileRepository)
+      if (isInternetActive.value) {
+        RepositoryFactory.get(FileRepository)
         .getById(id)
         .then((minioData: { url: string}) => {
-          window.open(minioData.url, '_blank');
-          //  RepositoryFactory.get(FileRepository)
-          //   .getMinioFile(minioData.url)
-          //   .then((downloadedFile: any) => {
-          //     const savedAsFile = saveAs(downloadedFile, 'ricardo - debug')              
-          //   })
+          window.open(minioData.url, '_blank');          
         })
+      } else {
+        getFile(id).then((file: any) => {
+          const url = window.URL.createObjectURL(new Blob([file.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', file.name);
+          document.body.appendChild(link);
+          link.click();
+        })
+      }
     }
 
     const toggleCheck = (file: FileItem) => {
