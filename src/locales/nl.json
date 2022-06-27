@@ -249,5 +249,15 @@
     "download-camp-offline": "Download camp offline met bestanden",
     "sync-camp-offline": "Sync camp offline met bestanden",
     "success-camp-offline": "Camp is synced offline"
+  },
+  "location-overview": {
+      "filters": {
+        "year": "Jaar:",
+        "start-date": "Van:",
+        "end-date": "Tot:",
+        "group-name": "Groepsnaam: (bevat)",
+        "group-number": "Groepsnummer: (is of begint met)",
+        "country": "Land:"
+      }
   }
 }

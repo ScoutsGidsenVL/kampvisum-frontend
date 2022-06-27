@@ -4,3 +4,12 @@ export interface Filter {
   ageMax: string,
   type: string
 }
+
+export interface LocationFilter {
+  year: string,
+  startDate: string,
+  endDate: string,
+  groupNumber: string,
+  groupName: string,
+  country: string
+}
