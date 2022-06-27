@@ -42,7 +42,6 @@ export const useOfflineData = (): {
   const updateVisum = (visum: Visum): Promise<Visum> => {
     // const { saveAs } = require('file-saver')
     console.log(`${tag} updating visum...`, visum)
-
     return db.collection('visums').doc(visum.id).update(visum)
   }
 

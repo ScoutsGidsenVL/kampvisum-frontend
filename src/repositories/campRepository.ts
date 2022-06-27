@@ -52,7 +52,7 @@ export class CampRepository extends BaseRepository {
 
     if (isInternetActive.value) {
       return this.get(this.id + groupId + '/years/', {}).then((response: []) => {
-        updateYears(response)
+        // updateYears(response)
         return response
       })
     } else {

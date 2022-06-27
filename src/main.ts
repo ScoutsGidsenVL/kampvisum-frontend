@@ -7,7 +7,7 @@ import 'vue-3-component-library/lib/index.css'
 import { createI18n } from 'vue-i18n'
 const VueLuxon = require('vue-luxon')
 import store from './store/store'
-import './registerServiceWorker'
+// import './registerServiceWorker'
 import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
@@ -18,9 +18,9 @@ import { useOfflineData } from './composable/useOfflineData'
 const nl = require('./locales/nl.json')
 const { isInternetActive } = useInternetHelper()
 const isOnline = require('is-online')
-const { initDb } = useOfflineData()
+// const { initDb } = useOfflineData()
 
-initDb()
+// initDb()
 
 isOnline().then((isOnlineResult: any) => {
   isInternetActive.value = isOnlineResult
