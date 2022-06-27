@@ -12,7 +12,7 @@ export default class AuthRepository extends BaseApiRepository {
 
     if (isInternetActive.value) {
       return this.get('/auth/me/').then((input: any) => {
-        updateMe(UserModel.deserialize(input))
+        // updateMe(UserModel.deserialize(input))
         return UserModel.deserialize(input)
       })
     } else {
