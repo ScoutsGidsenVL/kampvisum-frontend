@@ -1,6 +1,8 @@
 <template>
   <div class="pb-3">
 
+    {{check}}
+
     <div class="flex gap-1 items-center">
       <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
       <div v-if="check.checkParent.explanation">
