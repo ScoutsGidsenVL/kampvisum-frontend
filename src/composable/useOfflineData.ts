@@ -1,13 +1,8 @@
 import UserModel from "@/models/userModel";
 import { Visum } from "@/serializer/Visum";
-
 const tag = '[IDB]'
 const Localbase = require('localbase').default;
 let db = new Localbase('db')
-
-//INIT DATA
-// db.collection('me').doc(`1`).add({ id: 1})
-// db.collection('years').doc(`1`).add({ id: 1})
 
 //STRUCTURE
 interface Result<T> 
@@ -16,16 +11,23 @@ interface Result<T>
     value: T
 }
 
+interface file {
+  name: string;
+  data: any;
+}
+
 export const useOfflineData = (): {
   initDb: () => void,
   updateMe: (me: UserModel) => void,
   updateYears: (years: Array<number>) => void,
   updateVisum: (visum: Visum) => Promise<Visum>
   addVisum: (visum: Visum) => Promise<Visum>,
+  addFile: (fileId: string, url: any) => void
   getVisums: () => Promise<Array<Visum>>
   getVisum: (id: string) => Promise<Visum>,
   getMe: () => Promise<UserModel>,
-  getYears: () => Promise<Array<number>>
+  getYears: () => Promise<Array<number>>,
+  getFile: (fileId: string) => Promise<any>
 } => {
   const updateMe = (me: UserModel) => {
     console.log(`${tag} updating me...`)
@@ -38,13 +40,20 @@ export const useOfflineData = (): {
   }
 
   const updateVisum = (visum: Visum): Promise<Visum> => {
+    // const { saveAs } = require('file-saver')
     console.log(`${tag} updating visum...`, visum)
+
     return db.collection('visums').doc(visum.id).update(visum)
   }
 
   const addVisum = (visum: Visum): Promise<Visum> => {
     console.log(`${tag} add visum...`)  
     return db.collection('visums').doc(visum.id).set(visum)
+  }
+
+  const addFile = (fileId: string, file: file): Promise<any> => {
+    console.log(`${tag} add file...`, fileId, file) 
+    return db.collection('files').doc(fileId).set(file)
   }
 
   const getMe = async (): Promise<UserModel> => {
@@ -76,6 +85,14 @@ export const useOfflineData = (): {
     return result
   }
 
+  const getFile = async (fileId: string): Promise<any> => {
+    const result = await db.collection('files').doc(fileId).get().then((file: any) => {
+      console.log(`${tag} get file...`)
+      return file
+    })
+    return result
+  }
+
   const initDb = () => {
     console.log('initializing indexedDb...')
   }
@@ -89,6 +106,8 @@ export const useOfflineData = (): {
     getYears,
     getVisums,
     getVisum,
-    updateVisum
+    updateVisum,
+    addFile,
+    getFile
   }
 }

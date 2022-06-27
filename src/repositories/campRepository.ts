@@ -28,7 +28,6 @@ export class CampRepository extends BaseRepository {
         return array
       })
     } else {
-        console.log('PAGINATION: ', pagination)
         return new Promise<any>((resolve): void => {
         getVisums().then((results) => {
             let data: Array<Visum> = []

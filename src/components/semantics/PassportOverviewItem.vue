@@ -47,7 +47,6 @@ export default defineComponent({
     })
 
     const navigate = () => {
-      console.log(`/kamp/${props.visum.id}/paspoort/${props.navUrl}`)
       router.push(`/kamp/${props.visum.id}/paspoort/${props.navUrl}`)
     }
 

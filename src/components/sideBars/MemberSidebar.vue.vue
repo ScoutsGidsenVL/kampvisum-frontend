@@ -138,7 +138,6 @@ export default defineComponent({
       
       fetchedMembers.value.forEach((member: BaseMember) => {
         if (member.isChecked) {
-          console.log('MEMBER: ', member)
         } 
         if ((member.isChecked && !member.email) && (props?.check?.checkParent?.name === 'members_leaders_responsible_main' || props?.check?.checkParent?.name === 'members_leaders_responsible_adjunct')) {
           isNoEmail = true
