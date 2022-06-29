@@ -252,12 +252,12 @@
   },
   "location-overview": {
       "filters": {
-        "year": "Jaar:",
-        "start-date": "Van:",
-        "end-date": "Tot:",
-        "group-name": "Groepsnaam: (bevat)",
-        "group-number": "Groepsnummer: (is of begint met)",
-        "country": "Land:"
+        "year": "Jaar",
+        "start-date": "Van",
+        "end-date": "Tot",
+        "group-name": "Groepsnaam (bevat)",
+        "group-number": "Groepsnummer (is of begint met)",
+        "country": "Land"
       }
   }
 }
