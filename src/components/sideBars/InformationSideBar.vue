@@ -71,6 +71,10 @@ export default defineComponent({
       sidebar.value.state = SidebarState.OPEN
     }
 
+    if (info.value) {
+      closeSideBar()
+    }
+
     return {
       closeSideBar,
       SidebarState,
