@@ -1,20 +1,44 @@
 <template>
   <span class="italic font-bold">filters</span>
   <div class="border-2 p-2 rounded-md">
+    <div v-if="isFilterMenuOpen">
       <div class="md:hidden float-right">
-        <cross v-if="filter.gender || filter.ageMin || filter.ageMax" @click="clearFilters()" class="cursor-pointer" />
+        <cross v-if="filter.year || filter.startDate || filter.endDate || filter.groupNumber" @click="clearFilters()" class="cursor-pointer" />
       </div>
       <div class="flex xs:flex-col md:gap-4 xs:gap-2">
         <div class="flex" style="md:margin-left: 110px">
-          <div class="flex xs:flex-col pt-3 gap-4 -mt-4">
-            <!-- <input @input="filtersChanged()" v-model="filter.ageMin" :placeholder="t('location-overview.filters.')" type="number" style="width:115px" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"> -->
-            <!-- <input @input="filtersChanged()" v-model="filter.ageMax" :placeholder="t('location-overview.participant-sidebar.filter.max-age')" type="number" style="width:120px" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"> -->
-            <!-- <input @input="filtersChanged()" v-model="filter.ageMax" :placeholder="t('location-overview.participant-sidebar.filter.max-age')" type="number" style="width:120px" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"> -->
+          <div class="flex xs:flex-col pt-3 gap-4 -mt-4 xs:w-full">
+            <!-- YEAR -->
+            <div class="flex flex-col">
+              <span class="text-base font-bold" >{{t('location-overview.filters.year')}}</span>
+              <input @input="filtersChanged()" v-model="filter.year" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <!-- STARTDATE -->
+            <div class="flex flex-col">
+              <span class="text-base font-bold" >{{t('location-overview.filters.start-date')}}</span>
+              <input @input="filtersChanged()" v-model="filter.startDate" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-base font-bold" >{{t('location-overview.filters.end-date')}}</span>
+              <input @input="filtersChanged()" v-model="filter.endDate" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">            
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-base font-bold" >{{t('location-overview.filters.group-number')}}</span>
+              <input @input="filtersChanged()" v-model="filter.groupNumber" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">            
+            </div>
+
           </div>
           <div class="ml-3 xs:hidden">
             <cross v-if="filter.gender || filter.ageMin || filter.ageMax" @click="clearFilters()" class="cursor-pointer" />
           </div>
         </div>
+      </div>
+      </div>
+      <div v-if="checkIfIsMobileSize()" @click="toggleFilterMenu()" class="my-1 flex justify-center">
+        <i-chevon-down v-if="!isFilterMenuOpen" />
+        <i-chevon-up v-if="isFilterMenuOpen" />
       </div>
   </div>
 </template>
@@ -22,7 +46,7 @@
 <script lang="ts">
 import IChevonDown from '../icons/IChevonDown.vue'
 import { defineComponent, ref, watch } from 'vue'
-import { Filter } from '../../serializer/Filter'
+import { Filter, LocationFilter } from '../../serializer/Filter'
 import Cross from '../icons/Cross.vue'
 import { useI18n } from 'vue-i18n'
 import IChevonUp from '../icons/IChevonUp.vue'
@@ -34,32 +58,35 @@ export default defineComponent({
   props: {
   },
   setup (props, { emit }) {
-const { checkIfIsMobileSize } = usePhoneHelper()
+    const { checkIfIsMobileSize } = usePhoneHelper()
 
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
     })
 
-    const filter = ref<any>({ year: '', ageMin: '', ageMax: '', type: '' })
+    const isFilterMenuOpen = ref<boolean>(true)
 
-    watch(() => filter.value.gender, () => {
-      emit('changedFilters', filter.value)
-    })
+    const filter = ref<LocationFilter>({ year: '', startDate: '', endDate: '', groupName: '', groupNumber: '', country: '' })
     
     const filtersChanged = () => {
       emit('changedFilters', filter.value)
     }
 
     const clearFilters = () => {
-      filter.value.gender = ''
-      filter.value.ageMin = ''
-      filter.value.ageMax = ''
+      filter.value = { year: '', startDate: '', endDate: '', groupName: '', groupNumber: '', country: '' }
       emit('changedFilters', filter.value)
+    }
+
+    const toggleFilterMenu = () => {
+      isFilterMenuOpen.value = !isFilterMenuOpen.value
     }
 
     return {
       checkIfIsMobileSize,
+      filtersChanged,
+      toggleFilterMenu,
+      isFilterMenuOpen,
       clearFilters,
       filter,
       t
