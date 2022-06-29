@@ -13,7 +13,7 @@
       </custom-button-small>
     </div>
 
-    <div class="mt-3" v-if="visum.state === VisumStates.NOT_SIGNABLE">
+    <div class="mt-3 p-1 bg-red text-white font-semibold" style="width: max-content" v-if="visum.state === VisumStates.NOT_SIGNABLE">
       {{t('engagement.feedback-handled-extra')}}
     </div>
 
