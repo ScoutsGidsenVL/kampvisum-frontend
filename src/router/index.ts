@@ -55,7 +55,7 @@ const routes: Array<RouteRecordRaw> = [
     component: LocationsOverview,
     meta: {
       requiresOpenIdAuth: true,
-      homescreen: '/locaties',
+      homescreen: '/kampvisum-home',
       titleKey: 'page-titles.locations',
     },
   },
