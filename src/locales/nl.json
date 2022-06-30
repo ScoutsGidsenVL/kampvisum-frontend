@@ -258,6 +258,7 @@
         "group-name": "Groepsnaam (bevat)",
         "group-number": "Groepsnummer (is of begint met)",
         "country": "Land"
-      }
+      },
+      "check-camp": "Bekijk kamp"
   }
 }
