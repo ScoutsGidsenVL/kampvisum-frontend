@@ -8,7 +8,8 @@ export interface ResponsibleMember {
   readonly email: string
   readonly membershipNumber: number
   readonly phoneNumber: string
-  readonly scoutsGroups?: Group[]
+  readonly scoutsGroups?: Group[],
+  public permissions: Array<string> = [],
 }
 
 export const ResponsibleMemberDeserializer = (input: any): ResponsibleMember => {
@@ -21,8 +22,9 @@ export const ResponsibleMemberDeserializer = (input: any): ResponsibleMember => 
     membershipNumber: input.membership_number ? input.membership_number : undefined,
     phoneNumber: input.phone_number ? input.phone_number.replace(/ /g, '') : undefined,
     scoutsGroups: input.scouts_group ? input.scouts_groups.map((group: any) => GroupDeserializer(group)) : undefined,
+    permissions: input.user_permissions ? input.user_permissions : []
   }
-
+  console.log('SUNGLE USER: ', single)
   return single
 }
 

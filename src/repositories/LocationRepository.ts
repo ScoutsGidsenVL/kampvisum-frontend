@@ -19,7 +19,26 @@ export class LocationRepository extends BaseRepository {
   }
 
   getCampLocations(filters: LocationFilter): Promise<any> {
-    return this.get(`/visums${this.endpoint}?number=${filters.groupNumber}&year=${filters.year}&startDate=${filters.startDate}&endDate=${filters.endDate}`, {}).then((response: any) => {
+    console.log('FILTERS: ', filters)
+    let filterParams = {}
+
+    if (filters.year) {
+      filterParams = {...filterParams, ...{year: filters.year}}
+    }
+
+    if (filters.startDate) {
+      filterParams = {...filterParams, ...{start_date: filters.startDate}}
+    }
+
+    if (filters.endDate) {
+      filterParams = {...filterParams, ...{end_date: filters.endDate}}
+    }
+
+    if (filters.groupNumber) {
+      filterParams = {...filterParams, ...{group: filters.groupNumber}}
+    }
+
+    return this.get(`/visums${this.endpoint}`, { params: filterParams}).then((response: any) => {
       return response
     })
   }

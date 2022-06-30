@@ -256,7 +256,8 @@
         "start-date": "Van",
         "end-date": "Tot",
         "group-name": "Groepsnaam (bevat)",
-        "group-number": "Groepsnummer (is of begint met)",
+        "group-number": "Groepsnummer",
+        "group-number-wip": "Groepsnummer (is of begint met)",
         "country": "Land"
       },
       "check-camp": "Bekijk kamp"

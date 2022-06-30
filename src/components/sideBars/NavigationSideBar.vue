@@ -47,7 +47,8 @@
 
             <navigation-item v-if="!isForbidden && !isFetchingVisums && isInternetActive" @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
-            <navigation-item v-if="isInternetActive" link="/locaties" text="Locaties"/>
+            <navigation-item v-if="can('visums.view_camp_locations') && isInternetActive" link="/locaties" text="Locaties"/>
+            <!-- <navigation-item v-if="isInternetActive" link="/locaties" text="Locaties"/> -->
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
           </div>
         </div>
@@ -98,7 +99,7 @@ export default defineComponent({
     const { isFetchingVisums, visums, visumsAlphabetically } = useVisum()
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsCategory, sidebar } = useNavigation()
-    const { setSelectedGroup, getAvailableGroups, selectedGroup } = useGroupAndYears()
+    const { setSelectedGroup, getAvailableGroups, getPermissions, selectedGroup } = useGroupAndYears()
     const { isForbidden } = useNotification()
     
     const { t } = useI18n({
@@ -132,6 +133,15 @@ export default defineComponent({
       }
     }
 
+    function can (permission: string) : boolean {
+    const p = getPermissions()
+    if (p) {
+      return p.includes(permission)
+    } else {
+      return false
+    }
+  }
+
     return {
       navigateTowardsCategory,
       visumsAlphabetically,
@@ -150,6 +160,7 @@ export default defineComponent({
       route,
       home,
       t,
+      can
     }
   },
 })

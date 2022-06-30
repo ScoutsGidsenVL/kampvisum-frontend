@@ -21,7 +21,7 @@ export default class UserModel implements ResponsibleMember {
       input.id,
       input.first_name,
       input.last_name,
-      input.permissions,
+      input.user_permissions,
       input.email,
       input.membership_number,
       input.birth_date,

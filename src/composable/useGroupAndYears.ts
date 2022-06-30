@@ -20,6 +20,7 @@ const useGroupAndYears = (): {
   setSelectedGroup: (group: Group) => Group
   selectedGroup: Ref<Group>
   getAvailableGroups: () => Group[]
+  getPermissions: () => any[]
 } => {
   const { getVisums, clearVisums } = useVisum()
 
@@ -87,6 +88,10 @@ const useGroupAndYears = (): {
     return store.getters.user.scoutsGroups as Group[]
   }
 
+  const getPermissions = () => {
+    return store.getters.user.permissions as any[]
+  }
+
   return {
     years,
     selectedYear,
@@ -96,6 +101,7 @@ const useGroupAndYears = (): {
     isFetchingYears,
     selectedGroup,
     setSelectedGroup,
+    getPermissions
   }
 }
 

@@ -2,7 +2,7 @@
   <div class="w-full" style="height: 60vh">
     <l-map :use-global-leaflet="true" ref="map" :options="options" class="z-0" :maxZoom="19"   v-model:zoom="zoom" :center="center" @ready="onLeafletReady">
       <template v-if="leafletReady">
-      <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"></l-tile-layer>
+      <l-tile-layer class="opacity-30" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"></l-tile-layer>
       <marker-cluster
         :options="{ showCoverageOnHover: false, chunkedLoading: true }"
       >
