@@ -16,12 +16,12 @@
             <!-- STARTDATE -->
             <div class="flex flex-col">
               <span class="text-base font-bold" >{{t('location-overview.filters.start-date')}}</span>
-              <input @input="filtersChanged()" v-model="filter.startDate" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <input type="date" @input="filtersChanged()" v-model="filter.startDate" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="flex flex-col">
               <span class="text-base font-bold" >{{t('location-overview.filters.end-date')}}</span>
-              <input @input="filtersChanged()" v-model="filter.endDate" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">            
+              <input type="date" @input="filtersChanged()" v-model="filter.endDate" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">            
             </div>
 
             <div class="flex flex-col">
@@ -31,7 +31,7 @@
 
           </div>
           <div class="ml-3 xs:hidden">
-            <cross v-if="filter.gender || filter.ageMin || filter.ageMax" @click="clearFilters()" class="cursor-pointer" />
+            <cross v-if="filter.year || filter.startDate || filter.endDate || filter.groupNumber" @click="clearFilters()" class="cursor-pointer" />
           </div>
         </div>
       </div>
@@ -45,12 +45,14 @@
 
 <script lang="ts">
 import IChevonDown from '../icons/IChevonDown.vue'
-import { defineComponent, ref, watch } from 'vue'
-import { Filter, LocationFilter } from '../../serializer/Filter'
+import { defineComponent, ref } from 'vue'
+import { LocationFilter } from '../../serializer/Filter'
 import Cross from '../icons/Cross.vue'
 import { useI18n } from 'vue-i18n'
 import IChevonUp from '../icons/IChevonUp.vue'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
+
+
 
 export default defineComponent({
   components: { Cross, IChevonDown, IChevonUp },
@@ -59,6 +61,8 @@ export default defineComponent({
   },
   setup (props, { emit }) {
     const { checkIfIsMobileSize } = usePhoneHelper()
+    const d = new Date()
+    let year = d.getFullYear();
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -67,7 +71,7 @@ export default defineComponent({
 
     const isFilterMenuOpen = ref<boolean>(true)
 
-    const filter = ref<LocationFilter>({ year: '', startDate: '', endDate: '', groupName: '', groupNumber: '', country: '' })
+    const filter = ref<LocationFilter>({ year: year.toString(), startDate: '', endDate: '', groupName: '', groupNumber: '', country: '' })
     
     const filtersChanged = () => {
       emit('changedFilters', filter.value)

@@ -21,7 +21,8 @@ import { LocationFilter } from '@/serializer/Filter'
 import { Loader } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
 import LocationFilterComponent from '../components/semantics/LocationFilter.vue'
-
+const d = new Date()
+    let year = d.getFullYear();
 export default defineComponent({
   name: 'LocationsOverview',
   components: {
@@ -31,12 +32,13 @@ export default defineComponent({
   },
   setup () {
     window.scrollTo({ top: 0, behavior: 'auto' })
-    const filters = ref<LocationFilter>({ year: '', startDate: '', endDate: '', groupName: '', groupNumber: '', country: '' })
+    const filters = ref<LocationFilter>({ year: year.toString(), startDate: '', endDate: '', groupName: '', groupNumber: '', country: '' })
     const campLocations = ref<any>([])
     const isFetchingCampLocations = ref<boolean>(false)
 
     const changedFilters = (f: LocationFilter) => {
       filters.value = f
+      fetchCampLocations()
     }
 
     const fetchCampLocations = () => {
