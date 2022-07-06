@@ -258,7 +258,8 @@
         "group-name": "Groepsnaam (bevat)",
         "group-number": "Groepsnummer",
         "group-number-wip": "Groepsnummer (is of begint met)",
-        "country": "Land"
+        "country": "Land",
+        "search": "Zoek"
       },
       "check-camp": "Bekijk kamp"
   }
