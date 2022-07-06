@@ -5,33 +5,35 @@
       <div class="md:hidden float-right">
         <cross v-if="filter.year || filter.startDate || filter.endDate || filter.groupNumber" @click="clearFilters()" class="cursor-pointer" />
       </div>
-      <div class="flex xs:flex-col md:gap-4 xs:gap-2">
+      <div class="flex xs:flex-col xs:gap-2">
         <div class="flex" style="md:margin-left: 110px">
           <div class="flex xs:flex-col pt-3 gap-4 -mt-4 xs:w-full">
             <!-- YEAR -->
             <div class="flex flex-col">
               <span class="text-base font-bold" >{{t('location-overview.filters.year')}}</span>
-              <input @input="filtersChanged()" v-model="filter.year" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <input  v-model="filter.year" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <!-- STARTDATE -->
             <div class="flex flex-col">
               <span class="text-base font-bold" >{{t('location-overview.filters.start-date')}}</span>
-              <input type="date" @input="filtersChanged()" v-model="filter.startDate" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <input type="date"  v-model="filter.startDate" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="flex flex-col">
               <span class="text-base font-bold" >{{t('location-overview.filters.end-date')}}</span>
-              <input type="date" @input="filtersChanged()" v-model="filter.endDate" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">            
+              <input type="date"  v-model="filter.endDate" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">            
             </div>
 
             <div class="flex flex-col">
               <span class="text-base font-bold" >{{t('location-overview.filters.group-number')}}</span>
-              <input @input="filtersChanged()" v-model="filter.groupNumber" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">            
+              <input  v-model="filter.groupNumber" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">            
             </div>
-
-          </div>
-          <div class="ml-3 xs:hidden">
-            <cross v-if="filter.year || filter.startDate || filter.endDate || filter.groupNumber" @click="clearFilters()" class="cursor-pointer" />
+            <div class="flex flex-col justify-end pb-2">
+              <custom-button-small class="w-100" :extraStyle="'w-100'" @click="filtersChanged()" :isSubmitting="false" :text="t('location-overview.filters.search')"></custom-button-small>
+            </div>
+            <div class="flex flex-col justify-end pb-3">
+              <cross v-if="filter.year || filter.startDate || filter.endDate || filter.groupNumber" @click="clearFilters()" class="cursor-pointer" />
+            </div>
           </div>
         </div>
       </div>
@@ -47,6 +49,7 @@
 import IChevonDown from '../icons/IChevonDown.vue'
 import { defineComponent, ref } from 'vue'
 import { LocationFilter } from '../../serializer/Filter'
+import { CustomButtonSmall } from 'vue-3-component-library'
 import Cross from '../icons/Cross.vue'
 import { useI18n } from 'vue-i18n'
 import IChevonUp from '../icons/IChevonUp.vue'
@@ -55,7 +58,7 @@ import { usePhoneHelper } from '@/helpers/phoneHelper'
 
 
 export default defineComponent({
-  components: { Cross, IChevonDown, IChevonUp },
+  components: { Cross, IChevonDown, IChevonUp, CustomButtonSmall },
   name: 'LocationFilter',
   props: {
   },
