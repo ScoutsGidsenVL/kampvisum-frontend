@@ -51,7 +51,7 @@ export default defineComponent({
       })
     }
 
-    fetchCampLocations()
+    // fetchCampLocations()
 
     return {
       changedFilters,
