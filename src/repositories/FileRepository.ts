@@ -10,8 +10,8 @@ export class FileRepository extends BaseRepository {
   deserializer = FileDeserializer
   serializer =  null
 
-  search(query: string): Promise<any> {
-    return this.get(`/checks/file/search/?term=${query}&group=${selectedGroup.value.groupAdminId}`, {}).then((response: any) => {
+  search(query: string, group?: string): Promise<any> {
+    return this.get(`/checks/file/search/?term=${query}&group=${group ? group :selectedGroup.value.groupAdminId}`, {}).then((response: any) => {
       const array: any[] = []
       response.results.forEach((result: FileItem) => {
         result = this.deserializer(result)
