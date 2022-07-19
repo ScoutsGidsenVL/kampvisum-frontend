@@ -11,9 +11,14 @@ import PassportOverview from '@/views/PassportOverview.vue'
 import KampvisumHome from '@/views/KampvisumHome.vue'
 import CampOverview from '@/views/CampOverview.vue'
 import StartView from '@/components/start.vue'
+import TestCallsVue from '@/views/TestCalls.vue'
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/start' },
+  { path: '/test', 
+    name: 'Test calls', 
+    component: TestCallsVue
+  },
   {
     path: '/start',
     name: 'Start',
