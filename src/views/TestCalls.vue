@@ -323,9 +323,10 @@ export default defineComponent({
         },
         'searchFiles': {
             vars: {
-                query: ''
+                term: '',
+                groupID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(FileRepository).search(vars.query)
+            call: (vars: any) => RepositoryFactory.get(FileRepository).search(vars.term, vars.groupID)
         },
          'fileGetById': {
             vars: {
