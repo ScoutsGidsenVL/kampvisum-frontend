@@ -285,12 +285,11 @@ export default defineComponent({
             },
             call: (vars: any) => RepositoryFactory.get(NumberCheckRepository).update(`checks/number/${vars.checkID}`, vars.number) 
         },
-        'updateParticipant': {
+        'updateParticipantCheck': {
             vars: {
-                url: '',
-                data: ''
+                checkID: '',
             },
-            call: (vars: any) => RepositoryFactory.get(ParticipantCheckRepository).update(vars.url, vars.data) 
+            call: (vars: any) => RepositoryFactory.get(ParticipantCheckRepository).update(`checks/participant/${vars.checkID}`, []) 
         },
         'removeParticipantFromList': {
             vars: {
@@ -308,16 +307,42 @@ export default defineComponent({
         },
         'ParticipantCreate':  {
             vars: {
-                data: '', 
+                groupID: '', 
             },
-            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).create(vars.data)
+            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).create({
+                "firstName": "test",
+                "lastName": "test",
+                "email": "",
+                "phoneNumber": "",
+                "city": "",
+                "postalCode": "",
+                "street": "",
+                "number": "",
+                "letterBox": "",
+                "birthDate": "2022-07-22",
+                "comment": "",
+                "groupGroupAdminId": vars.groupID
+            })
         },
         'ParticipantUpdate':  {
             vars: {
                 id: '',
-                data: '', 
+                groupID: '', 
             },
-            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).update(vars.id, vars.data)
+            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).update(vars.id, {
+                "firstName": "test update 2",
+                "lastName": "test",
+                "email": "",
+                "phoneNumber": "",
+                "city": "",
+                "postalCode": "",
+                "street": "",
+                "number": "",
+                "letterBox": "",
+                "birthDate": "2022-07-22",
+                "comment": "",
+                "groupGroupAdminId": vars.groupID
+            })
         },
          'SectionCreate':  {
             vars: {
