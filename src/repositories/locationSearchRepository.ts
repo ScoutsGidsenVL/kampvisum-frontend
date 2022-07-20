@@ -1,7 +1,10 @@
+import useGroupAndYears from '@/composable/useGroupAndYears'
 import { BaseRepository } from '@/repositories/baseRepository'
 import { SearchedLocationDeserializer } from '@/serializer/SearchedLocation'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { SearchedLocation } from '../serializer/SearchedLocation'
+
+const { selectedGroup } = useGroupAndYears()
 
 export class LocationSearchRepository extends BaseRepository {
   id = '/location-search/'
@@ -47,9 +50,10 @@ export class LocationSearchRepository extends BaseRepository {
         return this.processErrorLoc(error)
       })
   }
+  
 
   searchExistingLocation(query: string): Promise<any> {
-    return this.get(`?term=${query}`, {}).then((response: any) => {
+    return this.get(`?term=${query}&group=${selectedGroup.value.groupAdminId}`, {}).then((response: any) => {
       const array: any[] = []
       response.results.forEach((result: any) => {
         // result = MemberDeserializer(result)

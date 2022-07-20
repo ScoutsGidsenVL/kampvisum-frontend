@@ -76,9 +76,12 @@
           @addLocationPoint="addLocationPoint($event)" 
           v-if="sideBarState.state === 'new' || sideBarState.state === 'edit'" 
           :searchedLocations="searchedLocations"  
-          :searchedLocation="searchedLocation" 
+          :searchedLocation="searchedLocation"
           v-model:center="check.value.centerLatLon"
           :check="check" />
+
+        </div>
+        <div>
         </div>
 
         <div class="">
