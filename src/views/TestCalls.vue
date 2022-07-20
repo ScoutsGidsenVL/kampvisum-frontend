@@ -233,10 +233,9 @@ export default defineComponent({
         },
         'updateLocationCheck': {
             vars: {
-                url: '',
-                data: ''
+                checkID: '',
             },
-            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).updateLocationCheck(vars.url, vars.data)
+            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).updateLocationCheck(`checks/camp_location/${vars.checkID}`, [])
         },
         'addSearchedLocation': {
             vars: {
@@ -255,12 +254,6 @@ export default defineComponent({
                 query: ''
             },
             call: (vars: any) => RepositoryFactory.get(LocationRepository).search(vars.query)
-        },
-        'reverseSearchLocations': {
-             vars: {
-                latLng: ''
-            },
-            call: (vars: any) => RepositoryFactory.get(LocationSearchRepository).reverseSearch(vars.latLng)
         },
         'searchMembers': {
             vars: {
@@ -297,13 +290,6 @@ export default defineComponent({
                 ParticipantId: ''
             },
             call: (vars: any) => RepositoryFactory.get(ParticipantCheckRepository).removeParticipantFromList(vars.checkId, vars.ParticipantId) 
-        },
-        'toggleHasPaid': {
-            vars: {
-                checkId: '',
-                wrapperParticipantId: ''
-            },
-            call: (vars: any) => RepositoryFactory.get(ParticipantCheckRepository).toggleHasPaid(vars.checkId, vars.wrapperParticipantId) 
         },
         'ParticipantCreate':  {
             vars: {
