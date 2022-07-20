@@ -117,7 +117,7 @@ export default defineComponent({
         'patchCategoryApproval': {
             vars: {
                 subCategoryId: '',
-                feedback: ''            
+                feedback: 'A'            
             },
             call: (vars: any) => RepositoryFactory.get(CampRepository).patchCategoryApproval(vars.subCategoryId, vars.feedback)
         },
@@ -138,13 +138,13 @@ export default defineComponent({
             vars: {
                 visumID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(vars.visumId)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(vars.visumID)
         },
         'patchVisumDisapproval': {
             vars: {
                 visumID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumDisapproval(vars.visumId)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumDisapproval(vars.visumID)
         },
         'CampTypegetArray': {
             vars: {
@@ -171,7 +171,7 @@ export default defineComponent({
                 id: '',
                 data: ''
             },
-            call: (vars: any) => RepositoryFactory.get(DeadlineRepository).update(vars.url, vars.data)
+            call: (vars: any) => RepositoryFactory.get(DeadlineRepository).updateFlag(vars.deadlineID, vars.url, vars.data)
         },
          'DeadlineGetarray': {
             vars: {
