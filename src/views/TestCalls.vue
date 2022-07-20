@@ -237,6 +237,7 @@ export default defineComponent({
             },
             call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).updateLocationCheck(`checks/camp_location/${vars.checkID}`, [])
         },
+<<<<<<< HEAD
         'addSearchedLocation': {
             vars: {
                 checkID: '',
@@ -257,6 +258,8 @@ export default defineComponent({
             },
             call: (vars: any) => RepositoryFactory.get(LocationRepository).search(vars.query, vars.groupID)
         },
+=======
+>>>>>>> update testcalls
         'searchMembers': {
             vars: {
                 query: '', 
