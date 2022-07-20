@@ -306,14 +306,6 @@ export default defineComponent({
             },
             call: (vars: any) => RepositoryFactory.get(ParticipantCheckRepository).toggleHasPaid(vars.checkId, vars.wrapperParticipantId) 
         },
-         'ParticipantSearch': {
-            vars: {
-                query: '', 
-                groupID: '', 
-                filter: ''
-            },
-            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).search(vars.query, vars.groupID, vars.filter)
-        },
         'ParticipantCreate':  {
             vars: {
                 data: '', 
