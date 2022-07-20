@@ -366,12 +366,6 @@ export default defineComponent({
             },
             call: (vars: any) => RepositoryFactory.get(FileRepository).search(vars.term, vars.groupID)
         },
-         'fileGetById': {
-            vars: {
-                fileID: ''
-            },
-            call: (vars: any) => RepositoryFactory.get(FileRepository).getById(vars.fileID)
-        },
         'uploadFile': {
             vars: {
                 file: ''
