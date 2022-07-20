@@ -268,7 +268,7 @@ export default defineComponent({
                 groupID: '', 
                 filter: ''
             },
-            call: (vars: any) => RepositoryFactory.get(MemberRepository).search(vars.query, vars.groupID, vars.filter)
+            call: (vars: any) => RepositoryFactory.get(MemberRepository).search(vars.query, '',vars.filter, vars.groupID,)
         },
         'updateNumberCheck': {
             vars: {
