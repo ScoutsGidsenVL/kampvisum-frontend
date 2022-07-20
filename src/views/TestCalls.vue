@@ -321,9 +321,21 @@ export default defineComponent({
         },
          'SectionCreate':  {
             vars: {
-                data: '', 
+                groupID: '', 
+                sectioName: ''
             },
-            call: (vars: any) => RepositoryFactory.get(SectionsRepository).create(vars.data)
+            call: (vars: any) => {
+                const data = {
+                    "name": {
+                        "id": "",
+                        "name": vars.sectioName,
+                        "ageGroup": "10",
+                        "gender": "M"
+                    },
+                    "groupAdminId": vars.groupID
+                }
+                RepositoryFactory.get(SectionsRepository).create(data)
+            }
         },
         'SectionUpdate':  {
             vars: {

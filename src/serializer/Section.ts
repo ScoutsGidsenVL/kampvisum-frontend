@@ -28,6 +28,7 @@ export const SectionDeserializer = (input: any): Section => {
 }
 
 export const SectionSerializer = (input: Section): any => {
+  console.log('SECTION EXAMPLE: ', input)
   const single: any = {
     group_group_admin_id: input.groupAdminId ? input.groupAdminId : undefined,
     group_type: input.groupType ? input.groupType : undefined,
