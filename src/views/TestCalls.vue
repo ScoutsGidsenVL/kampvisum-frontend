@@ -35,6 +35,7 @@ import { ParticipantRepository } from '@/repositories/ParticipantRepository'
 import { SectionsRepository } from '@/repositories/SectionsRepository'
 import { SimpleCheckRepository } from '@/repositories/SimpleCheckRepository'
 import { FileRepository } from '@/repositories/FileRepository'
+import { NumberCheckRepository } from '@/repositories/NumberCheckRepository'
 
 export default defineComponent({
   name: 'TestVCalls',
@@ -68,32 +69,43 @@ export default defineComponent({
             vars: {
                 campID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).removeById(vars.campID)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).getById(vars.campID)
         },
         'campCreate': {
             vars: {
-                dataObject: ''
+                 name: '',
+                 sectionID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).create(vars.dataObject)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).create({
+                sections: [
+                    vars.sectionID
+                ],
+                name: vars.name
+            })
         },
         'campUpdate': {
             vars: {
                 campID: '',
-                dataObject: ''
+                name: '',
+                sectionID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).update(vars.campID, vars.dataObject)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).update(vars.campID, {
+                sections: [
+                    vars.sectionID
+                ],
+                name: vars.name,
+                camp_types: [
+                    {
+                        "camp_type": "basis"
+                    }
+                ]
+            })
         },
         'getGroupYears' : {
             vars: {
                 groupID: '', 
             },
             call:  (vars: any) => RepositoryFactory.get(CampRepository).getGroupYears(vars.groupID)
-        },
-        'getById': {
-            vars: {
-                campID: '',
-            },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).getById(vars.campID)
         },
         'patchCategoryFeedback': {
             vars: {
@@ -148,10 +160,10 @@ export default defineComponent({
         },
         'CommentCheckUpdate': {
             vars: {
-                url: '',
+                checkID: '',
                 data: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CommentCheckRepository).update(vars.url, vars.data)
+            call: (vars: any) => RepositoryFactory.get(CommentCheckRepository).update(`checks/comment/${vars.checkID}`, vars.data)
         },
         'DeadlineupdateFlag': {
             vars: {
@@ -169,30 +181,42 @@ export default defineComponent({
         },
         'DurationDateCheckUpdate': {
             vars: {
-                url: '',
-                data: ''
+                id: ''
             },
-            call: (vars: any) => RepositoryFactory.get(DurationDateCheckRepository).update(vars.url, vars.data)
+            call: (vars: any) => RepositoryFactory.get(DurationDateCheckRepository).update(`checks/duration/${vars.id}`, [
+                "2022-07-04",
+                "2022-07-07"
+            ])
         },
         'EngagementGetById': {
             vars: {
                 visumID: '',
-                data: ''
             },
             call: (vars: any) => RepositoryFactory.get(EngagementRepository).getById(vars.visumID)
         },
          'signVisum': {
             vars: {
-                dataObject: '',
+                engagementID: '',
             },
-            call: (vars: any) => RepositoryFactory.get(EngagementRepository).getById(vars.dataObject)
+            call: (vars: any) => RepositoryFactory.get(EngagementRepository).signVisum({id: vars.engagementID})
         },
           'FileCheckUpdate': {
             vars: {
-                url: '',
-                data: ''
+                checkID: '',
+                fileID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(FileCheckRepository).update(vars.url, vars.data)
+            call: (vars: any) => RepositoryFactory.get(FileCheckRepository).update(`checks/file/${vars.checkID}`, [
+                {
+                    id: vars.fileID,
+                    contentType: "image/jpeg",
+                    url: "http://minio:9000/kampvisum-api/febbb6b6-94a6-43c3-a1b4-8a1f7ace19b9/101-2621x1747.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minio%2F20220720%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20220720T072111Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c27f981fb5c1c260cb9c3dcc4bcc2c611bc6b18960afb9d412b96d77226efaf4",
+                    name: "101-2621x1747.jpeg",
+                    //@ts-ignore
+                    size: 322659,
+                    createdOn: "2022-07-20T07:21:11.207136Z",
+                    isChecked: true
+                }
+            ])
         },
            'removeFileFromList': {
             vars: {
@@ -214,7 +238,7 @@ export default defineComponent({
             },
             call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).updateLocationCheck(vars.url, vars.data)
         },
-        'addSearched': {
+        'addSearchedLocation': {
             vars: {
                 url: ''
             },
@@ -248,10 +272,10 @@ export default defineComponent({
         },
         'updateNumberCheck': {
             vars: {
-                url: '',
-                data: ''
+                checkID: '',
+                number: ''
             },
-            call: (vars: any) => RepositoryFactory.get(MemberRepository).update(vars.url, vars.data) 
+            call: (vars: any) => RepositoryFactory.get(NumberCheckRepository).update(`checks/number/${vars.checkID}`, vars.number) 
         },
         'updateParticipant': {
             vars: {
@@ -304,9 +328,16 @@ export default defineComponent({
         'SectionUpdate':  {
             vars: {
                 id: '',
-                data: '', 
+                groupID: '', 
             },
-            call: (vars: any) => RepositoryFactory.get(SectionsRepository).update(vars.id, vars.data)
+            call: (vars: any) => RepositoryFactory.get(SectionsRepository).update(vars.id, {
+                "group_group_admin_id": vars.groupID,
+                "name": {
+                    "name": "givers",
+                    "gender": "I",
+                    "age_group": 8
+                }
+            })
         },
          'SectionRemove':  {
             vars: {
@@ -316,10 +347,12 @@ export default defineComponent({
         },
           'SimpleCheckUpdate':  {
             vars: {
-                url: '',
-                data: ''
+                checkID: '',
             },
-            call: (vars: any) => RepositoryFactory.get(SimpleCheckRepository).update(vars.url, vars.data)
+            call: (vars: any) => RepositoryFactory.get(SimpleCheckRepository).update(`checks/simple/${vars.checkID}`, {
+                "id": vars.checkID,
+                "value": "CHECKED"
+            })
         },
         'searchFiles': {
             vars: {
