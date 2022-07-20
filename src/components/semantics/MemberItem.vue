@@ -22,7 +22,7 @@
       <div v-if="(check.checkParent.isMultiple && !checkIfIsMobileSize())" @click="deleteFromList(participant)" class="hover:text-red underline cursor-pointer">
         <i-trash />
       </div>
-      <div v-if="(check.checkParent.name === 'members_leaders_members_members')" class="flex gap-3 items-center">
+      <div v-if="(check.checkParent.name === 'members_leaders_members_members' && false)" class="flex gap-3 items-center">
         <div class="flex gap-2 items-center font-bold">
           <input :disabled="isPatchingPayment"  class="cursor-pointer" :value="true" v-model="participant.hasPaid" type="checkbox" id="paid" name="paid">
           <label class="cursor-pointer m-0" for="paid">{{t('checks.participant-check.paid')}}</label>
