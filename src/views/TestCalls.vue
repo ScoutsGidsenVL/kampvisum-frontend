@@ -221,9 +221,9 @@ export default defineComponent({
            'removeFileFromList': {
             vars: {
                 checkID: '',
-                participantId: ''
+                fileID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(FileCheckRepository).removeFileFromList(vars.url, vars.data)
+            call: (vars: any) => RepositoryFactory.get(FileCheckRepository).removeFileFromList(vars.checkID, vars.fileID)
         },
         'getGroupSections': {
             vars: {
