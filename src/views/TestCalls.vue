@@ -237,6 +237,26 @@ export default defineComponent({
             },
             call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).updateLocationCheck(`checks/camp_location/${vars.checkID}`, [])
         },
+        'addSearchedLocation': {
+            vars: {
+                checkID: '',
+                locationID: ''
+            },
+            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).addSearched(`checks/camp_location/${vars.checkID}`, [vars.locationID])
+        },
+        'getCampLocations': {
+            vars: {
+                filters: ''
+            },
+            call: (vars: any) => RepositoryFactory.get(LocationRepository).getCampLocations(vars.url)
+        },
+         'searchCampLocations': {
+            vars: {
+                query: '',
+                groupID: ''
+            },
+            call: (vars: any) => RepositoryFactory.get(LocationRepository).search(vars.query, vars.groupID)
+        },
         'searchMembers': {
             vars: {
                 query: '', 
