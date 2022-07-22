@@ -213,7 +213,7 @@ export default defineComponent({
 
     const options = ref<option[]>([
       { text: 'Nieuw', value: 'new' },
-      // { text: 'Zoek', value: 'search' },
+      { text: 'Zoek', value: 'search' },
     ])
 
     const changeSideBar = (options: 'newLocationSidebar' | 'searchLocationSidebar') => {
