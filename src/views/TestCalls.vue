@@ -239,9 +239,10 @@ export default defineComponent({
         },
         'addSearchedLocation': {
             vars: {
-                url: ''
+                checkID: '',
+                locationID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).addSearched(vars.url)
+            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).addSearched(`checks/camp_location/${vars.checkID}`, [vars.locationID])
         },
         'getCampLocations': {
             vars: {
@@ -251,9 +252,10 @@ export default defineComponent({
         },
          'searchCampLocations': {
             vars: {
-                query: ''
+                query: '',
+                groupID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(LocationRepository).search(vars.query)
+            call: (vars: any) => RepositoryFactory.get(LocationRepository).search(vars.query, vars.groupID)
         },
         'searchMembers': {
             vars: {

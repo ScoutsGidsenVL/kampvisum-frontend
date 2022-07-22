@@ -10,8 +10,8 @@ export class LocationRepository extends BaseRepository {
   deserializer = undefined
   serializer = undefined
 
-  search(query: string): Promise<any> {
-    return this.get(`${this.endpoint}?term=${query}&group=${selectedGroup.value.groupAdminId}`, {}).then((response: any) => {
+  search(query: string, group ?:string): Promise<any> {
+    return this.get(`${this.endpoint}?term=${query}&group=${group ? group : selectedGroup.value.groupAdminId}`, {}).then((response: any) => {
       const array: any[] = []
       response.results.forEach((result: any) => {
         result = PostLocationDeserializer(result)
