@@ -242,7 +242,7 @@ export default defineComponent({
                 checkID: '',
                 locationID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).addSearched(`checks/camp_location/${vars.checkID}`, [{id: vars.locationID}])
+            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).addSearched(`checks/camp_location/${vars.checkID}`, [vars.locationID])
         },
         'getCampLocations': {
             vars: {
