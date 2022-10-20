@@ -5,6 +5,7 @@ import { Visum, VisumDeserializer } from '@/serializer/Visum'
 import { useInternetHelper } from '@/helpers/internetHelper'
 import { useOfflineData } from '@/composable/useOfflineData'
 import useGroupAndYears from '@/composable/useGroupAndYears'
+import { ref } from 'vue'
 
 export class CampRepository extends BaseRepository {
   id = '/camps/'
@@ -51,9 +52,17 @@ export class CampRepository extends BaseRepository {
     const { isInternetActive } = useInternetHelper()
 
     if (isInternetActive.value) {
-      return this.get(this.id + groupId + '/years/', {}).then((response: []) => {
-        // updateYears(response)
-        return response
+      return this.get('/camp_years/', {}).then((response: { results: []}) => {
+        const years = ref<Array<number>>([])
+        response.results.forEach((year: Year) => {
+          var ToDate = new Date();
+          if (new Date(year.start_date).getTime() >= ToDate.getTime()){
+            years.value.push(year.year);
+          } else {
+            years.value.unshift(year.year);
+          }
+        })
+        return years.value
       })
     } else {
       return new Promise<Array<number>>((resolve, reject): void => {
@@ -124,4 +133,15 @@ export class CampRepository extends BaseRepository {
     })
   }
 
+}
+
+export interface Year {
+  id: string;
+  year: number;
+  start_date: string;
+  end_date: string;
+  created_on: Date;
+  updated_on: Date;
+  created_by?: any;
+  updated_by?: any;
 }
