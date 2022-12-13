@@ -48,7 +48,7 @@ export class CampRepository extends BaseRepository {
   }
 
   getGroupYears(groupId: string): Promise<any> {
-    const { getYears } = useOfflineData()
+    const { getYears, updateYears } = useOfflineData()
     const { isInternetActive } = useInternetHelper()
     const { isInBetweenStartAndEnd } = useGroupAndYears()
 
@@ -62,6 +62,7 @@ export class CampRepository extends BaseRepository {
             years.value.unshift(year.year);
           }
         })
+        updateYears([...years.value]);
         return years.value
       })
     } else {

@@ -7,7 +7,7 @@
       {{ getSectionsTitle(visum.camp) }}
     </h4>
 
-    <div v-if="isInternetActive && false">
+    <div v-if="isInternetActive">
       <div v-if="!idbVisum" class="mt-3 bg-orange hover:bg-lightOrange text-center py-2 cursor-pointer">
         <div @click="setVisumOffline()">{{t('passport.download-camp-offline')}}</div>
       </div>

@@ -26,11 +26,11 @@ export const useInternetHelper = (): {
       })
     }
     
-    // checkInternet()
+    checkInternet()
 
-    // setInterval(() => {
-    //   checkInternet()
-    // }, 5000);
+    setInterval(() => {
+      checkInternet()
+    }, 5000);
   }
 
   return {

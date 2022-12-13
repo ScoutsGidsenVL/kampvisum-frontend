@@ -18,9 +18,9 @@ import { useOfflineData } from './composable/useOfflineData'
 const nl = require('./locales/nl.json')
 const { isInternetActive } = useInternetHelper()
 const isOnline = require('is-online')
-// const { initDb } = useOfflineData()
+const { initDb } = useOfflineData()
 
-// initDb()
+initDb()
 
 isOnline().then((isOnlineResult: any) => {
   isInternetActive.value = isOnlineResult

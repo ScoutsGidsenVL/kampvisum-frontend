@@ -35,8 +35,8 @@ export const useOfflineData = (): {
   }
 
   const updateYears = (years: Array<number>) => {
-    console.log(`${tag} updating years...`)
-    db.collection('years').doc(`1`).set({ id: 1, value: years})
+    console.log(`${tag} updating years...`, years)
+    db.collection('years').doc(`1`).set({ id: 1, value: years })
   }
 
   const updateVisum = (visum: Visum): Promise<Visum> => {
