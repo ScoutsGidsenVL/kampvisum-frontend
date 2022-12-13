@@ -15,6 +15,7 @@
               </g>
             </svg>
             <span class="ml-1 d-none d-lg-inline-block">Home</span>
+            <span v-if="selectedYear" class="ml-1 d-none d-lg-inline-block">({{selectedYear}})</span>
           </a>
         </li>
         <!-- CRUMBS -->
@@ -105,6 +106,7 @@ export default defineComponent({
       breadcrumbs,
       navigateHome,
       navigateToCrumb,
+      selectedYear
     }
   },
 })

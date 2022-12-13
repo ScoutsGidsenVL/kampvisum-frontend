@@ -58,9 +58,7 @@ const useGroupAndYears = (): {
 
   const setSelectedGroup = (group: Group, backToHome: boolean = true) => {
     selectedGroup.value = group
-    //If group changes reset year, visums an go to home
-    years.value = []
-    selectedYear.value = ''
+    getVisums(selectedGroup.value, selectedYear.value)
     return group
   }
 
