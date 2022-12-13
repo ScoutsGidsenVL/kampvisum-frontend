@@ -4,6 +4,7 @@ import { Group } from '@/serializer/Group'
 import { ref, Ref, watch } from 'vue'
 import store from '../store/store'
 import useVisum from './useVisum'
+const { DateTime } = require("luxon");
 
 const years = ref<Array<string>>([])
 const isFetchingYears = ref<boolean>(false)
@@ -21,6 +22,7 @@ const useGroupAndYears = (): {
   selectedGroup: Ref<Group>
   getAvailableGroups: () => Group[]
   getPermissions: () => any[]
+  isInBetweenStartAndEnd: (start: string, end: string) => Boolean
 } => {
   const { getVisums, clearVisums } = useVisum()
 
@@ -92,6 +94,15 @@ const useGroupAndYears = (): {
     return store.getters.user.permissions as any[]
   }
 
+  const isInBetweenStartAndEnd = (start: string, end: string): boolean =>  {
+    var date = DateTime.fromFormat(new Date().toString(), 'yyyy-MM-dd')
+    if (date > start && date < end) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return {
     years,
     selectedYear,
@@ -101,7 +112,8 @@ const useGroupAndYears = (): {
     isFetchingYears,
     selectedGroup,
     setSelectedGroup,
-    getPermissions
+    getPermissions,
+    isInBetweenStartAndEnd
   }
 }
 

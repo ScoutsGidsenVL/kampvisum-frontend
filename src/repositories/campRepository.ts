@@ -48,15 +48,15 @@ export class CampRepository extends BaseRepository {
   }
 
   getGroupYears(groupId: string): Promise<any> {
-    const { updateYears, getYears } = useOfflineData()
+    const { getYears } = useOfflineData()
     const { isInternetActive } = useInternetHelper()
+    const { isInBetweenStartAndEnd } = useGroupAndYears()
 
     if (isInternetActive.value) {
       return this.get('/camp_years/', {}).then((response: { results: []}) => {
         const years = ref<Array<number>>([])
         response.results.forEach((year: Year) => {
-          var ToDate = new Date();
-          if (new Date(year.start_date).getTime() >= ToDate.getTime()){
+          if (isInBetweenStartAndEnd(year.start_date, year.end_date)){
             years.value.push(year.year);
           } else {
             years.value.unshift(year.year);
