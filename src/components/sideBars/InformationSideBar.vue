@@ -50,6 +50,7 @@
 import { SidebarState, useInfoBarHelper } from '@/helpers/infoBarHelper'
 import IInfoGreen from '../icons/IInfoGreen.vue'
 import { defineComponent } from 'vue'
+import { usePhoneHelper } from '@/helpers/phoneHelper'
 
 export default defineComponent({
   name: 'InformationSideBar',
@@ -60,7 +61,7 @@ export default defineComponent({
     isOverflowHidden: Boolean,
   },
   setup() {
-    const { info, setInfo, sidebar } = useInfoBarHelper()
+    const { info, setInfo, sidebar, defaultInfo } = useInfoBarHelper()
 
     const closeSideBar: () => void = () => {
       setInfo()
@@ -73,6 +74,13 @@ export default defineComponent({
 
     if (info.value) {
       closeSideBar()
+    }
+
+    const { checkIfIsMobileSize } = usePhoneHelper()
+
+
+    if (info.value !== defaultInfo.value && !checkIfIsMobileSize()) {
+      openSideBar()
     }
 
     return {
