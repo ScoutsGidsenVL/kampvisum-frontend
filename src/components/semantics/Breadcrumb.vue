@@ -1,7 +1,7 @@
 <template>
   <nav role="navigation" aria-labelledby="system-breadcrumb" class="breadcrumb-wrapper__nav">
     <h2 id="system-breadcrumb" class="visually-hidden">Kruimelpad</h2>
-    <ol class="flex justify-between">
+    <ol class="flex justify-between align-items-center" style="margin-block-end: 0em;">
       <div class="breadcrumb text-sm mt-1">
         <!-- HOME -->
         <li class="breadcrumb-item cursor-pointer" @click="navigateHome()">

@@ -246,7 +246,7 @@ export default defineComponent({
 <style lang="scss">
 /* width */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6.5px;
   padding-left: 20px;
 }
 

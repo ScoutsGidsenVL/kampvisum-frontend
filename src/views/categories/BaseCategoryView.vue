@@ -1,12 +1,12 @@
 <template>
   <div v-if="category && visum && !isForbidden" class="flex w-100 -mt-3">
     <div class="w-100">
-      <div class="sticky bg-white z-30" style="top: 81px">
+      <div class="sticky bg-white z-30">
         <page-header :title="category.categoryParent.label" :subTitle="visum.camp.name" />
       </div>
 
       <div v-if="category && visum" class="w-100 flex pt-3">
-        <div class="w-100 pt-3 pr-3 pb-3">
+        <div class="w-100 md:pt-3 pr-3 pb-3">
           <div v-for="subCategory in category.subCategories" :key="subCategory">
             <base-subcategory-card @rl="rl($event)" :visum="visum" class="mb-3" :subCategory="subCategory" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
           </div>

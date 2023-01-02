@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <!-- DUMMY NEEDS TO GET REMOVED AND IS ONLY FOR STYLING PURPOSES -->
-    <scouts-dummy-bar />
+    <scouts-dummy-bar v-show="!checkIfIsMobileSize()" />
     <base-page class="scouts-bar-padding">
       <div>
-        <div class="sticky top-0 pl-4 py-2 bg-white z-41 border border-lightGray">
+        <div class="sticky top-0 pl-4 bg-white z-41 border border-lightGray">
           <bread-crumb :isInternetActive="isInternetActive" class="md:px-5 md:mx-3" :home="'/kampvisum-home/'" :router="router" :route="route" />
         </div>
         <div class="d-flex">
@@ -33,6 +33,7 @@ import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 import CustomFooter from './components/semantics/CustomFooter.vue'
+import { usePhoneHelper } from './helpers/phoneHelper'
 
 export default defineComponent({
   name: 'App',
@@ -52,10 +53,13 @@ export default defineComponent({
 
     defineRules()
 
+    const { checkIfIsMobileSize } = usePhoneHelper()
+
     return {
       isInternetActive,
       router,
       route,
+      checkIfIsMobileSize
     }
   },
 })
