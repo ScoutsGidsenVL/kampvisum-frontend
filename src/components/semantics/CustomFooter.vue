@@ -19,6 +19,12 @@
                     >info@scoutsengidsenvlaanderen.be</a
                   ><br /><a href="tel:+32 3 231 16 20">+32 3 231 16 20</a>
                 </p>
+                <custom-button 
+                  class="mt-2 w-100 bg-green cursor-pointer" 
+                  @click.stop="navigate()" 
+                  :extraStyle="'w-100'" 
+                  :text="t('contact')">
+                </custom-button>
               </div>
             </div>
           </div>
@@ -96,14 +102,32 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { CustomButtonSmall } from 'vue-3-component-library'
+
 const { DateTime } = require("luxon");
 
 export default defineComponent({
   name: 'CustomFooter',
+  components: {
+    'custom-button': CustomButtonSmall,
+  },
   setup () {
     const currentYear = ref<string>(DateTime.now().toFormat('yyyy'))  
+      const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
+
+
+    const navigate = () => {
+      window.open(
+            "https://www.scoutsengidsenvlaanderen.be/contact", "_blank");
+    }
     return {
-      currentYear
+      currentYear,
+      t,
+      navigate
     }
   }
 })
