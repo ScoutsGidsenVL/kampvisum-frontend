@@ -31,7 +31,7 @@
 
     <div class="flex flex-column">
       <!-- engagement -->
-      <div class="md:w-1/3 xs:w-96 bg-lighterGreen mt-3 p-3 shadow-md">
+      <div class="md:w-1/3 xs:w-80 bg-lighterGreen mt-3 p-3 shadow-md">
         <h1 class="text-xl mb-0 mt-0">{{t('engagement.title')}}</h1>
 
         <div class="mt-3 flex gap-2 flex-col">
@@ -61,7 +61,7 @@
         </div>
       </div>
 
-      <div class="mt-3 md:w-1/3 xs:w-96">
+      <div class="mt-3 md:w-1/3 xs:w-80">
         <dc-notes v-if="selectedGroup.isDistrictCommissioner" :visum="visum" />
       </div>
     </div>
