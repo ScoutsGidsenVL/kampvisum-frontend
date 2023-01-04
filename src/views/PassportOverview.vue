@@ -27,8 +27,12 @@
     <passport-overview-item :title="t('passport.members')" :navText="'Alle leden'" :navUrl="'leden'" :visum="visum" />
 
     <div class="border border-lightGray p-3 flex gap-2 items-center mt-3">
-      <i-phone-green />
-      <a href="tel: +3232311620">+32 3 231 16 20</a>
+      <custom-button 
+        class="mt-2 w-100 bg-green cursor-pointer" 
+        @click.stop="navigate()" 
+        :extraStyle="'w-100'" 
+        :text="t('contact')">
+      </custom-button>
     </div>
   </div>
 </template>
@@ -49,9 +53,11 @@ import { SubCategory } from '@/serializer/SubCategory'
 import { Check } from '@/serializer/Check'
 const { DateTime } = require("luxon");
 import axios from 'axios'
+import { CustomButtonSmall } from 'vue-3-component-library'
 
 export default defineComponent({
-  components: {PassportOverviewItem, IPhoneGreen, ITime},
+  components: {
+    PassportOverviewItem, IPhoneGreen, ITime, 'custom-button': CustomButtonSmall},
   name: 'PassportOverview',
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
@@ -88,6 +94,11 @@ export default defineComponent({
       } else {
         remainingDays.value = ''
       }
+    }
+
+    const navigate = () => {
+      window.open(
+            "https://www.scoutsengidsenvlaanderen.be/contact", "_blank");
     }
 
     const setVisumOffline = () => {
@@ -160,7 +171,8 @@ export default defineComponent({
       idbVisum,
       isInternetActive,
       syncVisumOffline,
-      isObjEq
+      isObjEq,
+      navigate
     }
   },
 })
