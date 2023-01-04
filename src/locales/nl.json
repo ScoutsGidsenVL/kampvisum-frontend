@@ -104,7 +104,12 @@
         "search-addres": "Zoek adres",
         "main-location": "Geselecteerde locatie",
         "add": "Voeg toe",
-        "notification-patched": "kamp is succesvol bewerkt"
+        "notification-patched": "kamp is succesvol bewerkt",
+        "country": "Land",
+        "postalcode": "Postcode",
+        "township": "Gemeente",
+        "street": "Straat",
+        "houseNumber": "Huisnummer"
       }
     },
     "participant-sidebar": {

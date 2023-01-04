@@ -43,8 +43,8 @@
               </div>
             </div>
           </div>
-
-          <search-input
+          <!-- SEARCH -->
+          <!-- <search-input
             :disabled="values.locations.length !== 0"
             :loadingSubmit="patchLoading"
             v-model:loading="loading"
@@ -52,7 +52,60 @@
             :placeholder="t('sidebars.location-sidebar.form.search-map')"
             :repository="LocationSearchRepository"
             @fetchedOptions="fetchedSearchResults($event)"
-          />
+          /> -->
+
+          <!-- ADRESS FORM -->
+          <div>
+            <custom-input
+              :disabled="patchLoading"
+              :type="InputTypes.TEXT"
+              :rules="'required'"
+              name="country"
+              :label="t('sidebars.location-sidebar.form.country')"
+            />
+            <div class="flex justify-between gap-2">
+              <div class="w-50">
+                <custom-input
+                  :disabled="patchLoading"
+                  :type="InputTypes.TEXT"
+                  :rules="returnRequiredIfBelgium()"
+                  name="postalcode"
+                  :label="t('sidebars.location-sidebar.form.postalcode')"
+                />
+              </div>
+              <div class="w-100">
+                <custom-input
+                  :disabled="patchLoading"
+                  :type="InputTypes.TEXT"
+                  :rules="'required'"
+                  name="township"
+                  :label="t('sidebars.location-sidebar.form.township')"
+                />
+              </div>
+            </div>
+
+            <div class="flex justify-between gap-2">
+              <div class="w-100">
+                <custom-input
+                  :disabled="patchLoading"
+                  :type="InputTypes.TEXT"
+                  :rules="'required'"
+                  name="street"
+                  :label="t('sidebars.location-sidebar.form.street')"
+                />
+              </div>
+              <div class="w-25">
+                <custom-input
+                  :disabled="patchLoading"
+                  :type="InputTypes.TEXT"
+                  :rules="''"
+                  name="houseNumber"
+                  :label="t('sidebars.location-sidebar.form.houseNumber')"
+                />
+              </div>
+            </div>
+          </div>
+
           <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-36 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
             <div
               v-for="(fetchedLocation, index) in fetchedLocationsToSelect"
@@ -241,6 +294,7 @@ export default defineComponent({
     init.value.centerLatLon = [props.check.value.centerLatitude, props.check.value.centerLongitude]
     if (sideBarState.value.state === 'new') {
       init.value.locations = []
+      init.value.country = 'Belgie'
     }
     if (sideBarState.value.state === 'edit') {
       init.value.locations = []
@@ -249,8 +303,9 @@ export default defineComponent({
       init.value.contactPhone = sideBarState.value.entity.contactPhone
       init.value.contactEmail = sideBarState.value.entity.contactEmail
       init.value.locations = sideBarState.value.entity.locations
+      init.value.country = 'Belgie'
     }
-    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<PostLocation>({
+    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<any>({
       initialValues: { ...init.value },
     })
     // -------------------------------------------------
@@ -383,6 +438,15 @@ export default defineComponent({
       values.locations = []
     }
 
+    const returnRequiredIfBelgium = () => {
+      const val = values.country;
+      if (val === 'belgie' || val === 'belgium' || val === 'België') {
+        return 'required'
+      } else {
+        return ''
+      }
+    }
+
     return {
       fetchedSearchResultsExistingLocations,
       LocationSearchRepository,
@@ -412,7 +476,8 @@ export default defineComponent({
       check,
       init,
       t,
-      clearLocation
+      clearLocation,
+      returnRequiredIfBelgium
     }
   },
 })

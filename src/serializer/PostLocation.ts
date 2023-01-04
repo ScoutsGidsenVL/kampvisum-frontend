@@ -12,6 +12,7 @@ export interface PostLocation {
   centerLongitude: number
   centerLatLon: Array<number>
   isChecked?: boolean
+  country: string
 }
 
 export const PostLocationDeserializer = (input: any): PostLocation => {
@@ -25,7 +26,8 @@ export const PostLocationDeserializer = (input: any): PostLocation => {
     zoom: input.zoom ? input.zoom : 7,
     centerLatitude: input.center_latitude ? input.center_latitude : 50.4956754,
     centerLongitude: input.center_longitude ? input.center_longitude : 3.3452037,
-    centerLatLon: [input.center_latitude ? input.center_latitude : 50.4956754, input.center_longitude ? input.center_longitude : 3.3452037]
+    centerLatLon: [input.center_latitude ? input.center_latitude : 50.4956754, input.center_longitude ? input.center_longitude : 3.3452037],
+    country: 'Belgie'
   }
   return single
 }
