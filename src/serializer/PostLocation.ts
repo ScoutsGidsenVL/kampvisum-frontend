@@ -13,6 +13,10 @@ export interface PostLocation {
   centerLatLon: Array<number>
   isChecked?: boolean
   country: string
+  postalcode: string
+  township: string
+  street: string
+  houseNumber: string
 }
 
 export const PostLocationDeserializer = (input: any): PostLocation => {
@@ -27,7 +31,11 @@ export const PostLocationDeserializer = (input: any): PostLocation => {
     centerLatitude: input.center_latitude ? input.center_latitude : 50.4956754,
     centerLongitude: input.center_longitude ? input.center_longitude : 3.3452037,
     centerLatLon: [input.center_latitude ? input.center_latitude : 50.4956754, input.center_longitude ? input.center_longitude : 3.3452037],
-    country: 'Belgie'
+    country: 'Belgie',
+    postalcode: '',
+    township: '',
+    street: '',
+    houseNumber: ''
   }
   return single
 }

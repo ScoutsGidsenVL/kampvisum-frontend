@@ -24,7 +24,6 @@ export const ResponsibleMemberDeserializer = (input: any): ResponsibleMember => 
     scoutsGroups: input.scouts_group ? input.scouts_groups.map((group: any) => GroupDeserializer(group)) : undefined,
     permissions: input.user_permissions ? input.user_permissions : []
   }
-  console.log('SUNGLE USER: ', single)
   return single
 }
 

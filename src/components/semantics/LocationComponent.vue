@@ -99,7 +99,7 @@ export default defineComponent({
       // setTimeout(() => {
       //   isReloading.value = false
       // }, 1)
-      console.log('reload component...')
+      // console.log('reload component...')
     }
 
     watch(

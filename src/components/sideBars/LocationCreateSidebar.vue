@@ -57,6 +57,7 @@
           <!-- ADRESS FORM -->
           <div>
             <custom-input
+              @keyup="performPhotonSearch()"
               :disabled="patchLoading"
               :type="InputTypes.TEXT"
               :rules="'required'"
@@ -64,8 +65,9 @@
               :label="t('sidebars.location-sidebar.form.country')"
             />
             <div class="flex justify-between gap-2">
-              <div class="w-50">
+              <div class="w-50" :class="returnRequiredIfBelgium() ? '' : 'mt-2'">
                 <custom-input
+                  @keyup="performPhotonSearch()"
                   :disabled="patchLoading"
                   :type="InputTypes.TEXT"
                   :rules="returnRequiredIfBelgium()"
@@ -75,6 +77,7 @@
               </div>
               <div class="w-100">
                 <custom-input
+                  @keyup="performPhotonSearch()"
                   :disabled="patchLoading"
                   :type="InputTypes.TEXT"
                   :rules="'required'"
@@ -87,6 +90,7 @@
             <div class="flex justify-between gap-2">
               <div class="w-100">
                 <custom-input
+                  @keyup="performPhotonSearch()"
                   :disabled="patchLoading"
                   :type="InputTypes.TEXT"
                   :rules="'required'"
@@ -94,8 +98,9 @@
                   :label="t('sidebars.location-sidebar.form.street')"
                 />
               </div>
-              <div class="w-25">
+              <div class="w-25 mt-2">
                 <custom-input
+                  @keyup="performPhotonSearch()"
                   :disabled="patchLoading"
                   :type="InputTypes.TEXT"
                   :rules="''"
@@ -304,6 +309,10 @@ export default defineComponent({
       init.value.contactEmail = sideBarState.value.entity.contactEmail
       init.value.locations = sideBarState.value.entity.locations
       init.value.country = 'Belgie'
+      init.value.postalcode = ''
+      init.value.township = ''
+      init.value.street = ''
+      init.value.houseNumber = ''
     }
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<any>({
       initialValues: { ...init.value },
@@ -439,12 +448,18 @@ export default defineComponent({
     }
 
     const returnRequiredIfBelgium = () => {
-      const val = values.country;
+      const val = values.country.toLowerCase();
       if (val === 'belgie' || val === 'belgium' || val === 'België') {
         return 'required'
       } else {
         return ''
       }
+    }
+
+    const performPhotonSearch = () => {
+      const v = values;
+      const searchString = `${v.country} ${v.postalcode} ${v.township} ${v.street} ${v.houseNumber}`;
+      console.log('SEARCHING...', searchString);
     }
 
     return {
@@ -477,7 +492,8 @@ export default defineComponent({
       init,
       t,
       clearLocation,
-      returnRequiredIfBelgium
+      returnRequiredIfBelgium,
+      performPhotonSearch
     }
   },
 })

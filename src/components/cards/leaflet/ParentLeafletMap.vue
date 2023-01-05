@@ -219,7 +219,6 @@ export default defineComponent({
     const init = () => {
       setTimeout(() => {
         if (myMap.value && myMap.value.leafletObject && myMap.value.leafletObject.fitBounds ) {
-          console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
           // doMapStuff()
         } else {
           init()

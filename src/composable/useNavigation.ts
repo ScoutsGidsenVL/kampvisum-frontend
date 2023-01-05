@@ -59,8 +59,6 @@ export const useNavigation = (): {
   }
 
   const goToHome = () => {
-    // router.push('/kampvisum-home')
-    console.log('Going to home...')
     window.location.pathname = '/'
   }
 

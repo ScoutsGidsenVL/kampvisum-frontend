@@ -70,7 +70,6 @@ export const CheckDeserializer = (input: any): Check => {
     }
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.CampLocationCheck) 
   {
-    console.log('single:', single)
     //REFACTOR TO DESERIALIZER
     let arr: Array<any> = []
     input.value.locations.forEach((x:any) => {

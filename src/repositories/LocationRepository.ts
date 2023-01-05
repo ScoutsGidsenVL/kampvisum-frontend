@@ -22,7 +22,6 @@ export class LocationRepository extends BaseRepository {
   }
 
   getCampLocations(filters: LocationFilter): Promise<any> {
-    console.log('FILTERS: ', filters)
     let filterParams = {}
 
     if (filters.year) {

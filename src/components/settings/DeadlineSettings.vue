@@ -39,10 +39,10 @@ export default defineComponent({
 
     const actionSuccess = (action: string) => {
       if (action === 'POST') {
-        console.log('Kamp is succesvol aangemaakt')
+        // console.log('Kamp is succesvol aangemaakt')
       }
       if (action === 'UPDATE') {
-        console.log('Kamp is succesvol bewerkt')
+        // console.log('Kamp is succesvol bewerkt')
       }
       // get deadlines again to update the data in the sidebar
     }
