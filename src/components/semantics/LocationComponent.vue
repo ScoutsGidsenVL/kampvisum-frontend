@@ -15,7 +15,7 @@
       <div v-for="(location) in check.value.locations" :key="location">
         <div @click="centerInChildComponent(subLocation)" class="md:border-b-2 hover:text-green cursor-pointer bg-white" v-for="(subLocation) in location.locations" :key="subLocation">
           <div class="p-2.5 flex items-center gap-3">
-            <i-marker /> ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ subLocation.address }}
+            <i-marker /> ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ `${subLocation.country} ${subLocation.postalcode} ${subLocation.township} ${subLocation.street} ${subLocation.houseNumber}` }}
           </div>
         </div>
       </div>

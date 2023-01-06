@@ -6,7 +6,7 @@
       <!-- <div v-if="location.isMainLocation" class="font-bold text-sm text-white bg-lightGreen m-0 rounded-full px-2 h-5">{{t('checks.location-check.main-location')}}</div> -->
     </div>
     <div class="pb-3">
-      <a class="text-sm" target="_blank" :href="'https://www.google.com/maps?q=' + location.address">{{ location.address }}</a>  
+      <a class="text-sm" target="_blank" :href="'https://www.google.com/maps?q=' + `${location.country} ${location.postalcode} ${location.township} ${location.street} ${location.houseNumber}`">{{ `${location.country} ${location.postalcode} ${location.township} ${location.street} ${location.houseNumber}` }}</a>  
     </div>    
     <div v-if="parentLocation.contactName || parentLocation.contactPhone || parentLocation.contactEmail" class="bg-lighterGreen py-2 px-1 border-l-2 border-green flex flex-col gap-2">
       <div v-if="parentLocation.contactName" class="flex gap-3 items-center">

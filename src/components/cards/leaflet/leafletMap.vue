@@ -39,10 +39,6 @@
                 <input type="text" id="name" name="name" v-model="searchedLocation.name" class="bg-lightGray p-2 min-w-0 w-100">
               </div>
 
-              <div>
-                {{searchedLocation.address}}
-              </div>
-
               <div class="flex justify-between">
                 <div @click="addLocationPoint()" class="flex gap-3 text-lightGreen cursor-pointer">
                   <div class="underline">Voeg toe</div>
@@ -61,7 +57,7 @@
       </div>
 
       <div v-for="(sL, index) in searchedLocations" :key="sL">
-        <l-marker :lat-lng="sL.latLon">
+        <l-marker :lat-lng="sL.latLon" draggable="true" @move="setCoords($event, sL)">
           <l-icon>
             <svg width="30" height="30" style="margin-left: -14px;margin-top: -30px" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18.875 9.41675C18.875 16.7084 9.5 22.9584 9.5 22.9584C9.5 22.9584 0.125 16.7084 0.125 9.41675C0.125 6.93034 1.11272 4.54578 2.87087 2.78762C4.62903 1.02947 7.0136 0.041748 9.5 0.041748C11.9864 0.041748 14.371 1.02947 16.1291 2.78762C17.8873 4.54578 18.875 6.93034 18.875 9.41675Z" fill="#7B8F1C"/>
@@ -82,13 +78,13 @@
                 <label @click="checkMainLocation(index)" class="cursor-pointer mt-2.5" for="name">Hoofdlocatie</label>
               </div>
 
-              <div class="mt-2">
+              <!-- <div class="mt-2">
                 {{ sL.address }}
-              </div>
+              </div> -->
 
-              <div class="text-red underline mt-3">
+              <!-- <div class="text-red underline mt-3">
                 <span class="cursor-pointer" @click="sL.isMainLocation && false ? displayWarning() : deleteLocationPoint(index)">Verwijder</span>
-              </div>
+              </div> -->
             </div>
           </l-popup>
         </l-marker>
@@ -266,6 +262,10 @@ export default defineComponent ({
     setTimeout(() => {
       doMapStuff()
     }, 1)
+
+    const setCoords = (coords: any, sL: any) => {
+      sL.latLon = [coords.latlng.lat,coords.latlng.lng]
+    }
     return {
       centerClickedLocation,
       deleteMainLocationPoint,
@@ -283,7 +283,8 @@ export default defineComponent ({
       addOnClick,
       doMapStuff,
       toPatch,
-      myMap2
+      myMap2,
+      setCoords
     }
   }
 })

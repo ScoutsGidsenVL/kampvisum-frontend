@@ -28,7 +28,7 @@
         </div>
 
         <div class="py-4 flex flex-col gap-3 relative">
-          <strong class="m-0 text-lg">{{ t('sidebars.location-sidebar.form.addresses') }}</strong>
+          <!-- <strong class="m-0 text-lg">{{ t('sidebars.location-sidebar.form.addresses') }}</strong>
           <div v-if="searchedLocations.length > 0" class="bg-lighterGreen p-3">
             <div class="flex justify-between">
               <h4 class="">{{ t('sidebars.location-sidebar.form.main-location') }}</h4>
@@ -42,7 +42,7 @@
                 <a class="text-sm italic" target="_blank" :href="'https://www.google.com/maps?q=' + searchedLocation.address">{{ searchedLocation.address }}</a>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- SEARCH -->
           <!-- <search-input
             :disabled="values.locations.length !== 0"
@@ -111,7 +111,11 @@
             </div>
           </div>
 
-          <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-36 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
+          <div class="bg-orange text-white p-1 font-bold">
+            {{ t('sidebars.location-sidebar.move-pin') }}
+          </div>
+
+          <!-- <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-36 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
             <div
               v-for="(fetchedLocation, index) in fetchedLocationsToSelect"
               :key="fetchedLocation"
@@ -125,10 +129,9 @@
                 {{ fetchedLocation.address }}
               </div>
             </div>
-          </div>
+          </div> -->
           <leaflet-map 
           ref="child2"
-          @addOnClick="values.locations.length === 0 ? addOnClick($event) : null" 
           @deleteLocationPoint="deleteLocationPoint($event)" 
           @cancelLocationPoint="cancelLocationPoint()" 
           @addLocationPoint="addLocationPoint($event)" 
@@ -137,7 +140,6 @@
           :searchedLocation="searchedLocation"
           v-model:center="check.value.centerLatLon"
           :check="check" />
-
         </div>
         <div>
         </div>
@@ -213,7 +215,7 @@ import { LocationRepository } from '../../repositories/LocationRepository'
 import ExistingLocationItem from '../semantics/ExistingLocationItem.vue'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineCreateCard from '@/components/cards/DeadlineCreateCard.vue'
-import { SearchedLocation } from '../../serializer/SearchedLocation'
+import { SearchedLocation, SearchedLocationDeserializer } from '../../serializer/SearchedLocation'
 import { useNotification } from '../../composable/useNotification'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
@@ -300,6 +302,10 @@ export default defineComponent({
     if (sideBarState.value.state === 'new') {
       init.value.locations = []
       init.value.country = 'Belgie'
+      init.value.postalcode = ''
+      init.value.township = ''
+      init.value.street = ''
+      init.value.houseNumber = ''
     }
     if (sideBarState.value.state === 'edit') {
       init.value.locations = []
@@ -309,15 +315,14 @@ export default defineComponent({
       init.value.contactEmail = sideBarState.value.entity.contactEmail
       init.value.locations = sideBarState.value.entity.locations
       init.value.country = 'Belgie'
-      init.value.postalcode = ''
-      init.value.township = ''
-      init.value.street = ''
-      init.value.houseNumber = ''
+      init.value.postalcode = sideBarState.value.entity.postalcode
+      init.value.township = sideBarState.value.entity.township
+      init.value.street = sideBarState.value.entity.street
+      init.value.houseNumber = sideBarState.value.entity.houseNumber
     }
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<any>({
       initialValues: { ...init.value },
     })
-    // -------------------------------------------------
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -353,7 +358,14 @@ export default defineComponent({
             values.centerLatLon = check.value.value.centerLatLon
             values.centerLatitude = check.value.value.centerLatLon[0]
             values.centerLongitude = check.value.value.centerLatLon[1]
-            sideBarState.value.state === 'edit' ?  values.id = sideBarState.value.entity.id : undefined 
+            sideBarState.value.state === 'edit' ? values.id = sideBarState.value.entity.id : undefined 
+            if (values.locations && values.locations[0]) {
+              values.locations[0].country = values.country
+              values.locations[0].postalcode = values.postalcode
+              values.locations[0].township = values.township
+              values.locations[0].street = values.street
+              values.locations[0].houseNumber = values.houseNumber
+            }
             await patchLocation(values)
             closeSideBar()
           })()
@@ -363,6 +375,7 @@ export default defineComponent({
     }
 
     const patchLocation = async (location: any) => {
+      console.log('HERREEEEEE')
       await RepositoryFactory.get(LocationCheckRepository)
         .updateLocationCheck(props.check.endpoint, location, props.parentLocations)
         .then((p: any) => {
@@ -414,9 +427,11 @@ export default defineComponent({
         location.isMainLocation = true
       }
 
-      searchedLocations.value.push(location)
+      // searchedLocations.value.push(location)
+      searchedLocations.value = [location]
+
       resetSearchedLocation()
-      values.locations = searchedLocations.value
+      values.locations = [location]
     }
 
     const cancelLocationPoint = () => {
@@ -456,10 +471,24 @@ export default defineComponent({
       }
     }
 
-    const performPhotonSearch = () => {
+    let debounce: any
+    
+
+    const performPhotonSearch = async () => {
       const v = values;
       const searchString = `${v.country} ${v.postalcode} ${v.township} ${v.street} ${v.houseNumber}`;
-      console.log('SEARCHING...', searchString);
+      clearTimeout(debounce)
+      debounce = setTimeout(async () => {
+        loading.value = true
+        await RepositoryFactory.get(LocationSearchRepository)
+        .search(searchString)
+          .then((results: SearchedLocation[]) => {
+            if (results[0]) {
+              addLocationPoint(results[0])
+              loading.value = false
+            }
+        })
+      }, 3000)
     }
 
     return {

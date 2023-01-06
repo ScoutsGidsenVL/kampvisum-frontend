@@ -81,10 +81,13 @@ isOnline().then((isOnlineResult: any) => {
         if (store.getters.isLoaded === false) {
           RepositoryFactory.get(AuthRepository)
           .me()
-          .then((user: any) => {
+            .then((user: any) => {
+            console.log('LOGGING ONE')
             store.dispatch('setUser', user).then(() => {
               next(to.fullPath)
             })
+            }).catch(() => {
+              console.log('LOGGING TWO')
           })
         } else {
           next()

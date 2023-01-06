@@ -7,6 +7,11 @@ export interface SearchedLocation {
   latitude?: string
   longitude?: string
   properties?: Properties
+  country?: string
+  postalcode?: string
+  township?: string
+  street?: string
+  houseNumber?: string
 }
 
 export interface Properties {
@@ -35,14 +40,19 @@ export const LocationDeserializer = (input: any): SearchedLocation => {
     latLon: [input.latitude, input.longitude],
     latitude: input.latitude ? input.latitude : undefined,
     longitude: input.longitude ? input.longitude : undefined,
-    address: input.address ? input.address : undefined
+    address: input.address ? input.address : undefined,
+    country: input.country ? input.country : '',
+    postalcode: input.postalcode ? input.postalcode : '',
+    township: input.township ? input.township : '',
+    street: input.street ? input.street : '',
+    houseNumber: input.house_number ? input.house_number : '',
   }
 
   return single
 }
 
 export const SearchedLocationDeserializer = (input: any): SearchedLocation => {
-  const single: SearchedLocation = {
+  const single: any = {
     name: input.name ? input.name : '',
     isMainLocation: input.isMainLocation ? input.isMainLocation : false,
     properties: input.properties,
@@ -62,7 +72,7 @@ export const SearchedLocationDeserializer = (input: any): SearchedLocation => {
     (input.properties.city ? input.properties.city + ', ' : input.properties.name + ', ') + 
     
     //COUNTRY & COUNTY
-    (input.properties.country ? input.properties.country + ' ' : '')
+      (input.properties.country ? input.properties.country + ' ' : '')
   }
 
   return single
@@ -76,7 +86,13 @@ export const SearchedLocationSerializer = (input: SearchedLocation): any => {
     is_main_location: input.isMainLocation,
     latitude: input.latLon ? input.latLon[0] : undefined,
     longitude: input.latLon ? input.latLon[1] : undefined,
+    country: input.country,
+    postalcode: input.postalcode,
+    township: input.township,
+    street: input.street,
+    house_number: input.houseNumber
   }
+  console.log('TO PATCH: ', single)
   return single
 }
 

@@ -31,12 +31,21 @@ export const PostLocationDeserializer = (input: any): PostLocation => {
     centerLatitude: input.center_latitude ? input.center_latitude : 50.4956754,
     centerLongitude: input.center_longitude ? input.center_longitude : 3.3452037,
     centerLatLon: [input.center_latitude ? input.center_latitude : 50.4956754, input.center_longitude ? input.center_longitude : 3.3452037],
-    country: 'Belgie',
+    country: '',
     postalcode: '',
     township: '',
     street: '',
     houseNumber: ''
   }
+
+  if (input.locations[0]) {
+    single.country = input.locations[0].country
+    single.postalcode = input.locations[0].postalcode
+    single.township = input.locations[0].township
+    single.street = input.locations[0].street
+    single.houseNumber = input.locations[0].house_number
+  }
+  console.log('SINGLE: ', single)
   return single
 }
 
