@@ -28,32 +28,6 @@
         </div>
 
         <div class="py-4 flex flex-col gap-3 relative">
-          <!-- <strong class="m-0 text-lg">{{ t('sidebars.location-sidebar.form.addresses') }}</strong>
-          <div v-if="searchedLocations.length > 0" class="bg-lighterGreen p-3">
-            <div class="flex justify-between">
-              <h4 class="">{{ t('sidebars.location-sidebar.form.main-location') }}</h4>
-              <div>
-                <i-trash @click="clearLocation()" class="cursor-pointer hover:text-red" />
-              </div>
-            </div>
-            <div v-for="searchedLocation in searchedLocations" :key="searchedLocation">
-              <div>
-                <p class="mb-0 italic">{{ searchedLocation.name }}</p>
-                <a class="text-sm italic" target="_blank" :href="'https://www.google.com/maps?q=' + searchedLocation.address">{{ searchedLocation.address }}</a>
-              </div>
-            </div>
-          </div> -->
-          <!-- SEARCH -->
-          <!-- <search-input
-            :disabled="values.locations.length !== 0"
-            :loadingSubmit="patchLoading"
-            v-model:loading="loading"
-            name="search"
-            :placeholder="t('sidebars.location-sidebar.form.search-map')"
-            :repository="LocationSearchRepository"
-            @fetchedOptions="fetchedSearchResults($event)"
-          /> -->
-
           <!-- ADRESS FORM -->
           <div>
             <custom-input
@@ -115,21 +89,6 @@
             {{ t('sidebars.location-sidebar.move-pin') }}
           </div>
 
-          <!-- <div v-if="fetchedLocationsToSelect.length > 0" class="absolute w-full mt-36 bg-white border-r-2 border-l-2 border-b-2 border-gray z-40">
-            <div
-              v-for="(fetchedLocation, index) in fetchedLocationsToSelect"
-              :key="fetchedLocation"
-              :class="index === 1 ? 'border-t-10' : ''"
-              class="border-ligtGray hover:bg-lightGray p-2 pl-3 cursor-pointer border-b-2"
-            >
-              <div class="flex flex-col" @click="addLocationPoint(fetchedLocation)">
-                <strong>
-                  {{ fetchedLocation.properties.name }}
-                </strong>
-                {{ fetchedLocation.address }}
-              </div>
-            </div>
-          </div> -->
           <leaflet-map 
           ref="child2"
           @deleteLocationPoint="deleteLocationPoint($event)" 
@@ -375,7 +334,6 @@ export default defineComponent({
     }
 
     const patchLocation = async (location: any) => {
-      console.log('HERREEEEEE')
       await RepositoryFactory.get(LocationCheckRepository)
         .updateLocationCheck(props.check.endpoint, location, props.parentLocations)
         .then((p: any) => {

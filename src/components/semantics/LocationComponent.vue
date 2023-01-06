@@ -1,8 +1,6 @@
 <template>
   <div class="pb-3">
 
-    <!-- {{check}} -->
-
     <div class="flex gap-1 items-center">
       <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
       <div v-if="check.checkParent.explanation">
@@ -23,7 +21,6 @@
 
     <parent-leaflet-map ref="child" v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @rl="rl($event)" @edit="edit($event)" />
     
-
     <location-create-sidebar
       v-if="createSidebar.state === 'new' || createSidebar.state === 'edit' || createSidebar.state === 'search'"
       :parentLocations="check.value.locations"

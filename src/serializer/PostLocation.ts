@@ -45,7 +45,6 @@ export const PostLocationDeserializer = (input: any): PostLocation => {
     single.street = input.locations[0].street
     single.houseNumber = input.locations[0].house_number
   }
-  console.log('SINGLE: ', single)
   return single
 }
 

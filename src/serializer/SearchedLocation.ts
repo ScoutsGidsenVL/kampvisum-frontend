@@ -92,7 +92,6 @@ export const SearchedLocationSerializer = (input: SearchedLocation): any => {
     street: input.street,
     house_number: input.houseNumber
   }
-  console.log('TO PATCH: ', single)
   return single
 }
 
