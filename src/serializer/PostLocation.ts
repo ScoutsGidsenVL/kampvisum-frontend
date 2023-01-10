@@ -16,7 +16,9 @@ export interface PostLocation {
   postalcode: string
   township: string
   street: string
-  houseNumber: string
+  houseNumber: string,
+  startDate: string,
+  endDate: string
 }
 
 export const PostLocationDeserializer = (input: any): PostLocation => {
@@ -35,7 +37,9 @@ export const PostLocationDeserializer = (input: any): PostLocation => {
     postalcode: '',
     township: '',
     street: '',
-    houseNumber: ''
+    houseNumber: '',
+    startDate: input.start_date ? input.start_date : undefined,
+    endDate: input.end_date ? input.end_date : undefined,
   }
 
   if (input.locations[0]) {
@@ -58,7 +62,9 @@ export const PostLocationSerializer = (input: any): any => {
     locations: input.locations ? input.locations.map((sL: SearchedLocation) => SearchedLocationSerializer(sL)) : [],
     zoom: input.zoom,
     center_latitude: input.centerLatitude,
-    center_longitude: input.centerLongitude
+    center_longitude: input.centerLongitude,
+    start_date: input.startDate,
+    end_date: input.endDate
   }
   return single
 }

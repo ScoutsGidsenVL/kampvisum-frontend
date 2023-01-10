@@ -103,7 +103,21 @@
         <div>
         </div>
 
-        <div class="">
+        <div>
+          <strong class="m-0 text-lg">{{ t('sidebars.location-sidebar.form.start-end') }}</strong>
+          <litepie-datepicker
+            class="mt-2 mb-4"
+            i18n="nl-be"
+            as-single
+            use-range
+            v-model="dateValues"
+            :formatter="formatter"
+            separator=","
+            placeholder=" "
+          ></litepie-datepicker>
+        </div>
+
+        <div>
           <strong class="m-0 text-lg">{{ t('sidebars.location-sidebar.form.contactPerson') }}</strong>
           <custom-input
             :disabled="patchLoading"
@@ -174,7 +188,7 @@ import { LocationRepository } from '../../repositories/LocationRepository'
 import ExistingLocationItem from '../semantics/ExistingLocationItem.vue'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import DeadlineCreateCard from '@/components/cards/DeadlineCreateCard.vue'
-import { SearchedLocation, SearchedLocationDeserializer } from '../../serializer/SearchedLocation'
+import { SearchedLocation } from '../../serializer/SearchedLocation'
 import { useNotification } from '../../composable/useNotification'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
@@ -186,10 +200,13 @@ import SearchInput from '../inputs/SearchInput.vue'
 import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
 import ITrash from '../icons/ITrash.vue'
+const LitepieDatepicker = require('litepie-datepicker').default
+const { DateTime } = require("luxon");
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
   components: {
+    'litepie-datepicker': LitepieDatepicker,
     'custom-button': CustomButtonSmall,
     'custom-header': CustomHeader,
     'base-side-bar': BaseSideBar,
@@ -228,6 +245,7 @@ export default defineComponent({
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
+    const dateValues = ref<Array<string>>([])
     const { displayCheckLocation } = useSelectionHelper()
 
     const options = ref<option[]>([
@@ -279,6 +297,12 @@ export default defineComponent({
       init.value.street = sideBarState.value.entity.street
       init.value.houseNumber = sideBarState.value.entity.houseNumber
     }
+
+    if (sideBarState.value.entity?.startDate && sideBarState.value.entity?.endDate) {
+      dateValues.value.push(DateTime.fromFormat(sideBarState.value.entity.startDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+      dateValues.value.push(DateTime.fromFormat(sideBarState.value.entity.endDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+    }
+
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<any>({
       initialValues: { ...init.value },
     })
@@ -324,6 +348,14 @@ export default defineComponent({
               values.locations[0].township = values.township
               values.locations[0].street = values.street
               values.locations[0].houseNumber = values.houseNumber
+            }
+            const tmpDates: any = []
+            dateValues.value.forEach((date: any) => {
+              tmpDates.push(DateTime.fromFormat(date, 'dd MMM yyyy', { locale: 'nl' }).toFormat('yyyy-MM-dd'))
+            });
+            if (tmpDates.length > 0) {
+              values.startDate = tmpDates[0];
+              values.endDate = tmpDates[1];
             }
             await patchLocation(values)
             closeSideBar()
@@ -446,8 +478,13 @@ export default defineComponent({
               loading.value = false
             }
         })
-      }, 1500)
+      }, 750)
     }
+
+    const formatter = ref({
+      date: 'DD MMM YYYY',
+      month: 'MMM'
+    })
 
     return {
       fetchedSearchResultsExistingLocations,
@@ -480,7 +517,9 @@ export default defineComponent({
       t,
       clearLocation,
       returnRequiredIfBelgium,
-      performPhotonSearch
+      performPhotonSearch,
+      dateValues,
+      formatter
     }
   },
 })

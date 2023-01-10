@@ -110,7 +110,8 @@
         "postalcode": "Postcode",
         "township": "Gemeente",
         "street": "Straat",
-        "houseNumber": "Huisnummer"
+        "houseNumber": "Huisnummer",
+        "start-end": "Begin en eind datum"
       }
     },
     "participant-sidebar": {
