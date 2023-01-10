@@ -25,7 +25,7 @@
       </div>
 
       <div class="pr-2 flex gap-5">
-        <a @click="logout()" :href="config.frontend.logoutUrl + config.frontend.baseUrl">logout</a>
+        <a @click="logout()" :href="config.frontend.logoutUrl ? config.frontend.logoutUrl : 'https://login.scoutsengidsenvlaanderen.be/auth/realms/scouts/protocol/openid-connect/logout?client_id=groepsadmin-production-client&post_logout_redirect_uri=' + config.frontend.baseUrl">logout</a>
         <!-- <custom-button-small :text="t('logout')" type="button" class="text-white" @click="logout()">
         </custom-button-small> -->
         <!-- WIFI ON  -->
