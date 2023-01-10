@@ -25,9 +25,8 @@
       </div>
 
       <div class="pr-2 flex gap-5">
-        <a @click="logout()" :href="config.frontend.logoutUrl + config.frontend.baseUrl">logout</a>
-        <!-- <custom-button-small :text="t('logout')" type="button" class="text-white" @click="logout()">
-        </custom-button-small> -->
+        <custom-button-small :text="t('logout')" type="button" class="text-white" @click="logout()">
+        </custom-button-small>
         <!-- WIFI ON  -->
         <svg v-if="isInternetActive" class="fill-current text-green" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
           <g data-name="Layer 99">
@@ -119,7 +118,7 @@ export default defineComponent({
     const logout = () => {
       sessionStorage.removeItem('oidc-access-token')
       sessionStorage.removeItem('oidc-refresh-token')
-      // window.location.href = `${config.frontend.logoutUrl}${config.frontend.baseUrl}`
+      window.location.href = `${config.frontend.logoutUrl}${config.frontend.baseUrl}`
     }
 
     return {
@@ -129,8 +128,7 @@ export default defineComponent({
       navigateToCrumb,
       selectedYear,
       logout,
-      t,
-      config
+      t
     }
   },
 })
