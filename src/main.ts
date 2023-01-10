@@ -82,12 +82,18 @@ isOnline().then((isOnlineResult: any) => {
           RepositoryFactory.get(AuthRepository)
           .me()
             .then((user: any) => {
-            console.log('LOGGING ONE', user)
             store.dispatch('setUser', user).then(() => {
               next(to.fullPath)
             })
-            }).catch((error) => {
-              console.log('LOGGING TWO', error)
+            }).catch(() => {
+              console.log('retry me call...')
+              RepositoryFactory.get(AuthRepository).me().then((user: any) => {
+                store.dispatch('setUser', user).then(() => {
+                  next(to.fullPath)
+                })
+              }).catch((error: any) => {
+                console.log('error: ', error);
+              })
           })
         } else {
           next()
