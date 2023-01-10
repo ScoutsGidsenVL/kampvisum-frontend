@@ -23,7 +23,10 @@
           <a v-if="breadcrumb && breadcrumb.title">{{ breadcrumb.title }}</a>
         </li>
       </div>
-      <div class="pr-2">
+
+      <div class="pr-2 flex gap-5">
+        <custom-button-small :text="t('logout')" type="button" class="text-white" @click="logout()">
+        </custom-button-small>
         <!-- WIFI ON  -->
         <svg v-if="isInternetActive" class="fill-current text-green" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
           <g data-name="Layer 99">
@@ -53,9 +56,16 @@ import { breadcrumb, useNavigation } from '@/composable/useNavigation'
 import { defineComponent, PropType } from 'vue'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 import useVisum from '@/composable/useVisum'
+import store from '@/store/store'
+import MasterConfig from '@/models/config/masterConfig'
+import { CustomButtonSmall} from 'vue-3-component-library'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'BreadCrumb',
+  components: {
+    'custom-button-small': CustomButtonSmall,
+  },
   props: {
     home: {
       type: String,
@@ -81,7 +91,11 @@ export default defineComponent({
     const { breadcrumbs } = useNavigation()
     const { selectedGroup, selectedYear, getYearsForGroup } = useGroupAndYears()
     const { getVisums } = useVisum()
-
+    const config: MasterConfig = store.getters.config
+    const { t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local',
+    })
     const navigateHome = async () => {
       props.router.push(props.home)
       // window.location.pathname = '/kampvisum-home'
@@ -101,12 +115,20 @@ export default defineComponent({
       props.router.push(link)
     }
 
+    const logout = () => {
+      sessionStorage.removeItem('oidc-access-token')
+      sessionStorage.removeItem('oidc-refresh-token')
+      window.location.href = `${config.frontend.logoutUrl}${config.frontend.baseUrl}`
+    }
+
     return {
       route,
       breadcrumbs,
       navigateHome,
       navigateToCrumb,
-      selectedYear
+      selectedYear,
+      logout,
+      t
     }
   },
 })

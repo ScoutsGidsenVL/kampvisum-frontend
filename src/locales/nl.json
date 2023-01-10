@@ -271,5 +271,6 @@
       },
       "check-camp": "Bekijk kamp"
   },
-  "contact": "contacteer ons"
+  "contact": "contacteer ons",
+  "logout": "log uit"
 }
