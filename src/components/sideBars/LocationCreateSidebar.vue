@@ -200,6 +200,7 @@ import SearchInput from '../inputs/SearchInput.vue'
 import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
 import ITrash from '../icons/ITrash.vue'
+import { Visum } from '@/serializer/Visum'
 const LitepieDatepicker = require('litepie-datepicker').default
 const { DateTime } = require("luxon");
 
@@ -241,7 +242,7 @@ export default defineComponent({
       default: () => {
         return []
       },
-    },
+    }
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
@@ -283,6 +284,10 @@ export default defineComponent({
       init.value.township = ''
       init.value.street = ''
       init.value.houseNumber = ''
+      if (true) {
+        //DO CALL AND GET THE VALUES FOR START AND END DATE
+        dateValues.value = []
+      }
     }
     if (sideBarState.value.state === 'edit') {
       init.value.locations = []
@@ -335,7 +340,8 @@ export default defineComponent({
       }
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
       if (searchedLocations.value.length !== 0) {
-          handleSubmit(async (values: PostLocation) => {
+        handleSubmit(async (values: PostLocation) => {
+          console.log('sideBarState.value.state', sideBarState.value.state);
             patchLoading.value = true
             values.zoom = check.value.value.zoom
             values.centerLatLon = check.value.value.centerLatLon
