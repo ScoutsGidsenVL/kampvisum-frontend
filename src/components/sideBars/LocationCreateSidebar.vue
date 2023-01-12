@@ -291,7 +291,7 @@ export default defineComponent({
       init.value.contactPhone = sideBarState.value.entity.contactPhone
       init.value.contactEmail = sideBarState.value.entity.contactEmail
       init.value.locations = sideBarState.value.entity.locations
-      init.value.country = 'Belgie'
+      init.value.country = init.value.country
       init.value.postalcode = sideBarState.value.entity.postalcode
       init.value.township = sideBarState.value.entity.township
       init.value.street = sideBarState.value.entity.street
