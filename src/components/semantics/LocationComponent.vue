@@ -13,7 +13,7 @@
       <div v-for="(location) in check.value.locations" :key="location">
         <div @click="centerInChildComponent(subLocation)" class="md:border-b-2 hover:text-green cursor-pointer bg-white" v-for="(subLocation) in location.locations" :key="subLocation">
           <div class="p-2.5 flex items-center gap-3">
-            <i-marker /> ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ `${subLocation.country} ${subLocation.postalcode} ${subLocation.township} ${subLocation.street} ${subLocation.houseNumber}` }}
+            <i-marker /> ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ `${getTranslationCountry(subLocation.country)} ${subLocation.postalcode} ${subLocation.township} ${subLocation.street} ${subLocation.houseNumber}` }}
           </div>
         </div>
       </div>
@@ -44,6 +44,7 @@ import { Check } from '@/serializer/Check'
 import IMarker from '../icons/IMarker.vue'
 import IInfo from '../icons/IInfo.vue'
 import { useI18n } from 'vue-i18n'
+import { usePlaceAutocompleteHelper } from '@/helpers/placeAutocompleteHelper'
 
 export default defineComponent({
   name: 'LocationComponent',
@@ -63,6 +64,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { getTranslationCountry } = usePlaceAutocompleteHelper()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -115,6 +117,7 @@ export default defineComponent({
     }
 
     return {
+      getTranslationCountry,
       openLocationCreateSidebar,
       centerInChildComponent,
       createSidebar,

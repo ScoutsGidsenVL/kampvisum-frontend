@@ -163,7 +163,7 @@ export default defineComponent ({
 
     const centerClickedLocation = (lat: any,lng: any) => {
       let map = myMap2.value.leafletObject
-      map.flyTo(latLng(lat, lng), 14)
+      map.flyTo(latLng(lat, lng), 18)
     }
 
     const displayWarning = () => {

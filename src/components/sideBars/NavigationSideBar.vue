@@ -20,6 +20,7 @@
               :value="selectedGroup"
               :canClear="false"
               :canDeselect="false"
+              :searchable="true"
             />
           </div>
 

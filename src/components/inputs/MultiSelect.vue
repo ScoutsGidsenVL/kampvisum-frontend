@@ -13,13 +13,14 @@
       }"
     >
       <multi-select
+        :preserveSearch="false"
         :id="id"
         ref="multiselect"
         v-model="inputValue"
         :name="id"
         :value-prop="valueProp"
         :disabled="disabled || isLoading"
-        :filter-results="false"
+        :filter-results="true"
         :min-chars="1"
         :resolve-on-load="true"
         :delay="500"
@@ -34,7 +35,7 @@
         :canClear="canClear"
         :canDeselect="canDeselect"
         :options="
-          searchable
+          searchableByApi
             ? async function (query) {
                 return fetchSearchData(query)
               }
@@ -100,6 +101,10 @@ export default defineComponent({
       default: '',
     },
     searchable: {
+      type: Boolean,
+      default: false,
+    },
+    searchableByApi: {
       type: Boolean,
       default: false,
     },

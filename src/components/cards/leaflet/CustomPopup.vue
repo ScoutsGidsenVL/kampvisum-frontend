@@ -6,7 +6,7 @@
       <!-- <div v-if="location.isMainLocation" class="font-bold text-sm text-white bg-lightGreen m-0 rounded-full px-2 h-5">{{t('checks.location-check.main-location')}}</div> -->
     </div>
     <div class="pb-3">
-      <a class="text-sm" target="_blank" :href="'https://www.google.com/maps?q=' + `${location.country} ${location.postalcode} ${location.township} ${location.street} ${location.houseNumber}`">{{ `${location.country} ${location.postalcode} ${location.township} ${location.street} ${location.houseNumber}` }}</a>  
+      <a class="text-sm" target="_blank" :href="'https://www.google.com/maps?q=' + `${location.country} ${location.postalcode} ${location.township} ${location.street} ${location.houseNumber}`">{{ `${getTranslationCountry(location.country)} ${location.postalcode} ${location.township} ${location.street} ${location.houseNumber}` }}</a>  
     </div>    
     <div v-if="parentLocation.contactName || parentLocation.contactPhone || parentLocation.contactEmail" class="bg-lighterGreen py-2 px-1 border-l-2 border-green flex flex-col gap-2">
       <div v-if="parentLocation.contactName" class="flex gap-3 items-center">
@@ -54,7 +54,7 @@ import { useI18n } from 'vue-i18n'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
 import { useNotification } from '@/composable/useNotification'
-
+import { usePlaceAutocompleteHelper } from '@/helpers/placeAutocompleteHelper'
 
 export default defineComponent({
   components: { IPersonGreen, IPhoneGreen, IMailGreen, },
@@ -72,7 +72,9 @@ export default defineComponent({
       type: Object as PropType<Check>
     },
   },
-  setup (props, { emit }) {
+  setup(props, { emit }) {
+    const { getTranslationCountry } = usePlaceAutocompleteHelper()
+  
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -106,7 +108,8 @@ export default defineComponent({
     const remove = () => {
       patchLocation()
     }
-    return  {
+    return {
+      getTranslationCountry,
       remove,
       edit,
       t

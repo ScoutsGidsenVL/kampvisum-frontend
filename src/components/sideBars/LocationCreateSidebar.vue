@@ -19,6 +19,8 @@
         :class="{ 'd-flex': sideBarState.state === 'new' || sideBarState.state === 'edit', 'd-none': sideBarState.state === 'search' }"
         class="flex-col relative overflow-y-scroll h-full px-4 pt-3"
         @submit.prevent="onSubmit"
+        onkeydown="return event.key != 'Enter';"
+        v-on:keyup.enter="onPageChange"
       >
       
         <div class="mt-1flex flex-col gap-3">
@@ -30,33 +32,63 @@
         <div class="py-4 flex flex-col gap-3 relative">
           <!-- ADRESS FORM -->
           <div>
-            <custom-input
-              @keyup="performPhotonSearch()"
-              :disabled="patchLoading"
-              :type="InputTypes.TEXT"
-              :rules="'required'"
-              name="country"
+            <multi-select
               :label="t('sidebars.location-sidebar.form.country')"
+              @addSelection="changeSelectedCountry($event)"
+              id="countrySelector"
+              :object="true"
+              :options="countries"
+              :value="selectedCountry"
+              track-by="nl"
+              value-prop="en"
+              :canClear="false"
+              :canDeselect="false"
+              :searchable="true"
             />
+            <multiselect v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name"></multiselect>
+
+            <div class="my-3">
+              <custom-input
+                :placeholder="''"
+                :disabled="patchLoading"
+                :type="InputTypes.TEXT"
+                name="autocomplete"
+                :label="t('sidebars.location-sidebar.search')"
+              />
+            </div>
+
             <div class="flex justify-between gap-2">
               <div class="w-50" :class="returnRequiredIfBelgium() ? '' : 'mt-2'">
+                <!-- HACKY CROSS VALIDATION -->
                 <custom-input
-                  @keyup="performPhotonSearch()"
+                  v-if="values.country.toLowerCase() === 'belgium'"
+                  :placeholder="''"
                   :disabled="patchLoading"
                   :type="InputTypes.TEXT"
-                  :rules="returnRequiredIfBelgium()"
+                  :rules="'required'"
                   name="postalcode"
                   :label="t('sidebars.location-sidebar.form.postalcode')"
+                  @change="updatedAddress()"
+                />
+                <custom-input
+                  v-if="values.country.toLowerCase() !== 'belgium'"
+                  :placeholder="''"
+                  :disabled="patchLoading"
+                  :type="InputTypes.TEXT"
+                  name="postalcode"
+                  :label="t('sidebars.location-sidebar.form.postalcode')"
+                  @change="updatedAddress()"
                 />
               </div>
               <div class="w-100">
                 <custom-input
-                  @keyup="performPhotonSearch()"
+                  :placeholder="''"
                   :disabled="patchLoading"
                   :type="InputTypes.TEXT"
                   :rules="'required'"
                   name="township"
                   :label="t('sidebars.location-sidebar.form.township')"
+                  @change="updatedAddress()"
                 />
               </div>
             </div>
@@ -64,29 +96,29 @@
             <div class="flex justify-between gap-2">
               <div class="w-100">
                 <custom-input
-                  @keyup="performPhotonSearch()"
                   :disabled="patchLoading"
                   :type="InputTypes.TEXT"
                   :rules="'required'"
                   name="street"
                   :label="t('sidebars.location-sidebar.form.street')"
+                  @change="updatedAddress()"
                 />
               </div>
               <div class="w-25 mt-2">
                 <custom-input
-                  @keyup="performPhotonSearch()"
                   :disabled="patchLoading"
                   :type="InputTypes.TEXT"
                   :rules="''"
                   name="houseNumber"
                   :label="t('sidebars.location-sidebar.form.houseNumber')"
+                  @change="updatedAddress()"
                 />
               </div>
             </div>
           </div>
 
-          <div class="bg-orange text-white p-1 font-bold">
-            {{ t('sidebars.location-sidebar.move-pin') }}
+          <div v-if="message" class="text-white p-1 font-bold" :class=" (message === SearchType.SUCCESS || message === SearchType.LOADING) ? 'bg-green' : 'bg-red'">
+            {{ t(message) }}
           </div>
 
           <leaflet-map 
@@ -142,7 +174,7 @@
           />
         </div>
 
-        <div class="mt-5 pb-5 pt-3 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
+        <div class="mt-5 pb-5 pt-3 bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
           <custom-button :isSubmitting="patchLoading" text="">
             <template v-slot:icon>
               <div class="flex gap-2">
@@ -186,13 +218,14 @@ import { LocationSearchRepository } from '../../repositories/locationSearchRepos
 import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
 import { LocationRepository } from '../../repositories/LocationRepository'
 import ExistingLocationItem from '../semantics/ExistingLocationItem.vue'
-import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
+import { computed, defineComponent, PropType, ref, toRefs, onMounted } from 'vue'
 import DeadlineCreateCard from '@/components/cards/DeadlineCreateCard.vue'
 import { SearchedLocation } from '../../serializer/SearchedLocation'
 import { useNotification } from '../../composable/useNotification'
 import LeafletMap from '@/components/cards/leaflet/leafletMap.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { useSelectionHelper } from '@/helpers/selectionHelper'
+import { usePlaceAutocompleteHelper, message, SearchType } from '@/helpers/placeAutocompleteHelper'
 import { PostLocation } from '../../serializer/PostLocation'
 import DateField from '@/components/semantics/DateField.vue'
 import { useForm, ErrorMessage } from 'vee-validate'
@@ -200,9 +233,10 @@ import SearchInput from '../inputs/SearchInput.vue'
 import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
 import ITrash from '../icons/ITrash.vue'
-import { Visum } from '@/serializer/Visum'
 const LitepieDatepicker = require('litepie-datepicker').default
 const { DateTime } = require("luxon");
+import MultiSelect from '../../components/inputs/MultiSelect.vue'
+import { scoutsCountriesRepository, ScoutsCountry } from '../../repositories/scoutsCountriesRepository'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -218,7 +252,8 @@ export default defineComponent({
     LeafletMap,
     SearchInput,
     ExistingLocationItem,
-    ITrash
+    ITrash,
+    'multi-select': MultiSelect,
   },
   props: {
     title: {
@@ -246,8 +281,11 @@ export default defineComponent({
   },
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
+    const child2 = ref<any>(null)
     const dateValues = ref<Array<string>>([])
     const { displayCheckLocation } = useSelectionHelper()
+    const countries = ref<Array<ScoutsCountry>>(RepositoryFactory.get(scoutsCountriesRepository).getCountries())
+      const { getCountryObjectByName } = usePlaceAutocompleteHelper()
 
     const options = ref<option[]>([
       { text: 'Nieuw', value: 'new' },
@@ -279,7 +317,7 @@ export default defineComponent({
     init.value.centerLatLon = [props.check.value.centerLatitude, props.check.value.centerLongitude]
     if (sideBarState.value.state === 'new') {
       init.value.locations = []
-      init.value.country = 'Belgie'
+      init.value.country = 'Belgium'
       init.value.postalcode = ''
       init.value.township = ''
       init.value.street = ''
@@ -289,6 +327,7 @@ export default defineComponent({
         dateValues.value = []
       }
     }
+    const selectedCountry = ref<any>({ en: 'Belgium', nl: 'België', code: 'BE'})
     if (sideBarState.value.state === 'edit') {
       init.value.locations = []
       init.value.name = sideBarState.value.entity.name
@@ -296,7 +335,8 @@ export default defineComponent({
       init.value.contactPhone = sideBarState.value.entity.contactPhone
       init.value.contactEmail = sideBarState.value.entity.contactEmail
       init.value.locations = sideBarState.value.entity.locations
-      init.value.country = init.value.country
+      init.value.country = sideBarState.value.entity.country
+      selectedCountry.value = getCountryObjectByName(sideBarState.value.entity.country)
       init.value.postalcode = sideBarState.value.entity.postalcode
       init.value.township = sideBarState.value.entity.township
       init.value.street = sideBarState.value.entity.street
@@ -310,6 +350,12 @@ export default defineComponent({
 
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<any>({
       initialValues: { ...init.value },
+    })
+
+    const { stopAutocomplete, initSearchAutocomplete, searchAddresCoordsWithGeocode, emptyAutocompleteField, emptyFields } = usePlaceAutocompleteHelper(values, searchedLocations, child2)
+
+    onMounted(() => {
+      initSearchAutocomplete(selectedCountry.value.code)
     })
 
     const { t } = useI18n({
@@ -341,7 +387,6 @@ export default defineComponent({
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
       if (searchedLocations.value.length !== 0) {
         handleSubmit(async (values: PostLocation) => {
-          console.log('sideBarState.value.state', sideBarState.value.state);
             patchLoading.value = true
             values.zoom = check.value.value.zoom
             values.centerLatLon = check.value.value.centerLatLon
@@ -408,8 +453,6 @@ export default defineComponent({
       e.value = ''
     }
 
-    const child2 = ref<any>(null)
-
     const centerInChildComponent = (loc: any) => {
       child2.value.centerClickedLocation(loc[0], loc[1])
     }
@@ -460,7 +503,7 @@ export default defineComponent({
 
     const returnRequiredIfBelgium = () => {
       const val = values.country.toLowerCase();
-      if (val === 'belgie' || val === 'belgium' || val === 'België') {
+      if (val === 'belgium') {
         return 'required'
       } else {
         return ''
@@ -492,7 +535,28 @@ export default defineComponent({
       month: 'MMM'
     })
 
+    const changeSelectedCountry = (changed: any) => {
+      selectedCountry.value = changed;
+      values.country = selectedCountry.value.en
+      emptyAutocompleteField();
+      emptyFields();
+      stopAutocomplete();
+      initSearchAutocomplete(selectedCountry.value.code);
+    }
+
+    const updatedAddress = () => {
+      searchAddresCoordsWithGeocode(`${values.country} ${values.postalcode} ${values.township} ${values.street} ${values.houseNumber}`, selectedCountry.value.code)
+    }
+
+    const onPageChange = (event: any) =>{
+      event.target.blur(); 
+    }
+
     return {
+      SearchType,
+      onPageChange,
+      updatedAddress,
+      changeSelectedCountry,
       fetchedSearchResultsExistingLocations,
       LocationSearchRepository,
       fetchedLocationsToSelect,
@@ -525,7 +589,10 @@ export default defineComponent({
       returnRequiredIfBelgium,
       performPhotonSearch,
       dateValues,
-      formatter
+      formatter,
+      selectedCountry,
+      countries,
+      message
     }
   },
 })
