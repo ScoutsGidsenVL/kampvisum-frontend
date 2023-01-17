@@ -15,7 +15,7 @@
           <div class="p-2.5 flex items-center gap-3">
             <i-marker /> ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ `${getTranslationCountry(subLocation.country)} ${subLocation.postalcode} ${subLocation.township} ${subLocation.street} ${subLocation.houseNumber}` }}
           </div>
-          <div class="p-2.5 items-center">
+          <div v-if="location.startDate && location.endDate" class="p-2.5 items-center">
             {{ DateTime.fromFormat(location.startDate,'yyyy-MM-dd').toFormat('dd MMM yyyy') }} - {{ DateTime.fromFormat(location.endDate,'yyyy-MM-dd').toFormat('dd MMM yyyy') }}
           </div>
         </div>

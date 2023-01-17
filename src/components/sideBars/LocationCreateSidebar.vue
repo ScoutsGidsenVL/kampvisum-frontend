@@ -135,8 +135,8 @@
         <div>
         </div>
 
-        <div v-if="!loadingDates" class="mb-4">
-          <strong class="m-0 text-lg">{{ t('sidebars.location-sidebar.form.start-end') }}</strong>
+        <div v-if="!loadingDates && check.checkParent.checkType.checkType === 'CampLocationCheck'" class="mb-4">
+          <strong class="m-0 text-lg">{{ t('sidebars.location-sidebar.form.start-end') }}</strong><span class="ml-2 text-red font-bold">*</span>
           <litepie-datepicker
             class="mt-2 mb-1"
             i18n="nl-be"
@@ -149,6 +149,9 @@
           ></litepie-datepicker>
           <div v-if="checkIfOutsideRange(dateValues, leadersDates)" class="text-white p-1 font-bold bg-red">
             {{ t('sidebars.location-sidebar.form.warning') }}
+          </div>
+          <div v-if="dateValues.length === 0" class="text-red p-1">
+            Dit veld is verplicht
           </div>
         </div>
 
@@ -349,7 +352,7 @@ export default defineComponent({
       init.value.houseNumber = ''
         //DO CALL AND GET THE VALUES FOR START AND END DATE
         RepositoryFactory.get(CampRepository).getDatesLeadersById(route.params.campId.toString()).then((res: any) => {
-          if (res.start_date && res.end_date) {
+          if (res.start_date && res.end_date && props.check.checkParent && props.check.checkParent.checkType.checkType === 'CampLocationCheck') {
             dateValues.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
             dateValues.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
             leadersDates.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
@@ -431,7 +434,8 @@ export default defineComponent({
       }
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
       if (searchedLocations.value.length !== 0) {
-        handleSubmit(async (values: PostLocation) => {
+        if (props.check.checkParent && props.check.checkParent.checkType.checkType === 'CampLocationCheck' && dateValues.value.length !== 0) {
+          handleSubmit(async (values: PostLocation) => {
             patchLoading.value = true
             values.zoom = check.value.value.zoom
             values.centerLatLon = check.value.value.centerLatLon
@@ -456,6 +460,7 @@ export default defineComponent({
             await patchLocation(values)
             closeSideBar()
           })()
+        }
       } else if (sideBarState.value.state !== 'search') {
         triggerNotification(t('sidebars.location-sidebar.form.atleast-one'))
       }
