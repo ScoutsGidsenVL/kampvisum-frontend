@@ -434,7 +434,7 @@ export default defineComponent({
       }
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewLocation'))
       if (searchedLocations.value.length !== 0) {
-        if (props.check.checkParent && props.check.checkParent.checkType.checkType === 'CampLocationCheck' && dateValues.value.length !== 0) {
+        if (!(props.check.checkParent && props.check.checkParent.checkType.checkType === 'CampLocationCheck' && dateValues.value.length === 0)) {
           handleSubmit(async (values: PostLocation) => {
             patchLoading.value = true
             values.zoom = check.value.value.zoom
