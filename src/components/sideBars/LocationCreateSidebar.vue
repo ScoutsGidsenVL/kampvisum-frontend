@@ -135,10 +135,10 @@
         <div>
         </div>
 
-        <div>
+        <div v-if="!loadingDates" class="mb-4">
           <strong class="m-0 text-lg">{{ t('sidebars.location-sidebar.form.start-end') }}</strong>
           <litepie-datepicker
-            class="mt-2 mb-4"
+            class="mt-2 mb-1"
             i18n="nl-be"
             as-single
             use-range
@@ -147,6 +147,9 @@
             separator=","
             placeholder=" "
           ></litepie-datepicker>
+          <div v-if="checkIfOutsideRange(dateValues, leadersDates)" class="text-white p-1 font-bold bg-red">
+            {{ t('sidebars.location-sidebar.form.warning') }}
+          </div>
         </div>
 
         <div>
@@ -237,6 +240,8 @@ const LitepieDatepicker = require('litepie-datepicker').default
 const { DateTime } = require("luxon");
 import MultiSelect from '../../components/inputs/MultiSelect.vue'
 import { scoutsCountriesRepository, ScoutsCountry } from '../../repositories/scoutsCountriesRepository'
+import { CampRepository } from '@/repositories/campRepository'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -285,7 +290,27 @@ export default defineComponent({
     const dateValues = ref<Array<string>>([])
     const { displayCheckLocation } = useSelectionHelper()
     const countries = ref<Array<ScoutsCountry>>(RepositoryFactory.get(scoutsCountriesRepository).getCountries())
-      const { getCountryObjectByName } = usePlaceAutocompleteHelper()
+    const { getCountryObjectByName } = usePlaceAutocompleteHelper()
+    const route = useRoute()
+
+    const loadingDates = ref<boolean>(true)
+    const leadersDates = ref<Array<string>>([])
+
+    const checkIfOutsideRange = (datesInput: Array<string>, leaderDatesInput: Array<string>) => {
+      if (leaderDatesInput.length > 0 && datesInput.length > 0) {
+        const ds = DateTime.fromFormat(datesInput[0], 'dd MMM yyyy', { locale: 'nl'})
+        const de = DateTime.fromFormat(datesInput[1], 'dd MMM yyyy', { locale: 'nl'})
+        const lds = DateTime.fromFormat(leaderDatesInput[0], 'dd MMM yyyy', { locale: 'nl'})
+        const lde = DateTime.fromFormat(leaderDatesInput[1], 'dd MMM yyyy', { locale: 'nl'})
+        if (ds.ts < lds.ts || ds.ts > lde.ts || de.ts < lds.ts || de.ts > lde.ts) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    }
 
     const options = ref<option[]>([
       { text: 'Nieuw', value: 'new' },
@@ -322,10 +347,18 @@ export default defineComponent({
       init.value.township = ''
       init.value.street = ''
       init.value.houseNumber = ''
-      if (true) {
         //DO CALL AND GET THE VALUES FOR START AND END DATE
-        dateValues.value = []
-      }
+        RepositoryFactory.get(CampRepository).getDatesLeadersById(route.params.campId.toString()).then((res: any) => {
+          if (res.start_date && res.end_date) {
+            dateValues.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+            dateValues.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+            leadersDates.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+            leadersDates.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+          } else {
+            dateValues.value = []
+          }
+          loadingDates.value = false;
+        })
     }
     const selectedCountry = ref<any>({ en: 'Belgium', nl: 'België', code: 'BE'})
     if (sideBarState.value.state === 'edit') {
@@ -341,12 +374,24 @@ export default defineComponent({
       init.value.township = sideBarState.value.entity.township
       init.value.street = sideBarState.value.entity.street
       init.value.houseNumber = sideBarState.value.entity.houseNumber
-    }
 
-    if (sideBarState.value.entity?.startDate && sideBarState.value.entity?.endDate) {
-      dateValues.value.push(DateTime.fromFormat(sideBarState.value.entity.startDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
-      dateValues.value.push(DateTime.fromFormat(sideBarState.value.entity.endDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
-    }
+      //DO CALL AND GET THE VALUES FOR START AND END DATE
+      RepositoryFactory.get(CampRepository).getDatesLeadersById(route.params.campId.toString()).then((res: any) => {
+        if (res.start_date && res.end_date) {
+          leadersDates.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+          leadersDates.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+          if (sideBarState.value.entity?.startDate && sideBarState.value.entity?.endDate) {
+            dateValues.value.push(DateTime.fromFormat(sideBarState.value.entity.startDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+            dateValues.value.push(DateTime.fromFormat(sideBarState.value.entity.endDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+          } else {
+            dateValues.value = []
+          }
+        } else {
+          dateValues.value = []
+        }
+        loadingDates.value = false;
+      })
+    }    
 
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<any>({
       initialValues: { ...init.value },
@@ -592,7 +637,10 @@ export default defineComponent({
       formatter,
       selectedCountry,
       countries,
-      message
+      message,
+      loadingDates,
+      leadersDates,
+      checkIfOutsideRange
     }
   },
 })

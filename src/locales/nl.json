@@ -113,7 +113,8 @@
         "township": "Gemeente",
         "street": "Straat",
         "houseNumber": "Huisnummer",
-        "start-end": "Begin en eind datum"
+        "start-end": "Begin en eind datum",
+        "warning": "Deze periode valt buiten de kampperiode."
       }
     },
     "participant-sidebar": {

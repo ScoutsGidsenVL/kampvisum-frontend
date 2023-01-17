@@ -92,6 +92,12 @@ export class CampRepository extends BaseRepository {
     }
   }
 
+  getDatesLeadersById(id: string): Promise<any> {
+    return this.get(`${this.endpoint}${id}/dates/leaders`, {}).then((response: any) => {
+        return response
+    })
+  }
+
   patchCategoryFeedback(subCategoryId: string, feedback: string): Promise<any> {
     return this.patch(`${this.endpoint}${subCategoryId}/feedback`, { feedback: feedback }).then((response: any) => {
       return response
