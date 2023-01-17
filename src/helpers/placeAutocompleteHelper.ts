@@ -53,8 +53,10 @@ export const usePlaceAutocompleteHelper = (values?: any, searchedLocations?: any
 
   const initSearchAutocomplete = (countryCode: string) => {
     initGeocoding();
+    let ele = document.getElementsByName(elementId)[0]
+    console.log('ele', ele);
     let autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById(elementId),
+      document.getElementsByName(elementId)[0],
       {
         fields: ['name', 'geometry', 'address_components', 'formatted_address'],
         componentRestrictions: { 'country': [countryCode] },
@@ -110,7 +112,7 @@ export const usePlaceAutocompleteHelper = (values?: any, searchedLocations?: any
   }
 
   const stopAutocomplete = () => {
-    google.maps.event.clearListeners( document.getElementById(elementId) as HTMLInputElement);
+    google.maps.event.clearListeners( document.getElementsByName(elementId)[0] as HTMLInputElement);
   }
 
   const parseResultsForFields = (place: Place) => {

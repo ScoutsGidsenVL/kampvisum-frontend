@@ -448,7 +448,7 @@ export default defineComponent({
     const emptySearchResults = () => {
       fetchedLocationsToSelect.value = []
       // values.search = ''
-      const e = document.getElementById('search')
+      const e = document.getElementsByName('search')[0]
       // @ts-ignore
       e.value = ''
     }
