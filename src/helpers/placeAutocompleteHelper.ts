@@ -54,7 +54,7 @@ export const usePlaceAutocompleteHelper = (values?: any, searchedLocations?: any
   const initSearchAutocomplete = (countryCode: string) => {
     initGeocoding();
     let autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById(elementId) as HTMLInputElement,
+      document.getElementById(elementId),
       {
         fields: ['name', 'geometry', 'address_components', 'formatted_address'],
         componentRestrictions: { 'country': [countryCode] },
