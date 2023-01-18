@@ -1,12 +1,13 @@
 <template>
-  <div class="pb-3">
-    <div class="flex gap-2 items-center">
-      <message class="p-2" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
+  <div v-if="can(check.checkParent.requiresPermission)" class="pb-3">
+    <div  class="flex gap-2 items-center">
+      <message class="p-2 pr-0" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
+      <message v-if="check.checkParent.isMultiple" class="p-2 pl-0" :title="`(${check.value.count})`" :color="{ state: ColorState.GRAY }" />
       <div v-if="check.checkParent.explanation">
         <i-info :info="check.checkParent.explanation" />
       </div>
     </div>
-    <div class="">
+    <div>
       <member-item
         v-for="participant in check.value.participants"
         :key="participant"
@@ -50,6 +51,7 @@ import MemberItem from './MemberItem.vue'
 import { Member } from '@/serializer/Member'
 import { useI18n } from 'vue-i18n'
 import IInfo from '../icons/IInfo.vue'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 
 export default defineComponent({
@@ -75,6 +77,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { triggerNotification } = useNotification()
     const sidebar = ref<any>({ state: 'hide' })
+      const { getPermissions } = useGroupAndYears()
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -99,13 +102,23 @@ export default defineComponent({
       sidebar.value = { state: 'edit', entity: m }
     }
 
+    function can(permission: string): boolean {
+      const p = getPermissions()
+      if (p) {
+        return p.includes('visums.' + permission)
+      } else {
+        return false
+      }
+    }
+
     return {
       openSidebarToEdit,
       openMemberSidebar,
       actionSuccess,
       ColorState,
       sidebar,
-      t
+      t,
+      can
     }
   },
 })

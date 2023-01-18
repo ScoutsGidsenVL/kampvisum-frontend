@@ -11,9 +11,9 @@ interface participantToPatch {
   group_admin_id?: string
 }
 
-export const ParticipantCheckDeserializer = (input: any): { participantCheckType: string, participants: Member[]} => {
+export const ParticipantCheckDeserializer = (input: any): { participantCheckType: string, participants: Member[], count: number} => {
   const participants: Member[] = input.participants.map((i: any) => MemberDeserializer(i.participant, i.id, i.payment_status))
-  return { participantCheckType: input.participant_check_type , participants:participants}
+  return { participantCheckType: input.participant_check_type , participants:participants, count: input.data_count}
 }
 
 export const ParticipantCheckSerializer = (input: Member[]): any => {
