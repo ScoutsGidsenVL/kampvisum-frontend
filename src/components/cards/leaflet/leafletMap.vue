@@ -64,7 +64,7 @@
             </svg>
           </l-icon>
           <!-- GREEN POINT -->
-          <l-popup class="w-56">
+          <!-- <l-popup class="w-56">
             <div  class="flex flex-col">
               
               <div>
@@ -78,15 +78,15 @@
                 <label @click="checkMainLocation(index)" class="cursor-pointer mt-2.5" for="name">Hoofdlocatie</label>
               </div>
 
-              <!-- <div class="mt-2">
+              <div class="mt-2">
                 {{ sL.address }}
-              </div> -->
+              </div>
 
-              <!-- <div class="text-red underline mt-3">
+              <div class="text-red underline mt-3">
                 <span class="cursor-pointer" @click="sL.isMainLocation && false ? displayWarning() : deleteLocationPoint(index)">Verwijder</span>
-              </div> -->
+              </div>
             </div>
-          </l-popup>
+          </l-popup> -->
         </l-marker>
       </div>
 
