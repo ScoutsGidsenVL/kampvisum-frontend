@@ -129,11 +129,16 @@ export default defineComponent({
       props.parentLocations.forEach((parentLocation: any) => {
         parentLocation.locations.forEach((location: any) => {
           locs.push(location.latLon)
-          //NEEDS BETTER SOLUTION, WHEN ONLY ONE LOCATION ITS BUGGY
           if (props.parentLocations.length === 1 && parentLocation.locations.length === 1) {
-            locs.push([location.latLon[0]*1.0001,location.latLon[1]*1.0001])
+            locs.push([location.latLon[0],location.latLon[1]])
           }
         })
+      })
+
+      const markerBounds = latLngBounds([])
+
+      locs.forEach((loc: any) => {
+        markerBounds.extend(latLng(loc[0],loc[1]))
       })
 
       if (props.parentLocations.length === 0) {
@@ -141,12 +146,6 @@ export default defineComponent({
         locs.push([50.500479,4.6954777])
         locs.push([50.500480,4.6954778])
       }
-
-      const markerBounds = latLngBounds([])
-
-      locs.forEach((loc: any) => {
-        markerBounds.extend(latLng(loc[0],loc[1]))
-      })
       
       if (map) {
         myMap.value.leafletObject.fitBounds([[markerBounds.getSouth(),markerBounds.getWest()],[markerBounds.getNorth(),markerBounds.getEast()]])
@@ -219,11 +218,11 @@ export default defineComponent({
     const init = () => {
       setTimeout(() => {
         if (myMap.value && myMap.value.leafletObject && myMap.value.leafletObject.fitBounds ) {
-          // doMapStuff()
+          doMapStuff()
         } else {
           init()
         }
-      }, 1000)
+      }, 50)
     }
 
     init()
