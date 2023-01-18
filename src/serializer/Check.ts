@@ -58,9 +58,11 @@ export const CheckDeserializer = (input: any): Check => {
   {
     //REFACTOR TO DESERIALIZER
     let arr: Array<any> = []
-    input.value.locations.forEach((x:any) => {
-      arr.push(PostLocationDeserializer(x))
-    })
+    if (input.value.locations) {
+      input.value.locations.forEach((x:any) => {
+        arr.push(PostLocationDeserializer(x))
+      })
+    }
     single.value = { 
       zoom: input.value.zoom,
       locations: arr, 
@@ -72,9 +74,11 @@ export const CheckDeserializer = (input: any): Check => {
   {
     //REFACTOR TO DESERIALIZER
     let arr: Array<any> = []
-    input.value.locations.forEach((x:any) => {
-      arr.push(PostLocationDeserializer(x))
-    })
+    if (input.value.locations) {
+      input.value.locations.forEach((x:any) => {
+        arr.push(PostLocationDeserializer(x))
+      })
+    }
     single.value = { 
       zoom: input.value.zoom,
       locations: arr, 
