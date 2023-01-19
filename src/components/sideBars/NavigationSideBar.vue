@@ -85,6 +85,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import { useInternetHelper } from '@/helpers/internetHelper'
+import { usePermission } from '@/composable/usePermission'
 
 export default defineComponent({
   components: {
@@ -96,11 +97,12 @@ export default defineComponent({
   name: 'NavigationSideBar',
   setup() {
     const { isInternetActive } = useInternetHelper()
+    const { can } = usePermission()
     const route = useRoute()
     const { isFetchingVisums, visums, visumsAlphabetically } = useVisum()
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsCategory, sidebar } = useNavigation()
-    const { setSelectedGroup, getAvailableGroups, getPermissions, selectedGroup } = useGroupAndYears()
+    const { setSelectedGroup, getAvailableGroups, selectedGroup } = useGroupAndYears()
     const { isForbidden } = useNotification()
     
     const { t } = useI18n({
@@ -133,15 +135,6 @@ export default defineComponent({
         home()
       }
     }
-
-    function can (permission: string) : boolean {
-    const p = getPermissions()
-    if (p) {
-      return p.includes(permission)
-    } else {
-      return false
-    }
-  }
 
     return {
       navigateTowardsCategory,

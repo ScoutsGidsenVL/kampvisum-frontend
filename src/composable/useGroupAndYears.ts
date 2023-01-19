@@ -21,7 +21,6 @@ const useGroupAndYears = (): {
   setSelectedGroup: (group: Group) => Group
   selectedGroup: Ref<Group>
   getAvailableGroups: () => Group[]
-  getPermissions: () => any[]
   isInBetweenStartAndEnd: (start: string, end: string) => Boolean
 } => {
   const { getVisums, clearVisums } = useVisum()
@@ -88,10 +87,6 @@ const useGroupAndYears = (): {
     return store.getters.user.scoutsGroups as Group[]
   }
 
-  const getPermissions = () => {
-    return store.getters.user.permissions as any[]
-  }
-
   const isInBetweenStartAndEnd = (start: string, end: string): boolean =>  {
     var date = DateTime.fromFormat(new Date().toString(), 'yyyy-MM-dd')
     if (date > start && date < end) {
@@ -110,7 +105,6 @@ const useGroupAndYears = (): {
     isFetchingYears,
     selectedGroup,
     setSelectedGroup,
-    getPermissions,
     isInBetweenStartAndEnd
   }
 }

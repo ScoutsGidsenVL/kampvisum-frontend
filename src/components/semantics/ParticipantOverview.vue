@@ -51,7 +51,7 @@ import MemberItem from './MemberItem.vue'
 import { Member } from '@/serializer/Member'
 import { useI18n } from 'vue-i18n'
 import IInfo from '../icons/IInfo.vue'
-import useGroupAndYears from '@/composable/useGroupAndYears'
+import { usePermission } from '@/composable/usePermission'
 
 
 export default defineComponent({
@@ -76,8 +76,8 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { triggerNotification } = useNotification()
+    const { can } = usePermission()
     const sidebar = ref<any>({ state: 'hide' })
-      const { getPermissions } = useGroupAndYears()
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -100,15 +100,6 @@ export default defineComponent({
 
     const openSidebarToEdit = (m: Member) => {
       sidebar.value = { state: 'edit', entity: m }
-    }
-
-    function can(permission: string): boolean {
-      const p = getPermissions()
-      if (p) {
-        return p.includes('visums.' + permission)
-      } else {
-        return false
-      }
     }
 
     return {
