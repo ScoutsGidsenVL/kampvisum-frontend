@@ -2,7 +2,7 @@
   <div v-if="can(check.checkParent.requiresPermission)" class="pb-3">
     <div  class="flex gap-2 items-center">
       <message class="p-2 pr-0" :title="check.checkParent.label" :color="{ state: ColorState.GRAY }" />
-      <message v-if="check.checkParent.isMultiple" class="p-2 pl-0" :title="`(${check.value.count})`" :color="{ state: ColorState.GRAY }" />
+      <message v-if="check.checkParent.isMultiple && check.value.count>0" class="p-2 pl-0" :title="`(${check.value.count})`" :color="{ state: ColorState.GRAY }" />
       <div v-if="check.checkParent.explanation">
         <i-info :info="check.checkParent.explanation" />
       </div>
