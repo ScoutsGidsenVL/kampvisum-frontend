@@ -1,6 +1,6 @@
 <template>
   <div class="h-96 w-full">
-    <l-map ref="myMap" :options="{scrollWheelZoom: false}" class="z-0" v-model:zoom="check.value.zoom" :center="center" @update:center="centerUpdated" @click="addOnClick($event)">
+    <l-map ref="myMap" :options="{scrollWheelZoom: false}" class="z-0">
       <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"></l-tile-layer>
 
       <div v-for="parentLocation in parentLocations" :key="parentLocation">
@@ -48,9 +48,9 @@
 import { LMap, LTileLayer, LMarker, LIcon, LPopup, LControl } from '@vue-leaflet/vue-leaflet'
 import { CustomInput, CustomButtonSmall, InputTypes, Warning } from 'vue-3-component-library'
 import { SearchedLocation } from '../../../serializer/SearchedLocation'
-import { defineComponent, ref, PropType, toRefs, onMounted } from 'vue'
+import { defineComponent, ref, PropType, toRefs } from 'vue'
 import ICenter from '@/components/icons/ICenter.vue'
-import { latLngBounds, latLng } from 'leaflet'
+import { latLng } from 'leaflet'
 import CustomPopup from './CustomPopup.vue'
 import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
@@ -71,7 +71,6 @@ export default defineComponent({
     ICenter
   },
   props: {
-    center: Object as PropType<Array<number>>,
     parentLocations: {
       type: Object as PropType<Array<any>>,
       required: false,
@@ -123,46 +122,31 @@ export default defineComponent({
     }
 
     const doMapStuff = () => {
-      let map = myMap.value.leafletObject
-      let locs: Array<any> = []
-
+      let map: any = myMap.value.leafletObject
+      console.log('map', map);
+      let markers: any = []
       props.parentLocations.forEach((parentLocation: any) => {
         parentLocation.locations.forEach((location: any) => {
-          locs.push(location.latLon)
-          if (props.parentLocations.length === 1 && parentLocation.locations.length === 1) {
-            locs.push([location.latLon[0],location.latLon[1]])
+          markers.push([location.latitude, location.longitude]);
+          if (parentLocation.locations.length === 1) {
+            map.flyTo(latLng(location.latitude, location.longitude), 14)
           }
         })
       })
-
-      const markerBounds = latLngBounds([])
-
-      locs.forEach((loc: any) => {
-        markerBounds.extend(latLng(loc[0],loc[1]))
-      })
-
-      if (props.parentLocations.length === 0) {
-        //SET COORDS TO BELGIUM IF THERE ARE NO LOCATIONS
-        locs.push([50.500479,4.6954777])
-        locs.push([50.500480,4.6954778])
+      if (markers.length > 1) {
+        map.fitBounds(markers);
+        map.zoomOut();
       }
-      
-      if (map) {
-        myMap.value.leafletObject.fitBounds([[markerBounds.getSouth(),markerBounds.getWest()],[markerBounds.getNorth(),markerBounds.getEast()]])
-        setTimeout(function() {
-          if (props.parentLocations.length === 0) {
-            map.setZoom(7)
-          } else {
-            map.setZoom(map.getZoom() - 1);
-          }
-        }, 1);
+
+      if (markers.length === 0) {
+        map.flyTo(latLng(50.500480, 4.6954778), 7)
       }
     }
 
     const hideWarning = () => {
       isWarningDisplayed.value = false
     }
-    const { searchedLocation, searchedLocations } = toRefs(props)
+    const { searchedLocations } = toRefs(props)
 
     const toPatch = ref<Array<Array<number>>>([[], [], []])
     const iconWidthAndHeight = [25, 40]
@@ -170,14 +154,6 @@ export default defineComponent({
     const patchLatLng = (latLng: any, id: number) => {
       toPatch.value[id] = [latLng.lat, latLng.lng]
       //PATCH NEW VALUES TO ENDPOINT...
-    }
-
-    const addLocationPoint = () => {
-      emit('addLocationPoint', searchedLocation.value)
-    }
-
-    const cancelLocationPoint = () => {
-      emit('cancelLocationPoint', true)
     }
 
     const deleteLocationPoint = (index: any) => {
@@ -191,24 +167,6 @@ export default defineComponent({
           hideWarning()
         }
       })
-    }
-
-    const checkMainLocation = (i: number) => {
-      searchedLocations.value.forEach((s, index) => {
-        if (index !== i) {
-          s.isMainLocation = false
-        }
-      })
-    }
-
-    const addOnClick = (p: any) => {
-      if (p.latlng) {
-        emit('addOnClick', p.latlng)
-      }
-    }
-
-    const centerUpdated = (center: any) => {
-      emit('update:center', [center.lat, center.lng])
     }
 
     const edit = (parentLocation: any) => {
@@ -235,23 +193,18 @@ export default defineComponent({
       rl,
       centerClickedLocation,
       deleteMainLocationPoint,
-      cancelLocationPoint,
       deleteLocationPoint,
       iconWidthAndHeight,
       isWarningDisplayed,
-      checkMainLocation,
-      addLocationPoint,
       displayWarning,
-      centerUpdated,
       patchLatLng,
       hideWarning,
       InputTypes,
-      addOnClick,
       toPatch,
       edit,
       t,
       doMapStuff,
-      myMap
+      myMap,
     }
   },
 })

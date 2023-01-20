@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <parent-leaflet-map ref="child" v-if="!isReloading" :parentLocations="check.value.locations" :check="check" :center="[check.value.centerLatitude, check.value.centerLongitude]" @rl="rl($event)" @edit="edit($event)" />
+    <parent-leaflet-map ref="child" v-if="!isReloading" :parentLocations="check.value.locations" :check="check" @rl="rl($event)" @edit="edit($event)" />
     
     <location-create-sidebar
       v-if="createSidebar.state === 'new' || createSidebar.state === 'edit' || createSidebar.state === 'search'"
