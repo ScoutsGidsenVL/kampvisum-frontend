@@ -8,7 +8,7 @@
         use-range
         v-model="dateValues"
         :formatter="formatter"
-        separator=","
+        separator=" - "
         placeholder=" "
       ></litepie-datepicker>
     </div>

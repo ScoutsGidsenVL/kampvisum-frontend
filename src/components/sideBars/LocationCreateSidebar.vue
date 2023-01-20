@@ -144,7 +144,7 @@
             use-range
             v-model="dateValues"
             :formatter="formatter"
-            separator=","
+            separator=" - "
             placeholder=" "
           ></litepie-datepicker>
           <div v-if="checkIfOutsideRange(dateValues, leadersDates)" class="text-white p-1 font-bold bg-red">
