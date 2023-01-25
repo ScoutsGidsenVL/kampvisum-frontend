@@ -7,6 +7,7 @@
         <i-info :info="check.checkParent.explanation" />
       </div>
     </div>
+    <!-- {{ check.checkParent }} -->
     <div v-if="can(check.checkParent.requiresPermission)">
       <member-item
         v-for="participant in check.value.participants"
@@ -18,7 +19,7 @@
       />
     </div>
 
-    <div v-if="can(check.checkParent.requiresPermission)" class="text-left pl-3 mt-3" v-if="check.value.participants.length === 0">
+    <div v-if="can(check.checkParent.requiresPermission) && check.value.participants.length === 0" class="text-left pl-3 mt-3">
       <p class="italic">{{ !check.checkParent.isMultiple ? t('checks.participant-check.no-member') : t('checks.participant-check.no-members') }}</p>
     </div>
 

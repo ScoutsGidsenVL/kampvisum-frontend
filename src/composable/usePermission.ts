@@ -9,6 +9,9 @@ export const usePermission = (): {
   }
 
   const can = (permission: string): boolean => {
+    if (permission.length === 0) {
+      return true
+    }
     const p = getPermissions()
     if (p) {
       return p.includes(permission)
