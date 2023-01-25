@@ -11,7 +11,7 @@ export const usePermission = (): {
   const can = (permission: string): boolean => {
     const p = getPermissions()
     if (p) {
-      return p.includes('visums.' + permission)
+      return p.includes(permission)
     } else {
       return false
     }
