@@ -74,9 +74,6 @@ const useGroupAndYears = (): {
 
         if (yearsOutput[0]) {
           setSelectedYear(yearsOutput[0])
-        } else {
-          // IF RESPONSE IS EMPTY YEAR ARRAY
-          getVisums(selectedGroup.value, '')
         }
 
         isFetchingYears.value = false
