@@ -24,7 +24,7 @@ const useVisum = (): {
   getGlobalVisumState: (visum: Visum) => GlobalVisumState
 } => {
   const getVisums = async (group: any, year: string) => {
-    if (isFetchingVisums.value === false && year) {
+    if (year) {
       isFetchingVisums.value = true
       await RepositoryFactory.get(CampRepository)
         .getArray('?page=1&page_size=100&group=' + group.groupAdminId + (year !== '' ? '&year=' + year : ''))

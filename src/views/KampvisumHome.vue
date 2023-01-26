@@ -106,6 +106,7 @@ export default defineComponent({
     Forbidden,
   },
   setup() {
+    console.log('HOME')
     const { isInternetActive } = useInternetHelper()
     const campSideBarState = ref<any>({ state: 'hide', entity: {} })
     const isWarningDisplayed = ref<Boolean>(false)
@@ -169,6 +170,7 @@ export default defineComponent({
       if (!selectedYear.value) {
         await getYearsForGroup(selectedGroup.value.groupAdminId)
       }
+      console.log('OP')
       getVisums(selectedGroup.value, selectedYear.value)
     }
 

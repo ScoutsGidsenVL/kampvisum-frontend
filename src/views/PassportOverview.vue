@@ -62,7 +62,7 @@ export default defineComponent({
   setup() {
     const { getSectionsTitle } = useSectionsHelper()
     const { getCampByRouteParam } = useCampHelper()
-    const { addVisum, getVisums, getVisum, updateVisum, addFile } = useOfflineData()
+    const { addVisum, getVisum, updateVisum, addFile } = useOfflineData()
     const { isInternetActive } = useInternetHelper()
 
     const visum = ref<any>()
@@ -167,7 +167,6 @@ export default defineComponent({
       getSectionsTitle,
       remainingDays,
       setVisumOffline,
-      getVisums,
       idbVisum,
       isInternetActive,
       syncVisumOffline,
