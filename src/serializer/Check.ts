@@ -58,8 +58,7 @@ export const CheckDeserializer = (input: any): Check => {
   {
     //REFACTOR TO DESERIALIZER
     let arr: Array<any> = []
-    console.log('DEBUG: ', input);
-    if (input.value && input.value.locations) {
+    if (input.value.locations && Array.isArray(input.value.locations)) {
       input.value.locations.forEach((x:any) => {
         arr.push(PostLocationDeserializer(x))
       })
@@ -75,7 +74,7 @@ export const CheckDeserializer = (input: any): Check => {
   {
     //REFACTOR TO DESERIALIZER
     let arr: Array<any> = []
-    if (input.value && input.value.locations) {
+    if (Array.isArray(input.value.locations)) {
       input.value.locations.forEach((x:any) => {
         arr.push(PostLocationDeserializer(x))
       })
