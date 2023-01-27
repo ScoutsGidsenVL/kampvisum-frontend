@@ -146,8 +146,7 @@ export default abstract class BaseApiRepository {
   }
 
   private processError(error: any): any {
-    console.log('ERROOORRRR: ', error.response.data[0])
-    if (error.response?.data[0]) {
+    if (error.response?.data[0] && error.response?.data[0] === 'Duplicate camp responsibles !') {
       triggerNotification(error.response?.data[0])
       return true;
     }
