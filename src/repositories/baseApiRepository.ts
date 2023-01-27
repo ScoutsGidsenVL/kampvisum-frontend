@@ -146,6 +146,11 @@ export default abstract class BaseApiRepository {
   }
 
   private processError(error: any): any {
+    console.log('ERROOORRRR: ', error.response.data[0])
+    if (error.response?.data[0]) {
+      triggerNotification(error.response?.data[0])
+      return true;
+    }
     if (error.response?.data?.file) { 
       triggerNotification(error.response.data.file[0])
     }

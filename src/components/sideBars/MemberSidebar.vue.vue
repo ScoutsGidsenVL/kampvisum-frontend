@@ -157,8 +157,10 @@ export default defineComponent({
       isPatching.value = true
       await RepositoryFactory.get(ParticipantCheckRepository)
         .update(props.check.endpoint, data)
-        .then(() => {
-          context.emit('actionSuccess', 'PATCH')
+        .then((res) => {
+          if (res !== false) {
+            context.emit('actionSuccess', 'PATCH')
+          }
           isPatching.value = false
           closeSideBar()
         })

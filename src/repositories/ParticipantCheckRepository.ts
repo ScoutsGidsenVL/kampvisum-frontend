@@ -11,7 +11,10 @@ export class ParticipantCheckRepository extends BaseRepository {
 
   update(url: string, members: Member[]) {
     return this.patch(url, this.serializer(members)).then((response: any) => {
-      return this.deserializer(response.value)
+      if (response.value) {
+        return this.deserializer(response.value);
+      }
+      return false;
     })
   }
 
