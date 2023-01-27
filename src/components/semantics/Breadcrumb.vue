@@ -101,7 +101,6 @@ export default defineComponent({
       props.router.push(props.home)
       // window.location.pathname = '/kampvisum-home'
       await getYearsForGroup(selectedGroup.value.groupAdminId)
-      console.log('NAV')
       getVisums(selectedGroup.value, selectedYear.value)
     }
 

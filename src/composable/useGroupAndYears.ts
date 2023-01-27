@@ -46,8 +46,6 @@ const useGroupAndYears = (): {
       }, 100)
   })
 
-  // console.log('HEY')
-
   // watch(selectedYear, (newYear: string, oldYear: string) => {
   //   // console.log('HERE@@@'); this loops 10 times?!
   //   console.log(newYear, oldYear);
@@ -57,7 +55,6 @@ const useGroupAndYears = (): {
   // })
 
   const setSelectedYear = (year: string) => {
-    console.log('SETT');
     selectedYear.value = year
     getVisums(selectedGroup.value, year);
     return year
@@ -65,7 +62,6 @@ const useGroupAndYears = (): {
 
   const setSelectedGroup = (group: Group, backToHome: boolean = true) => {
     selectedGroup.value = group
-    console.log('SSG')
     getVisums(selectedGroup.value, selectedYear.value)
     return group
   }

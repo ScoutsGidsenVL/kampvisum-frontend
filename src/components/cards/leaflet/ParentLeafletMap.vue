@@ -123,7 +123,6 @@ export default defineComponent({
 
     const doMapStuff = () => {
       let map: any = myMap.value.leafletObject
-      console.log('map', map);
       let markers: any = []
       props.parentLocations.forEach((parentLocation: any) => {
         parentLocation.locations.forEach((location: any) => {
