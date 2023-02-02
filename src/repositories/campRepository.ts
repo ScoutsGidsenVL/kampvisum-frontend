@@ -21,7 +21,7 @@ export class CampRepository extends BaseRepository {
     if (isInternetActive.value) {
       return this.get(this.endpoint + pagination, {}).then((response: ArrayResult) => {
         const array: any[] = []
-        if (response?.results) { 
+        if (response?.results) {
           response.results.forEach((result: Visum) => {
             array.push(this.deserializer(result))
           })
@@ -29,22 +29,22 @@ export class CampRepository extends BaseRepository {
         return array
       })
     } else {
-        return new Promise<any>((resolve): void => {
+      return new Promise<any>((resolve): void => {
         getVisums().then((results) => {
-            let data: Array<Visum> = []
-            if (results) {
-                results.forEach((v: Visum) => {
-                    if (v.camp.year.year === selectedYear.value && v.groupGroupAdminId === selectedGroup.value.groupAdminId) {
-                        data.push(v)
-                    }
-                })
-            }
+          let data: Array<Visum> = []
+          if (results) {
+            results.forEach((v: Visum) => {
+              if (v.camp.year.year === selectedYear.value && v.groupGroupAdminId === selectedGroup.value.groupAdminId) {
+                data.push(v)
+              }
+            })
+          }
 
-            resolve(data)
-        })  
-    })
+          resolve(data)
+        })
+      })
     }
-    
+
   }
 
   getGroupYears(groupId: string): Promise<any> {
@@ -53,10 +53,10 @@ export class CampRepository extends BaseRepository {
     const { isInBetweenStartAndEnd } = useGroupAndYears()
 
     if (isInternetActive.value) {
-      return this.get('/camp_years/', {}).then((response: { results: []}) => {
+      return this.get('/camp_years/', {}).then((response: { results: [] }) => {
         const years = ref<Array<number>>([])
         response.results.forEach((year: Year) => {
-          if (isInBetweenStartAndEnd(year.start_date, year.end_date)){
+          if (isInBetweenStartAndEnd(year.start_date, year.end_date)) {
             years.value.push(year.year);
           } else {
             years.value.unshift(year.year);
@@ -68,7 +68,7 @@ export class CampRepository extends BaseRepository {
     } else {
       return new Promise<Array<number>>((resolve, reject): void => {
         getYears().then((result: any) => {
-            resolve(result)
+          resolve(result)
         })
       })
     }
@@ -80,21 +80,21 @@ export class CampRepository extends BaseRepository {
 
 
     if (isInternetActive.value) {
-    return this.get(this.endpoint + id, {}).then((response: any) => {
+      return this.get(this.endpoint + id, {}).then((response: any) => {
         return this.deserializer(response)
-    })
+      })
     } else {
-        return new Promise<any>((resolve) => {
-            getVisum(id.replace('/', '')).then((result: Visum) => {
-                resolve(result)
-            })
+      return new Promise<any>((resolve) => {
+        getVisum(id.replace('/', '')).then((result: Visum) => {
+          resolve(result)
         })
+      })
     }
   }
 
   getDatesLeadersById(id: string): Promise<any> {
     return this.get(`${this.endpoint}${id}/dates/leaders`, {}).then((response: any) => {
-        return response
+      return response
     })
   }
 
