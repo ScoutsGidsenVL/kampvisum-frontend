@@ -9,10 +9,11 @@ export class CampTypeRepository extends BaseRepository {
   deserializer = CampTypeDeserializer
   serializer = CampTypeSerializer
 
-  getArray(pagination?: string): Promise<any> {
+  getArray(groupId: string, pagination?: string): Promise<any> {
     const { isInternetActive } = useInternetHelper()
+
     if (isInternetActive.value) {
-      return this.get(this.endpoint, {}).then((response: ArrayResult) => {
+      return this.get(this.endpoint + "?group=" + groupId, {}).then((response: ArrayResult) => {
         const array: any[] = []
         response.results.forEach((result: any) => {
           array.push(this.deserializer(result))
@@ -24,6 +25,6 @@ export class CampTypeRepository extends BaseRepository {
         resolve([])
       })
     }
-         
+
   }
 }

@@ -23,18 +23,18 @@ export class GroupRepository extends BaseRepository {
   getGroupSections(groupId: string): Promise<any> {
     const { isInternetActive } = useInternetHelper()
 
-  if (isInternetActive.value) {
-    return this.get(`/sections/${groupId}/`, {}).then((response: ArrayResult) => {
-      const array: any[] = []
-      response.results.forEach((result: Section) => {
-        array.push(SectionDeserializer(result))
+    if (isInternetActive.value) {
+      return this.get(`/sections/${groupId}/`, {}).then((response: ArrayResult) => {
+        const array: any[] = []
+        response.results.forEach((result: Section) => {
+          array.push(SectionDeserializer(result))
+        })
+        return array
       })
-      return array
-    })
-  } else {
-    return new Promise<any>((resolve, reject) => {
-      resolve(true)
-    })
-  }
+    } else {
+      return new Promise<any>((resolve, reject) => {
+        resolve(true)
+      })
+    }
   }
 }

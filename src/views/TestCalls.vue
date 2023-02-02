@@ -150,7 +150,7 @@ export default defineComponent({
             vars: {
 
             },
-            call: (vars: any) => RepositoryFactory.get(CampTypeRepository).getArray()
+            call: (vars: any) => RepositoryFactory.get(CampTypeRepository).getArray(vars.groupID)
         },
         'CategoryGetById': {
             vars: {

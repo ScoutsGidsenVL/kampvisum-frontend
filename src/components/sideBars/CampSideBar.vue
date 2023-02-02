@@ -166,9 +166,9 @@ export default defineComponent({
         })
     }
 
-    const getCampTypes = async () => {
+    const getCampTypes = async (groupId: string) => {
       await RepositoryFactory.get(CampTypeRepository)
-        .getArray()
+        .getArray(groupId)
         .then((results: CampType[]) => {
           filterOutCampTypes(results)
         })
@@ -189,15 +189,16 @@ export default defineComponent({
         isReload.value = false
       }, 1)
     }
-    getCampTypes()
     
     if (props.selectedGroupId) {
       getGroupSections(props.selectedGroupId)
+      getCampTypes(props.selectedGroupId)
     }
     watch(
       () => props.selectedGroupId,
       () => {
         getGroupSections(props.selectedGroupId)
+        getCampTypes(props.selectedGroupId)
       }
     )
 
