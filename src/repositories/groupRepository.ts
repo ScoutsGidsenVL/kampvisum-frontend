@@ -24,7 +24,7 @@ export class GroupRepository extends BaseRepository {
     const { isInternetActive } = useInternetHelper()
 
     if (isInternetActive.value) {
-      return this.get(groupId, `/sections/`, {}).then((response: ArrayResult) => {
+      return this.get(groupId, `/sections/${groupId}/`, {}).then((response: ArrayResult) => {
         const array: any[] = []
         response.results.forEach((result: Section) => {
           array.push(SectionDeserializer(result))
