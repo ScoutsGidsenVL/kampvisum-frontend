@@ -65,7 +65,7 @@ export default defineComponent({
     }
  
     return {
-        showTextLabel,
+      showTextLabel,
       colorMap,
       state,
       t
