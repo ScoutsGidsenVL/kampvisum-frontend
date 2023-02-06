@@ -16,6 +16,7 @@ import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { CampRepository } from '@/repositories/campRepository'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'DcNotes',
@@ -31,6 +32,7 @@ export default defineComponent({
     },
   },
   setup (props) {
+    const { selectedGroup } = useGroupAndYears()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -50,7 +52,7 @@ export default defineComponent({
         debounce = setTimeout(() => {
           if (true) {
           RepositoryFactory.get(CampRepository)
-          .patchVisumNotes(props.visum.id, values.notes)
+          .patchVisumNotes(selectedGroup.value.groupAdminId, props.visum.id, values.notes)
           .then(() => {
             triggerNotification(t('engagement.notes-notification'))
           })

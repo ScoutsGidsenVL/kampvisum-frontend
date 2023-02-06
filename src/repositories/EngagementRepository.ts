@@ -8,16 +8,16 @@ export class EngagementRepository extends BaseRepository {
   deserializer = EngagementDeserializer
   serializer = EngagementDeserializer
 
-  approveVisum(visum: Visum): Promise<any> {
+  approveVisum(groupId: string, visum: Visum): Promise<any> {
     const data: Approval = { approved: true }
-    return this.update(visum.id, data).then((response: Engagement) => {
+    return this.update(groupId, visum.id, data).then((response: Engagement) => {
       return response
     })
   }
 
-  signVisum(engagement: Engagement): Promise<any> {
-      return this.patch(this.endpoint + engagement.id + '/', undefined).then((response: any) => {
-        return this.deserializer(response)
-      })
+  signVisum(groupId: string, engagement: Engagement): Promise<any> {
+    return this.patch(groupId, this.endpoint + engagement.id + '/', undefined).then((response: any) => {
+      return this.deserializer(response)
+    })
   }
 }

@@ -98,9 +98,9 @@ export default defineComponent({
     const removeSection = async () => {
       if (sectionToBeDeleted.value && sectionToBeDeleted.value.id) {
         await RepositoryFactory.get(SectionsRepository)
-          .removeById(sectionToBeDeleted.value.id)
+          .removeById(selectedGroup.value.groupAdminId, sectionToBeDeleted.value.id)
           .then(() => {
-            getGroupSections(selectedGroup.value.groupAdminId)
+            getGroupSections()
             isWarningDisplayed.value = false
             triggerNotification(t('pages.settings.sections.notification-deleted'))
           })
@@ -111,9 +111,9 @@ export default defineComponent({
       sectionSideBarState.value = { state: 'new' }
     }
 
-    const getGroupSections = async (groupId: string) => {
+    const getGroupSections = async () => {
       await RepositoryFactory.get(GroupRepository)
-        .getGroupSections(groupId)
+        .getGroupSections(selectedGroup.value.groupAdminId)
         .then((results: Section[]) => {
           groupSections.value = results
         })
@@ -122,20 +122,20 @@ export default defineComponent({
     const actionSuccess = (action: string) => {
       if (action === 'POST') {
         triggerNotification(t('pages.settings.sections.notification-posted'))
-        getGroupSections(selectedGroup.value.groupAdminId)
+        getGroupSections()
       }
       if (action === 'UPDATE') {
         triggerNotification(t('pages.settings.sections.notification-updated'))
-        getGroupSections(selectedGroup.value.groupAdminId)
+        getGroupSections()
       }
-      getGroupSections(selectedGroup.value.groupAdminId)
+      getGroupSections()
     }
 
     if (selectedGroup.value.groupAdminId) { 
-      getGroupSections(selectedGroup.value.groupAdminId)
+      getGroupSections()
     }
     watch(selectedGroup.value, () => {
-      getGroupSections(selectedGroup.value.groupAdminId)
+      getGroupSections()
     })
 
     return {

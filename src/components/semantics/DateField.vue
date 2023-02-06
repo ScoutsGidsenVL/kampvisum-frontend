@@ -33,6 +33,7 @@ import { defineComponent, ref, watch, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
 const { DateTime } = require("luxon");
 import { useI18n } from 'vue-i18n'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'DateField',
@@ -51,6 +52,7 @@ export default defineComponent({
     'litepie-datepicker': LitepieDatepicker
   },
   setup (props) {
+    const { selectedGroup } = useGroupAndYears()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -81,7 +83,7 @@ export default defineComponent({
       })
 
       await RepositoryFactory.get(DurationDateCheckRepository)
-        .update(props.check.endpoint, tmpDates)
+        .update(selectedGroup.value.groupAdminId, props.check.endpoint, tmpDates)
         .then((p: any) => {
           triggerNotification(t('checks.notification-updated'))
         })

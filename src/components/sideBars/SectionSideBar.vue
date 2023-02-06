@@ -155,7 +155,7 @@ export default defineComponent({
       section.name.ageGroup = chosenAgeGroup.value.value
       if (props.sideBarState) {
         await RepositoryFactory.get(SectionsRepository)
-          .update(props.sideBarState.entity.id, section)
+          .update(selectedGroup.value.groupAdminId, props.sideBarState.entity.id, section)
           .then(() => {
             context.emit('actionSuccess', 'UPDATE')
           })
@@ -168,7 +168,7 @@ export default defineComponent({
       section.name.ageGroup = chosenAgeGroup.value.value
 
       await RepositoryFactory.get(SectionsRepository)
-        .create(section)
+        .create(selectedGroup.value.groupAdminId, section)
         .then(() => {
           context.emit('actionSuccess', 'POST')
         })

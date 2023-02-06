@@ -164,6 +164,7 @@ export default defineComponent({
     const loading = ref<boolean>(false)
     const filter = ref<Filter>({ gender: '', ageMin: '', ageMax: '', type: props.check.value.participantCheckType })
     const { checkIfIsMobileSize } = usePhoneHelper()
+    const { selectedGroup } = useGroupAndYears()
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -203,7 +204,7 @@ export default defineComponent({
       if (member.id && props.sideBarState) {
         isPatching.value = true
         await RepositoryFactory.get(ParticipantRepository)
-          .update(member.id, member)
+          .update(selectedGroup.value.groupAdminId, member.id, member)
           .then(() => {
             context.emit('actionSuccess', 'UPDATE')
             isPatching.value = false
@@ -215,7 +216,7 @@ export default defineComponent({
     const patchMembers = async (members: Member[]) => {
       isPatching.value = true
       await RepositoryFactory.get(ParticipantCheckRepository)
-        .update(props.check.endpoint, members)
+        .update(selectedGroup.value.groupAdminId, props.check.endpoint, members)
         .then(() => {
           context.emit('actionSuccess', 'PATCH')
           isPatching.value = false
@@ -223,12 +224,10 @@ export default defineComponent({
         })
     }
 
-    const { selectedGroup } = useGroupAndYears()
-
     const postParticipant = async (participant: Member) => {
       participant.groupGroupAdminId = selectedGroup.value.groupAdminId
       await RepositoryFactory.get(ParticipantRepository)
-        .create(participant)
+        .create(selectedGroup.value.groupAdminId, participant)
         .then((m: Member) => {
           context.emit('actionSuccess', 'POST')
           m.isChecked = true

@@ -5,7 +5,7 @@ import { ref, Ref } from 'vue'
 import router from '@/router'
 import { Category } from '@/serializer/Category'
 import { SubCategory } from '@/serializer/SubCategory'
-import {StatusFeedbackState} from '@/components/semantics/Feedback.vue'
+import { StatusFeedbackState } from '@/components/semantics/Feedback.vue'
 import { useInternetHelper } from '@/helpers/internetHelper'
 
 const visums = ref<Visum[]>([])
@@ -27,7 +27,7 @@ const useVisum = (): {
     if (year) {
       isFetchingVisums.value = true
       await RepositoryFactory.get(CampRepository)
-        .getArray('?page=1&page_size=100&group=' + group.groupAdminId + (year !== '' ? '&year=' + year : ''))
+        .getArray(group.groupAdminId, '?page=1&page_size=100' + (year !== '' ? '&year=' + year : ''))
         .then((visumsOutput: Visum[]) => {
           visums.value = visumsOutput
           visumsAlphabetically.value = [...visumsOutput]
@@ -48,10 +48,10 @@ const useVisum = (): {
     }
   }
 
-  const getGlobalVisumState = (visum: Visum) :  GlobalVisumState => {
+  const getGlobalVisumState = (visum: Visum): GlobalVisumState => {
 
     //If no signable, it's needs feedback to resolve
-    if(visum.state ===  VisumStates.NOT_SIGNABLE){
+    if (visum.state === VisumStates.NOT_SIGNABLE) {
       return 'DISAPPROVED'
     }
 
@@ -59,23 +59,23 @@ const useVisum = (): {
     try {
       visum.categorySet.categories.forEach((cat: Category) => {
         //@ts-ignore @Ricardo, check typing base interfaces
-        cat.subCategories && cat.subCategories.forEach((subCat: SubCategory ) => {
-          if(subCat.approval === StatusFeedbackState.APPROVED_FEEDBACK){
+        cat.subCategories && cat.subCategories.forEach((subCat: SubCategory) => {
+          if (subCat.approval === StatusFeedbackState.APPROVED_FEEDBACK) {
             throw 'Break'
           }
         })
       })
     } catch (e) {
-      return 'FEEDBACK' 
+      return 'FEEDBACK'
     }
 
     //If camp is accepted show green badge
-    if(visum.state === VisumStates.APPROVED || (visum.state === VisumStates.FEEDBACK_HANDLED && visum.engagement?.districtCommisioner)) {
+    if (visum.state === VisumStates.APPROVED || (visum.state === VisumStates.FEEDBACK_HANDLED && visum.engagement?.districtCommisioner)) {
       return 'ACCEPTED'
     }
 
     //Show if dc can sign camp
-    if(visum.engagement?.leaders && visum.engagement.groupLeaders){
+    if (visum.engagement?.leaders && visum.engagement.groupLeaders) {
       return 'READYFORDC'
     }
 

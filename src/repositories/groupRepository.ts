@@ -10,8 +10,8 @@ export class GroupRepository extends BaseRepository {
   deserializer = GroupDeserializer
   serializer = GroupSerializer
 
-  getArray(pagination?: string): Promise<any> {
-    return this.get(this.endpoint, {}).then((response: Array<any>) => {
+  getArray(groupId: string, pagination?: string): Promise<any> {
+    return this.get(groupId, this.endpoint, {}).then((response: Array<any>) => {
       const array: any[] = []
       response.forEach((result: any) => {
         array.push(this.deserializer(result))
@@ -24,7 +24,7 @@ export class GroupRepository extends BaseRepository {
     const { isInternetActive } = useInternetHelper()
 
     if (isInternetActive.value) {
-      return this.get(`/sections/${groupId}/`, {}).then((response: ArrayResult) => {
+      return this.get(groupId, `/sections/`, {}).then((response: ArrayResult) => {
         const array: any[] = []
         response.results.forEach((result: Section) => {
           array.push(SectionDeserializer(result))

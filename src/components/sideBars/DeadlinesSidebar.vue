@@ -145,6 +145,7 @@ import ICross from '../icons/ICross.vue'
 import { Flag } from '@/serializer/Flag'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export enum SidebarState {
   OPEN = 'OPEN',
@@ -187,6 +188,7 @@ export default defineComponent({
     const selectedDeadline = ref<Deadline>()
     const deadlines = ref<any>([])
     const route = useRoute()
+    const { selectedGroup } = useGroupAndYears()
 
     const { t } = useI18n({
       inheritLocale: true,
@@ -212,7 +214,7 @@ export default defineComponent({
 
     const getDeadlines = async () => {
       await RepositoryFactory.get(DeadlineRepository)
-        .getArray(props.visum.id)
+        .getArray(props.visum.groupGroupAdminId, props.visum.id)
         .then((d: Array<any>) => {
           deadlines.value = d
           deadlines.value.forEach((dead: Deadline) => {
@@ -229,7 +231,7 @@ export default defineComponent({
         isUpdatingFlag.value = true
         if (flag.id && deadline.id) {
           await RepositoryFactory.get(DeadlineRepository)
-            .updateFlag(deadline.id, flag.id, { flag: flag.flag })
+            .updateFlag(selectedGroup.value.groupAdminId, deadline.id, flag.id, { flag: flag.flag })
             .then((deadline: Deadline) => {
               deadlines.value.map((dl: Deadline) => {
                 if (dl.id === deadline.id) {

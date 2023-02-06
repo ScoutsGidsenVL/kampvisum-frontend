@@ -51,6 +51,7 @@ import { SidebarState, useInfoBarHelper } from '@/helpers/infoBarHelper'
 import IInfoGreen from '../icons/IInfoGreen.vue'
 import { defineComponent } from 'vue'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'InformationSideBar',
@@ -62,6 +63,7 @@ export default defineComponent({
   },
   setup() {
     const { info, setInfo, sidebar, defaultInfo } = useInfoBarHelper()
+    const { selectedGroup } = useGroupAndYears()
 
     const closeSideBar: () => void = () => {
       setInfo()

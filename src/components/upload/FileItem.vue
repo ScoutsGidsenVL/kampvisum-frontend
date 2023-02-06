@@ -72,6 +72,7 @@ import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
 import { useInternetHelper } from '@/helpers/internetHelper'
 import { useOfflineData } from '@/composable/useOfflineData'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'FileItem',
@@ -98,11 +99,12 @@ export default defineComponent({
 
     const { isInternetActive } = useInternetHelper()
     const { getFile } = useOfflineData()
+    const { selectedGroup } = useGroupAndYears()
 
     const downloadFile = (id: string) => {
       if (isInternetActive.value) {
         RepositoryFactory.get(FileRepository)
-        .getById(id)
+        .getById(selectedGroup.value.groupAdminId, id)
         .then((minioData: { url: string}) => {
           window.open(minioData.url, '_blank');          
         })
@@ -125,7 +127,7 @@ export default defineComponent({
     const deleteFromList = async (file: FileItem) => {
       if (props.check.id) {
         await RepositoryFactory.get(FileCheckRepository)
-          .removeFileFromList(props.check.id, file.id)
+          .removeFileFromList(selectedGroup.value.groupAdminId, props.check.id, file.id)
           .then(() => {
             emit('actionSuccess', 'DELETE')
           })

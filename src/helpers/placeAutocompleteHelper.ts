@@ -18,7 +18,7 @@ const enum GoogleEvents {
 export enum SearchType {
   SUCCESS = 'sidebars.location-sidebar.success-move-pin',
   FAILED = 'sidebars.location-sidebar.failed-move-pin',
-  LOADING = 'sidebars.location-sidebar.loading-move-pin' 
+  LOADING = 'sidebars.location-sidebar.loading-move-pin'
 }
 
 export const message = ref<string>('');
@@ -87,7 +87,7 @@ export const usePlaceAutocompleteHelper = (values?: any, searchedLocations?: any
   const searchAddresCoordsWithGeocode = (address: string, countryCode: string) => {
     if (geocoder) {
       message.value = SearchType.LOADING
-      geocoder.geocode({ 'address': address, 'componentRestrictions': { 'country': countryCode }  }, function (results: any, status: any) {
+      geocoder.geocode({ 'address': address, 'componentRestrictions': { 'country': countryCode } }, function (results: any, status: any) {
         if (results[0]) {
           searchedLocation.value.latitude = results[0].geometry.location.lat()
           searchedLocation.value.longitude = results[0].geometry.location.lng()
@@ -111,7 +111,7 @@ export const usePlaceAutocompleteHelper = (values?: any, searchedLocations?: any
   }
 
   const stopAutocomplete = () => {
-    google.maps.event.clearListeners( document.getElementsByName(elementId)[0] as HTMLInputElement);
+    google.maps.event.clearListeners(document.getElementsByName(elementId)[0] as HTMLInputElement);
   }
 
   const parseResultsForFields = (place: Place) => {
@@ -121,7 +121,7 @@ export const usePlaceAutocompleteHelper = (values?: any, searchedLocations?: any
         switch (type) {
           case PlaceType.POSTAL_CODE:
             values.postalcode = component.long_name
-          break;
+            break;
           case PlaceType.LOCALITY:
             values.township = component.long_name
             break;
@@ -130,10 +130,10 @@ export const usePlaceAutocompleteHelper = (values?: any, searchedLocations?: any
             break;
           case PlaceType.STREET_NUMBER:
             values.houseNumber = component.long_name
-          break;
+            break;
           default:
             break;
-        }        
+        }
       });
     });
   }
@@ -170,7 +170,7 @@ export const usePlaceAutocompleteHelper = (values?: any, searchedLocations?: any
 
     countries.forEach((country: ScoutsCountry) => {
       if (country.en === en) {
-         foundCountry = country
+        foundCountry = country
       }
     })
     return foundCountry;

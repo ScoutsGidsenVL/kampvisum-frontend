@@ -78,6 +78,7 @@ import Dropzone from '../inputs/Dropzone.vue'
 import { Check } from '@/serializer/Check'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -147,6 +148,7 @@ export default defineComponent({
     const { progress } = useUpload()
     const isUploading = ref<boolean>(false)
     const isPatching = ref<boolean>(false)
+    const { selectedGroup } = useGroupAndYears()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -168,7 +170,7 @@ export default defineComponent({
     const patchFilesToList = async (files: FileItem[]) => {
       isPatching.value = true
       await RepositoryFactory.get(FileCheckRepository)
-        .update(props.check.endpoint, files)
+        .update(selectedGroup.value.groupAdminId, props.check.endpoint, files)
         .then(() => {
           context.emit('actionSuccess', 'PATCH')
           isPatching.value = false

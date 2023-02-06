@@ -56,6 +56,7 @@ import { defineComponent } from '@vue/runtime-core'
 import {Required} from 'vue-3-component-library'
 import Multiselect from '@vueform/multiselect'
 import { PropType, ref, watch } from 'vue'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'AppMultiSelect',
@@ -152,6 +153,7 @@ export default defineComponent({
     }
   },
   setup(props, context) {
+    const { selectedGroup } = useGroupAndYears()
     const multiselect = ref()
     const { value: inputValue } = useField(props.id, props.rules, {
       initialValue: props.value,
@@ -162,7 +164,7 @@ export default defineComponent({
 
       if (query) {
         await RepositoryFactory.get(props.repository)
-          .search(query)
+          .search(selectedGroup.value.groupAdminId, query)
           .then((res: any) => {
             data = props.extraOption ? [...[props.extraOption], ...res] : res
             context.emit('fetchedOptions', data)

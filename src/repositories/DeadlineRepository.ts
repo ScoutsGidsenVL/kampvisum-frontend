@@ -8,8 +8,8 @@ export class DeadlineRepository extends BaseRepository {
   deserializer = DeadlineDeserializer
   serializer = DeadlineSerializer
 
-  getArray(visumId?: string): Promise<any> {
-    return this.get(`${this.endpoint}visum/${visumId}`, {}).then((response: ArrayResult) => {
+  getArray(groupId: string, visumId?: string): Promise<any> {
+    return this.get(groupId, `${this.endpoint}visum/${visumId}`, {}).then((response: ArrayResult) => {
       const array: any[] = []
       response.results.forEach((result: any) => {
         array.push(this.deserializer(result))
@@ -18,26 +18,26 @@ export class DeadlineRepository extends BaseRepository {
     })
   }
 
-  createDeadline(data: any) {
-    return this.post(this.endpoint, this.serializer(data)).then((response: any) => {
+  createDeadline(groupId: string, data: any) {
+    return this.post(groupId, this.endpoint, this.serializer(data)).then((response: any) => {
       return this.deserializer(response)
     })
   }
 
-  createDeadlineSubCategory(data: any) {
-    return this.post(`${this.endpoint}sub_category/`, this.serializer(data)).then((response: any) => {
+  createDeadlineSubCategory(groupId: string, data: any) {
+    return this.post(groupId, `${this.endpoint}sub_category/`, this.serializer(data)).then((response: any) => {
       return this.deserializer(response)
     })
   }
 
-  createDeadlineCheck(data: any) {
-    return this.post(`${this.endpoint}checks/`, this.serializer(data)).then((response: any) => {
+  createDeadlineCheck(groupId: string, data: any) {
+    return this.post(groupId, `${this.endpoint}checks/`, this.serializer(data)).then((response: any) => {
       return this.deserializer(response)
     })
   }
-  
-  updateFlag(deadlineId: string, id: string, data: any) {
-    return this.patch(this.endpoint + 'flags/' + deadlineId + '/' + id, data).then((response: any) => {
+
+  updateFlag(groupId: string, deadlineId: string, id: string, data: any) {
+    return this.patch(groupId, this.endpoint + 'flags/' + deadlineId + '/' + id, data).then((response: any) => {
       return response
     })
   }

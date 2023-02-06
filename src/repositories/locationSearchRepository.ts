@@ -31,15 +31,15 @@ export class LocationSearchRepository extends BaseRepository {
       })
   }
 
-  private processErrorLoc(error: any): void {}
+  private processErrorLoc(error: any): void { }
 
   search(query: string): Promise<SearchedLocation[]> {
-    return this.searchLocation(this.endpoint + query + '&limit=4' + '&lang=en', {}).then((response: { features:Array<any> }) => {
-      return response.features.map( x => SearchedLocationDeserializer(x))
+    return this.searchLocation(this.endpoint + query + '&limit=4' + '&lang=en', {}).then((response: { features: Array<any> }) => {
+      return response.features.map(x => SearchedLocationDeserializer(x))
     })
   }
 
-  reverseSearch(latLng: { lat: number, lng: number}, config: AxiosRequestConfig = {}): Promise<any> {
+  reverseSearch(latLng: { lat: number, lng: number }, config: AxiosRequestConfig = {}): Promise<any> {
     return this.axiosInstanceLocation
       .get(`/reverse?lon=${latLng.lng}&lat=${latLng.lat}`, {})
       .then(function (result: AxiosResponse) {
@@ -50,10 +50,10 @@ export class LocationSearchRepository extends BaseRepository {
         return this.processErrorLoc(error)
       })
   }
-  
 
-  searchExistingLocation(query: string): Promise<any> {
-    return this.get(`?term=${query}&group=${selectedGroup.value.groupAdminId}`, {}).then((response: any) => {
+
+  searchExistingLocation(groupId: string, query: string): Promise<any> {
+    return this.get(groupId, `?term=${query}`, {}).then((response: any) => {
       const array: any[] = []
       response.results.forEach((result: any) => {
         // result = MemberDeserializer(result)
