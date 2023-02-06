@@ -62,6 +62,7 @@ import { Deadline } from '@/serializer/Deadline'
 import { Camp } from '../../serializer/Camp'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'CampSideBar',
@@ -121,6 +122,7 @@ export default defineComponent({
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Camp>()
     const { sideBarState } = toRefs(props)
+    const { selectedGroup } = useGroupAndYears()
 
     const { t } = useI18n({
       inheritLocale: true,

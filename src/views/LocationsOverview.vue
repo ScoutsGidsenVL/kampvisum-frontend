@@ -21,6 +21,7 @@ import { LocationFilter } from '@/serializer/Filter'
 import { Loader } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
 import LocationFilterComponent from '../components/semantics/LocationFilter.vue'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 const d = new Date()
     let year = d.getFullYear();
 export default defineComponent({
@@ -35,6 +36,7 @@ export default defineComponent({
     const filters = ref<LocationFilter>({ year: year.toString(), startDate: '', endDate: '', groupName: '', groupNumber: '', country: '' })
     const campLocations = ref<any>([])
     const isFetchingCampLocations = ref<boolean>(false)
+    const { selectedGroup } = useGroupAndYears()
 
     const changedFilters = (f: LocationFilter) => {
       filters.value = f
@@ -44,7 +46,7 @@ export default defineComponent({
     const fetchCampLocations = () => {
       isFetchingCampLocations.value = true
       RepositoryFactory.get(LocationRepository)
-      .getCampLocations(filters.value)
+      .getCampLocations(selectedGroup.value.groupAdminId, filters.value)
       .then((results: any) => {
         campLocations.value = results
       isFetchingCampLocations.value = false

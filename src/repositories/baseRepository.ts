@@ -11,14 +11,14 @@ export abstract class BaseRepository extends BaseApiRepository {
   private previous: string | null = null
   private next: string | null = ''
 
-  getSingle(): Promise<any> {
-    return this.get(this.endpoint, {}).then((response: any) => {
+  getSingle(groupId: string): Promise<any> {
+    return this.get(groupId, this.endpoint, {}).then((response: any) => {
       return this.deserializer(response)
     })
   }
 
-  getArray(pagination?: string): Promise<any> {
-    return this.get(this.endpoint, {}).then((response: ArrayResult) => {
+  getArray(groupId: string, pagination?: string): Promise<any> {
+    return this.get(groupId, this.endpoint, {}).then((response: ArrayResult) => {
       const array: any[] = []
       response.results.forEach((result: any) => {
         array.push(this.deserializer(result))
@@ -27,8 +27,8 @@ export abstract class BaseRepository extends BaseApiRepository {
     })
   }
 
-  getPrevious(): Promise<any> {
-    return this.get(this.endpoint, {}).then((response: ArrayResult) => {
+  getPrevious(groupId: string): Promise<any> {
+    return this.get(groupId, this.endpoint, {}).then((response: ArrayResult) => {
       const array: any[] = []
       response.results.forEach((result: any) => {
         array.push(this.deserializer(result))
@@ -37,20 +37,20 @@ export abstract class BaseRepository extends BaseApiRepository {
     })
   }
 
-  getById(id: string): Promise<any> {
-    return this.get(this.endpoint + id, {}).then((response: any) => {
+  getById(groupId: string, id: string): Promise<any> {
+    return this.get(groupId, this.endpoint + id, {}).then((response: any) => {
       return this.deserializer(response)
     })
   }
 
-  editById(id: string, data: any): Promise<any> {
-    return this.put(this.endpoint + id, data).then((response: any) => {
+  editById(groupId: string, id: string, data: any): Promise<any> {
+    return this.put(groupId, this.endpoint + id, data).then((response: any) => {
       return this.deserializer(response)
     })
   }
 
-  search(query: string, group?: string, filter?: Filter): Promise<any> {
-    return this.get(this.endpoint + '?term=' + query, {}).then((response: any[]) => {
+  search(groupId: string, query: string, group?: string, filter?: Filter): Promise<any> {
+    return this.get(groupId, this.endpoint + '?term=' + query, {}).then((response: any[]) => {
       const array: any[] = []
       response.forEach((result: any) => {
         array.push(this.deserializer(result))
@@ -59,14 +59,14 @@ export abstract class BaseRepository extends BaseApiRepository {
     })
   }
 
-  create(data: any) {
-    return this.post(this.endpoint, this.serializer(data)).then((response: any) => {
+  create(groupId: string, data: any) {
+    return this.post(groupId, this.endpoint, this.serializer(data)).then((response: any) => {
       return this.deserializer(response)
     })
   }
 
-  update(id: string, data: any) {
-    return this.patch(this.endpoint + id + '/', this.serializer(data)).then((response: any) => {
+  update(groupId: string, id: string, data: any) {
+    return this.patch(groupId, this.endpoint + id + '/', this.serializer(data)).then((response: any) => {
       return this.deserializer(response)
     })
   }
@@ -75,18 +75,18 @@ export abstract class BaseRepository extends BaseApiRepository {
     return url
   }
 
-  removeById(id: string | string[]): Promise<any> {
-    return this.delete(this.endpoint + id)
+  removeById(groupId: string, id: string | string[]): Promise<any> {
+    return this.delete(groupId, this.endpoint + id)
   }
 
-  softRemove(url: string, data: any) {
-    return this.softDelete(url, this.serializer(data)).then((response: any) => {
+  softRemove(groupId: string, url: string, data: any) {
+    return this.softDelete(groupId, url, this.serializer(data)).then((response: any) => {
       return this.deserializer(response)
     })
   }
 
-  public downloadFile(id: string): Promise<Blob> {
-    return this.getFile(`${this.endpoint}${id}/`).then((res) => {
+  public downloadFile(groupId: string, id: string): Promise<Blob> {
+    return this.getFile(groupId, `${this.endpoint}${id}/`).then((res) => {
       return res
     })
   }

@@ -118,7 +118,8 @@
   import Dropzone from 'dropzone'
   const delay = require('delay');
   import { useI18n } from 'vue-i18n'
-import { useNotification } from '@/composable/useNotification'
+  import { useNotification } from '@/composable/useNotification'
+  import useGroupAndYears from '@/composable/useGroupAndYears'
   
   export default defineComponent({
     name: 'Upload',
@@ -150,6 +151,7 @@ import { useNotification } from '@/composable/useNotification'
       const dropzonePreviewDiv = ref<HTMLDivElement | undefined>(undefined)
       const listOfAllowed = '.jpg, .jpeg, .png, .webp, .odt, .ods, .odp, .docx, application/pdf, .pptx, .xlsx, .doc'
       const maxFileize = 20
+      const { selectedGroup } = useGroupAndYears()
       onMounted(async () => {
         if (dropzoneDiv.value && dropzonePreviewDiv) {
           const myDropzone = new Dropzone(dropzoneDiv.value, {
@@ -248,7 +250,7 @@ import { useNotification } from '@/composable/useNotification'
 
           const uploadFile = async (file: any) => {
             if (file.status !== 'error') {
-              await RepositoryFactory.get(FileRepository).uploadFile(file).then((responseFile: FileItem) => {
+              await RepositoryFactory.get(FileRepository).uploadFile(selectedGroup.value.groupAdminId, file).then((responseFile: FileItem) => {
                 try {
                   emit('uploadedFile', responseFile)
                 } catch (error) {

@@ -245,6 +245,7 @@ import MultiSelect from '../../components/inputs/MultiSelect.vue'
 import { scoutsCountriesRepository, ScoutsCountry } from '../../repositories/scoutsCountriesRepository'
 import { CampRepository } from '@/repositories/campRepository'
 import { useRoute } from 'vue-router'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -295,6 +296,7 @@ export default defineComponent({
     const countries = ref<Array<ScoutsCountry>>(RepositoryFactory.get(scoutsCountriesRepository).getCountries())
     const { getCountryObjectByName } = usePlaceAutocompleteHelper()
     const route = useRoute()
+    const { selectedGroup } = useGroupAndYears()
 
     const loadingDates = ref<boolean>(true)
     const leadersDates = ref<Array<string>>([])
@@ -351,7 +353,7 @@ export default defineComponent({
       init.value.street = ''
       init.value.houseNumber = ''
         //DO CALL AND GET THE VALUES FOR START AND END DATE
-        RepositoryFactory.get(CampRepository).getDatesLeadersById(route.params.campId.toString()).then((res: any) => {
+        RepositoryFactory.get(CampRepository).getDatesLeadersById(selectedGroup.value.groupAdminId, route.params.campId.toString()).then((res: any) => {
           if (res.start_date && res.end_date && props.check.checkParent && props.check.checkParent.checkType.checkType === 'CampLocationCheck') {
             dateValues.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
             dateValues.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
@@ -379,7 +381,7 @@ export default defineComponent({
       init.value.houseNumber = sideBarState.value.entity.houseNumber
 
       //DO CALL AND GET THE VALUES FOR START AND END DATE
-      RepositoryFactory.get(CampRepository).getDatesLeadersById(route.params.campId.toString()).then((res: any) => {
+      RepositoryFactory.get(CampRepository).getDatesLeadersById(selectedGroup.value.groupAdminId, route.params.campId.toString()).then((res: any) => {
         if (res.start_date && res.end_date) {
           leadersDates.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
           leadersDates.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
@@ -423,7 +425,7 @@ export default defineComponent({
         const selected: any = existingLocations.value.find((xl: PostLocation) => xl.isChecked === true)
         if (selected && selected.id) {
           await RepositoryFactory.get(LocationCheckRepository)
-          .addSearched(props.check.endpoint,props.parentLocations.concat([{id: selected.id}]))
+          .addSearched(selectedGroup.value.groupAdminId, props.check.endpoint,props.parentLocations.concat([{id: selected.id}]))
           .then((p: any) => {
             context.emit('actionSuccess', { data: p, action: 'PATCH' })
             patchLoading.value = false
@@ -468,7 +470,7 @@ export default defineComponent({
 
     const patchLocation = async (location: any) => {
       await RepositoryFactory.get(LocationCheckRepository)
-        .updateLocationCheck(props.check.endpoint, location, props.parentLocations)
+        .updateLocationCheck(selectedGroup.value.groupAdminId, props.check.endpoint, location, props.parentLocations)
         .then((p: any) => {
           context.emit('actionSuccess', { data: p, action: 'PATCH' })
           patchLoading.value = false

@@ -8,6 +8,7 @@ export interface Deadline {
   updatedOn?: string
   id?: string
   visum: string
+  group: string
   deadlineParent?: DeadlineParent
   items?: Array<DeadlineItem>
   state?: string
@@ -21,6 +22,7 @@ export const DeadlineDeserializer = (input: any): Deadline => {
     updatedOn: input.updated_on ? input.updated_on : undefined,
     id: input.id,
     visum: input.visum,
+    group: input.group ? input.group : undefined,
     deadlineParent: input.parent ? DeadlineParentDeserializer(input.parent) : undefined,
     items: input.items ? input.items.map((item: any) => DeadlineItemDeserializer(item)) : undefined,
     state: input.state ? input.state : 'UNCHECKED'

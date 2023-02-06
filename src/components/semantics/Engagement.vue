@@ -123,7 +123,7 @@ export default defineComponent({
     const sign = () => {
       isSigning.value = true
       if (props.visum.engagement) {
-        RepositoryFactory.get(EngagementRepository).signVisum(props.visum.engagement).then(() => { 
+        RepositoryFactory.get(EngagementRepository).signVisum(selectedGroup.value.groupAdminId, props.visum.engagement).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -134,7 +134,7 @@ export default defineComponent({
     const visumApprovalGlobal = () => {
       isSigning.value = true
       if (props.visum.engagement) {
-        RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(props.visum.id).then(() => { 
+        RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(selectedGroup.value.groupAdminId, props.visum.id).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -158,7 +158,7 @@ export default defineComponent({
     const VisumHandleFeedbackGlobal = () => {
       isSigning.value = true
       if (props.visum.id) {
-        RepositoryFactory.get(CampRepository).patchVisumHandleFeedbackGlobal(props.visum.id).then(() => { 
+        RepositoryFactory.get(CampRepository).patchVisumHandleFeedbackGlobal(selectedGroup.value.groupAdminId, props.visum.id).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -169,7 +169,7 @@ export default defineComponent({
 
     const getEngagementState = () => {
       RepositoryFactory.get(EngagementRepository)
-      .getById(props.visum.engagement.id)
+      .getById(selectedGroup.value.groupAdminId, props.visum.engagement.id)
       .then((response: Engagement) => {
         visum.value.engagement = response
       })

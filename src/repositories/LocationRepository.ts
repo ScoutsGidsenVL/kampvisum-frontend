@@ -10,8 +10,8 @@ export class LocationRepository extends BaseRepository {
   deserializer = undefined
   serializer = undefined
 
-  search(query: string, group ?:string): Promise<any> {
-    return this.get(`${this.endpoint}?term=${query}&group=${group ? group : selectedGroup.value.groupAdminId}`, {}).then((response: any) => {
+  search(groupId: string, query: string): Promise<any> {
+    return this.get(groupId ? groupId : selectedGroup.value.groupAdminId, `${this.endpoint}?term=${query}`, {}).then((response: any) => {
       const array: any[] = []
       response.results.forEach((result: any) => {
         result = PostLocationDeserializer(result)
@@ -21,26 +21,26 @@ export class LocationRepository extends BaseRepository {
     })
   }
 
-  getCampLocations(filters: LocationFilter): Promise<any> {
+  getCampLocations(groupId: string, filters: LocationFilter): Promise<any> {
     let filterParams = {}
 
     if (filters.year) {
-      filterParams = {...filterParams, ...{year: filters.year}}
+      filterParams = { ...filterParams, ...{ year: filters.year } }
     }
 
     if (filters.startDate) {
-      filterParams = {...filterParams, ...{start_date: filters.startDate}}
+      filterParams = { ...filterParams, ...{ start_date: filters.startDate } }
     }
 
     if (filters.endDate) {
-      filterParams = {...filterParams, ...{end_date: filters.endDate}}
+      filterParams = { ...filterParams, ...{ end_date: filters.endDate } }
     }
 
     if (filters.groupNumber) {
-      filterParams = {...filterParams, ...{group: filters.groupNumber}}
+      filterParams = { ...filterParams, ...{ group: filters.groupNumber } }
     }
 
-    return this.get(`/visums${this.endpoint}`, { params: filterParams}).then((response: any) => {
+    return this.get(groupId, `/visums${this.endpoint}`, { params: filterParams }).then((response: any) => {
       return response
     })
   }

@@ -13,6 +13,7 @@ import { defineComponent, PropType, watch } from 'vue'
 import { Check } from '@/serializer/Check'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'CommentCheck',
@@ -26,6 +27,7 @@ export default defineComponent({
     },
   },
   setup (props) {
+    const { selectedGroup } = useGroupAndYears()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -39,7 +41,7 @@ export default defineComponent({
 
     const patchCommentCheck = async (comment: string) => {
       await RepositoryFactory.get(CommentCheckRepository)
-        .update(props.check.endpoint, comment)
+        .update(selectedGroup.value.groupAdminId, props.check.endpoint, comment)
         .then((p: any) => {
           triggerNotification(t('checks.notification-updated'))
         })

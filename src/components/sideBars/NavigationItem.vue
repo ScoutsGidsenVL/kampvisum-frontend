@@ -32,6 +32,7 @@ import { useRoute } from 'vue-router'
 import { useNavigation } from '@/composable/useNavigation'
 import { useI18n } from 'vue-i18n'
 import { SidebarState } from '@/helpers/infoBarHelper'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export enum DrawerState {
   OPEN = 'OPEN',
@@ -57,6 +58,7 @@ export default defineComponent({
     const route = useRoute()
     const drawer = ref<Drawer>({ state: DrawerState.CLOSED})
     const { navigateTowardsVisum } = useNavigation()
+    const { selectedGroup } = useGroupAndYears()
     if (props.visum) {
       if (props.visum.id === route.params.campId) {
         drawer.value.state = DrawerState.OPEN

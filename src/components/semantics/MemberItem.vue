@@ -47,6 +47,7 @@ import ITrash from '../icons/ITrash.vue'
 import IInfo from '../icons/IInfo.vue'
 import { useI18n } from 'vue-i18n'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'MemberItem',
@@ -70,11 +71,12 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { selectedGroup } = useGroupAndYears()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const deleteFromList = async (p: Member) => {
       if (props.check.id) {
         await RepositoryFactory.get(ParticipantCheckRepository)
-          .removeParticipantFromList(props.check.id, p.id)
+          .removeParticipantFromList(selectedGroup.value.groupAdminId, props.check.id, p.id)
           .then(() => {
             emit('actionSuccess', 'DELETE')
           })
@@ -96,7 +98,7 @@ export default defineComponent({
       if (props.check.id && !isPatchingPayment.value) {
         isPatchingPayment.value = true
         RepositoryFactory.get(ParticipantCheckRepository)
-          .toggleHasPaid(props.check.id, props.participant.wrapperId)
+          .toggleHasPaid(selectedGroup.value.groupAdminId, props.check.id, props.participant.wrapperId)
           .then(() => {
             isPatchingPayment.value = false
           })

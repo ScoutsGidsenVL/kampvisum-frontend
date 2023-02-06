@@ -41,6 +41,7 @@ import IEmptyCheck from '../icons/IEmptyCheck.vue'
 import IChecked from '../icons/IChecked.vue'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export enum StatusFeedbackState {
       FEEDBACK_RESOLVED = 'F',
@@ -71,6 +72,7 @@ export default defineComponent({
     },
   },
   setup (props, {emit}) {
+    const { selectedGroup } = useGroupAndYears()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -89,7 +91,7 @@ export default defineComponent({
       selection.value = v
       if (props.subCategory.id) {
         RepositoryFactory.get(CampRepository)
-        .patchCategoryApproval(props.subCategory.id, selection.value)
+        .patchCategoryApproval(selectedGroup.value.groupAdminId, props.subCategory.id, selection.value)
         .then(() => {
           triggerNotification(t('engagement.feedback-notification'))
           rl()
@@ -104,7 +106,7 @@ export default defineComponent({
         debounce = setTimeout(() => {
           if (props.subCategory.id) {
           RepositoryFactory.get(CampRepository)
-          .patchCategoryFeedback(props.subCategory.id, values.feedback)
+          .patchCategoryFeedback(selectedGroup.value.groupAdminId, props.subCategory.id, values.feedback)
           .then(() => {
             triggerNotification(t('engagement.feedback-notification'))
             rl()

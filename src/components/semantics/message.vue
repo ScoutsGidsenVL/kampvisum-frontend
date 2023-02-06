@@ -49,6 +49,7 @@ import RepositoryFactory from '@/repositories/repositoryFactory'
 import { CampRepository } from '@/repositories/campRepository'
 import { SubCategory } from '@/serializer/SubCategory'
 import { useNotification } from '@/composable/useNotification'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export enum ColorState {
   SUCCES = 'SUCCES',
@@ -85,6 +86,7 @@ export default defineComponent({
     }
   },
   setup(props, {emit}) {
+    const { selectedGroup } = useGroupAndYears()
     const isChecked = ref<boolean>(false)
     const { triggerNotification } = useNotification()
 
@@ -92,7 +94,7 @@ export default defineComponent({
       isChecked.value = true
       if (props.subCategory.id) {
         RepositoryFactory.get(CampRepository)
-        .patchVisumHandleFeedback(props.subCategory.id)
+        .patchVisumHandleFeedback(selectedGroup.value.groupAdminId, props.subCategory.id)
         .then(() => {
           triggerNotification(t('engagement.feedback-ackknowledged'))
           rl()

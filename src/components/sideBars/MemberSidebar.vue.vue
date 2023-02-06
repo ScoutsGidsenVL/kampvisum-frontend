@@ -76,6 +76,7 @@ import { Filter } from '../../serializer/Filter'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { BaseMember } from '@/serializer/BaseMember'
 import { useNotification } from '@/composable/useNotification'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -116,6 +117,7 @@ export default defineComponent({
     const isInit = ref<boolean>(false)
     const { handleSubmit} = useForm()
     const { checkIfIsMobileSize } = usePhoneHelper()
+    const { selectedGroup } = useGroupAndYears()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -156,7 +158,7 @@ export default defineComponent({
     const patchMembers = async (data: Member[]) => {
       isPatching.value = true
       await RepositoryFactory.get(ParticipantCheckRepository)
-        .update(props.check.endpoint, data)
+        .update(selectedGroup.value.groupAdminId, props.check.endpoint, data)
         .then((res) => {
           if (res !== false) {
             context.emit('actionSuccess', 'PATCH')
@@ -206,7 +208,7 @@ export default defineComponent({
       const finalResult: any = []
       loading.value = true
         await RepositoryFactory.get(MemberRepository)
-        .search('', '').then((results) => {
+        .search(selectedGroup.value.groupAdminId, '', '').then((results) => {
           results.forEach((member: Member) => {
             if (!props.check.value.participants.some((res: any) => res.id.replaceAll('-', '') === member.id.replaceAll('-', ''))) {
               finalResult.push(member)

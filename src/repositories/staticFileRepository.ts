@@ -14,20 +14,20 @@ export default class StaticFileRepository {
         return new Promise<any>((resolve, reject): void => {
           const config = {
             "frontend": {
-                "baseUrl": "https://kamp-acc.scoutsengidsenvlaanderen.be"
+              "baseUrl": "https://kamp-acc.scoutsengidsenvlaanderen.be"
             },
             "api": {
-                "baseUrl": "https://kamp-acc.scoutsengidsenvlaanderen.be",
-                "apiSuffix": "api/"
+              "baseUrl": "https://kamp-acc.scoutsengidsenvlaanderen.be",
+              "apiSuffix": "api/"
             },
             "oidc": {
-                "baseUrl": "https://login.scoutsengidsenvlaanderen.be/auth/realms/scouts",
-                "serverBaseUrl": "/api/oidc",
-                "authEndpoint": "protocol/openid-connect/auth",
-                "logoutEndpoint": "protocol/openid-connect/logout",
-                "clientId": "kampvisum"
+              "baseUrl": "https://login.scoutsengidsenvlaanderen.be/auth/realms/scouts",
+              "serverBaseUrl": "/api/oidc",
+              "authEndpoint": "protocol/openid-connect/auth",
+              "logoutEndpoint": "protocol/openid-connect/logout",
+              "clientId": "kampvisum"
             }
-        }
+          }
           resolve(config)
         })
       } else {
@@ -36,6 +36,6 @@ export default class StaticFileRepository {
         })
       }
     }
-    
+
   }
 }

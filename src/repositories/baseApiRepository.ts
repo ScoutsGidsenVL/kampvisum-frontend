@@ -34,7 +34,7 @@ export default abstract class BaseApiRepository {
         function (response) {
           return response
         },
-        (error) => OpenIdConnectInterceptors.buildResponseErrorInterceptorCallback(error, store,this.axiosInstance)
+        (error) => OpenIdConnectInterceptors.buildResponseErrorInterceptorCallback(error, store, this.axiosInstance)
       )
     }
   }
@@ -52,7 +52,7 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  protected async get(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
+  protected async getAuth(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
     const instance = publicCall && !store.getters['openid/isLoggedIn'] ? this.publicAxiosInstance : this.axiosInstance
     return await instance
       .get(endpoint, config)
@@ -66,9 +66,23 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  protected post(endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
+  protected async get(groupId: string, endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
+    const instance = publicCall && !store.getters['openid/isLoggedIn'] ? this.publicAxiosInstance : this.axiosInstance
+    return await instance
+      .get(this.parseEndpoint(groupId, endpoint), config)
+      .then(function (result: AxiosResponse) {
+        isForbidden.value = false
+        // Only return the data of response
+        return result.data
+      })
+      .catch((error: any) => {
+        return this.processError(error)
+      })
+  }
+
+  protected post(groupId: string, endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
     return this.axiosInstance
-      .post(endpoint, data, config)
+      .post(this.parseEndpoint(groupId, endpoint), data, config)
       .then(function (result: AxiosResponse) {
         // Only return the data of response
         return result.data
@@ -78,9 +92,9 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  protected patch(endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
+  protected patch(groupId: string, endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
     return this.axiosInstance
-      .patch(endpoint, data, config)
+      .patch(this.parseEndpoint(groupId, endpoint), data, config)
       .then(function (result: AxiosResponse) {
         // Only return the data of response
         return result.data
@@ -90,9 +104,9 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  protected put(endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
+  protected put(endpoint: string, groupId: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
     return this.axiosInstance
-      .put(endpoint, data, config)
+      .put(this.parseEndpoint(groupId, endpoint), data, config)
       .then(function (result: AxiosResponse) {
         // Only return the data of response
         return result.data
@@ -102,9 +116,9 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  protected delete(endpoint: string): Promise<any> {
+  protected delete(groupId: string, endpoint: string): Promise<any> {
     return this.axiosInstance
-      .delete(endpoint)
+      .delete(this.parseEndpoint(groupId, endpoint))
       .then(function (result: AxiosResponse) {
         // Only return the data of response
         return result.data
@@ -114,11 +128,11 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  protected softDelete(endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
+  protected softDelete(groupId: string, endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
     config.data = data
 
     return this.axiosInstance
-      .delete(endpoint, config)
+      .delete(this.parseEndpoint(groupId, endpoint), config)
       .then(function (result: AxiosResponse) {
         // Only return the data of response
         return result.data
@@ -128,14 +142,14 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  protected getFile(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
+  protected getFile(groupId: string, endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
     config = {
       ...config,
       responseType: 'blob',
     }
     const instance = publicCall && !store.getters['openid/isLoggedIn'] ? this.publicAxiosInstance : this.axiosInstance
     return instance
-      .get(endpoint, config)
+      .get(this.parseEndpoint(groupId, endpoint), config)
       .then(function (result: AxiosResponse) {
         // Only return the data of response
         return result.data
@@ -143,6 +157,17 @@ export default abstract class BaseApiRepository {
       .catch((error: any) => {
         return this.processError(error)
       })
+  }
+
+  private parseEndpoint(groupId: string, endpoint: string): string {
+    if (!endpoint.includes('?')) {
+      return endpoint + '?auth=' + groupId
+    }
+
+    if (!endpoint.includes('auth')) {
+      return endpoint + '&auth=' + groupId
+    }
+    return endpoint
   }
 
   private processError(error: any): any {
@@ -150,7 +175,7 @@ export default abstract class BaseApiRepository {
       triggerNotification(error.response?.data[0])
       return true;
     }
-    if (error.response?.data?.file) { 
+    if (error.response?.data?.file) {
       triggerNotification(error.response.data.file[0])
     }
     if (error.response.status === 403) {

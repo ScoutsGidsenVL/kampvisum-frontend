@@ -9,8 +9,8 @@ export class ParticipantCheckRepository extends BaseRepository {
   public deserializer = ParticipantCheckDeserializer
   public serializer = ParticipantCheckSerializer
 
-  update(url: string, members: Member[]) {
-    return this.patch(url, this.serializer(members)).then((response: any) => {
+  update(groupId: string, url: string, members: Member[]) {
+    return this.patch(groupId, url, this.serializer(members)).then((response: any) => {
       if (response.value) {
         return this.deserializer(response.value);
       }
@@ -18,12 +18,12 @@ export class ParticipantCheckRepository extends BaseRepository {
     })
   }
 
-  removeParticipantFromList(checkId: string, participantId: string): Promise<any> {
-    return this.delete(`${this.endpoint}${checkId}/${participantId}`)
+  removeParticipantFromList(groupId: string, checkId: string, participantId: string): Promise<any> {
+    return this.delete(groupId, `${this.endpoint}${checkId}/${participantId}`)
   }
 
-  toggleHasPaid(checkId: string, wrapperParticipantId: string) {
-    return this.patch(`${this.endpoint}${checkId}/${wrapperParticipantId}`, {}).then((response: any) => {
+  toggleHasPaid(groupId: string, checkId: string, wrapperParticipantId: string) {
+    return this.patch(groupId, `${this.endpoint}${checkId}/${wrapperParticipantId}`, {}).then((response: any) => {
       return this.deserializer(response.value)
     })
   }

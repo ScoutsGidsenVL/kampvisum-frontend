@@ -26,15 +26,15 @@ export const useCampHelper = (): {
 
   const getCampByRouteParam = async (): Promise<Visum> => {
     return RepositoryFactory.get(CampRepository)
-      .getById(route.params.campId.toString() + "/")
-      .then((c: Visum) => { 
+      .getById(selectedGroup.value.groupAdminId, route.params.campId.toString() + "/")
+      .then((c: Visum) => {
         store.getters.user.scoutsGroups.forEach((userGroup: Group) => {
           if (userGroup.groupAdminId === c.groupGroupAdminId) {
             setSelectedGroup(userGroup)
           }
         })
 
-        if (selectedGroup.value.groupAdminId !== c.groupGroupAdminId) { 
+        if (selectedGroup.value.groupAdminId !== c.groupGroupAdminId) {
           // goToHome()
         }
 
@@ -44,8 +44,8 @@ export const useCampHelper = (): {
 
   const getCategoryByRouteParam = async (): Promise<Category> => {
     return RepositoryFactory.get(CategoryRepository)
-      .getById(route.params.id.toString() + "/")
-      .then((c: Category) => { return c})
+      .getById(selectedGroup.value.groupAdminId, route.params.id.toString() + "/")
+      .then((c: Category) => { return c })
   }
 
   const setCampsByGroup = (camps: Camp[]) => {

@@ -8,10 +8,10 @@ export class FileRepository extends BaseRepository {
   id = '/files/'
   endpoint = '/files/'
   deserializer = FileDeserializer
-  serializer =  null
+  serializer = null
 
-  search(query: string, group?: string): Promise<any> {
-    return this.get(`/checks/file/search/?term=${query}&group=${group ? group :selectedGroup.value.groupAdminId}`, {}).then((response: any) => {
+  search(groupId: string, query: string, group?: string): Promise<any> {
+    return this.get(groupId, `/checks/file/search/?term=${query}`, {}).then((response: any) => {
       const array: any[] = []
       response.results.forEach((result: FileItem) => {
         result = this.deserializer(result)
@@ -21,7 +21,7 @@ export class FileRepository extends BaseRepository {
     })
   }
 
-  public uploadFile(file: any): Promise<FileItem> {
+  public uploadFile(groupID: string, file: any): Promise<FileItem> {
     const fd = new FormData()
     fd.append('file', file)
 
@@ -30,7 +30,7 @@ export class FileRepository extends BaseRepository {
         'content-type': 'multipart/form-data',
       },
     }
-    return this.post(this.endpoint, fd, config).then((response: any) => {
+    return this.post(groupID, this.endpoint, fd, config).then((response: any) => {
       return FileDeserializer(response)
     }).catch((error: any) => {
       return error

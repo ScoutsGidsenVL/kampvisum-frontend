@@ -14,6 +14,7 @@ import { defineComponent, PropType, watch } from 'vue'
 import { Check } from '@/serializer/Check'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'NumberCheck',
@@ -27,7 +28,7 @@ export default defineComponent({
     },
   },
   setup (props) {
-
+    const { selectedGroup } = useGroupAndYears()
     const { triggerNotification } = useNotification()
 
     const { t } = useI18n({
@@ -41,7 +42,7 @@ export default defineComponent({
 
     const patchNumberCheck = async (comment: string) => {
       await RepositoryFactory.get(NumberCheckRepository)
-        .update(props.check.endpoint, comment)
+        .update(selectedGroup.value.groupAdminId, props.check.endpoint, comment)
         .then((p: any) => {
           triggerNotification(t('checks.number-check.notification-patched'))
         })

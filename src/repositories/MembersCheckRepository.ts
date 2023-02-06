@@ -7,8 +7,8 @@ export class CommentCheckRepository extends BaseRepository {
   public deserializer = CommentCheckDeserializer
   public serializer = CommentCheckSerializer
 
-  update(url: string, data: any) {
-    return this.patch(url, this.serializer(data)).then((response: any) => {
+  update(groupId: string, url: string, data: any) {
+    return this.patch(groupId, url, this.serializer(data)).then((response: any) => {
       return this.deserializer(response)
     })
   }

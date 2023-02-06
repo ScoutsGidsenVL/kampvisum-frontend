@@ -13,7 +13,7 @@ export class CampTypeRepository extends BaseRepository {
     const { isInternetActive } = useInternetHelper()
 
     if (isInternetActive.value) {
-      return this.get(this.endpoint + "?group=" + groupId, {}).then((response: ArrayResult) => {
+      return this.get(groupId, this.endpoint, {}).then((response: ArrayResult) => {
         const array: any[] = []
         response.results.forEach((result: any) => {
           array.push(this.deserializer(result))

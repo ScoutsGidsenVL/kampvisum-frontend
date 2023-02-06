@@ -66,6 +66,7 @@ import { CampType } from '@/serializer/CampType'
 import { Camp } from '../../serializer/Camp'
 import { useI18n } from 'vue-i18n'
 import { Visum } from '@/serializer/Visum'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   name: 'CampSideBar',
@@ -100,6 +101,7 @@ export default defineComponent({
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Camp>()
     const { sideBarState } = toRefs(props)
+    const { selectedGroup } = useGroupAndYears()
     const groupSections = ref<Section[]>([])
     const campTypes = ref<CampType[]>([])
     const isReload = ref<boolean>(false)
@@ -137,7 +139,7 @@ export default defineComponent({
       if (data.id && props.sideBarState) {
         data.campTypes = selectedCampTypes.value
         await RepositoryFactory.get(CampRepository)
-          .update(props.sideBarState.entity.id, data)
+          .update(selectedGroup.value.groupAdminId, props.sideBarState.entity.id, data)
           .then(() => {
             context.emit('actionSuccess', 'UPDATE')
           })
@@ -147,7 +149,7 @@ export default defineComponent({
     const postCamp = async (data: Camp) => {
       data.campTypes = selectedCampTypes.value
       await RepositoryFactory.get(CampRepository)
-        .create(data)
+        .create(selectedGroup.value.groupAdminId, data)
         .then((visum: Visum) => {
           context.emit('actionSuccess', 'POST')
           context.emit('navigateTowardsVisumOverview', visum)

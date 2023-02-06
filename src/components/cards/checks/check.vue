@@ -123,6 +123,7 @@ import IInfo from '../../icons/IInfo.vue'
 import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
 import { useI18n } from 'vue-i18n'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export enum StatusState {
   CHECKED = 'CHECKED',
@@ -149,6 +150,7 @@ export default defineComponent({
     isSimpleCheck: Boolean,
   },
   setup(props) {
+    const { selectedGroup } = useGroupAndYears()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -159,7 +161,7 @@ export default defineComponent({
 
     const patchCheck = async (simpleCheck: SimpleCheck) => {
       await RepositoryFactory.get(SimpleCheckRepository)
-        .update(simpleCheck.endpoint, simpleCheck)
+        .update(selectedGroup.value.groupAdminId, simpleCheck.endpoint, simpleCheck)
         .then(() => {
           triggerNotification(t('checks.notification-updated'))
         })

@@ -9,13 +9,13 @@ export class FileCheckRepository extends BaseRepository {
   public deserializer = FileCheckDeserializer
   public serializer = FileCheckSerializer
 
-  update(url: string, data: FileItem[]) {
-    return this.patch(url, this.serializer(data)).then((response: any) => {
+  update(groupID: string, url: string, data: FileItem[]) {
+    return this.patch(groupID, url, this.serializer(data)).then((response: any) => {
       return this.deserializer(response)
     })
   }
 
-  removeFileFromList(checkId: string, participantId: string): Promise<any> {
-    return this.delete(`${this.endpoint}${checkId}/${participantId}`)
+  removeFileFromList(groupID: string, checkId: string, participantId: string): Promise<any> {
+    return this.delete(groupID, `${this.endpoint}${checkId}/${participantId}`)
   }
 }

@@ -57,26 +57,29 @@ export default defineComponent({
                 groupID: '', 
                 year: ''
             },
-            call:  (vars: any) => RepositoryFactory.get(CampRepository).getArray('?page=1&page_size=100&group=' + vars.groupID + '&year=' + vars.year)
+            call:  (vars: any) => RepositoryFactory.get(CampRepository).getArray(vars.groupID, '?page=1&page_size=100&year=' + vars.year)
         },
         'campRemoveById': {
             vars: {
+                groupID: '',
                 campID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).removeById(vars.campID)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).removeById(vars.groupID, vars.campID)
         },
         'campGetById': {
             vars: {
+                groupID: '',
                 campID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).getById(vars.campID)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).getById(vars.groupID, vars.campID)
         },
         'campCreate': {
             vars: {
+                 groupID: '',
                  name: '',
                  sectionID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).create({
+            call: (vars: any) => RepositoryFactory.get(CampRepository).create(vars.groupID, {
                 sections: [
                     vars.sectionID
                 ],
@@ -85,11 +88,12 @@ export default defineComponent({
         },
         'campUpdate': {
             vars: {
+                groupID: '',
                 campID: '',
                 name: '',
                 sectionID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).update(vars.campID, {
+            call: (vars: any) => RepositoryFactory.get(CampRepository).update(vars.groupID, vars.campID, {
                 sections: [
                     vars.sectionID
                 ],
@@ -109,103 +113,117 @@ export default defineComponent({
         },
         'patchCategoryFeedback': {
             vars: {
+                groupID: '',
                 subCategoryId: '',
                 feedback: ''            
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchCategoryFeedback(vars.subCategoryId, vars.feedback)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).patchCategoryFeedback(vars.groupID, vars.subCategoryId, vars.feedback)
         },
         'patchCategoryApproval': {
             vars: {
+                groupID: '',
                 subCategoryId: '',
                 feedback: 'A'            
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchCategoryApproval(vars.subCategoryId, vars.feedback)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).patchCategoryApproval(vars.groupID, vars.subCategoryId, vars.feedback)
         },
         'patchVisumNotes': {
             vars: {
+                groupID: '',
                 visumID: '',
                 notes: ''            
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumNotes(vars.visumID, vars.notes)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumNotes(vars.groupID, vars.visumID, vars.notes)
         },
         'patchVisumHandleFeedback': {
             vars: {
+                groupID: '',
                 subCategoryId: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumHandleFeedback(vars.subCategoryId)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumHandleFeedback(vars.groupID, vars.subCategoryId)
         },
         'patchVisumApprovalGlobal': {
             vars: {
+                groupID: '',
                 visumID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(vars.visumID)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(vars.groupID, vars.visumID)
         },
         'patchVisumDisapproval': {
             vars: {
+                groupID: '',
                 visumID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumDisapproval(vars.visumID)
+            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumDisapproval(vars.groupID, vars.visumID)
         },
         'CampTypegetArray': {
             vars: {
-
+                groupID: ''
             },
             call: (vars: any) => RepositoryFactory.get(CampTypeRepository).getArray(vars.groupID)
         },
         'CategoryGetById': {
             vars: {
+                groupID: '',
                 categoryId: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CategoryRepository).getById(vars.categoryId)
+            call: (vars: any) => RepositoryFactory.get(CategoryRepository).getById(vars.groupID, vars.categoryId)
         },
         'CommentCheckUpdate': {
             vars: {
+                groupID: '',
                 checkID: '',
                 data: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CommentCheckRepository).update(`checks/comment/${vars.checkID}`, vars.data)
+            call: (vars: any) => RepositoryFactory.get(CommentCheckRepository).update(vars.groupID, `checks/comment/${vars.checkID}`, vars.data)
         },
         'DeadlineupdateFlag': {
             vars: {
+                groupID: '',
                 deadlineID: '',
                 id: '',
                 data: ''
             },
-            call: (vars: any) => RepositoryFactory.get(DeadlineRepository).updateFlag(vars.deadlineID, vars.url, vars.data)
+            call: (vars: any) => RepositoryFactory.get(DeadlineRepository).updateFlag(vars.groupID, vars.deadlineID, vars.url, vars.data)
         },
          'DeadlineGetarray': {
             vars: {
+                groupID: '',
                 visumID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(DeadlineRepository).getArray(vars.visumID)
+            call: (vars: any) => RepositoryFactory.get(DeadlineRepository).getArray(vars.groupID, vars.visumID)
         },
         'DurationDateCheckUpdate': {
             vars: {
+                groupID: '',
                 id: ''
             },
-            call: (vars: any) => RepositoryFactory.get(DurationDateCheckRepository).update(`checks/duration/${vars.id}`, [
+            call: (vars: any) => RepositoryFactory.get(DurationDateCheckRepository).update(vars.groupID, `checks/duration/${vars.id}`, [
                 "2022-07-04",
                 "2022-07-07"
             ])
         },
         'EngagementGetById': {
             vars: {
-                visumID: '',
+                groupID: '',
+                visumID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(EngagementRepository).getById(vars.visumID)
+            call: (vars: any) => RepositoryFactory.get(EngagementRepository).getById(vars.groupID, vars.visumID)
         },
          'signVisum': {
             vars: {
-                engagementID: '',
+                groupID: '',
+                engagementID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(EngagementRepository).signVisum({id: vars.engagementID})
+            call: (vars: any) => RepositoryFactory.get(EngagementRepository).signVisum(vars.groupID, {id: vars.engagementID})
         },
           'FileCheckUpdate': {
             vars: {
+                groupID: '',
                 checkID: '',
                 fileID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(FileCheckRepository).update(`checks/file/${vars.checkID}`, [
+            call: (vars: any) => RepositoryFactory.get(FileCheckRepository).update(vars.groupID, `checks/file/${vars.checkID}`, [
                 {
                     id: vars.fileID,
                     contentType: "image/jpeg",
@@ -220,10 +238,11 @@ export default defineComponent({
         },
            'removeFileFromList': {
             vars: {
+                groupID: '',
                 checkID: '',
                 fileID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(FileCheckRepository).removeFileFromList(vars.checkID, vars.fileID)
+            call: (vars: any) => RepositoryFactory.get(FileCheckRepository).removeFileFromList(vars.groupID, vars.checkID, vars.fileID)
         },
         'getGroupSections': {
             vars: {
@@ -233,71 +252,77 @@ export default defineComponent({
         },
         'updateLocationCheck': {
             vars: {
+                groupID: '',
                 checkID: '',
             },
-            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).updateLocationCheck(`checks/camp_location/${vars.checkID}`, [])
+            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).updateLocationCheck(vars.groupID, `checks/camp_location/${vars.checkID}`, [])
         },
         'addSearchedLocation': {
             vars: {
+                groupID: '',
                 checkID: '',
                 locationID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).addSearched(`checks/camp_location/${vars.checkID}`, [vars.locationID])
+            call: (vars: any) => RepositoryFactory.get(LocationCheckRepository).addSearched(vars.groupID, `checks/camp_location/${vars.checkID}`, [vars.locationID])
         },
         'getCampLocations': {
             vars: {
+                groupID: '',
                 filters: ''
             },
-            call: (vars: any) => RepositoryFactory.get(LocationRepository).getCampLocations(vars.url)
+            call: (vars: any) => RepositoryFactory.get(LocationRepository).getCampLocations(vars.groupID, vars.url)
         },
          'searchCampLocations': {
             vars: {
-                query: '',
-                groupID: ''
+                groupID: '',
+                query: ''
             },
-            call: (vars: any) => RepositoryFactory.get(LocationRepository).search(vars.query, vars.groupID)
+            call: (vars: any) => RepositoryFactory.get(LocationRepository).search(vars.groupID, vars.query)
         },
         'searchMembers': {
             vars: {
-                query: '', 
                 groupID: '', 
+                query: '', 
                 filter: ''
             },
-            call: (vars: any) => RepositoryFactory.get(MemberRepository).search(vars.query, '',vars.filter, vars.groupID,)
+            call: (vars: any) => RepositoryFactory.get(MemberRepository).search(vars.groupID, vars.query, '',vars.filter)
         },
         'searchFourage': {
             vars: {
-                query: '', 
                 groupID: '', 
+                query: '', 
                 filter: ''
             },
-            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).search(vars.query, '',vars.filter, vars.groupID,)
+            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).search(vars.groupID, vars.query, '',vars.filter)
         },
         'updateNumberCheck': {
             vars: {
+                groupID: '',
                 checkID: '',
                 number: ''
             },
-            call: (vars: any) => RepositoryFactory.get(NumberCheckRepository).update(`checks/number/${vars.checkID}`, vars.number) 
+            call: (vars: any) => RepositoryFactory.get(NumberCheckRepository).update(vars.groupID, `checks/number/${vars.checkID}`, vars.number) 
         },
         'updateParticipantCheck': {
             vars: {
+                groupID: '',
                 checkID: '',
             },
-            call: (vars: any) => RepositoryFactory.get(ParticipantCheckRepository).update(`checks/participant/${vars.checkID}`, []) 
+            call: (vars: any) => RepositoryFactory.get(ParticipantCheckRepository).update(vars.groupID, `checks/participant/${vars.checkID}`, []) 
         },
         'removeParticipantFromList': {
             vars: {
+                groupID: '',
                 checkId: '',
                 ParticipantId: ''
             },
-            call: (vars: any) => RepositoryFactory.get(ParticipantCheckRepository).removeParticipantFromList(vars.checkId, vars.ParticipantId) 
+            call: (vars: any) => RepositoryFactory.get(ParticipantCheckRepository).removeParticipantFromList(vars.groupID, vars.checkId, vars.ParticipantId) 
         },
         'ParticipantCreate':  {
             vars: {
                 groupID: '', 
             },
-            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).create({
+            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).create(vars.groupID, {
                 "firstName": "test",
                 "lastName": "test",
                 "email": "",
@@ -314,10 +339,10 @@ export default defineComponent({
         },
         'ParticipantUpdate':  {
             vars: {
-                id: '',
                 groupID: '', 
+                id: ''
             },
-            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).update(vars.id, {
+            call: (vars: any) => RepositoryFactory.get(ParticipantRepository).update(vars.groupID, vars.id, {
                 "firstName": "test update 2",
                 "lastName": "test",
                 "email": "",
@@ -347,15 +372,15 @@ export default defineComponent({
                     },
                     "groupAdminId": vars.groupID
                 }
-                RepositoryFactory.get(SectionsRepository).create(data)
+                RepositoryFactory.get(SectionsRepository).create(vars.groupID, data)
             }
         },
         'SectionUpdate':  {
             vars: {
-                id: '',
                 groupID: '', 
+                id: ''
             },
-            call: (vars: any) => RepositoryFactory.get(SectionsRepository).update(vars.id, {
+            call: (vars: any) => RepositoryFactory.get(SectionsRepository).update(vars.groupID, vars.id, {
                 "group_group_admin_id": vars.groupID,
                 "name": {
                     "name": "givers",
@@ -366,37 +391,41 @@ export default defineComponent({
         },
          'SectionRemove':  {
             vars: {
+                groupID: '',
                 id: '',
             },
-            call: (vars: any) => RepositoryFactory.get(SectionsRepository).removeById(vars.id)
+            call: (vars: any) => RepositoryFactory.get(SectionsRepository).removeById(vars.groupID, vars.id)
         },
           'SimpleCheckUpdate':  {
             vars: {
+                groupID: '',
                 checkID: '',
             },
-            call: (vars: any) => RepositoryFactory.get(SimpleCheckRepository).update(`checks/simple/${vars.checkID}`, {
+            call: (vars: any) => RepositoryFactory.get(SimpleCheckRepository).update(vars.groupID, `checks/simple/${vars.checkID}`, {
                 "id": vars.checkID,
                 "value": "CHECKED"
             })
         },
         'searchFiles': {
             vars: {
+                groupID: '',
                 term: '',
-                groupID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(FileRepository).search(vars.term, vars.groupID)
+            call: (vars: any) => RepositoryFactory.get(FileRepository).search(vars.groupID, vars.term)
         },
          'fileGetById': {
             vars: {
+                groupID: '',
                 fileID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(FileRepository).getById(vars.fileID)
+            call: (vars: any) => RepositoryFactory.get(FileRepository).getById(vars.groupID, vars.fileID)
         },
         'uploadFile': {
             vars: {
+                groupID: '',
                 file: ''
             },
-            call: (vars: any) => RepositoryFactory.get(FileRepository).uploadFile(vars.file)
+            call: (vars: any) => RepositoryFactory.get(FileRepository).uploadFile(vars.groupID, vars.file)
         }
     })
 

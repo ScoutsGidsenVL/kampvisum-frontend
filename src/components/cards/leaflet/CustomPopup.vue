@@ -55,6 +55,7 @@ import RepositoryFactory from '@/repositories/repositoryFactory'
 import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
 import { useNotification } from '@/composable/useNotification'
 import { usePlaceAutocompleteHelper } from '@/helpers/placeAutocompleteHelper'
+import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
   components: { IPersonGreen, IPhoneGreen, IMailGreen, },
@@ -73,6 +74,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { selectedGroup } = useGroupAndYears()
     const { getTranslationCountry } = usePlaceAutocompleteHelper()
   
     const { t } = useI18n({
@@ -97,7 +99,7 @@ export default defineComponent({
         })
 
         await RepositoryFactory.get(LocationCheckRepository)
-        .updateLocationCheckRemove(props.check.endpoint, newArray)
+        .updateLocationCheckRemove(selectedGroup.value.groupAdminId, props.check.endpoint, newArray)
         .then((p: any) => {
           triggerNotification(t('sidebars.location-sidebar.form.notification-patched'))
           emit('rl', true)

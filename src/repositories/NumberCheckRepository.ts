@@ -7,8 +7,8 @@ export class NumberCheckRepository extends BaseRepository {
   public deserializer = NumberCheckDeserializer
   public serializer = NumberCheckSerializer
 
-  update(url: string, data: any) {
-    return this.patch(url, this.serializer(data)).then((response: any) => {
+  update(groupId: string, url: string, data: any) {
+    return this.patch(groupId, url, this.serializer(data)).then((response: any) => {
       return this.deserializer(response)
     })
   }

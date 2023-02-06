@@ -13,13 +13,13 @@ export class CampRepository extends BaseRepository {
   deserializer = VisumDeserializer
   serializer = CampSerializer
 
-  getArray(pagination?: string): Promise<any> {
+  getArray(groupId: string, pagination?: string): Promise<any> {
     const { isInternetActive } = useInternetHelper()
     const { getVisums } = useOfflineData()
     const { selectedGroup, selectedYear } = useGroupAndYears()
 
     if (isInternetActive.value) {
-      return this.get(this.endpoint + pagination, {}).then((response: ArrayResult) => {
+      return this.get(groupId, this.endpoint + pagination, {}).then((response: ArrayResult) => {
         const array: any[] = []
         if (response?.results) {
           response.results.forEach((result: Visum) => {
@@ -53,7 +53,7 @@ export class CampRepository extends BaseRepository {
     const { isInBetweenStartAndEnd } = useGroupAndYears()
 
     if (isInternetActive.value) {
-      return this.get('/camp_years/', {}).then((response: { results: [] }) => {
+      return this.get(groupId, '/camp_years/', {}).then((response: { results: [] }) => {
         const years = ref<Array<number>>([])
         response.results.forEach((year: Year) => {
           if (isInBetweenStartAndEnd(year.start_date, year.end_date)) {
@@ -74,13 +74,13 @@ export class CampRepository extends BaseRepository {
     }
   }
 
-  getById(id: string): Promise<any> {
+  getById(groupId: string, id: string): Promise<any> {
     const { isInternetActive } = useInternetHelper()
     const { getVisum } = useOfflineData()
 
 
     if (isInternetActive.value) {
-      return this.get(this.endpoint + id, {}).then((response: any) => {
+      return this.get(groupId, this.endpoint + id, {}).then((response: any) => {
         return this.deserializer(response)
       })
     } else {
@@ -92,50 +92,50 @@ export class CampRepository extends BaseRepository {
     }
   }
 
-  getDatesLeadersById(id: string): Promise<any> {
-    return this.get(`${this.endpoint}${id}/dates/leaders`, {}).then((response: any) => {
+  getDatesLeadersById(groupId: string, id: string): Promise<any> {
+    return this.get(groupId, `${this.endpoint}${id}/dates/leaders`, {}).then((response: any) => {
       return response
     })
   }
 
-  patchCategoryFeedback(subCategoryId: string, feedback: string): Promise<any> {
-    return this.patch(`${this.endpoint}${subCategoryId}/feedback`, { feedback: feedback }).then((response: any) => {
+  patchCategoryFeedback(groupId: string, subCategoryId: string, feedback: string): Promise<any> {
+    return this.patch(groupId, `${this.endpoint}${subCategoryId}/feedback`, { feedback: feedback }).then((response: any) => {
       return response
     })
   }
 
-  patchCategoryApproval(subCategoryId: string, approval: string): Promise<any> {
-    return this.patch(`${this.endpoint}${subCategoryId}/approval`, { approval: approval }).then((response: any) => {
+  patchCategoryApproval(groupId: string, subCategoryId: string, approval: string): Promise<any> {
+    return this.patch(groupId, `${this.endpoint}${subCategoryId}/approval`, { approval: approval }).then((response: any) => {
       return response
     })
   }
 
-  patchVisumNotes(visumId: string, notes: string): Promise<any> {
-    return this.patch(`${this.endpoint}${visumId}/notes`, { notes: notes }).then((response: any) => {
+  patchVisumNotes(groupId: string, visumId: string, notes: string): Promise<any> {
+    return this.patch(groupId, `${this.endpoint}${visumId}/notes`, { notes: notes }).then((response: any) => {
       return response
     })
   }
 
-  patchVisumHandleFeedback(subCategoryId: string): Promise<any> {
-    return this.patch(`${this.endpoint}${subCategoryId}/handle_feedback`, {}).then((response: any) => {
+  patchVisumHandleFeedback(groupId: string, subCategoryId: string): Promise<any> {
+    return this.patch(groupId, `${this.endpoint}${subCategoryId}/handle_feedback`, {}).then((response: any) => {
       return response
     })
   }
 
-  patchVisumHandleFeedbackGlobal(visumId: string): Promise<any> {
-    return this.patch(`${this.endpoint}${visumId}/global_handle_feedback`, {}).then((response: any) => {
+  patchVisumHandleFeedbackGlobal(groupId: string, visumId: string): Promise<any> {
+    return this.patch(groupId, `${this.endpoint}${visumId}/global_handle_feedback`, {}).then((response: any) => {
       return response
     })
   }
 
-  patchVisumApprovalGlobal(visumId: string): Promise<any> {
-    return this.patch(`${this.endpoint}${visumId}/global_approval`, {}).then((response: any) => {
+  patchVisumApprovalGlobal(groupId: string, visumId: string): Promise<any> {
+    return this.patch(groupId, `${this.endpoint}${visumId}/global_approval`, {}).then((response: any) => {
       return response
     })
   }
 
-  patchVisumDisapproval(visumId: string): Promise<any> {
-    return this.patch(`${this.endpoint}${visumId}/global_disapproval`, {}).then((response: any) => {
+  patchVisumDisapproval(groupId: string, visumId: string): Promise<any> {
+    return this.patch(groupId, `${this.endpoint}${visumId}/global_disapproval`, {}).then((response: any) => {
       return response
     })
   }

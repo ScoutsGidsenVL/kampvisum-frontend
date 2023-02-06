@@ -134,7 +134,7 @@ export default defineComponent({
       isDeletingVisum.value = true
       if (visumToBeDeleted.value) {
         RepositoryFactory.get(CampRepository)
-          .removeById(visumToBeDeleted.value.id)
+          .removeById(selectedGroup.value.groupAdminId, visumToBeDeleted.value.id)
           .then(() => {
               getVisums(selectedGroup.value, selectedYear.value).then(() => {
                 isDeletingVisum.value = false

@@ -12,7 +12,7 @@ export default class AuthRepository extends BaseApiRepository {
     const { updateMe, getMe } = useOfflineData()
 
     if (isInternetActive.value) {
-      return this.get('/auth/me/').then((input: any) => {
+      return this.getAuth('/auth/me/').then((input: any) => {
         updateMe(UserModel.deserialize(input))
         const user = UserModel.deserialize(input)
         // store.dispatch('setUser', user)
@@ -25,6 +25,6 @@ export default class AuthRepository extends BaseApiRepository {
         })
       })
     }
-    
+
   }
 }
