@@ -19,6 +19,7 @@ const useGroupAndYears = (): {
   isFetchingYears: Ref<boolean>
   setSelectedYear: (year: string) => string
   setSelectedGroup: (group: Group) => Group
+  unsetSelectedGroup: () => void
   selectedGroup: Ref<Group>
   getAvailableGroups: () => Group[]
   isInBetweenStartAndEnd: (start: string, end: string) => Boolean
@@ -41,9 +42,9 @@ const useGroupAndYears = (): {
 
   watch(selectedGroup, (group: Group) => {
     clearTimeout(debounce)
-      debounce = setTimeout(() => {
-        getYearsForGroup(group.groupAdminId)
-      }, 100)
+    debounce = setTimeout(() => {
+      getYearsForGroup(group.groupAdminId)
+    }, 100)
   })
 
   // watch(selectedYear, (newYear: string, oldYear: string) => {
@@ -66,13 +67,17 @@ const useGroupAndYears = (): {
     return group
   }
 
+  const unsetSelectedGroup = () => {
+    selectedGroup.value = null
+  }
+
   const getYearsForGroup = async (groupId: string) => {
     clearVisums()
     isFetchingYears.value = true
     await RepositoryFactory.get(CampRepository)
       .getGroupYears(groupId)
       .then((yearsOutput: Array<string>) => {
-        if (yearsOutput.length === 0) { 
+        if (yearsOutput.length === 0) {
           clearVisums()
         }
         years.value = yearsOutput
@@ -89,7 +94,7 @@ const useGroupAndYears = (): {
     return store.getters.user.scoutsGroups as Group[]
   }
 
-  const isInBetweenStartAndEnd = (start: string, end: string): boolean =>  {
+  const isInBetweenStartAndEnd = (start: string, end: string): boolean => {
     var date = DateTime.fromFormat(new Date().toString(), 'yyyy-MM-dd')
     if (date > start && date < end) {
       return true
@@ -107,6 +112,7 @@ const useGroupAndYears = (): {
     isFetchingYears,
     selectedGroup,
     setSelectedGroup,
+    unsetSelectedGroup,
     isInBetweenStartAndEnd
   }
 }

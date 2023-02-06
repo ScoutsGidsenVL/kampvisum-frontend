@@ -90,7 +90,7 @@ export default defineComponent({
   setup(props) {
     const route = props.route
     const { breadcrumbs } = useNavigation()
-    const { selectedGroup, selectedYear, getYearsForGroup } = useGroupAndYears()
+    const { selectedGroup, selectedYear, getYearsForGroup, unsetSelectedGroup } = useGroupAndYears()
     const { getVisums } = useVisum()
     const config: MasterConfig = store.getters.config
     const { t } = useI18n({
@@ -120,6 +120,7 @@ export default defineComponent({
       sessionStorage.removeItem('oidc-access-token')
       sessionStorage.removeItem('oidc-refresh-token')
       // window.location.href = `${config.frontend.logoutUrl}${config.frontend.baseUrl}`
+      unsetSelectedGroup()
     }
 
     return {
