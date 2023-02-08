@@ -1,15 +1,15 @@
-import { Camp } from '@/serializer/Camp'
+import { Visum } from '@/serializer/Visum'
 import { ref } from 'vue'
 
 export const useSectionsHelper = (): {
-  getSectionsTitle: (camp: Camp) => string
+  getSectionsTitle: (visum: Visum) => string
   genderLabel: (gender: string) => string
 } => {
-  const getSectionsTitle = (camp: Camp): string => {
+  const getSectionsTitle = (visum: Visum): string => {
     const sectionsTitle = ref<string>('')
     const sections: string[] = []
-    if (camp && camp.sections) {
-      camp.sections.forEach((section: any) => {
+    if (visum && visum.sections) {
+      visum.sections.forEach((section: any) => {
         if (section.name.name) {
           sections.push(section.name.name)
         }

@@ -3,7 +3,7 @@ import { SubCategory, SubCategoryDeserializer } from "./SubCategory"
 
 export interface Category {
   camp?: { name: string }
-  visum?: { id: string }
+  visum?: { id: string, name: string }
   id?: string
   subCategories?: SubCategory[]
   categoryParent: CategoryParent

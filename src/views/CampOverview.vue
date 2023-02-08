@@ -3,7 +3,7 @@
     <h1>{{ visum.camp.name }}</h1>
 
     <h4 class="inline text-green font-aglet font-light">
-      {{ getSectionsTitle(visum.camp) }}
+      {{ getSectionsTitle(visum) }}
     </h4>
     <hr />
     <camp-global-status-label :visum="visum" :showText="true" />
@@ -80,7 +80,7 @@ export default defineComponent({
     getCampByRouteParam().then((v: Visum) => {
       visum.value = v
       isFetchingVisum.value = false
-      setBreadcrumbs([{ title: v.camp.name, name: 'kamp', uuid: v.id }])
+      setBreadcrumbs([{ title: v.name, name: 'kamp', uuid: v.id }])
     })
 
     const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSED : SidebarState.OPEN })

@@ -4,14 +4,14 @@
       <div class="flex justify-between">
         <h3 class="text-lg text-green mb-1 font-normal">
           <span>
-            {{ getSectionsTitle(visum.camp) }}
+            {{ getSectionsTitle(visum) }}
           </span>
         </h3>
         <div class="d-flex gap-3 mt-1">
           <slot name="buttons" />
         </div>
       </div>
-      <h2 class="mb-3 mt-1 text-xl font-semibold font-museo">{{ visum.camp.name }}</h2>
+      <h2 class="mb-3 mt-1 text-xl font-semibold font-museo">{{ visum.name }}</h2>
       <div style="width:fit-content"  @click.stop="navigateTowardsCategory(category.categoryParent.name, visum, category.id)" v-for="category in visum.categorySet.categories" :key="category" class="d-flex gap-3 my-2.5 items-center group">
         <div style="min-width: 24px">
           <svg v-if="category.state === 'CHECKED'" class="mt-1 fill-current text-green" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

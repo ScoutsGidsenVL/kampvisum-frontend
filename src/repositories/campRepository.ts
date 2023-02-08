@@ -34,7 +34,7 @@ export class CampRepository extends BaseRepository {
           let data: Array<Visum> = []
           if (results) {
             results.forEach((v: Visum) => {
-              if (v.camp.year.year === selectedYear.value && v.groupGroupAdminId === selectedGroup.value.groupAdminId) {
+              if (v.year.year === selectedYear.value && v.groupGroupAdminId === selectedGroup.value.groupAdminId) {
                 data.push(v)
               }
             })

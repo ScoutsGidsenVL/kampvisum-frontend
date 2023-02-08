@@ -4,13 +4,13 @@ import { Section, SectionDeserializer } from "./Section"
 import { YearDeserializer } from "./Year"
 
 export interface Camp {
-  createdBy?: string
-  createdOn?: string
   endDate?: string
   id: string
   name: string
   sections: Array<string> | Array<Section>
   startDate?: string
+  createdBy?: string
+  createdOn?: string
   updatedBy?: string
   updatedOn?: string
   year?: any
@@ -38,17 +38,17 @@ export const CampDeserializer = (input: any): Camp => {
 }
 
 export const CampSerializer = (input: any): any => {
+  let arr: any[] = []
+  input.campTypes && input.campTypes.forEach((c: string) => {
+    arr.push({ camp_type: c })
+  })
   const single: any = {
     name: input.name,
     start_date: input.startDate,
     end_date: input.startDate,
     sections: input.sections,
+    camp_types: arr
   }
-  let arr: any[] = []
-  input.campTypes && input.campTypes.forEach((c: string) => {
-    arr.push({ camp_type: c })
-  })
-  // single.camp_types = arr
-  return { camp: single, camp_types: arr }
+  return single
 }
 

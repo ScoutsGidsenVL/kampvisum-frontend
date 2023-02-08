@@ -1,6 +1,7 @@
-import { Camp, CampDeserializer } from "./Camp"
+import { YearDeserializer } from "./Year"
 import { CampType, CampTypeDeserializer } from "./CampType"
 import { CategorySet, CategorySetDeserializer } from "./CategorySet"
+import { Section, SectionDeserializer } from "./Section"
 import { Engagement, EngagementDeserializer } from "./Engagement"
 
 export enum VisumStates {
@@ -12,26 +13,44 @@ export enum VisumStates {
 }
 
 export interface Visum {
-  readonly camp: Camp
-  readonly categorySet: CategorySet
   readonly id: string
+  groupGroupAdminId: string
+  groupName: string
+  year?: any
+  name: string
+  startDate?: string
+  endDate?: string
+  sections: Array<string> | Array<Section>
+  campTypes: Array<CampType>
+  readonly categorySet: CategorySet
   readonly engagement?: Engagement
   readonly state: string
-  groupGroupAdminId: string
-  campTypes: Array<CampType>
   notes?: string
+  readonly createdBy?: string
+  readonly createdOn?: string
+  readonly updatedBy?: string
+  readonly updatedOn?: string
 }
 
 export const VisumDeserializer = (input: any): Visum => {
   const single: Visum = {
+    id: input.id ? input.id : undefined,
+    groupGroupAdminId: input.group_group_admin_id,
+    groupName: input.group_name,
+    year: input.year ? YearDeserializer(input.year) : undefined,
+    name: input.name,
+    startDate: input.start_date,
+    endDate: input.end_date,
+    sections: input.sections ? input.sections.map((section: any) => SectionDeserializer(section)) : undefined,
     campTypes: input.camp_types ? input.camp_types.map((ct: any) => CampTypeDeserializer(ct)) : undefined,
-    camp: CampDeserializer(input.camp),
     categorySet: CategorySetDeserializer(input.category_set),
     engagement: input.engagement ? EngagementDeserializer(input.engagement) : undefined,
     state: input.state ? input.state : undefined,
-    id: input.id ? input.id : undefined,
-    groupGroupAdminId: input.group_group_admin_id,
-    notes: input.notes ? input.notes : ''
+    notes: input.notes ? input.notes : '',
+    createdBy: input.created_by ? input.created_by : undefined,
+    createdOn: input.created_on ? input.created_on : undefined,
+    updatedBy: input.updated_by ? input.updated_by : undefined,
+    updatedOn: input.updated_on ? input.updated_on : undefined
   }
   return single
 }

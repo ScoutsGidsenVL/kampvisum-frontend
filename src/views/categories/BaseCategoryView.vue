@@ -75,7 +75,7 @@ export default defineComponent({
         if (category.value) {
           setCategoryInfo(category.value.categoryParent.description)
           setBreadcrumbs([
-            { title: c.camp?.name ? c.camp?.name : '', name: 'kamp', uuid: c.visum?.id ? c.visum?.id : '' },
+            { title: c.visum?.name ? c.visum?.name : '', name: 'kamp', uuid: c.visum?.id ? c.visum?.id : '' },
             { title: category.value.categoryParent.label, name: category.value.categoryParent.name, uuid: category.value.id },
           ])
         }
@@ -100,7 +100,7 @@ export default defineComponent({
         if (category.value) {
           setCategoryInfo(category.value.categoryParent.description)
           setBreadcrumbs([
-            { title: v.camp.name, name: 'kamp', uuid: v.id },
+            { title: v.name, name: 'kamp', uuid: v.id },
             { title: category.value.categoryParent.label, name: category.value.categoryParent.name, uuid: category.value.id },
           ])
         }

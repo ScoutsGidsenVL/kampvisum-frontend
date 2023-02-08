@@ -32,7 +32,7 @@
               <!-- {{route.params}} -->
               <div  v-if="visumsAlphabetically.length > 0">
                 <div v-for="visum in visumsAlphabetically" :key="visum">
-                  <navigation-item :visum="visum" :text="`${visum.camp.name} - ${getSectionsTitle(visum.camp)}`">
+                  <navigation-item :visum="visum" :text="`${visum.name} - ${getSectionsTitle(visum)}`">
                     <div v-for="category in visum.categorySet.categories" :key="category">
                       <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id);closeSidebar()" class="xs:text-sm md:text-md block cursor-pointer my-1 px-2" style="width: fit-content" :class="(category.id === route.params.id) ? 'text-green font-bold' : 'text-black'">
                         {{ category.categoryParent.label }}
