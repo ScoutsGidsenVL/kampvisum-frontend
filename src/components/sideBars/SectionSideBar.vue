@@ -197,12 +197,12 @@ export default defineComponent({
       (value: sideBarState<any>) => {
         if (value.state === 'edit') {
           chosenGender.value = props.sideBarState.entity.name.gender
-          chosenAgeGroup.value = optionsAgeGroup.value.find((x: any) => x.value === props.sideBarState.entity.name.ageGroup)
+          chosenAgeGroup.value = optionsAgeGroup.value.find((x: any) => x.value === Number(props.sideBarState.entity.name.ageGroup))
           const section = ref<Section>({
             name: {
               id: props.sideBarState.entity.name.id,
               name: props.sideBarState.entity.name.name,
-              ageGroup: optionsAgeGroup.value.find((x: any) => x.value === props.sideBarState.entity.name.ageGroup),
+              ageGroup: optionsAgeGroup.value.find((x: any) => x.value === Number(props.sideBarState.entity.name.ageGroup)),
             },
           })
           resetForm({
