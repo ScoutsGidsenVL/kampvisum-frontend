@@ -93,7 +93,11 @@ export default defineComponent({
     const agree = () => {
       isChecked.value = true
       if (props.subCategory.id) {
+<<<<<<< HEAD
         RepositoryFactory.get(CampVisumRepository)
+=======
+        RepositoryFactory.get(CampRepository)
+>>>>>>> origin
         .patchVisumHandleFeedback(selectedGroup.value.groupAdminId, props.subCategory.id)
         .then(() => {
           triggerNotification(t('engagement.feedback-ackknowledged'))

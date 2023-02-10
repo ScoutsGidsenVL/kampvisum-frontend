@@ -137,7 +137,11 @@ export default defineComponent({
     const updateCamp = async (data: Visum) => {
       if (data.id && props.sideBarState) {
         data.campTypes = selectedCampTypes.value
+<<<<<<< HEAD
         await RepositoryFactory.get(CampVisumRepository)
+=======
+        await RepositoryFactory.get(CampRepository)
+>>>>>>> origin
           .update(selectedGroup.value.groupAdminId, props.sideBarState.entity.id, data)
           .then(() => {
             context.emit('actionSuccess', 'UPDATE')
@@ -147,7 +151,11 @@ export default defineComponent({
 
     const postCamp = async (data: Visum) => {
       data.campTypes = selectedCampTypes.value
+<<<<<<< HEAD
       await RepositoryFactory.get(CampVisumRepository)
+=======
+      await RepositoryFactory.get(CampRepository)
+>>>>>>> origin
         .create(selectedGroup.value.groupAdminId, data)
         .then((visum: Visum) => {
           context.emit('actionSuccess', 'POST')

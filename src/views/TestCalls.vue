@@ -64,6 +64,7 @@ export default defineComponent({
                 groupID: '',
                 campID: ''
             },
+
             call: (vars: any) => RepositoryFactory.get(CampVisumRepository).removeById(vars.groupID, vars.campID)
         },
         'campGetById': {

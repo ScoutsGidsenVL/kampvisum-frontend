@@ -24,7 +24,11 @@ export const useCampHelper = (): {
   const route = useRoute()
 
   const getCampByRouteParam = async (): Promise<Visum> => {
+<<<<<<< HEAD
     return RepositoryFactory.get(CampVisumRepository)
+=======
+    return RepositoryFactory.get(CampRepository)
+>>>>>>> origin
       .getById(selectedGroup.value.groupAdminId, route.params.campId.toString() + "/")
       .then((c: Visum) => {
         store.getters.user.scoutsGroups.forEach((userGroup: Group) => {

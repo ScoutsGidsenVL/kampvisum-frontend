@@ -90,7 +90,11 @@ export default defineComponent({
     const select = (v: StatusFeedbackState) => {
       selection.value = v
       if (props.subCategory.id) {
+<<<<<<< HEAD
         RepositoryFactory.get(CampVisumRepository)
+=======
+        RepositoryFactory.get(CampRepository)
+>>>>>>> origin
         .patchCategoryApproval(selectedGroup.value.groupAdminId, props.subCategory.id, selection.value)
         .then(() => {
           triggerNotification(t('engagement.feedback-notification'))
@@ -105,7 +109,11 @@ export default defineComponent({
         clearTimeout(debounce)
         debounce = setTimeout(() => {
           if (props.subCategory.id) {
+<<<<<<< HEAD
           RepositoryFactory.get(CampVisumRepository)
+=======
+          RepositoryFactory.get(CampRepository)
+>>>>>>> origin
           .patchCategoryFeedback(selectedGroup.value.groupAdminId, props.subCategory.id, values.feedback)
           .then(() => {
             triggerNotification(t('engagement.feedback-notification'))

@@ -134,7 +134,11 @@ export default defineComponent({
     const visumApprovalGlobal = () => {
       isSigning.value = true
       if (props.visum.engagement) {
+<<<<<<< HEAD
         RepositoryFactory.get(CampVisumRepository).patchVisumApprovalGlobal(selectedGroup.value.groupAdminId, props.visum.id).then(() => { 
+=======
+        RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(selectedGroup.value.groupAdminId, props.visum.id).then(() => { 
+>>>>>>> origin
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -158,7 +162,11 @@ export default defineComponent({
     const VisumHandleFeedbackGlobal = () => {
       isSigning.value = true
       if (props.visum.id) {
+<<<<<<< HEAD
         RepositoryFactory.get(CampVisumRepository).patchVisumHandleFeedbackGlobal(selectedGroup.value.groupAdminId, props.visum.id).then(() => { 
+=======
+        RepositoryFactory.get(CampRepository).patchVisumHandleFeedbackGlobal(selectedGroup.value.groupAdminId, props.visum.id).then(() => { 
+>>>>>>> origin
           isSigning.value = false
           hideWarning()
           getEngagementState()
