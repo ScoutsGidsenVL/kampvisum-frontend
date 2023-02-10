@@ -91,7 +91,7 @@ export default defineComponent({
       required: false,
     },
     sideBarState: {
-      type: Object as PropType<sideBarState<Visum>>,
+      type: Object as PropType<sideBarState<Camp>>,
       required: true,
       default: () => {
         'hide'
@@ -119,7 +119,7 @@ export default defineComponent({
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
-    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Visum>()
+    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Camp>()
     const { sideBarState } = toRefs(props)
     const { selectedGroup } = useGroupAndYears()
 

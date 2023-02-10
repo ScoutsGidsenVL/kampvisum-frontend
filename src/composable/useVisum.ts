@@ -5,11 +5,7 @@ import { ref, Ref } from 'vue'
 import router from '@/router'
 import { Category } from '@/serializer/Category'
 import { SubCategory } from '@/serializer/SubCategory'
-<<<<<<< HEAD
 import StatusFeedbackState from '@/components/semantics/Feedback.vue'
-=======
-import { StatusFeedbackState } from '@/components/semantics/Feedback.vue'
->>>>>>> origin
 import { useInternetHelper } from '@/helpers/internetHelper'
 
 const visums = ref<Visum[]>([])
@@ -30,11 +26,7 @@ const useVisum = (): {
   const getVisums = async (group: any, year: string) => {
     if (year) {
       isFetchingVisums.value = true
-<<<<<<< HEAD
       await RepositoryFactory.get(CampVisumRepository)
-=======
-      await RepositoryFactory.get(CampRepository)
->>>>>>> origin
         .getArray(group.groupAdminId, '?page=1&page_size=100' + (year !== '' ? '&year=' + year : ''))
         .then((visumsOutput: Visum[]) => {
           visums.value = visumsOutput

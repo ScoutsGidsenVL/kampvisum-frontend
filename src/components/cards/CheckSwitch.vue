@@ -79,7 +79,7 @@ export default defineComponent({
       required: true,
     },
     camp: {
-      type: Object as PropType<Visum>,
+      type: Object as PropType<Camp>,
       required: true,
     },
     check: {
