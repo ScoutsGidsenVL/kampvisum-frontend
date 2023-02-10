@@ -2,7 +2,7 @@
   <div v-if="category && visum && !isForbidden" class="flex w-100 -mt-3">
     <div class="w-100">
       <div class="sticky bg-white z-30">
-        <page-header :title="category.categoryParent.label" :subTitle="visum.camp.name" />
+        <page-header :title="category.categoryParent.label" :subTitle="visum.name" />
       </div>
 
       <div v-if="category && visum" class="w-100 flex pt-3">

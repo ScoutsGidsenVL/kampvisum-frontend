@@ -21,7 +21,7 @@
         :subCategory="subCategory" 
         @rl="rl($event)"
         />
-      <check-switch @rl="rl($event)" v-for="check in checks" :key="check" :visum="visum" :camp="visum.camp" :check="check" :checkType="check.checkParent.checkType.checkType" />
+      <check-switch @rl="rl($event)" v-for="check in checks" :key="check" :visum="visum" :check="check" :checkType="check.checkParent.checkType.checkType" />
       <feedback @rl="rl($event)" v-if="selectedGroup.isDistrictCommissioner && visum.engagement.leaders && visum.engagement.groupLeaders" :subCategory="subCategory" :visum="visum" />
     </div>
   </div>

@@ -59,11 +59,10 @@ import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { CampTypeRepository } from '@/repositories/CampTypeRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { GroupRepository } from '@/repositories/groupRepository'
-import { CampRepository } from '@/repositories/campRepository'
+import { CampVisumRepository } from '@/repositories/CampVisumRepository'
 import { useForm, useField, ErrorMessage } from 'vee-validate'
 import MultiSelect from '../inputs/MultiSelect.vue'
 import { CampType } from '@/serializer/CampType'
-import { Camp } from '../../serializer/Camp'
 import { useI18n } from 'vue-i18n'
 import { Visum } from '@/serializer/Visum'
 import useGroupAndYears from '@/composable/useGroupAndYears'
@@ -99,7 +98,7 @@ export default defineComponent({
   emits: ['update:sideBarState', 'actionSuccess', 'navigateTowardsVisumOverview'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
-    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Camp>()
+    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Visum>()
     const { sideBarState } = toRefs(props)
     const { selectedGroup } = useGroupAndYears()
     const groupSections = ref<Section[]>([])
@@ -125,7 +124,7 @@ export default defineComponent({
 
     const onSubmit = async () => {
       await validate().then((validation: any) => scrollToFirstError(validation, 'addNewCamp'))
-      handleSubmit(async (values: Camp) => {
+      handleSubmit(async (values: Visum) => {
         if (props.sideBarState.state === 'edit') {
           await updateCamp(values)
         } else {
@@ -135,10 +134,10 @@ export default defineComponent({
       })()
     }
 
-    const updateCamp = async (data: Camp) => {
+    const updateCamp = async (data: Visum) => {
       if (data.id && props.sideBarState) {
         data.campTypes = selectedCampTypes.value
-        await RepositoryFactory.get(CampRepository)
+        await RepositoryFactory.get(CampVisumRepository)
           .update(selectedGroup.value.groupAdminId, props.sideBarState.entity.id, data)
           .then(() => {
             context.emit('actionSuccess', 'UPDATE')
@@ -146,9 +145,9 @@ export default defineComponent({
       }
     }
 
-    const postCamp = async (data: Camp) => {
+    const postCamp = async (data: Visum) => {
       data.campTypes = selectedCampTypes.value
-      await RepositoryFactory.get(CampRepository)
+      await RepositoryFactory.get(CampVisumRepository)
         .create(selectedGroup.value.groupAdminId, data)
         .then((visum: Visum) => {
           context.emit('actionSuccess', 'POST')
@@ -208,19 +207,24 @@ export default defineComponent({
       () => props.sideBarState,
       (value: sideBarState<any>) => {
         if (value.state === 'edit') {
-          const camp = ref<Camp>({
-            id: value.entity.camp.id,
-            name: value.entity.camp.name,
-            endDate: value.entity.camp.endDate,
-            startDate: value.entity.camp.startDate,
-            sections: value.entity.camp.sections,
+          const visum = ref<Visum>({
+            id: value.entity.id,
+            groupGroupAdminId: value.entity.groupGroupAdminId,
+            groupName: value.entity.groupName,
+            year: value.entity.year,
+            name: value.entity.name,
+            startDate: value.entity.startDate,
+            endDate: value.entity.endDate,
+            sections: value.entity.sections,
+            categorySet: value.entity.categorySet,
+            state: value.entity.state
           })
           // selectedCampType.value = value.entity.categorySet.categorySetParent.campType
-          camp.value.sections = SectionObjectsToSectionStrings(value.entity.camp.sections)
-          selectedGroupSections.value = SectionObjectsToSectionStrings(value.entity.camp.sections)
+          visum.value.sections = SectionObjectsToSectionStrings(value.entity.sections)
+          selectedGroupSections.value = SectionObjectsToSectionStrings(value.entity.sections)
           selectedCampTypes.value = value.entity.campTypes.map((ct: CampType) => ct.campType)
           resetForm({
-            values: camp.value,
+            values: visum.value,
           })
 
           setTimeout(() => {

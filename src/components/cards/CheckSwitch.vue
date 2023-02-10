@@ -55,7 +55,6 @@ import { defineComponent, PropType } from 'vue'
 import CheckComponent from './checks/check.vue'
 import VSwitch from '@lmiller1990/v-switch'
 import { Visum } from '@/serializer/Visum'
-import { Camp } from '@/serializer/Camp'
 import NumberCheck from '../semantics/NumberCheck.vue'
 
 export default defineComponent({
@@ -80,7 +79,7 @@ export default defineComponent({
       required: true,
     },
     camp: {
-      type: Object as PropType<Camp>,
+      type: Object as PropType<Visum>,
       required: true,
     },
     check: {

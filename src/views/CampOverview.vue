@@ -1,6 +1,6 @@
 <template>
   <div v-if="visum && !isForbidden" class="p-3">
-    <h1>{{ visum.camp.name }}</h1>
+    <h1>{{ visum.name }}</h1>
 
     <h4 class="inline text-green font-aglet font-light">
       {{ getSectionsTitle(visum) }}

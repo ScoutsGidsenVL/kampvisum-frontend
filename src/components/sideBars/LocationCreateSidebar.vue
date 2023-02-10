@@ -243,7 +243,7 @@ const LitepieDatepicker = require('litepie-datepicker').default
 const { DateTime } = require("luxon");
 import MultiSelect from '../../components/inputs/MultiSelect.vue'
 import { scoutsCountriesRepository, ScoutsCountry } from '../../repositories/scoutsCountriesRepository'
-import { CampRepository } from '@/repositories/campRepository'
+import { CampVisumRepository } from '@/repositories/CampVisumRepository'
 import { useRoute } from 'vue-router'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 
@@ -353,7 +353,7 @@ export default defineComponent({
       init.value.street = ''
       init.value.houseNumber = ''
         //DO CALL AND GET THE VALUES FOR START AND END DATE
-        RepositoryFactory.get(CampRepository).getDatesLeadersById(selectedGroup.value.groupAdminId, route.params.campId.toString()).then((res: any) => {
+        RepositoryFactory.get(CampVisumRepository).getDatesLeadersById(selectedGroup.value.groupAdminId, route.params.campId.toString()).then((res: any) => {
           if (res.start_date && res.end_date && props.check.checkParent && props.check.checkParent.checkType.checkType === 'CampLocationCheck') {
             dateValues.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
             dateValues.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
@@ -381,7 +381,7 @@ export default defineComponent({
       init.value.houseNumber = sideBarState.value.entity.houseNumber
 
       //DO CALL AND GET THE VALUES FOR START AND END DATE
-      RepositoryFactory.get(CampRepository).getDatesLeadersById(selectedGroup.value.groupAdminId, route.params.campId.toString()).then((res: any) => {
+      RepositoryFactory.get(CampVisumRepository).getDatesLeadersById(selectedGroup.value.groupAdminId, route.params.campId.toString()).then((res: any) => {
         if (res.start_date && res.end_date) {
           leadersDates.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
           leadersDates.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())

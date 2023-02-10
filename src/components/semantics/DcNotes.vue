@@ -15,7 +15,7 @@ import { Visum } from '@/serializer/Visum'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { CampRepository } from '@/repositories/campRepository'
+import { CampVisumRepository } from '@/repositories/CampVisumRepository'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default defineComponent({
@@ -51,7 +51,7 @@ export default defineComponent({
         clearTimeout(debounce)
         debounce = setTimeout(() => {
           if (true) {
-          RepositoryFactory.get(CampRepository)
+          RepositoryFactory.get(CampVisumRepository)
           .patchVisumNotes(selectedGroup.value.groupAdminId, props.visum.id, values.notes)
           .then(() => {
             triggerNotification(t('engagement.notes-notification'))

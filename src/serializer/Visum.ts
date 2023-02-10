@@ -14,14 +14,14 @@ export enum VisumStates {
 
 export interface Visum {
   readonly id: string
-  groupGroupAdminId: string
-  groupName: string
-  year?: any
+  readonly groupGroupAdminId: string
+  readonly groupName: string
+  readonly year?: any
   name: string
   startDate?: string
   endDate?: string
   sections: Array<string> | Array<Section>
-  campTypes: Array<CampType>
+  campTypes?: Array<string>
   readonly categorySet: CategorySet
   readonly engagement?: Engagement
   readonly state: string
@@ -32,7 +32,7 @@ export interface Visum {
   readonly updatedOn?: string
 }
 
-export const VisumDeserializer = (input: any): Visum => {
+export const CampVisumDeserializer = (input: any): Visum => {
   const single: Visum = {
     id: input.id ? input.id : undefined,
     groupGroupAdminId: input.group_group_admin_id,
@@ -51,6 +51,22 @@ export const VisumDeserializer = (input: any): Visum => {
     createdOn: input.created_on ? input.created_on : undefined,
     updatedBy: input.updated_by ? input.updated_by : undefined,
     updatedOn: input.updated_on ? input.updated_on : undefined
+  }
+  return single
+}
+
+
+export const CampVisumSerializer = (input: any): any => {
+  let arr: any[] = []
+  input.campTypes && input.campTypes.forEach((c: string) => {
+    arr.push({ camp_type: c })
+  })
+  const single: any = {
+    name: input.name,
+    start_date: input.startDate,
+    end_date: input.startDate,
+    sections: input.sections,
+    camp_types: arr
   }
   return single
 }

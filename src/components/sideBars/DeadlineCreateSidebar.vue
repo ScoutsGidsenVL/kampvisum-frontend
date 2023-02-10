@@ -59,7 +59,6 @@ import RepositoryFactory from '@/repositories/repositoryFactory'
 import { CustomDeadline } from '@/serializer/CustomDeadline'
 import { useForm, ErrorMessage } from 'vee-validate'
 import { Deadline } from '@/serializer/Deadline'
-import { Camp } from '../../serializer/Camp'
 import { Visum } from '@/serializer/Visum'
 import { useI18n } from 'vue-i18n'
 import useGroupAndYears from '@/composable/useGroupAndYears'
@@ -92,7 +91,7 @@ export default defineComponent({
       required: false,
     },
     sideBarState: {
-      type: Object as PropType<sideBarState<Camp>>,
+      type: Object as PropType<sideBarState<Visum>>,
       required: true,
       default: () => {
         'hide'
@@ -120,7 +119,7 @@ export default defineComponent({
   emits: ['update:sideBarState', 'actionSuccess'],
   setup(props, context) {
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
-    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Camp>()
+    const { resetForm, handleSubmit, validate, values, isSubmitting } = useForm<Visum>()
     const { sideBarState } = toRefs(props)
     const { selectedGroup } = useGroupAndYears()
 

@@ -31,7 +31,7 @@
 import { InputTypes, CustomInput } from 'vue-3-component-library'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { useNotification } from '@/composable/useNotification'
-import { CampRepository } from '@/repositories/campRepository'
+import { CampVisumRepository } from '@/repositories/CampVisumRepository'
 import { defineComponent, PropType, watch, ref } from 'vue'
 import { Visum, VisumStates } from '@/serializer/Visum'
 import { SubCategory } from '@/serializer/SubCategory'
@@ -90,7 +90,7 @@ export default defineComponent({
     const select = (v: StatusFeedbackState) => {
       selection.value = v
       if (props.subCategory.id) {
-        RepositoryFactory.get(CampRepository)
+        RepositoryFactory.get(CampVisumRepository)
         .patchCategoryApproval(selectedGroup.value.groupAdminId, props.subCategory.id, selection.value)
         .then(() => {
           triggerNotification(t('engagement.feedback-notification'))
@@ -105,7 +105,7 @@ export default defineComponent({
         clearTimeout(debounce)
         debounce = setTimeout(() => {
           if (props.subCategory.id) {
-          RepositoryFactory.get(CampRepository)
+          RepositoryFactory.get(CampVisumRepository)
           .patchCategoryFeedback(selectedGroup.value.groupAdminId, props.subCategory.id, values.feedback)
           .then(() => {
             triggerNotification(t('engagement.feedback-notification'))

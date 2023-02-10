@@ -46,7 +46,7 @@ import IChecked from '../icons/IChecked.vue'
 import IEmptyCheck from '../icons/IEmptyCheck.vue'
 import { useI18n } from 'vue-i18n'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { CampRepository } from '@/repositories/campRepository'
+import { CampVisumRepository } from '@/repositories/CampVisumRepository'
 import { SubCategory } from '@/serializer/SubCategory'
 import { useNotification } from '@/composable/useNotification'
 import useGroupAndYears from '@/composable/useGroupAndYears'
@@ -93,7 +93,7 @@ export default defineComponent({
     const agree = () => {
       isChecked.value = true
       if (props.subCategory.id) {
-        RepositoryFactory.get(CampRepository)
+        RepositoryFactory.get(CampVisumRepository)
         .patchVisumHandleFeedback(selectedGroup.value.groupAdminId, props.subCategory.id)
         .then(() => {
           triggerNotification(t('engagement.feedback-ackknowledged'))

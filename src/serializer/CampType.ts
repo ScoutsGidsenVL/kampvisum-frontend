@@ -1,7 +1,5 @@
 export interface CampType {
   id?: string,
-  createdOn?: string
-  updatedOn?: string
   explanation?: string
   index?: string
   label?: string
@@ -9,14 +7,14 @@ export interface CampType {
   isBase?: boolean
   isDefault?: boolean
   createdBy?: string
+  createdOn?: string
   updatedBy?: string
+  updatedOn?: string
 }
 
 export const CampTypeDeserializer = (input: any): CampType => {
   const single: CampType = {
     id: input.id,
-    createdOn: input.created_on,
-    updatedOn: input.updated_on,
     explanation: input.explanation,
     index: input.index,
     label: input.label,
@@ -24,7 +22,9 @@ export const CampTypeDeserializer = (input: any): CampType => {
     isBase: input.is_base,
     isDefault: input.is_default,
     createdBy: input.created_by ? input.created_by : undefined,
-    updatedBy: input.updated_by ? input.updated_by : undefined
+    createdOn: input.created_on,
+    updatedBy: input.updated_by ? input.updated_by : undefined,
+    updatedOn: input.updated_on
   }
 
   return single

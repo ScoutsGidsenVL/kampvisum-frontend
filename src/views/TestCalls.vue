@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { CampRepository } from '@/repositories/campRepository'
+import { CampVisumRepository } from '@/repositories/CampVisumRepository'
 import { defineComponent, reactive, ref, Ref, computed } from 'vue'
 import { CampTypeRepository } from '@/repositories/CampTypeRepository'
 import { CategoryRepository } from '@/repositories/CategoryRepository'
@@ -57,21 +57,21 @@ export default defineComponent({
                 groupID: '', 
                 year: ''
             },
-            call:  (vars: any) => RepositoryFactory.get(CampRepository).getArray(vars.groupID, '?page=1&page_size=100&year=' + vars.year)
+            call:  (vars: any) => RepositoryFactory.get(CampVisumRepository).getArray(vars.groupID, '?page=1&page_size=100&year=' + vars.year)
         },
         'campRemoveById': {
             vars: {
                 groupID: '',
                 campID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).removeById(vars.groupID, vars.campID)
+            call: (vars: any) => RepositoryFactory.get(CampVisumRepository).removeById(vars.groupID, vars.campID)
         },
         'campGetById': {
             vars: {
                 groupID: '',
                 campID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).getById(vars.groupID, vars.campID)
+            call: (vars: any) => RepositoryFactory.get(CampVisumRepository).getById(vars.groupID, vars.campID)
         },
         'campCreate': {
             vars: {
@@ -79,7 +79,7 @@ export default defineComponent({
                  name: '',
                  sectionID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).create(vars.groupID, {
+            call: (vars: any) => RepositoryFactory.get(CampVisumRepository).create(vars.groupID, {
                 sections: [
                     vars.sectionID
                 ],
@@ -93,7 +93,7 @@ export default defineComponent({
                 name: '',
                 sectionID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).update(vars.groupID, vars.campID, {
+            call: (vars: any) => RepositoryFactory.get(CampVisumRepository).update(vars.groupID, vars.campID, {
                 sections: [
                     vars.sectionID
                 ],
@@ -109,7 +109,7 @@ export default defineComponent({
             vars: {
                 groupID: '', 
             },
-            call:  (vars: any) => RepositoryFactory.get(CampRepository).getGroupYears(vars.groupID)
+            call:  (vars: any) => RepositoryFactory.get(CampVisumRepository).getGroupYears(vars.groupID)
         },
         'patchCategoryFeedback': {
             vars: {
@@ -117,7 +117,7 @@ export default defineComponent({
                 subCategoryId: '',
                 feedback: ''            
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchCategoryFeedback(vars.groupID, vars.subCategoryId, vars.feedback)
+            call: (vars: any) => RepositoryFactory.get(CampVisumRepository).patchCategoryFeedback(vars.groupID, vars.subCategoryId, vars.feedback)
         },
         'patchCategoryApproval': {
             vars: {
@@ -125,7 +125,7 @@ export default defineComponent({
                 subCategoryId: '',
                 feedback: 'A'            
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchCategoryApproval(vars.groupID, vars.subCategoryId, vars.feedback)
+            call: (vars: any) => RepositoryFactory.get(CampVisumRepository).patchCategoryApproval(vars.groupID, vars.subCategoryId, vars.feedback)
         },
         'patchVisumNotes': {
             vars: {
@@ -133,28 +133,28 @@ export default defineComponent({
                 visumID: '',
                 notes: ''            
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumNotes(vars.groupID, vars.visumID, vars.notes)
+            call: (vars: any) => RepositoryFactory.get(CampVisumRepository).patchVisumNotes(vars.groupID, vars.visumID, vars.notes)
         },
         'patchVisumHandleFeedback': {
             vars: {
                 groupID: '',
                 subCategoryId: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumHandleFeedback(vars.groupID, vars.subCategoryId)
+            call: (vars: any) => RepositoryFactory.get(CampVisumRepository).patchVisumHandleFeedback(vars.groupID, vars.subCategoryId)
         },
         'patchVisumApprovalGlobal': {
             vars: {
                 groupID: '',
                 visumID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(vars.groupID, vars.visumID)
+            call: (vars: any) => RepositoryFactory.get(CampVisumRepository).patchVisumApprovalGlobal(vars.groupID, vars.visumID)
         },
         'patchVisumDisapproval': {
             vars: {
                 groupID: '',
                 visumID: ''
             },
-            call: (vars: any) => RepositoryFactory.get(CampRepository).patchVisumDisapproval(vars.groupID, vars.visumID)
+            call: (vars: any) => RepositoryFactory.get(CampVisumRepository).patchVisumDisapproval(vars.groupID, vars.visumID)
         },
         'CampTypegetArray': {
             vars: {

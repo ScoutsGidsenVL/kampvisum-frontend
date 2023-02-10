@@ -1,5 +1,5 @@
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { CampRepository } from '@/repositories/campRepository'
+import { CampVisumRepository } from '@/repositories/CampVisumRepository'
 import { Group } from '@/serializer/Group'
 import { ref, Ref, watch } from 'vue'
 import store from '../store/store'
@@ -74,7 +74,7 @@ const useGroupAndYears = (): {
   const getYearsForGroup = async (groupId: string) => {
     clearVisums()
     isFetchingYears.value = true
-    await RepositoryFactory.get(CampRepository)
+    await RepositoryFactory.get(CampVisumRepository)
       .getGroupYears(groupId)
       .then((yearsOutput: Array<string>) => {
         if (yearsOutput.length === 0) {

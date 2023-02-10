@@ -1,8 +1,8 @@
 <template>
   <div class="home p-3">
     <warning
-      v-if="visumToBeDeleted && visumToBeDeleted.camp"
-      :title="visumToBeDeleted.camp.name"
+      v-if="visumToBeDeleted"
+      :title="visumToBeDeleted.name"
       :isLoading="isDeletingVisum"
       :isDisplayed="isWarningDisplayed"
       :text="t('pages.kampvisum-overview.delete-warning')"
@@ -79,7 +79,7 @@ import CampCallToAction from '@/components/semantics/campCallToAction.vue'
 import CampSidebar from '../components/sideBars/CampSideBar.vue'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import CampInfoCard from '@/components/cards/CampInfoCard.vue'
-import { CampRepository } from '@/repositories/campRepository'
+import { CampVisumRepository } from '@/repositories/CampVisumRepository'
 import MultiSelect from '../components/inputs/MultiSelect.vue'
 import { useNotification } from '@/composable/useNotification'
 import useGroupAndYears from '@/composable/useGroupAndYears'
@@ -133,7 +133,7 @@ export default defineComponent({
     const deleteCamp = () => {
       isDeletingVisum.value = true
       if (visumToBeDeleted.value) {
-        RepositoryFactory.get(CampRepository)
+        RepositoryFactory.get(CampVisumRepository)
           .removeById(selectedGroup.value.groupAdminId, visumToBeDeleted.value.id)
           .then(() => {
               getVisums(selectedGroup.value, selectedYear.value).then(() => {

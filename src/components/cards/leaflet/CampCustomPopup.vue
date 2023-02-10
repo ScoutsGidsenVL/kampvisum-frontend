@@ -9,11 +9,11 @@
     </div>
 
     <div>
-      {{location.camp.group.full_name}}
+      {{location.group.full_name}}
     </div>
     
     <div>
-      {{location.camp.name}}
+      {{location.name}}
     </div>
 
     <div class="mt-3 hover:underline text-green cursor-pointer" @click="navigateTowardsVisum({ id: location.visum_id})">

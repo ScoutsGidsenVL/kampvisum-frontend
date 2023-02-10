@@ -83,7 +83,7 @@
 import { EngagementRepository } from '@/repositories/EngagementRepository'
 import { CustomButtonSmall, Warning } from 'vue-3-component-library'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import {CampRepository} from '@/repositories/campRepository'
+import {CampVisumRepository} from '@/repositories/CampVisumRepository'
 import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 import { defineComponent, PropType, toRefs, ref } from 'vue'
@@ -134,7 +134,7 @@ export default defineComponent({
     const visumApprovalGlobal = () => {
       isSigning.value = true
       if (props.visum.engagement) {
-        RepositoryFactory.get(CampRepository).patchVisumApprovalGlobal(selectedGroup.value.groupAdminId, props.visum.id).then(() => { 
+        RepositoryFactory.get(CampVisumRepository).patchVisumApprovalGlobal(selectedGroup.value.groupAdminId, props.visum.id).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
@@ -158,7 +158,7 @@ export default defineComponent({
     const VisumHandleFeedbackGlobal = () => {
       isSigning.value = true
       if (props.visum.id) {
-        RepositoryFactory.get(CampRepository).patchVisumHandleFeedbackGlobal(selectedGroup.value.groupAdminId, props.visum.id).then(() => { 
+        RepositoryFactory.get(CampVisumRepository).patchVisumHandleFeedbackGlobal(selectedGroup.value.groupAdminId, props.visum.id).then(() => { 
           isSigning.value = false
           hideWarning()
           getEngagementState()
