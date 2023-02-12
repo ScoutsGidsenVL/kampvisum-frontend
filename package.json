@@ -23,7 +23,7 @@
     "dropzone": "^5.9.3",
     "file-saver": "^2.0.5",
     "inuits-vuejs-oidc": "git+https://github.com/inuits/inuits-vuejs-oidc.git#next",
-    "is-online": "^9.0.1",
+    "is-online": "^10.0.0",
     "leaflet": "^1.7.1",
     "leaflet.markercluster": "^1.5.0",
     "litepie-datepicker": "^1.0.14",
