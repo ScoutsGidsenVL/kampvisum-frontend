@@ -63,9 +63,9 @@ export default defineComponent({
     const { triggerNotification } = useNotification()
 
     const initializeDateValues = () => {
-      if (props.check?.value.startDate) {
-        dateValues.value.push(DateTime.fromFormat(props.check.value.startDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
-        dateValues.value.push(DateTime.fromFormat(props.check.value.endDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase())
+      if (props.check?.value.startDate && props.check?.value.endDate) {
+        dateValues.value.push(DateTime.fromFormat(props.check.value.startDate, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
+        dateValues.value.push(DateTime.fromFormat(props.check.value.endDate, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
       }
     }
     initializeDateValues()
@@ -79,14 +79,18 @@ export default defineComponent({
       const tmpDates: any = []
       
       dates.forEach((date) => {
-        tmpDates.push(DateTime.fromFormat(date, 'dd MMM yyyy', { locale: 'nl' }).toFormat('yyyy-MM-dd'))
+        tmpDates.push(DateTime.fromFormat(date.replace('.', ''), 'dd MMM yyyy', { locale: 'nl' }).toFormat('yyyy-MM-dd'))
       })
 
-      await RepositoryFactory.get(DurationDateCheckRepository)
-        .update(selectedGroup.value.groupAdminId, props.check.endpoint, tmpDates)
-        .then((p: any) => {
-          triggerNotification(t('checks.notification-updated'))
-        })
+      if (
+        !(props.check?.value.startDate && props.check.value.startDate === tmpDates[0] &&
+        props.check?.value.endDate && props.check.value.endDate === tmpDates[1])) {
+        await RepositoryFactory.get(DurationDateCheckRepository)
+          .update(selectedGroup.value.groupAdminId, props.check.endpoint, tmpDates)
+          .then((p: any) => {
+            triggerNotification(t('checks.notification-updated'))
+          })
+      }
     }
 
     watch(

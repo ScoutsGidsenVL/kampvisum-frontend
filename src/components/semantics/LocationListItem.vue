@@ -4,7 +4,7 @@
       <i-marker /> ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ subLocation.address }}
     </div>
     <div v-if="location.startDate && location.endDate" class="p-2.5 items-center">
-      {{ DateTime.fromFormat(location.startDate,'yyyy-MM-dd').toFormat('dd MMM yyyy') }} - {{ DateTime.fromFormat(location.endDate,'yyyy-MM-dd').toFormat('dd MMM yyyy') }}
+      {{ DateTime.fromFormat(location.startDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }} - {{ DateTime.fromFormat(location.endDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }}
     </div>
   </div>
 </template>

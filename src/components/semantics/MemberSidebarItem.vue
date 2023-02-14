@@ -6,7 +6,7 @@
         <strong>{{ member.fullName }}</strong>
       </div>
         <div v-if="member.birthDate">
-          {{ DateTime.fromFormat(member.birthDate,'yyyy-MM-dd').toFormat('dd MMM yyyy') }}
+          {{ DateTime.fromFormat(member.birthDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }}
         </div>
       </div>
       <div class="flex gap-2 items-center font-bold">

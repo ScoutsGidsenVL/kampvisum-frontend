@@ -64,7 +64,7 @@ export const CampVisumSerializer = (input: any): any => {
   const single: any = {
     name: input.name,
     start_date: input.startDate,
-    end_date: input.startDate,
+    end_date: input.endDate,
     sections: input.sections,
     camp_types: arr
   }

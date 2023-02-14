@@ -5,7 +5,7 @@
     </div>
 
     <div>
-      {{ DateTime.fromFormat(location.start_date,'yyyy-MM-dd').toFormat('dd MMM yyyy') }} - {{ DateTime.fromFormat(location.end_date,'yyyy-MM-dd').toFormat('dd MMM yyyy') }}
+      {{ DateTime.fromFormat(location.start_date,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }} - {{ DateTime.fromFormat(location.end_date,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }}
     </div>
 
     <div>
