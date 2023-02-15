@@ -11,13 +11,12 @@ export const useDateHelper = (): {
     getCurrentYear: () => string,
 } => {
     const dateFromString = (date: string): string => {
-        console.log('HERE: ' + date)
         return DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('dd MMM yyyy').toLowerCase()
     }
 
     const dateFromLocalisedString = (date: string): string => {
         //return DateTime.fromFormat(date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase()
-        return DateTime.fromFormat(date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase()
+        return DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('dd MMM yyyy').toLowerCase()
     }
 
     const dateFromDatePicker = (date: string): DateTime => {

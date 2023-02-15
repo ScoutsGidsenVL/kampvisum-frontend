@@ -3,6 +3,7 @@
     <label class="font-bold" for="">Deadline</label>
     <div>
       <litepie-datepicker
+        i18n="nl"
         as-single
         v-model="dateValue"
         :formatter="formatter"

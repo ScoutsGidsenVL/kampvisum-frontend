@@ -139,7 +139,7 @@
           <strong class="m-0 text-lg">{{ t('sidebars.location-sidebar.form.start-end') }}</strong><span class="ml-2 text-red font-bold">*</span>
           <litepie-datepicker
             class="mt-2 mb-1"
-            i18n="nl-be"
+            i18n="nl"
             as-single
             use-range
             v-model="dateValues"
