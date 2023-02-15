@@ -6,7 +6,7 @@
         <strong>{{ member.fullName }}</strong>
       </div>
         <div v-if="member.birthDate">
-          {{ dateFromString(member.birthDate) }}
+          {{ dateFromLocalisedString(member.birthDate) }}
         </div>
       </div>
       <div class="flex gap-2 items-center font-bold">
@@ -35,7 +35,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { dateFromString } = useDateHelper()
+    const { dateFromLocalisedString } = useDateHelper()
     const toggle = (member: Member) => {
       if (props.displayCheck) {
         member.isChecked = !member.isChecked
@@ -43,7 +43,7 @@ export default defineComponent({
     }
 
     return {
-      dateFromString,
+      dateFromLocalisedString,
       toggle
     }
   },

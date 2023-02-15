@@ -22,9 +22,7 @@ const isOnline = require('is-online')
 const { initDb } = useOfflineData()
 
 initDb()
-console.log('OFFLINE ?')
 isOnline().then((isOnlineResult: any) => {
-  console.log('ONLINE !')
   isInternetActive.value = isOnlineResult
   new StaticFileRepository().getFile('config.json').then((result: any) => {
 

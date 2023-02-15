@@ -5,10 +5,9 @@ const Localbase = require('localbase').default;
 let db = new Localbase('db')
 
 //STRUCTURE
-interface Result<T> 
-{ 
-    id: number;
-    value: T
+interface Result<T> {
+  id: number;
+  value: T
 }
 
 interface file {
@@ -19,6 +18,7 @@ interface file {
 export const useOfflineData = (): {
   initDb: () => void,
   updateMe: (me: UserModel) => void,
+  unsetMe: () => void,
   updateYears: (years: Array<number>) => void,
   updateVisum: (visum: Visum) => Promise<Visum>
   addVisum: (visum: Visum) => Promise<Visum>,
@@ -31,7 +31,12 @@ export const useOfflineData = (): {
 } => {
   const updateMe = (me: UserModel) => {
     console.log(`${tag} updating me...`)
-    db.collection('me').doc(`1`).set({id: 1, value: me})
+    db.collection('me').doc(`1`).set({ id: 1, value: me })
+  }
+
+  const unsetMe = () => {
+    console.log(`${tag} unsetting me...`)
+    db.collection('me').delete()
   }
 
   const updateYears = (years: Array<number>) => {
@@ -46,32 +51,32 @@ export const useOfflineData = (): {
   }
 
   const addVisum = (visum: Visum): Promise<Visum> => {
-    console.log(`${tag} add visum...`)  
+    console.log(`${tag} add visum...`)
     return db.collection('visums').doc(visum.id).set(visum)
   }
 
   const addFile = (fileId: string, file: file): Promise<any> => {
-    console.log(`${tag} add file...`, fileId, file) 
+    console.log(`${tag} add file...`, fileId, file)
     return db.collection('files').doc(fileId).set(file)
   }
 
   const getMe = async (): Promise<UserModel> => {
     return db.collection('me').doc(`1`).get().then((result: Result<UserModel>) => {
-      console.log(`${tag} get me...`)      
+      console.log(`${tag} get me...`)
       return result.value
     })
   }
 
   const getYears = async (): Promise<Array<number>> => {
     return db.collection('years').doc(`1`).get().then((result: Result<Array<number>>) => {
-      console.log(`${tag} get years...`)      
+      console.log(`${tag} get years...`)
       return result.value
     })
   }
 
   const getVisums = async (): Promise<Array<Visum>> => {
     return db.collection('visums').get().then((visums: any) => {
-    console.log(`${tag} get visums...`)
+      console.log(`${tag} get visums...`)
       return visums
     })
   }
@@ -98,6 +103,7 @@ export const useOfflineData = (): {
 
   return {
     updateMe,
+    unsetMe,
     updateYears,
     addVisum,
     getMe,

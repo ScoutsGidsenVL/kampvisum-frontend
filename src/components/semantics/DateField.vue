@@ -3,7 +3,7 @@
     <strong>{{check.checkParent.label}}</strong>
     <div v-if="isWithRange">
       <litepie-datepicker
-        i18n="nl-be"
+        i18n="nl"
         as-single
         use-range
         v-model="dateValues"
@@ -14,7 +14,7 @@
     </div>
     <div v-else>
       <litepie-datepicker
-        i18n="nl-be"
+        i18n="nl"
         as-single
         v-model="dateValue"
         :formatter="formatter"

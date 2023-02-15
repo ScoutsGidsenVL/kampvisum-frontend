@@ -2,7 +2,6 @@ import UserModel from '../models/userModel'
 import BaseApiRepository from './baseApiRepository'
 import { useInternetHelper } from '../helpers/internetHelper'
 import { useOfflineData } from '@/composable/useOfflineData'
-import useGroupAndYears from '@/composable/useGroupAndYears'
 
 export default class AuthRepository extends BaseApiRepository {
   id = 'auth'
@@ -27,16 +26,11 @@ export default class AuthRepository extends BaseApiRepository {
     }
   }
 
-  // async logout(): Promise<void> {
-  //   const { isInternetActive } = useInternetHelper()
-  //   const { unsetSelectedGroup } = useGroupAndYears()
+  logout(): void {
+    const { isInternetActive } = useInternetHelper()
 
-  //   if (isInternetActive.value) {
-  //     return await this.getAuth('/auth/logout/').then((input: any) => {
-  //       sessionStorage.removeItem('oidc-access-token')
-  //       sessionStorage.removeItem('oidc-refresh-token')
-  //       unsetSelectedGroup()
-  //     })
-  //   }
-  //  }
+    if (isInternetActive.value) {
+      this.getAuth('/auth/logout/')
+    }
+  }
 }

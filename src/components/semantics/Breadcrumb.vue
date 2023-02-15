@@ -25,7 +25,7 @@
       </div>
 
       <div class="pr-2 flex gap-5">
-        <!-- <custom-button-small :text="t('logout')" type="button" class="text-white" @click="logout()"></custom-button-small> -->
+        <custom-button-small :text="t('logout')" type="button" class="text-white" @click="logout()"></custom-button-small>
         <!-- WIFI ON  -->
         <svg v-if="isInternetActive" class="fill-current text-green" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
           <g data-name="Layer 99">
@@ -61,6 +61,7 @@ import store from '@/store/store'
 import MasterConfig from '@/models/config/masterConfig'
 import { CustomButtonSmall} from 'vue-3-component-library'
 import { useI18n } from 'vue-i18n'
+import useAuthHelper from '@/helpers/authHelper'
 
 export default defineComponent({
   name: 'BreadCrumb',
@@ -93,6 +94,7 @@ export default defineComponent({
     const { selectedGroup, selectedYear, getYearsForGroup, unsetSelectedGroup } = useGroupAndYears()
     const { getVisums } = useVisum()
     const config: MasterConfig = store.getters.config
+    const { logoutFromGA } = useAuthHelper()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -116,12 +118,13 @@ export default defineComponent({
       props.router.push(link)
     }
 
-    //const logout = async () => {
-      //await RepositoryFactory.get(AuthRepository).logout()
+    const logout = async () => {
+      console.log("here")
+      await logoutFromGA()
       
       //window.location.href = `${config.frontend.logoutUrl}${config.frontend.baseUrl}`
-      //window.location.href = config.frontend.logoutUrl ? config.frontend.logoutUrl : 'https://login.scoutsengidsenvlaanderen.be/auth/realms/scouts/protocol/openid-connect/logout?client_id=groepsadmin-production-client&post_logout_redirect_uri=' + config.frontend.baseUrl
-    //}
+      window.location.href = config.frontend.logoutUrl ? config.frontend.logoutUrl : 'https://login.scoutsengidsenvlaanderen.be/auth/realms/scouts/protocol/openid-connect/logout?client_id=groepsadmin-production-client&post_logout_redirect_uri=' + config.frontend.baseUrl
+    }
 
     return {
       route,
@@ -129,7 +132,7 @@ export default defineComponent({
       navigateHome,
       navigateToCrumb,
       selectedYear,
-      //logout,
+      logout,
       t,
       config
     }

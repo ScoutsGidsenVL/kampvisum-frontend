@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 
 export const useDateHelper = (): {
     dateFromString: (date: string) => string,
+    dateFromLocalisedString: (date: string) => string,
     dateFromDatePicker: (date: string) => DateTime,
     dateFromDatePickerFormatted: (date: string) => string,
     dateTimeFromISO: (date: string) => DateTime,
@@ -10,11 +11,18 @@ export const useDateHelper = (): {
     getCurrentYear: () => string,
 } => {
     const dateFromString = (date: string): string => {
-        return DateTime.fromFormat(date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase()
+        console.log('HERE: ' + date)
+        return DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('dd MMM yyyy').toLowerCase()
+    }
+
+    const dateFromLocalisedString = (date: string): string => {
+        //return DateTime.fromFormat(date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase()
+        return DateTime.fromFormat(date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase()
     }
 
     const dateFromDatePicker = (date: string): DateTime => {
-        return DateTime.fromFormat(date, 'dd MMM. yyyy', { locale: 'nl' })
+        //return DateTime.fromFormat(date, 'dd MMM yyyy', { locale: 'nl' })
+        return DateTime.fromFormat(date, 'dd MMM yyyy')
     }
 
     const dateFromDatePickerFormatted = (date: string): string => {
@@ -26,7 +34,8 @@ export const useDateHelper = (): {
     }
 
     const getCurrentDate = (): DateTime => {
-        return DateTime.now().setLocale('nl')
+        //return DateTime.now().setLocale('nl')
+        return DateTime.now()
     }
 
     const getCurrentDateFormatted = (): string => {
@@ -39,6 +48,7 @@ export const useDateHelper = (): {
 
     return {
         dateFromString,
+        dateFromLocalisedString,
         dateFromDatePicker,
         dateFromDatePickerFormatted,
         dateTimeFromISO,

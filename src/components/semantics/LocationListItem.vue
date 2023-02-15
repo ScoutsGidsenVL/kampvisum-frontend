@@ -4,7 +4,7 @@
       <i-marker /> ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ subLocation.address }}
     </div>
     <div v-if="location.startDate && location.endDate" class="p-2.5 items-center">
-      {{ dateFromString(location.startDate) }} - {{ dateFromString(location.endDate) }}
+      {{ dateFromLocalisedString(location.startDate) }} - {{ dateFromLocalisedString(location.endDate) }}
     </div>
   </div>
 </template>
@@ -25,14 +25,14 @@ export default defineComponent({
     }
   },
   setup () {
-    const { dateFromString } = useDateHelper()
+    const { dateFromLocalisedString } = useDateHelper()
     const openInGoogleMaps = (l: any) => {
       window.open(`http://maps.google.com/?q=${l.latitude},${l.longitude}`);
     }
 
     return {
       openInGoogleMaps,
-      dateFromString
+      dateFromLocalisedString
     }
   }
 })

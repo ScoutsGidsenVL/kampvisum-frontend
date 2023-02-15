@@ -16,7 +16,7 @@
             <i-marker /> {{location.name}} - {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ `${subLocation.street} ${subLocation.houseNumber}, ${subLocation.postalcode} ${subLocation.township}, ${getTranslationCountry(subLocation.country)}` }}
           </div>
           <div v-if="location.startDate && location.endDate" class="p-2.5 items-center">
-            {{ dateFromString(location.startDate) }} - {{ dateFromString(location.endDate) }}
+            {{ dateFromLocalisedString(location.startDate) }} - {{ dateFromLocalisedString(location.endDate) }}
           </div>
         </div>
       </div>
@@ -69,7 +69,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { getTranslationCountry } = usePlaceAutocompleteHelper()
-    const { dateFromString } = useDateHelper()
+    const { dateFromLocalisedString } = useDateHelper()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -131,7 +131,7 @@ export default defineComponent({
       ColorState,
       edit,
       child,
-      dateFromString,
+      dateFromLocalisedString,
       t,
       rl
     }

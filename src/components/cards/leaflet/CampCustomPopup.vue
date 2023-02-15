@@ -5,7 +5,7 @@
     </div>
 
     <div>
-      {{ dateFromString(location.start_date) }} - {{ dateFromString(location.end_date) }}
+      {{ dateFromLocalisedString(location.start_date) }} - {{ dateFromLocalisedString(location.end_date) }}
     </div>
 
     <div>
@@ -43,7 +43,7 @@ export default defineComponent({
   },
   setup (props, { emit }) {
     const { navigateTowardsVisum } = useVisum()
-    const { dateFromString } = useDateHelper()
+    const { dateFromLocalisedString } = useDateHelper()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -51,7 +51,7 @@ export default defineComponent({
     return  {
       t,
       navigateTowardsVisum,
-      dateFromString
+      dateFromLocalisedString
     }
   }
 })
