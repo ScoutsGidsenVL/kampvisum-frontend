@@ -16,7 +16,7 @@
             <i-marker /> {{location.name}} - {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ `${subLocation.street} ${subLocation.houseNumber}, ${subLocation.postalcode} ${subLocation.township}, ${getTranslationCountry(subLocation.country)}` }}
           </div>
           <div v-if="location.startDate && location.endDate" class="p-2.5 items-center">
-            {{ DateTime.fromFormat(location.startDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }} - {{ DateTime.fromFormat(location.endDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }}
+            {{ dateFromString(location.startDate) }} - {{ dateFromString(location.endDate) }}
           </div>
         </div>
       </div>
@@ -48,7 +48,7 @@ import IMarker from '../icons/IMarker.vue'
 import IInfo from '../icons/IInfo.vue'
 import { useI18n } from 'vue-i18n'
 import { usePlaceAutocompleteHelper } from '@/helpers/placeAutocompleteHelper'
-const { DateTime } = require("luxon");
+import { useDateHelper } from '@/helpers/dateHelper'
 
 export default defineComponent({
   name: 'LocationComponent',
@@ -69,6 +69,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { getTranslationCountry } = usePlaceAutocompleteHelper()
+    const { dateFromString } = useDateHelper()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -130,7 +131,7 @@ export default defineComponent({
       ColorState,
       edit,
       child,
-      DateTime,
+      dateFromString,
       t,
       rl
     }

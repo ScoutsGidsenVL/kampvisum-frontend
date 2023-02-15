@@ -4,7 +4,7 @@
       <i-marker /> ({{location.name}}) {{ subLocation.name ? `${subLocation.name}, ` : '' }}{{ subLocation.address }}
     </div>
     <div v-if="location.startDate && location.endDate" class="p-2.5 items-center">
-      {{ DateTime.fromFormat(location.startDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }} - {{ DateTime.fromFormat(location.endDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }}
+      {{ dateFromString(location.startDate) }} - {{ dateFromString(location.endDate) }}
     </div>
   </div>
 </template>
@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import IMarker from '../icons/IMarker.vue'
-const { DateTime } = require("luxon");
+import { useDateHelper } from '@/helpers/dateHelper'
 
 export default defineComponent({
   name: 'LocationListItem',
@@ -25,14 +25,14 @@ export default defineComponent({
     }
   },
   setup () {
-
+    const { dateFromString } = useDateHelper()
     const openInGoogleMaps = (l: any) => {
       window.open(`http://maps.google.com/?q=${l.latitude},${l.longitude}`);
     }
 
     return {
       openInGoogleMaps,
-      DateTime
+      dateFromString
     }
   }
 })

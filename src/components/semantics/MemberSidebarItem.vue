@@ -6,7 +6,7 @@
         <strong>{{ member.fullName }}</strong>
       </div>
         <div v-if="member.birthDate">
-          {{ DateTime.fromFormat(member.birthDate,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }}
+          {{ dateFromString(member.birthDate) }}
         </div>
       </div>
       <div class="flex gap-2 items-center font-bold">
@@ -20,7 +20,7 @@
 <script lang="ts">
 import { Member } from '@/serializer/Member'
 import { defineComponent, PropType } from 'vue'
-const { DateTime } = require("luxon");
+import { useDateHelper } from '@/helpers/dateHelper'
 
 export default defineComponent({
   name: 'MemberSidebarItem',
@@ -35,6 +35,7 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const { dateFromString } = useDateHelper()
     const toggle = (member: Member) => {
       if (props.displayCheck) {
         member.isChecked = !member.isChecked
@@ -42,7 +43,7 @@ export default defineComponent({
     }
 
     return {
-      DateTime,
+      dateFromString,
       toggle
     }
   },

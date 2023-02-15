@@ -31,7 +31,7 @@ const LitepieDatepicker = require('litepie-datepicker').default
 import { useNotification } from '@/composable/useNotification'
 import { defineComponent, ref, watch, PropType } from 'vue'
 import { Check } from '@/serializer/Check'
-const { DateTime } = require("luxon");
+import { useDateHelper } from '@/helpers/dateHelper'
 import { useI18n } from 'vue-i18n'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 
@@ -59,13 +59,14 @@ export default defineComponent({
     })
     const dateValues = ref<Array<string>>([])
     const dateValue = ref('')
+    const { dateFromString, dateFromDatePickerFormatted } = useDateHelper()
 
     const { triggerNotification } = useNotification()
 
     const initializeDateValues = () => {
       if (props.check?.value.startDate && props.check?.value.endDate) {
-        dateValues.value.push(DateTime.fromFormat(props.check.value.startDate, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
-        dateValues.value.push(DateTime.fromFormat(props.check.value.endDate, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
+        dateValues.value.push(dateFromString(props.check.value.startDate)),
+        dateValues.value.push(dateFromString(props.check.value.endDate))
       }
     }
     initializeDateValues()
@@ -79,7 +80,7 @@ export default defineComponent({
       const tmpDates: any = []
       
       dates.forEach((date) => {
-        tmpDates.push(DateTime.fromFormat(date.replace('.', ''), 'dd MMM yyyy', { locale: 'nl' }).toFormat('yyyy-MM-dd'))
+        tmpDates.push(dateFromDatePickerFormatted(date))
       })
 
       if (

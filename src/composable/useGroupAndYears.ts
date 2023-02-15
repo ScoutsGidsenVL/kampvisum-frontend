@@ -4,7 +4,7 @@ import { Group } from '@/serializer/Group'
 import { ref, Ref, watch } from 'vue'
 import store from '../store/store'
 import useVisum from './useVisum'
-const { DateTime } = require("luxon");
+import { useDateHelper } from '@/helpers/dateHelper'
 
 const years = ref<Array<string>>([])
 const isFetchingYears = ref<boolean>(false)
@@ -25,6 +25,7 @@ const useGroupAndYears = (): {
   isInBetweenStartAndEnd: (start: string, end: string) => Boolean
 } => {
   const { getVisums, clearVisums } = useVisum()
+  const { getCurrentDate } = useDateHelper()
 
   watch(
     () => store.getters.user.scoutsGroups,
@@ -95,7 +96,7 @@ const useGroupAndYears = (): {
   }
 
   const isInBetweenStartAndEnd = (start: string, end: string): boolean => {
-    var date = DateTime.fromFormat(new Date().toString(), 'yyyy-MM-dd')
+    var date = getCurrentDate()
     if (date > start && date < end) {
       return true
     } else {

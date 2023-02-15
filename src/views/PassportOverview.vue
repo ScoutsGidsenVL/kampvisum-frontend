@@ -51,7 +51,7 @@ import { useInternetHelper } from '@/helpers/internetHelper'
 import { Category } from '@/serializer/Category'
 import { SubCategory } from '@/serializer/SubCategory'
 import { Check } from '@/serializer/Check'
-const { DateTime } = require("luxon");
+import { useDateHelper } from '@/helpers/dateHelper'
 import axios from 'axios'
 import { CustomButtonSmall } from 'vue-3-component-library'
 
@@ -64,6 +64,7 @@ export default defineComponent({
     const { getCampByRouteParam } = useCampHelper()
     const { addVisum, getVisum, updateVisum, addFile } = useOfflineData()
     const { isInternetActive } = useInternetHelper()
+    const { dateTimeFromISO, getCurrentDate } = useDateHelper()
 
     const visum = ref<any>()
     const idbVisum = ref<any>(null)
@@ -88,8 +89,8 @@ export default defineComponent({
     function daysRemaining() {
       var endDate = visum.value.categorySet.categories[0].subCategories[0].checks[0].value.endDate
       if (endDate) {
-        var eventdate = DateTime.fromISO(endDate);
-        var todaysdate = DateTime.now();
+        var eventdate = dateTimeFromISO(endDate);
+        var todaysdate = getCurrentDate();
         remainingDays.value = Math.ceil(eventdate.diff(todaysdate, 'days').values.days).toString();
       } else {
         remainingDays.value = ''

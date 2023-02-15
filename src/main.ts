@@ -6,6 +6,7 @@ import { OpenIdConnectPlugin } from 'inuits-vuejs-oidc'
 import 'vue-3-component-library/lib/index.css'
 import { createI18n } from 'vue-i18n'
 const VueLuxon = require('vue-luxon')
+// import VueLuxon from "vue-luxon";
 import store from './store/store'
 import './registerServiceWorker'
 import { createApp } from 'vue'
@@ -21,8 +22,9 @@ const isOnline = require('is-online')
 const { initDb } = useOfflineData()
 
 initDb()
-
+console.log('OFFLINE ?')
 isOnline().then((isOnlineResult: any) => {
+  console.log('ONLINE !')
   isInternetActive.value = isOnlineResult
   new StaticFileRepository().getFile('config.json').then((result: any) => {
 
@@ -37,7 +39,7 @@ isOnline().then((isOnlineResult: any) => {
         nl: nl.default,
       },
     })
-  
+
     const app = createApp(App)
       .use(i18n)
       .use(VueLuxon, {
@@ -45,11 +47,11 @@ isOnline().then((isOnlineResult: any) => {
           locale: 'nl',
         },
       })
-  
+
     let configFile = result
-  
+
     configFile = new MasterConfig().deserialize(configFile)
-  
+
     if (configFile.oidc && configFile.oidc.baseUrl && configFile.oidc.clientId) {
       // @ts-ignore
       app.use(OpenIdConnectPlugin, {
@@ -68,23 +70,27 @@ isOnline().then((isOnlineResult: any) => {
         },
       })
     }
-  
+
     store.dispatch('setConfig', configFile)
-  
+
     let redirectUrl = sessionStorage.getItem('redirectUrl')
     if (!redirectUrl) {
       sessionStorage.setItem('redirectUrl', window.location.pathname)
     }
-  
-    router.beforeEach((to: any, from: any, next: any) => {    
+
+    router.beforeEach((to: any, from: any, next: any) => {
+      console.log('to.meta.requiresOpenIdAuth: ' + to.meta.requiresOpenIdAuth)
+      console.log('store.getters.isLoaded: ' + store.getters.isLoaded)
+      console.log('session storage token: ' + sessionStorage.getItem('oidc-access-token'))
+
       if (to.meta.requiresOpenIdAuth === true) {
         if (store.getters.isLoaded === false) {
           RepositoryFactory.get(AuthRepository)
-          .me()
+            .me()
             .then((user: any) => {
-            store.dispatch('setUser', user).then(() => {
-              next(to.fullPath)
-            })
+              store.dispatch('setUser', user).then(() => {
+                next(to.fullPath)
+              })
             }).catch(() => {
               console.log('retry me call...')
               RepositoryFactory.get(AuthRepository).me().then((user: any) => {
@@ -94,7 +100,7 @@ isOnline().then((isOnlineResult: any) => {
               }).catch((error: any) => {
                 console.log('error: ', error);
               })
-          })
+            })
         } else {
           next()
         }
@@ -103,6 +109,6 @@ isOnline().then((isOnlineResult: any) => {
       }
     })
     app.use(router).use(store).mount('#app')
-  })  
+  })
 })
 

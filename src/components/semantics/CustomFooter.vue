@@ -97,14 +97,14 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-
-const { DateTime } = require("luxon");
+import { useDateHelper } from '@/helpers/dateHelper'
 
 export default defineComponent({
   name: 'CustomFooter',
   components: {},
   setup () {
-    const currentYear = ref<string>(DateTime.now().toFormat('yyyy'))  
+    const { getCurrentYear } = useDateHelper()
+    const currentYear = ref<string>(getCurrentYear())  
       const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',

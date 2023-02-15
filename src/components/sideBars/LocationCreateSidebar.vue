@@ -240,7 +240,7 @@ import { Check } from '@/serializer/Check'
 import { useI18n } from 'vue-i18n'
 import ITrash from '../icons/ITrash.vue'
 const LitepieDatepicker = require('litepie-datepicker').default
-const { DateTime } = require("luxon");
+import { useDateHelper } from '@/helpers/dateHelper'
 import MultiSelect from '../../components/inputs/MultiSelect.vue'
 import { scoutsCountriesRepository, ScoutsCountry } from '../../repositories/scoutsCountriesRepository'
 import { CampVisumRepository } from '@/repositories/CampVisumRepository'
@@ -297,16 +297,17 @@ export default defineComponent({
     const { getCountryObjectByName } = usePlaceAutocompleteHelper()
     const route = useRoute()
     const { selectedGroup } = useGroupAndYears()
+    const { dateFromString, dateFromDatePicker, dateFromDatePickerFormatted } = useDateHelper()
 
     const loadingDates = ref<boolean>(true)
     const leadersDates = ref<Array<string>>([])
 
     const checkIfOutsideRange = (datesInput: Array<string>, leaderDatesInput: Array<string>) => {
       if (leaderDatesInput.length > 0 && datesInput.length > 0) {
-        const ds = DateTime.fromFormat(datesInput[0].replace('.', ''), 'dd MMM yyyy', { locale: 'nl'})
-        const de = DateTime.fromFormat(datesInput[1].replace('.', ''), 'dd MMM yyyy', { locale: 'nl'})
-        const lds = DateTime.fromFormat(leaderDatesInput[0].replace('.', ''), 'dd MMM yyyy', { locale: 'nl'})
-        const lde = DateTime.fromFormat(leaderDatesInput[1].replace('.', ''), 'dd MMM yyyy', { locale: 'nl'})
+        const ds = dateFromDatePicker(datesInput[0])
+        const de = dateFromDatePicker(datesInput[1])
+        const lds = dateFromDatePicker(leaderDatesInput[0])
+        const lde = dateFromDatePicker(leaderDatesInput[1])
         if (ds.ts < lds.ts || ds.ts > lde.ts || de.ts < lds.ts || de.ts > lde.ts) {
           return true
         } else {
@@ -355,10 +356,10 @@ export default defineComponent({
         //DO CALL AND GET THE VALUES FOR START AND END DATE
         RepositoryFactory.get(CampVisumRepository).getDatesLeadersById(selectedGroup.value.groupAdminId, route.params.campId.toString()).then((res: any) => {
           if (res.start_date && res.end_date && props.check.checkParent && props.check.checkParent.checkType.checkType === 'CampLocationCheck') {
-            dateValues.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
-            dateValues.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
-            leadersDates.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
-            leadersDates.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
+            dateValues.value.push(dateFromString(res.start_date))
+            dateValues.value.push(dateFromString(res.end_date))
+            leadersDates.value.push(dateFromString(res.start_date))
+            leadersDates.value.push(dateFromString(res.end_date))
           } else {
             dateValues.value = []
           }
@@ -383,11 +384,11 @@ export default defineComponent({
       //DO CALL AND GET THE VALUES FOR START AND END DATE
       RepositoryFactory.get(CampVisumRepository).getDatesLeadersById(selectedGroup.value.groupAdminId, route.params.campId.toString()).then((res: any) => {
         if (res.start_date && res.end_date) {
-          leadersDates.value.push(DateTime.fromFormat(res.start_date,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
-          leadersDates.value.push(DateTime.fromFormat(res.end_date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
+          leadersDates.value.push(dateFromString(res.start_date))
+          leadersDates.value.push(dateFromString(res.end_date))
           if (sideBarState.value.entity?.startDate && sideBarState.value.entity?.endDate) {
-            dateValues.value.push(DateTime.fromFormat(sideBarState.value.entity.startDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
-            dateValues.value.push(DateTime.fromFormat(sideBarState.value.entity.endDate,'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM. yyyy').toLowerCase())
+            dateValues.value.push(dateFromString(sideBarState.value.entity.startDate))
+            dateValues.value.push(dateFromString(sideBarState.value.entity.endDate))
           } else {
             dateValues.value = []
           }
@@ -453,7 +454,7 @@ export default defineComponent({
             }
             const tmpDates: any = []
             dateValues.value.forEach((date: any) => {
-              tmpDates.push(DateTime.fromFormat(date.replace('.', ''), 'dd MMM yyyy', { locale: 'nl' }).toFormat('yyyy-MM-dd'))
+              tmpDates.push(dateFromDatePickerFormatted(date))
             });
             if (tmpDates.length > 0) {
               values.startDate = tmpDates[0];

@@ -1,8 +1,8 @@
-import useGroupAndYears from '@/composable/useGroupAndYears'
-import { BaseRepository } from '@/repositories/baseRepository'
-import { FileDeserializer, FileItem } from '@/serializer/FileItem'
+import useGroupAndYears from '@/composable/useGroupAndYears';
+import { BaseRepository } from '@/repositories/baseRepository';
+import { FileDeserializer, FileItem } from '@/serializer/FileItem';
 
-const { selectedGroup } = useGroupAndYears()
+const { selectedGroup } = useGroupAndYears();
 
 export class FileRepository extends BaseRepository {
   id = '/files/'
@@ -11,7 +11,7 @@ export class FileRepository extends BaseRepository {
   serializer = null
 
   search(groupId: string, query: string, group?: string): Promise<any> {
-    return this.get(groupId, `/checks/file/search/?term=${query}`, {}).then((response: any) => {
+    return this.get(groupId, `/checks/file/search/?term=${query}&group=${group ? group : (groupId ? groupId : selectedGroup.value.groupAdminId)}`, {}).then((response: any) => {
       const array: any[] = []
       response.results.forEach((result: FileItem) => {
         result = this.deserializer(result)

@@ -31,10 +31,10 @@ export default abstract class BaseApiRepository {
       )
 
       this.axiosInstance.interceptors.response.use(
-        function (response) {
+        function (response: any) {
           return response
         },
-        (error) => OpenIdConnectInterceptors.buildResponseErrorInterceptorCallback(error, store, this.axiosInstance)
+        (error: any) => OpenIdConnectInterceptors.buildResponseErrorInterceptorCallback(error, store, this.axiosInstance)
       )
     }
   }

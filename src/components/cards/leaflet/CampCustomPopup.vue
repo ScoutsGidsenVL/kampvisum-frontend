@@ -5,13 +5,13 @@
     </div>
 
     <div>
-      {{ DateTime.fromFormat(location.start_date,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }} - {{ DateTime.fromFormat(location.end_date,'yyyy-MM-dd').toFormat('dd MMM. yyyy') }}
+      {{ dateFromString(location.start_date) }} - {{ dateFromString(location.end_date) }}
     </div>
 
     <div>
       {{location.group.full_name}}
     </div>
-    
+
     <div>
       {{location.name}}
     </div>
@@ -30,7 +30,7 @@ import IMailGreen from '@/components/icons/IMailGreen.vue'
 import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
 import useVisum from '@/composable/useVisum'
-const { DateTime } = require("luxon");
+import { useDateHelper } from '@/helpers/dateHelper'
 
 export default defineComponent({
   components: { IPersonGreen, IPhoneGreen, IMailGreen, },
@@ -43,6 +43,7 @@ export default defineComponent({
   },
   setup (props, { emit }) {
     const { navigateTowardsVisum } = useVisum()
+    const { dateFromString } = useDateHelper()
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -50,7 +51,7 @@ export default defineComponent({
     return  {
       t,
       navigateTowardsVisum,
-      DateTime
+      dateFromString
     }
   }
 })
