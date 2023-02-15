@@ -29,7 +29,7 @@
     "leaflet.markercluster": "1.5.3",
     "litepie-datepicker": "1.0.14",
     "localbase": "0.7.5",
-    "luxon": "3.2.1",
+    "luxon": "2.5.2",
     "postcss": "7.0.39",
     "register-service-worker": "1.7.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@2.2.17",
