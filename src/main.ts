@@ -77,10 +77,6 @@ isOnline().then((isOnlineResult: any) => {
     }
 
     router.beforeEach((to: any, from: any, next: any) => {
-      console.log('to.meta.requiresOpenIdAuth: ' + to.meta.requiresOpenIdAuth)
-      console.log('store.getters.isLoaded: ' + store.getters.isLoaded)
-      console.log('session storage token: ' + sessionStorage.getItem('oidc-access-token'))
-
       if (to.meta.requiresOpenIdAuth === true) {
         if (store.getters.isLoaded === false) {
           RepositoryFactory.get(AuthRepository)

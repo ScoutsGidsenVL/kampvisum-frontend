@@ -32,6 +32,17 @@ export interface Visum {
   readonly updatedOn?: string
 }
 
+export interface VisumOverview {
+  readonly id: string
+  readonly groupGroupAdminId: string
+  readonly groupName: string
+  readonly year?: any
+  name: string
+  sections: Array<string> | Array<Section>
+  campTypes?: Array<string>
+  readonly categorySet: CategorySet
+}
+
 export const CampVisumDeserializer = (input: any): Visum => {
   const single: Visum = {
     id: input.id ? input.id : undefined,
@@ -51,6 +62,20 @@ export const CampVisumDeserializer = (input: any): Visum => {
     createdOn: input.created_on ? input.created_on : undefined,
     updatedBy: input.updated_by ? input.updated_by : undefined,
     updatedOn: input.updated_on ? input.updated_on : undefined
+  }
+  return single
+}
+
+export const CampVisumOverviewDeserializer = (input: any): VisumOverview => {
+  const single: VisumOverview = {
+    id: input.id ? input.id : undefined,
+    groupGroupAdminId: input.group_group_admin_id,
+    groupName: input.group_name,
+    year: input.year ? input.year : undefined,
+    name: input.name,
+    sections: input.sections ? input.sections.map((section: any) => SectionDeserializer(section)) : undefined,
+    campTypes: input.camp_types ? input.camp_types.map((ct: any) => CampTypeDeserializer(ct)) : undefined,
+    categorySet: CategorySetDeserializer(input.category_set),
   }
   return single
 }

@@ -1,6 +1,6 @@
 import { CampVisumRepository } from '@/repositories/CampVisumRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { Visum, VisumStates } from '@/serializer/Visum'
+import { Visum, VisumOverview, VisumStates } from '@/serializer/Visum'
 import { ref, Ref } from 'vue'
 import router from '@/router'
 import { Category } from '@/serializer/Category'
@@ -8,19 +8,19 @@ import { SubCategory } from '@/serializer/SubCategory'
 import StatusFeedbackState from '@/components/semantics/Feedback.vue'
 import { useInternetHelper } from '@/helpers/internetHelper'
 
-const visums = ref<Visum[]>([])
-const visumsAlphabetically = ref<Visum[]>([])
+const visums = ref<VisumOverview[]>([])
+const visumsAlphabetically = ref<VisumOverview[]>([])
 const isFetchingVisums = ref<boolean>(false)
 
 export type GlobalVisumState = 'ACCEPTED' | 'FEEDBACK' | 'DISAPPROVED' | 'INPROGRESS' | 'READYFORDC'
 
 const useVisum = (): {
-  visums: Ref<Visum[]>
-  visumsAlphabetically: Ref<Visum[]>
+  visums: Ref<VisumOverview[]>
+  visumsAlphabetically: Ref<VisumOverview[]>
   getVisums: (groupId: any, year: string) => Promise<void>
   clearVisums: () => void
   isFetchingVisums: Ref<boolean>
-  navigateTowardsVisum: (visum: Visum) => void
+  navigateTowardsVisum: (visum: VisumOverview) => void
   getGlobalVisumState: (visum: Visum) => GlobalVisumState
 } => {
   const getVisums = async (group: any, year: string) => {
@@ -28,7 +28,7 @@ const useVisum = (): {
       isFetchingVisums.value = true
       await RepositoryFactory.get(CampVisumRepository)
         .getArray(group.groupAdminId, '?page=1&page_size=100' + (year !== '' ? '&year=' + year : ''))
-        .then((visumsOutput: Visum[]) => {
+        .then((visumsOutput: VisumOverview[]) => {
           visums.value = visumsOutput
           visumsAlphabetically.value = [...visumsOutput]
           isFetchingVisums.value = false
@@ -41,7 +41,7 @@ const useVisum = (): {
     visumsAlphabetically.value = []
   }
 
-  const navigateTowardsVisum = (visum: Visum) => {
+  const navigateTowardsVisum = (visum: VisumOverview) => {
     const { isInternetActive } = useInternetHelper()
     if (isInternetActive.value) {
       router.push('/kamp/' + visum.id)

@@ -1,6 +1,6 @@
 import { BaseRepository } from '@/repositories/baseRepository'
 import { ArrayResult } from '@/interfaces/ArrayResult'
-import { Visum, CampVisumDeserializer, CampVisumSerializer } from '@/serializer/Visum'
+import { Visum, CampVisumDeserializer, CampVisumOverviewDeserializer, CampVisumSerializer } from '@/serializer/Visum'
 import { useInternetHelper } from '@/helpers/internetHelper'
 import { useOfflineData } from '@/composable/useOfflineData'
 import useGroupAndYears from '@/composable/useGroupAndYears'
@@ -9,7 +9,7 @@ import { ref } from 'vue'
 export class CampVisumRepository extends BaseRepository {
   id = '/camps/'
   endpoint = '/visums/'
-  deserializer = CampVisumDeserializer
+  deserializer = CampVisumOverviewDeserializer
   serializer = CampVisumSerializer
 
   getArray(groupId: string, pagination?: string): Promise<any> {
