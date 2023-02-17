@@ -66,19 +66,19 @@ export const CampVisumDeserializer = (input: any): Visum => {
   return single
 }
 
-export const CampVisumOverviewDeserializer = (input: any): VisumOverview => {
-  const single: VisumOverview = {
-    id: input.id ? input.id : undefined,
-    groupGroupAdminId: input.group_group_admin_id,
-    groupName: input.group_name,
-    year: input.year ? input.year : undefined,
-    name: input.name,
-    sections: input.sections ? input.sections.map((section: any) => SectionDeserializer(section)) : undefined,
-    campTypes: input.camp_types ? input.camp_types.map((ct: any) => CampTypeDeserializer(ct)) : undefined,
-    categorySet: CategorySetDeserializer(input.category_set),
-  }
-  return single
-}
+// export const CampVisumOverviewDeserializer = (input: any): VisumOverview => {
+//   const single: VisumOverview = {
+//     id: input.id ? input.id : undefined,
+//     groupGroupAdminId: input.group_group_admin_id,
+//     groupName: input.group_name,
+//     year: input.year ? input.year : undefined,
+//     name: input.name,
+//     sections: input.sections ? input.sections.map((section: any) => SectionDeserializer(section)) : undefined,
+//     campTypes: input.camp_types ? input.camp_types.map((ct: any) => CampTypeDeserializer(ct)) : undefined,
+//     categorySet: CategorySetDeserializer(input.category_set),
+//   }
+//   return single
+// }
 
 
 export const CampVisumSerializer = (input: any): any => {
