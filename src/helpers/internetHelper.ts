@@ -28,9 +28,9 @@ export const useInternetHelper = (): {
     
     checkInternet()
 
-    setInterval(() => {
-      checkInternet()
-    }, 5000);
+    // setInterval(() => {
+    //   checkInternet()
+    // }, 5000);
   }
 
   return {

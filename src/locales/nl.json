@@ -181,6 +181,7 @@
     "participant-check": {
       "no-member": "leeg",
       "no-members": "leeg",
+      "hidden": "verborgen",
       "add": "+ VOEG TOE",
       "add-without-plus": "VOEG TOE",
       "change": "+ WIJZIG",
