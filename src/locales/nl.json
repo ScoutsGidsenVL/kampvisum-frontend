@@ -276,5 +276,6 @@
       "check-camp": "Bekijk kamp"
   },
   "contact": "contacteer ons",
-  "logout": "log uit"
+  "logout": "log uit",
+  "duplicate_camp_responsible": "Dubbele kampverantwoordelijken!"
 }

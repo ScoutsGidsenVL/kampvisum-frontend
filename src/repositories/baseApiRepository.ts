@@ -6,6 +6,7 @@ import { useNotification } from '../composable/useNotification'
 const { triggerNotification, isForbidden } = useNotification()
 
 export default abstract class BaseApiRepository {
+  
   private axiosInstance: AxiosInstance
   private publicAxiosInstance: AxiosInstance
   abstract id: string
@@ -172,7 +173,7 @@ export default abstract class BaseApiRepository {
 
   private processError(error: any): any {
     if (error.response?.data[0] && error.response?.data[0] === 'Duplicate camp responsibles !') {
-      triggerNotification(error.response?.data[0])
+      triggerNotification('Dubbele kampverantwoordelijken!', '#E00A1E')
       return true;
     }
     if (error.response?.data?.file) {

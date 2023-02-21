@@ -1,6 +1,6 @@
 <template>
 <transition name="fade">
-  <div v-if="isDisplayingNotification" class="fixed xs:mx-3 xs:top-3 md:bottom-10 md:right-10 z-50 rounded-lg bg-green text-white p-3">
+  <div v-if="isDisplayingNotification" class="fixed xs:mx-3 xs:top-3 md:bottom-10 md:right-10 z-50 rounded-lg text-white p-3" :style="'background-color: ' + color">
     {{ message }}
   </div>
 </transition>
@@ -13,10 +13,11 @@ import { useNotification } from '../../composable/useNotification'
 export default defineComponent({
   name: 'Notification',
   setup () {
-    const { isDisplayingNotification, message } = useNotification()
+    const { isDisplayingNotification, message, color } = useNotification()
     return {
       isDisplayingNotification,
-      message
+      message,
+      color
     }
   }
 })
