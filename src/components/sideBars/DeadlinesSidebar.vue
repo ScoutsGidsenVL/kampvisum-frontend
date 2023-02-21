@@ -112,7 +112,6 @@
 
         <div class="pt-3 flex flex-column gap-5">
           <deadline-info-card :text="t('sidebars.deadline-sidebar.info')" />
-
           <div class="text-center">
             <loader class="mt-5" color="lightGreen" size="20" :isLoading="isFetchingDeadlines" />
           </div>

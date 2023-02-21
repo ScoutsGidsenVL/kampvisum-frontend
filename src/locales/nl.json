@@ -18,8 +18,8 @@
       "notification-deleted": "kamp is succesvol verwijderd",
       "notification-posted": "kamp is succesvol aangemaakt",
       "notification-updated": "kamp is succesvol bewerkt",
-      "call-to-action-title": "Hoe werkt de kampkaft ?",
-      "call-to-action": "• Gebruik het menu links om je groep te selecteren <br> • Klik dan op de knop hierboven om een nieuw kamp aan te maken <br> • Daarna kan je op de volgende schermen alle details invullen <br> • Focus op wat er nodig is voor deadline “kampregistratie” <br> • Je kan later de overige gegevens nog aanvullen <br>"
+      "call-to-action-title": "Hoe werkt Camp Central?",
+      "call-to-action": "• Gebruik het menu links om je groep te selecteren <br> • Indien je extra takken wil toevoegen, voeg deze dan toe via 'instellingen van je groep' <br> • Klik vervolgens op de knop hierboven om een nieuw kamp aan te maken  <br> • Vul alle kampinformatie aan <br>"
     },
     "camp-overview": {
     },
@@ -78,7 +78,7 @@
       "title": "Deadlines",
       "return": "terug",
       "deadline": "Deadline",
-      "info": "Wat zijn deadlines",
+      "info": "Hieronder vind je de enige belangrijke deadline momenteel, de kampregistratie. Zorg dat je deze zeker hebt ingevuld voor de vervaldatum. In een latere versie van CampCentral zal je zelf nog deadlines kunnen toevoegen.",
       "actual-info": "",
       "fill-in": "Vul aan",
       "notification-updated": "Deadline check is succesvol bewerkt",
