@@ -120,8 +120,7 @@ export default defineComponent({
 
     const logout = async () => {
       await logoutFromGA()
-
-      window.location.href = config.frontend.logoutUrl ? config.frontend.logoutUrl : 'https://login.scoutsengidsenvlaanderen.be/auth/realms/scouts/protocol/openid-connect/logout?client_id=groepsadmin-production-client&post_logout_redirect_uri=' + config.frontend.baseUrl
+      window.location.href = config.frontend.logoutUrl + config.frontend.baseUrl;
     }
 
     return {
