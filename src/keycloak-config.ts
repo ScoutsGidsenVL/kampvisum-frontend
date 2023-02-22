@@ -15,10 +15,10 @@ export default function getClient() {
   let returnClient = {
     url: 'https://login.scoutsengidsenvlaanderen.be/auth',
     realm: "scouts",
-    clientId: 'werkwinkeldatabank',
+    clientId: config.oidc.clientId,
     onLoad: OnLoadOptions.LOGIN_REQUIRED,
     redirectUri: config.frontend.baseUrl,
-    checkLoginIframe: true, 
+    checkLoginIframe: true,
     checkLoginIframeInterval: 5
   };
   return returnClient;
