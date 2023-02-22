@@ -14,6 +14,9 @@ import router from './router'
 import App from './App.vue'
 import { useInternetHelper } from './helpers/internetHelper'
 import { useOfflineData } from './composable/useOfflineData'
+import Keycloak from 'keycloak-js';
+import getClient from "./keycloak-config";
+import { OnLoadOptionsType } from './keycloak-config'
 
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require('./locales/nl.json')
@@ -102,6 +105,39 @@ isOnline().then((isOnlineResult: any) => {
         next()
       }
     })
+
+
+    let initOptions = getClient();
+    const keycloak = Keycloak(initOptions);
+  
+    keycloak.init({onLoad: initOptions.onLoad as OnLoadOptionsType}).then((auth: any) => {
+      if (!auth) {
+          window.location.reload();
+      }
+    });
+    
+    window.addEventListener('KeycloakSessionChanged', function (event: any) {
+      console.log('event', event)
+      if (event.keycloak.authenticated) {
+        // User is authenticated
+      } else {
+        // User is logged out
+        // Perform logout or other actions
+      }
+    });
+
+    function checkTokenExpired() {
+      var tokenExpired = keycloak.isTokenExpired();
+      if (tokenExpired) {
+        console.log("User's session has expired");
+        keycloak.logout();
+      } else {
+        console.log("User's session is still active");
+      }
+    }
+
+      setInterval(checkTokenExpired, 1000);
+
     app.use(router).use(store).mount('#app')
   })
 })
