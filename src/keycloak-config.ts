@@ -1,3 +1,6 @@
+import MasterConfig from './models/config/masterConfig'
+import store from '@/store/store'
+
 export const enum OnLoadOptions {
   LOGIN_REQUIRED = 'login-required',
   CHECK_SSO = 'check-sso',
@@ -7,14 +10,17 @@ export const enum OnLoadOptions {
 export type OnLoadOptionsType = "login-required" | "check-sso" | undefined
 
 export default function getClient() {
+  const config: MasterConfig = store.getters.config
+  
   let returnClient = {
-    url: "https://login-dev.scoutsengidsenvlaanderen.be/auth",
+    url: 'https://login.scoutsengidsenvlaanderen.be/auth',
     realm: "scouts",
-    clientId: 'groepsadmin-production-client',
+    clientId: 'werkwinkeldatabank',
     onLoad: OnLoadOptions.LOGIN_REQUIRED,
-    redirectUri: 'localhost:8040',
+    redirectUri: config.frontend.baseUrl,
     checkLoginIframe: true, 
     checkLoginIframeInterval: 5
   };
   return returnClient;
 }
+
