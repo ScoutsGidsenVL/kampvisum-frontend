@@ -11,17 +11,17 @@ export const useDateHelper = (): {
     getCurrentYear: () => string,
 } => {
     const dateFromString = (date: string): string => {
-        return DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('dd MMM yyyy').toLowerCase()
+        console.log('LOG: ', DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('dd MMM yyyy', { locale: 'nl' }).toLowerCase().replace('.',''))
+
+        return DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('dd MMM yyyy', { locale: 'nl' }).toLowerCase().replace('.','')
     }
 
     const dateFromLocalisedString = (date: string): string => {
-        //return DateTime.fromFormat(date, 'yyyy-MM-dd').setLocale('nl').toFormat('dd MMM yyyy').toLowerCase()
         return DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('dd MMM yyyy').toLowerCase()
     }
 
     const dateFromDatePicker = (date: string): DateTime => {
-        //return DateTime.fromFormat(date, 'dd MMM yyyy', { locale: 'nl' })
-        return DateTime.fromFormat(date, 'dd MMM yyyy')
+        return DateTime.fromFormat(date, 'dd MMM yyyy',  { locale: 'nl' })
     }
 
     const dateFromDatePickerFormatted = (date: string): string => {
