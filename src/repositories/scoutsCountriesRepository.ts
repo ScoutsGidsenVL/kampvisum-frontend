@@ -20,6 +20,11 @@ export class scoutsCountriesRepository extends BaseRepository {
         nl: "Afghanistan"
       },
       {
+        code: "AL",
+        en: "Albania",
+        nl: "Albanië"
+      },
+      {
         code: "DZ",
         en: "Algeria",
         nl: "Algerije"
