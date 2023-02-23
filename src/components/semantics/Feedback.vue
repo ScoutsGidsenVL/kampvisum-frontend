@@ -109,7 +109,7 @@ export default defineComponent({
           .patchCategoryFeedback(selectedGroup.value.groupAdminId, props.subCategory.id, values.feedback)
           .then(() => {
             triggerNotification(t('engagement.feedback-notification'))
-            rl()
+            // rl()
           })
           }
         }, 1000)
