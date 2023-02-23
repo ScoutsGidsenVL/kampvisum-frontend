@@ -107,7 +107,7 @@ export default defineComponent({
 
     const optionsAgeGroup = ref<any>([])
 
-    for (let i = 6; i < 19; i++) {
+    for (let i = 6; i < 31; i++) {
       optionsAgeGroup.value.push({ value: i, label: `${t('pages.settings.sections.start-age')} ${i} ${t('pages.settings.sections.year')}` })
     }
     
