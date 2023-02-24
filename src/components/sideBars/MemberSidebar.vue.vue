@@ -1,33 +1,24 @@
 <template>
   <div>
-    <base-side-bar
-      width="max-w-2xl"
-      :is-display="sideBarState.state !== 'hide'"
-      :is-edit="sideBarState.state === 'edit'"
-      :isOverflowHidden="true"
-      @hideSidebar="closeSideBar"
-      :selection="selected"
-      maxWidth="max-w-2xl"
-      name="MemberSidebar"
-      title="Lid"
-    >
-    <form
-        class="flex flex-col h-full"
-        id="memberForm"
-        ref="formDiv"
-        @submit.prevent="onSubmit"
-      >
+    <base-side-bar width="max-w-2xl" :is-display="sideBarState.state !== 'hide'" :is-edit="sideBarState.state === 'edit'"
+      :isOverflowHidden="true" @hideSidebar="closeSideBar" :selection="selected" maxWidth="max-w-2xl" name="MemberSidebar"
+      title="Lid">
+      <form class="flex flex-col h-full" id="memberForm" ref="formDiv" @submit.prevent="onSubmit">
         <div class="px-4 pt-4 pb-1">
           <participant-filter ref="filterChild" @changedFilters="changedFilters($event)" />
         </div>
 
         <div @click="filterChild.closeFilterMenu" class="p-4 mx-1">
-          <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search" :placeholder="t('checks.participant-check.search')" :repository="MemberRepository" @fetchedOptions="fetchedSearchResults($event)" />
+          <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search"
+            :placeholder="t('checks.participant-check.search')" :repository="MemberRepository"
+            @fetchedOptions="fetchedSearchResults($event)" />
         </div>
 
-        <div v-if="fetchedMembers.length > 0 && check.value.participantCheckType === 'M'" class="flex justify-end px-4 pb-3">
-          <div @click="selectAllFetchedMembers()" class="bg-green text-white px-2 py-1 cursor-pointer" style="width: fit-content">
-            {{t('sidebars.member-sidebar.select-all')}}
+        <div v-if="fetchedMembers.length > 0 && check.value.participantCheckType === 'M'"
+          class="flex justify-end px-4 pb-3">
+          <div @click="selectAllFetchedMembers()" class="bg-green text-white px-2 py-1 cursor-pointer"
+            style="width: fit-content">
+            {{ t('sidebars.member-sidebar.select-all') }}
           </div>
         </div>
 
@@ -35,23 +26,23 @@
           <loader color="lightGreen" size="10" :isLoading="loading" />
         </div>
 
-        <div v-if="filterChild && (!filterChild.isFilterMenuOpen || checkIfIsMobileSize() === false)" class="mx-1 mb-72 overflow-y-auto">
+        <div v-if="filterChild && (!filterChild.isFilterMenuOpen || checkIfIsMobileSize() === false)"
+          class="mx-1 mb-72 overflow-y-auto">
           <div class="mx-4">
-            <div
-              v-for="(member, index) in fetchedMembers"
-              :key="member"
+            <div v-for="(member, index) in fetchedMembers" :key="member"
               :class="{ 'border-t-2 border-black': index === 0 }"
-              class="py-1 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between"
-            >
-              <member-sidebar-item :displayCheck="displayCheck(check.checkParent.isMultiple, member, fetchedMembers)" :member="member" />
+              class="py-1 w-full shadow-md border-b-2 border-black bg-white p-2 inline-block text-left d-flex flex-col justify-content-between">
+              <member-sidebar-item :displayCheck="displayCheck(check.checkParent.isMultiple, member, fetchedMembers)"
+                :member="member" />
             </div>
           </div>
         </div>
 
         <div class="mt-5 py-4 px-4 absolute bottom-0 bg-white w-full">
-          <custom-button-small :disabled="!(fetchedMembers.some((f) => f.isChecked === true))" :isSubmitting="isPatching" :text="t('checks.participant-check.add-without-plus')" />
+          <custom-button-small :disabled="!(fetchedMembers.some((f) => f.isChecked === true))" :isSubmitting="isPatching"
+            :text="t('checks.participant-check.add-without-plus')" />
         </div>
-    </form>
+      </form>
     </base-side-bar>
   </div>
 </template>
@@ -115,7 +106,7 @@ export default defineComponent({
     const isPatching = ref<boolean>(false)
     const loading = ref<boolean>(false)
     const isInit = ref<boolean>(false)
-    const { handleSubmit} = useForm()
+    const { handleSubmit } = useForm()
     const { checkIfIsMobileSize } = usePhoneHelper()
     const { selectedGroup } = useGroupAndYears()
     const { t } = useI18n({
@@ -137,10 +128,10 @@ export default defineComponent({
 
     const onSubmit = async () => {
       let isNoEmail: boolean = false
-      
+
       fetchedMembers.value.forEach((member: BaseMember) => {
         if (member.isChecked) {
-        } 
+        }
         if ((member.isChecked && !member.email) && (props?.check?.checkParent?.name === 'members_leaders_responsible_main' || props?.check?.checkParent?.name === 'members_leaders_responsible_adjunct')) {
           isNoEmail = true
           triggerNotification(`${t('checks.participant-check.no-email-part-1')} ${member.fullName} ${t('checks.participant-check.no-email-part-2')}`)
@@ -192,7 +183,7 @@ export default defineComponent({
 
       //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
       finalResult.forEach((r: Member) => {
-        if (!(fetchedMembers.value.some((f: Member) => checkForIdMatch(f,r)))) {
+        if (!(fetchedMembers.value.some((f: Member) => checkForIdMatch(f, r)))) {
           fetchedMembers.value.push(r)
         }
       })
@@ -207,8 +198,8 @@ export default defineComponent({
     const fetchInitMembers = async () => {
       const finalResult: any = []
       loading.value = true
-        await RepositoryFactory.get(MemberRepository)
-        .search(selectedGroup.value.groupAdminId, '', '').then((results) => {
+      await RepositoryFactory.get(MemberRepository)
+        .search(selectedGroup.value.groupAdminId, '').then((results) => {
           results.forEach((member: Member) => {
             if (!props.check.value.participants.some((res: any) => res.id.replaceAll('-', '') === member.id.replaceAll('-', ''))) {
               finalResult.push(member)

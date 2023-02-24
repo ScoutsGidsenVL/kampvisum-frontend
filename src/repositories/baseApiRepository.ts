@@ -6,7 +6,7 @@ import { useNotification } from '../composable/useNotification'
 const { triggerNotification, isForbidden } = useNotification()
 
 export default abstract class BaseApiRepository {
-  
+
   private axiosInstance: AxiosInstance
   private publicAxiosInstance: AxiosInstance
   abstract id: string
@@ -162,11 +162,11 @@ export default abstract class BaseApiRepository {
 
   private parseEndpoint(groupId: string, endpoint: string): string {
     if (!endpoint.includes('?')) {
-      return endpoint + '?auth=' + groupId
+      return endpoint + '?group=' + groupId
     }
 
-    if (!endpoint.includes('auth')) {
-      return endpoint + '&auth=' + groupId
+    if (!endpoint.includes('group')) {
+      return endpoint + '&group=' + groupId
     }
     return endpoint
   }

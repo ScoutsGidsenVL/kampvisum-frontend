@@ -18,7 +18,7 @@ export class CampVisumRepository extends BaseRepository {
     const { selectedGroup, selectedYear } = useGroupAndYears()
 
     if (isInternetActive.value) {
-      return this.get(groupId, this.endpoint + (pagination ? pagination + "&group=" + groupId : "?group=" + groupId), {}).then((response: ArrayResult) => {
+      return this.get(groupId, this.endpoint + (pagination ? pagination : ""), {}).then((response: ArrayResult) => {
         const array: any[] = []
         if (response?.results) {
           response.results.forEach((result: Visum) => {
