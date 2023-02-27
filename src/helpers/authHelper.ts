@@ -10,11 +10,14 @@ const useAuthHelper = (): {
     const { unsetMe } = useOfflineData()
     const logoutFromGA = async (): Promise<void> => {
         RepositoryFactory.get(AuthRepository).logout()
-
-        sessionStorage.removeItem('oidc-access-token')
-        sessionStorage.removeItem('oidc-refresh-token')
+        clearTokens()
         unsetSelectedGroup()
         unsetMe()
+    }
+
+    const clearTokens = () => {
+        sessionStorage.removeItem('oidc-access-token')
+        sessionStorage.removeItem('oidc-refresh-token')
     }
 
     return {

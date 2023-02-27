@@ -13,6 +13,7 @@ import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
 import { useInternetHelper } from './helpers/internetHelper'
+import useAuthHelper  from './helpers/authHelper'
 import { useOfflineData } from './composable/useOfflineData'
 import Keycloak from 'keycloak-js';
 import getClient from "./keycloak-config";
@@ -21,6 +22,7 @@ import { OnLoadOptionsType } from './keycloak-config'
 // import LitepieDatepicker from 'litepie-datepicker'
 const nl = require('./locales/nl.json')
 const { isInternetActive } = useInternetHelper()
+const { logoutFromGA } = useAuthHelper()
 const isOnline = require('is-online')
 const { initDb } = useOfflineData()
 
@@ -112,6 +114,9 @@ isOnline().then((isOnlineResult: any) => {
           window.location.reload();
       }
     });
+    keycloak.onAuthLogout = function () {
+      logoutFromGA()
+    }
     app.use(router).use(store).mount('#app')
   })
 })
