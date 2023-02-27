@@ -109,11 +109,7 @@ isOnline().then((isOnlineResult: any) => {
     })
     let initOptions = getClient();
     const keycloak = Keycloak(initOptions);
-    keycloak.init({onLoad: initOptions.onLoad as OnLoadOptionsType}).then((auth: any) => {
-      if (!auth) {
-          window.location.reload();
-      }
-    });
+    keycloak.init({onLoad: initOptions.onLoad as OnLoadOptionsType})
     keycloak.onAuthLogout = function () {
       logoutFromGA()
     }
