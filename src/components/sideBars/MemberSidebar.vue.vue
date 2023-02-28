@@ -10,7 +10,7 @@
 
         <div @click="filterChild.closeFilterMenu" class="p-4 mx-1">
           <search-input :filter="filter" @changedFilters='changedFilters($event)' v-model:loading="loading" name="search"
-            :placeholder="t('checks.participant-check.search')" :repository="MemberRepository"
+            :placeholder="t('checks.participant-check.search')" :repository="ParticipantRepository"
             @fetchedOptions="fetchedSearchResults($event)" />
         </div>
 
@@ -50,7 +50,6 @@
 <script lang="ts">
 import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
 import { BaseSideBar, sideBarState, InputTypes, Loader } from 'vue-3-component-library'
-import { MemberRepository } from '../../repositories/MemberRepository'
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
 import { useSelectionHelper } from '../../helpers/selectionHelper'
@@ -68,6 +67,7 @@ import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { BaseMember } from '@/serializer/BaseMember'
 import { useNotification } from '@/composable/useNotification'
 import useGroupAndYears from '@/composable/useGroupAndYears'
+import { ParticipantRepository } from '@/repositories/ParticipantRepository'
 
 export default defineComponent({
   name: 'LocationCreateSideBar',
@@ -198,7 +198,7 @@ export default defineComponent({
     const fetchInitMembers = async () => {
       const finalResult: any = []
       loading.value = true
-      await RepositoryFactory.get(MemberRepository)
+      await RepositoryFactory.get(ParticipantRepository)
         .search(selectedGroup.value.groupAdminId, '').then((results) => {
           results.forEach((member: Member) => {
             if (!props.check.value.participants.some((res: any) => res.id.replaceAll('-', '') === member.id.replaceAll('-', ''))) {
@@ -217,7 +217,6 @@ export default defineComponent({
     return {
       selectAllFetchedMembers,
       fetchedSearchResults,
-      MemberRepository,
       fetchedMembers,
       changedFilters,
       sideBarState,
@@ -232,7 +231,8 @@ export default defineComponent({
       t,
       filterChild,
       checkIfIsMobileSize,
-      isInit
+      isInit,
+      ParticipantRepository
     }
   },
 })

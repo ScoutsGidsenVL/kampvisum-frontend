@@ -110,7 +110,6 @@ import { BaseSideBar, InputTypes, CustomInput, CustomButtonSmall, option } from 
 import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { ParticipantRepository } from '@/repositories/ParticipantRepository'
-import { MemberRepository } from '../../repositories/MemberRepository'
 import MemberSidebarItem from '../semantics/MemberSidebarItem.vue'
 import { useSelectionHelper } from '../../helpers/selectionHelper'
 import ParticipantFilter from '../semantics/ParticipantFilter.vue'
@@ -301,7 +300,6 @@ export default defineComponent({
     return {
       ParticipantRepository,
       fetchedSearchResults,
-      MemberRepository,
       fetchedMembers,
       changedFilters,
       changeSideBar,

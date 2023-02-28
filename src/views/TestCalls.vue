@@ -32,7 +32,6 @@ import { GroupRepository } from '@/repositories/groupRepository'
 import { LocationCheckRepository } from '@/repositories/LocationCheckRepository'
 import { LocationRepository } from '@/repositories/LocationRepository'
 import { LocationSearchRepository } from '@/repositories/locationSearchRepository'
-import { MemberRepository } from '@/repositories/MemberRepository'
 import { ParticipantCheckRepository } from '@/repositories/ParticipantCheckRepository'
 import { ParticipantRepository } from '@/repositories/ParticipantRepository'
 import { SectionsRepository } from '@/repositories/SectionsRepository'
@@ -289,7 +288,7 @@ export default defineComponent({
                     query: '',
                     filter: ''
                 },
-                call: (vars: any) => RepositoryFactory.get(MemberRepository).search(vars.groupID, vars.query, vars.filter)
+                call: (vars: any) => RepositoryFactory.get(ParticipantRepository).search(vars.groupID, vars.query, vars.filter)
             },
             'searchFourage': {
                 vars: {
