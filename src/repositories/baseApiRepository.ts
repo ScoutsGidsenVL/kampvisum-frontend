@@ -93,6 +93,18 @@ export default abstract class BaseApiRepository {
       })
   }
 
+  protected postWithoutGroupId(endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
+    return this.axiosInstance
+      .post(endpoint, data, config)
+      .then(function (result: AxiosResponse) {
+        // Only return the data of response
+        return result.data
+      })
+      .catch((error: any) => {
+        return this.processError(error)
+      })
+  }
+
   protected patch(groupId: string, endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
     return this.axiosInstance
       .patch(this.parseEndpoint(groupId, endpoint), data, config)

@@ -107,12 +107,12 @@ isOnline().then((isOnlineResult: any) => {
         next()
       }
     })
-    let initOptions = getClient();
-    const keycloak = Keycloak(initOptions);
-    keycloak.init({onLoad: initOptions.onLoad as OnLoadOptionsType})
-    keycloak.onAuthLogout = function () {
-      logoutFromGA()
-    }
+    // let initOptions = getClient();
+    // const keycloak = Keycloak(initOptions);
+    // keycloak.init({onLoad: initOptions.onLoad as OnLoadOptionsType})
+    // keycloak.onAuthLogout = function () {
+    //   logoutFromGA()
+    // }
     app.use(router).use(store).mount('#app')
   })
 })

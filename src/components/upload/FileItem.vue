@@ -8,7 +8,7 @@
           </svg>
           <p class="max-w-xs truncate">{{ file.name }}</p>
         </div>
-
+        <!-- {{ file.id }} -->
         <div class="flex xs:justify-between md:justify-start gap-6 mt-3">
           <div @click="downloadFile(file.id)" class="align-middle flex gap-2 cursor-pointer">
             <p class="align-middle underline text-xs text-darkGray hover:text-black">{{t('checks.document-check.download')}}</p>
