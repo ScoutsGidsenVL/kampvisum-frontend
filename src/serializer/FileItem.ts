@@ -3,6 +3,7 @@ export interface FileItem {
   contentType?: string
   url?: string
   name?: string
+  directory_path?: string
   size?: string
   createdOn?: string
   isChecked?: boolean
@@ -15,6 +16,7 @@ export const FileDeserializer = (input: any): FileItem => {
     url: input.url ? input.url : undefined,
     name: input.name ? input.name : input.filename ? input.filename : undefined,
     size: input.size ? input.size : undefined,
+    directory_path: input.directory_path ? input.directory_path : undefined,
     createdOn: input.created_on ? input.created_on : undefined,
   }
 

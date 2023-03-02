@@ -5,7 +5,8 @@ import store from '@/store/store'
 import axios from 'axios'
 export interface PresignedPost {
   "url": string,
-  "file_path": string,
+  "directory_path": string,
+  "original_name": string,
   "fields": {
     "key": string,
     "x-amz-algorithm": string,
@@ -70,7 +71,8 @@ export class FileRepository extends BaseRepository {
 
     const fd = new FormData()
     fd.append('file', file)
-    fd.append('file_path', presignedPost.file_path)
+    fd.append('directory_path', presignedPost.directory_path)
+    fd.append('original_name', presignedPost.original_name)
 
     return this.post(groupID, this.endpoint, fd, config).then((response: any) => {
       return FileDeserializer(response)

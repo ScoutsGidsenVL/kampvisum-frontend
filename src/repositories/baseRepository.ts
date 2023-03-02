@@ -39,7 +39,7 @@ export abstract class BaseRepository extends BaseApiRepository {
 
   getById(groupId: string, id: string): Promise<any> {
     return this.get(groupId, this.endpoint + id, {}).then((response: any) => {
-      return this.deserializer(response)
+      return response
     })
   }
 
