@@ -13,6 +13,7 @@
         </div>
         <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
       </div>
+      <page-footer />
     </div>
   </div>
 
@@ -30,6 +31,7 @@ import { Sidebar, SidebarState, useInfoBarHelper } from '@/helpers/infoBarHelper
 import BaseSubcategoryCard from '../../components/cards/BaseSubcategoryCard.vue'
 import InformationSideBar from '@/components/sideBars/InformationSideBar.vue'
 import PageHeader from '../../components/semantics/PageHeader.vue'
+import PageFooter from '../../components/semantics/PageFooter.vue'
 import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { useNotification } from '@/composable/useNotification'
 import useGroupAndYears from '@/composable/useGroupAndYears'
@@ -48,6 +50,7 @@ export default defineComponent({
   components: {
     BaseSubcategoryCard,
     InformationSideBar,
+    PageFooter,
     PageHeader,
     Forbidden,
     Loader,
