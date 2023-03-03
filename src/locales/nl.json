@@ -5,7 +5,8 @@
     "settings": "Instellingen van je groep",
     "documents": "Documenten",
     "locations": "Locaties",
-    "non-members": "Niet-leden"
+    "non-members": "Niet-leden",
+    "dc-overview": "Overzicht DC"
 
   },
   "pages": {
@@ -277,5 +278,12 @@
   },
   "contact": "contacteer ons",
   "logout": "log uit",
-  "duplicate_camp_responsible": "Dubbele kampverantwoordelijken!"
+  "duplicate_camp_responsible": "Dubbele kampverantwoordelijken!",
+  "dc-overview": {
+    "name": "Naam",
+    "dates": "Datums",
+    "sections": "Takken",
+    "camp-registration": "Kampregristratie",
+    "camp-status": "Status kamp"
+  }
 }

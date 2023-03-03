@@ -184,8 +184,8 @@ export default abstract class BaseApiRepository {
   }
 
   private processError(error: any): any {
-    if (error.response?.data[0] && error.response?.data[0] === 'Duplicate camp responsibles !') {
-      triggerNotification('Dubbele kampverantwoordelijken!', '#E00A1E')
+    if (error.response?.data[0] && error.response?.data[0] === 'Je mag niet twee keer dezelfde kampverantwoordelijke opgeven.') {
+      triggerNotification('Je mag niet twee keer dezelfde kampverantwoordelijke opgeven.', '#E00A1E')
       return true;
     }
     if (error.response?.data?.file) {

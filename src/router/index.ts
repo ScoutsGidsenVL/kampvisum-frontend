@@ -12,6 +12,8 @@ import KampvisumHome from '@/views/KampvisumHome.vue'
 import CampOverview from '@/views/CampOverview.vue'
 import StartView from '@/components/start.vue'
 import TestCallsVue from '@/views/TestCalls.vue'
+import DcOverview from '@/views/DcOverview.vue'
+
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/start' },
@@ -42,6 +44,16 @@ const routes: Array<RouteRecordRaw> = [
       requiresOpenIdAuth: true,
       homescreen: '/instellingen',
       titleKey: 'page-titles.settings',
+    },
+  },
+  {
+    path: '/overzicht-dc',
+    name: 'Overzicht DC',
+    component: DcOverview,
+    meta: {
+      requiresOpenIdAuth: true,
+      homescreen: '/overzicht-dc',
+      titleKey: 'page-titles.dc-overview',
     },
   },
   {
