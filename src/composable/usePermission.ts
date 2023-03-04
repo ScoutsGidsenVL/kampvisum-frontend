@@ -9,10 +9,15 @@ export enum permissions {
 
 export const usePermission = (): {
   can: (permission: string) => boolean
+  hasRole: (role: string) => boolean
 } => {
 
   const getPermissions = () => {
     return store.getters.user.permissions as any[]
+  }
+
+  const getRoles = () => {
+    return store.getters.user.groups as any[]
   }
 
   const can = (permission: string): boolean => {
@@ -27,7 +32,17 @@ export const usePermission = (): {
     }
   }
 
+  const hasRole = (role: string): boolean => {
+    const p = getRoles()
+    if (p) {
+      return p.includes(role)
+    } else {
+      return false
+    }
+  }
+
   return {
-    can
+    can,
+    hasRole
   }
 }

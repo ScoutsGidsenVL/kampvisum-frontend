@@ -49,7 +49,7 @@
             <navigation-item v-if="!isForbidden && !isFetchingVisums && isInternetActive" @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
             <navigation-item v-if="can('visums.view_camp_locations') && isInternetActive" link="/locaties" text="Locaties"/>
-            <navigation-item v-if="isInternetActive" link="/overzicht-dc" text="Overzicht DC"/>
+            <navigation-item v-if="hasRole('role_district_commissioner') && isInternetActive" link="/overzicht-dc" text="Overzicht DC"/>
             <!-- <navigation-item v-if="isInternetActive" link="/locaties" text="Locaties"/> -->
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
           </div>
@@ -98,7 +98,7 @@ export default defineComponent({
   name: 'NavigationSideBar',
   setup() {
     const { isInternetActive } = useInternetHelper()
-    const { can } = usePermission()
+    const { can, hasRole } = usePermission()
     const route = useRoute()
     const { isFetchingVisums, visums, visumsAlphabetically } = useVisum()
     const { getSectionsTitle } = useSectionsHelper()
@@ -155,7 +155,8 @@ export default defineComponent({
       route,
       home,
       t,
-      can
+      can,
+      hasRole
     }
   },
 })

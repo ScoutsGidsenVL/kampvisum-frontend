@@ -16,7 +16,7 @@
 
     <!-- ITEMS -->
     <div v-show="isMenuOpen">
-      <div class="w-full border-b py-2 grid grid-cols-5 gap-4 px-2 font-bold text-lg">
+      <div v-show="!checkIfIsMobileSize()" class="w-full border-b py-2 grid grid-cols-5 gap-4 px-2 font-bold text-lg">
         <div>
           {{ t('dc-overview.name') }}
         </div>
@@ -44,6 +44,7 @@ import IChevonDown from '@/components/icons/IChevonDown.vue'
 import IChevonUp from '@/components/icons/IChevonUp.vue'
 import ICalendar from '@/components/icons/ICalendar.vue'
 import { useI18n } from 'vue-i18n'
+import { usePhoneHelper } from '@/helpers/phoneHelper'
 
 export default defineComponent({
   components: { IChevonDown, IChevonUp, ICalendar },
@@ -60,6 +61,8 @@ export default defineComponent({
       useScope: 'local',
     })
 
+    const { checkIfIsMobileSize } = usePhoneHelper()
+
     const isMenuOpen = ref<boolean>(true)
 
     const toggle = () => {
@@ -69,7 +72,8 @@ export default defineComponent({
     return {
       t,
       toggle,
-      isMenuOpen
+      isMenuOpen,
+      checkIfIsMobileSize
     }
   }
 })
