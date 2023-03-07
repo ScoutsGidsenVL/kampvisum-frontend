@@ -58,7 +58,7 @@
           <div class="mt-3 ml-4">
             <!-- ITEMS -->
             <div class="mt-3 cursor-pointer"
-            @click="navigateTowardsSection(deadlineItem.linkedSubCategory.category.category.name, visum, deadlineItem.linkedSubCategory.category.category.id, deadlineItem.linkedSubCategory.id, route)"
+            @click="navigateTowardsSection(deadlineItem.linkedSubCategory?.category?.category?.name, visum, deadlineItem.linkedSubCategory?.category?.category?.id, deadlineItem.linkedSubCategory?.id)"
             v-for="deadlineItem in selectedDeadline.items" :key="deadlineItem">
               <!-- CATEGORIES -->
               <div class="mt-3" v-if="deadlineItem.deadlineItemParent.deadlineItemType === 'S'">
@@ -78,8 +78,8 @@
               <!-- CHECKS -->
               <div
                 class="mt-3"
-                v-if="deadlineItem.deadlineItemParent.deadlineItemType === 'C'"
-                @click="navigateTowardsSection(deadlineItem.linkedCheck.category.category.name, visum, deadlineItem.linkedCheck.category.category.id, deadlineItem.linkedCheck.id, route)"
+                v-if="deadlineItem.deadlineItemParent?.deadlineItemType === 'C'"
+                @click="navigateTowardsSection(deadlineItem.linkedCheck?.category?.category?.name, visum, deadlineItem?.linkedCheck?.category?.category?.id, deadlineItem?.linkedCheck?.id)"
               >
                 <div class="flex gap-2">
                   <i-checked v-if="deadlineItem.linkedCheck.state === 'CHECKED'" />

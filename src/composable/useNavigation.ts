@@ -18,7 +18,7 @@ const sidebar = ref<Sidebar>({ state: checkIfIsMobileSize() ? SidebarState.CLOSE
 export const useNavigation = (): {
   navigateTowardsPassport: (visumId:string) => void
   navigateTowardsCategory: (name: string, visum: Visum, categoryUuid: string) => void
-  navigateTowardsSection: (name: string, visum: Visum, categoryUuid: string, sectionId: string) => void
+  navigateTowardsSection: (name?: string, visum?: Visum, categoryUuid?: string, sectionId?: string) => void
   jumpToId: (id: string | string[]) => void
   breadcrumbs: Ref<breadcrumb[]>
   sidebar: Ref<Sidebar>
@@ -51,11 +51,13 @@ export const useNavigation = (): {
     }
   }
 
-  const navigateTowardsSection = (name: string, visum: Visum, categoryUuid: string, sectionId: string) => {
-    const navigate = (name: string) => {
-      router.push('/kamp/' + visum.id.toString() + '/' + 'category' + '/' + categoryUuid + '/section/' + sectionId)
+  const navigateTowardsSection = (name?: string, visum?: Visum, categoryUuid?: string, sectionId?: string) => {
+    if (name && visum) {
+      const navigate = (name: string) => {
+        router.push('/kamp/' + visum.id.toString() + '/' + 'category' + '/' + categoryUuid + '/section/' + sectionId)
+      }
+      navigate(name.toLowerCase())
     }
-    navigate(name.toLowerCase())
   }
 
   const goToHome = () => {
