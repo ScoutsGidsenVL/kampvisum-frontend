@@ -1,19 +1,19 @@
 <template>
   <div v-show="!checkIfIsMobileSize()" class="w-full border-b py-2 grid grid-cols-5 gap-4 px-2">
     <div>
-      Zomerkamp
+      {{ camp.name }}
     </div>
     <div>
-      08 mrt 2023 - 10 mrt 2023
+      
     </div>
     <div>
-      kapoenen & kabouters en welpen & jonggivers & givers
+      {{ getSectionsTitle(camp) }}
     </div>
     <div>
-      OP TIJD
+
     </div>
     <div>
-      IN OPBOUW
+
     </div>
   </div>
   <div v-show="checkIfIsMobileSize()">
@@ -21,7 +21,7 @@
       <div class="font-bold">{{ t('dc-overview.sections') }}:</div>
       <div>kabouters en welpen & jonggivers & givers</div>
     </div>
-    
+
     <div class="flex gap-3">
       <div class="font-bold">{{ t('dc-overview.name') }}:</div>
       <div>Zomerkamp</div>
@@ -44,26 +44,19 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { usePhoneHelper } from '@/helpers/phoneHelper'
-import { defineComponent } from 'vue'
+import { useSectionsHelper } from '@/helpers/sectionsHelper';
+import { PropType } from 'vue';
 import { useI18n } from 'vue-i18n'
+const { getSectionsTitle } = useSectionsHelper()
 
-export default defineComponent({
-  components: {},
-  name: 'DcMenuItem',
-  setup() {
-    const { t } = useI18n({
-      inheritLocale: true,
-      useScope: 'local',
-    })
-
-    const { checkIfIsMobileSize } = usePhoneHelper()
-
-    return {
-      t,
-      checkIfIsMobileSize
-    }
-  }
+const props = defineProps({
+  camp: Object as PropType<any>
 })
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
+const { checkIfIsMobileSize } = usePhoneHelper()
 </script>

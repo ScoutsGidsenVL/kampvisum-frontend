@@ -4,7 +4,7 @@
       <!-- TITLE -->
       <div class="w-full flex items-center gap-3">
         <slot name="title-icon" />
-        <span class="text-lg font-bold">{{ group.groupId }}</span>
+        <span class="text-lg font-bold">{{ group.groupAdminId }}</span>
       </div>
 
       <!-- CHEVONS -->
@@ -33,48 +33,32 @@
           {{ t('dc-overview.camp-status') }}
         </div>
       </div>
-      <slot name="data" />
+      <dc-menu-item v-for="(camp, index) in group?.value" :key="index" :camp="camp"></dc-menu-item>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, PropType } from 'vue'
+<script lang="ts" setup>
+import { ref, PropType } from 'vue'
 import IChevonDown from '@/components/icons/IChevonDown.vue'
 import IChevonUp from '@/components/icons/IChevonUp.vue'
-import ICalendar from '@/components/icons/ICalendar.vue'
 import { useI18n } from 'vue-i18n'
 import { usePhoneHelper } from '@/helpers/phoneHelper'
+import DcMenuItem from '@/components/semantics/DcMenuItem.vue'
 
-export default defineComponent({
-  components: { IChevonDown, IChevonUp, ICalendar },
-  name: 'PassportMenu',
-  props: {
-    group: {
-      type: Object as PropType<{ groupId: string }>
-    }
-  },
-  setup() {
-    window.scrollTo({ top: 0, behavior: 'auto' })
-    const { t } = useI18n({
-      inheritLocale: true,
-      useScope: 'local',
-    })
-
-    const { checkIfIsMobileSize } = usePhoneHelper()
-
-    const isMenuOpen = ref<boolean>(true)
-
-    const toggle = () => {
-      isMenuOpen.value = !isMenuOpen.value
-    }
-
-    return {
-      t,
-      toggle,
-      isMenuOpen,
-      checkIfIsMobileSize
-    }
-  }
+const props = defineProps({
+  group: Object as PropType<any>
 })
+const isMenuOpen = ref<boolean>(true)
+const { checkIfIsMobileSize } = usePhoneHelper()
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
+
+window.scrollTo({ top: 0, behavior: 'auto' })
+
+const toggle = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
 </script>
