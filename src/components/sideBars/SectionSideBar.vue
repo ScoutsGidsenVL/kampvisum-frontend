@@ -47,6 +47,8 @@
           />
         </div>
 
+        {{ values }}
+
         <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
           <custom-button :isSubmitting="isSubmitting" :text="sideBarState.state === 'edit' ? t('pages.settings.sections.sidebar.edit') : t('sidebars.kampvisum-sidebar.buttons.add')" />
         </div>
@@ -111,7 +113,7 @@ export default defineComponent({
       optionsAgeGroup.value.push({ value: i, label: `${t('pages.settings.sections.start-age')} ${i} ${t('pages.settings.sections.year')}` })
     }
     
-    const chosenAgeGroup = ref<any>({ value: '10', label: 'kapoenen en zeehondjes' })
+    const chosenAgeGroup = ref<any>({ value: '6', label: 'kapoenen en zeehondjes' })
     const selected = computed(() => (props.sideBarState.state === 'list' ? 'BestaandCamp' : 'NieuwCamp'))
     const initSection = ref<Section>({
         name: {
