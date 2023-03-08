@@ -6,7 +6,6 @@ import { OpenIdConnectPlugin } from 'inuits-vuejs-oidc'
 import 'vue-3-component-library/lib/index.css'
 import { createI18n } from 'vue-i18n'
 const VueLuxon = require('vue-luxon')
-// import VueLuxon from "vue-luxon";
 import store from './store/store'
 import './registerServiceWorker'
 import { createApp } from 'vue'
@@ -29,7 +28,7 @@ const { initDb } = useOfflineData()
 initDb()
 isOnline().then((isOnlineResult: any) => {
   isInternetActive.value = isOnlineResult
-  new StaticFileRepository().getFile('config.json').then((result: any) => {
+  new StaticFileRepository().getFile('config.json').then(async (result: any) => {
 
     const i18n = createI18n({
       legacy: false,
@@ -75,44 +74,37 @@ isOnline().then((isOnlineResult: any) => {
     }
 
     store.dispatch('setConfig', configFile)
+    const config: MasterConfig = store.getters.config
 
     let redirectUrl = sessionStorage.getItem('redirectUrl')
     if (!redirectUrl) {
       sessionStorage.setItem('redirectUrl', window.location.pathname)
     }
 
-    router.beforeEach((to: any, from: any, next: any) => {
-      if (to.meta.requiresOpenIdAuth === true) {
-        if (store.getters.isLoaded === false) {
-          RepositoryFactory.get(AuthRepository)
+    let params = new URL(document.location.toString()).searchParams
+    let code = params.get('code')
+    
+    if (!store.getters.isLoggedIn && code) {
+      await store.dispatch('fetchTokens', code).then(() => {
+        window.location.replace(`${config.frontend.baseUrl}/kampvisum-home`)
+      })
+    } else {
+      await RepositoryFactory.get(AuthRepository)
             .me()
             .then((user: any) => {
-              store.dispatch('setUser', user).then(() => {
-                next(to.fullPath)
-              })
-            }).catch(() => {
-              console.log('retry me call...')
-              RepositoryFactory.get(AuthRepository).me().then((user: any) => {
-                store.dispatch('setUser', user).then(() => {
-                  next(to.fullPath)
-                })
-              }).catch((error: any) => {
-                console.log('error: ', error);
-              })
+              store.dispatch('setUser', user)
+            }).catch((error) => {
+              console.log('error: ', error);
             })
-        } else {
-          next()
-        }
-      } else {
-        next()
-      }
-    })
-    // let initOptions = getClient();
-    // const keycloak = Keycloak(initOptions);
-    // keycloak.init({onLoad: initOptions.onLoad as OnLoadOptionsType})
-    // keycloak.onAuthLogout = function () {
-    //   logoutFromGA()
-    // }
+    }
+
+    let initOptions = getClient();
+    const keycloak = Keycloak(initOptions);
+    keycloak.init({onLoad: initOptions.onLoad as OnLoadOptionsType})
+    keycloak.onAuthLogout = function () {
+      logoutFromGA()
+    }
+
     app.use(router).use(store).mount('#app')
   })
 })

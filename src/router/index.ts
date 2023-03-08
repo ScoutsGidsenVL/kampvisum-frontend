@@ -16,7 +16,7 @@ import DcOverview from '@/views/DcOverview.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
-  { path: '/', redirect: '/start' },
+  { path: '/', redirect: '/kampvisum-home' },
   { path: '/test', 
     name: 'Test calls', 
     component: TestCallsVue
