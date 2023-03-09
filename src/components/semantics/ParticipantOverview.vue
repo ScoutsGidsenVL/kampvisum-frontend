@@ -25,7 +25,7 @@
       <p v-else class="italic">{{ !check.checkParent.isMultiple ? t('checks.participant-check.no-member') : t('checks.participant-check.no-members') }}</p>
     </div>
 
-    <div v-if="can(check.checkParent.requiresPermission)" class="flex pl-3">
+    <div v-if="can(check.checkParent.requiresPermission) && !(check.value.count > 0 && check.value.participants.length === 0)" class="flex pl-3">
       <div class="xs:w-100 md:w-40">
         <custom-button-small
           @click="openMemberSidebar()"

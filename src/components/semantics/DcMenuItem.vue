@@ -4,16 +4,18 @@
       {{ camp.name }}
     </div>
     <div>
-      
+      <div v-if="camp.date_start">
+        {{ dateFromLocalisedString(camp.date_start) }} - {{ dateFromLocalisedString(camp.date_end) }}
+      </div>
     </div>
     <div>
       {{ getSectionsTitle(camp) }}
     </div>
     <div>
-
+      {{ camp.camp_deadline }}
     </div>
     <div>
-
+      {{camp.state}}
     </div>
   </div>
   <div v-show="checkIfIsMobileSize()">
@@ -45,11 +47,13 @@
 </template>
 
 <script lang="ts" setup>
+import { useDateHelper } from '@/helpers/dateHelper';
 import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { useSectionsHelper } from '@/helpers/sectionsHelper';
 import { PropType } from 'vue';
 import { useI18n } from 'vue-i18n'
 const { getSectionsTitle } = useSectionsHelper()
+const { dateFromLocalisedString } = useDateHelper()
 
 const props = defineProps({
   camp: Object as PropType<any>
