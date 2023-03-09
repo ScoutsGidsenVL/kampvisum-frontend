@@ -118,8 +118,11 @@ export default defineComponent({
     }
 
     const centerInChildComponent = (loc: any) => {
+      console.log('LOC: ', loc)
       child.value.centerClickedLocation(loc.latitude,loc.longitude)
     }
+
+
 
     return {
       getTranslationCountry,

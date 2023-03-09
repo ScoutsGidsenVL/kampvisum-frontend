@@ -116,8 +116,16 @@ export default defineComponent({
       isWarningDisplayed.value = true
     }
 
-    const centerClickedLocation = (lat: any,lng: any) => {
+    const centerClickedLocation = (lat: any, lng: any) => {      
       let map = myMap.value.leafletObject
+      map.closePopup()
+      for (const [key, value] of Object.entries(map._layers)) {
+        if (map._layers[key].options['pane'] === 'markerPane') {
+          if (map._layers[key]._latlng.lat === lat && map._layers[key]._latlng.lng) {
+            map._layers[key].openPopup()
+          }
+        }
+      }
       map.flyTo(latLng(lat, lng), 14)
     }
 
