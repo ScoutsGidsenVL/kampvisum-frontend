@@ -354,7 +354,7 @@ export default defineComponent({
       init.value.street = ''
       init.value.houseNumber = ''
         //DO CALL AND GET THE VALUES FOR START AND END DATE
-        RepositoryFactory.get(CampVisumRepository).getDatesLeadersById(selectedGroup.value.groupAdminId, route.params.campId.toString()).then((res: any) => {
+      RepositoryFactory.get(CampVisumRepository).getDatesLeadersById(selectedGroup.value.groupAdminId, route.params.campId.toString()).then((res: any) => {
           if (res.start_date && res.end_date && props.check.checkParent && props.check.checkParent.checkType.checkType === 'CampLocationCheck') {
             dateValues.value.push(dateFromString(res.start_date))
             dateValues.value.push(dateFromString(res.end_date))
@@ -392,6 +392,9 @@ export default defineComponent({
           } else {
             dateValues.value = []
           }
+        } else if (sideBarState.value.entity.startDate && sideBarState.value.entity.endDate) {
+          dateValues.value.push(dateFromString(sideBarState.value.entity.startDate))
+          dateValues.value.push(dateFromString(sideBarState.value.entity.endDate))
         } else {
           dateValues.value = []
         }
