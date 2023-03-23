@@ -127,6 +127,7 @@ export default defineComponent({
           isSigning.value = false
           hideWarning()
           getEngagementState()
+          rl()
         })
       }
     }
