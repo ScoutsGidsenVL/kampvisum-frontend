@@ -454,6 +454,8 @@ export default defineComponent({
               values.locations[0].township = values.township
               values.locations[0].street = values.street
               values.locations[0].houseNumber = values.houseNumber
+              values.locations[0].name = ''
+              values.locations[0].address = ''
             }
             const tmpDates: any = []
             dateValues.value.forEach((date: any) => {
