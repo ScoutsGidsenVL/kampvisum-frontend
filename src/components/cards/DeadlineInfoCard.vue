@@ -10,9 +10,9 @@
       </div> -->
 
       <div class="text-justify">
-        <strong class="xs:text-sm">
+        <div class="xs:text-sm">
           {{text}}
-        </strong>
+        </div>
       </div>
     </div>
     
