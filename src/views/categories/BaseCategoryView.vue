@@ -68,7 +68,7 @@ export default defineComponent({
     const { setBreadcrumbs } = useNavigation()
     const { selectedGroup } = useGroupAndYears()
     const { isForbidden } = useNotification()
-
+    window.scrollTo({ top: 0, behavior: 'auto' })
     const fetchCategory = () => {
       getCategoryByRouteParam().then((c: Category) => {
 
