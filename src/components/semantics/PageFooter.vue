@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="px-3 md:py-3 xs:py-1 border border-lightGray shadow-sm">
-      <h4 style="width: fit-content" @click="navigateTowardsVisum(route.params.campId)" class="xs:text-base flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline">
+    <div class="px-3 md:py-1 xs:py-1 border border-lightGray shadow-sm">
+      <h6 style="width: fit-content" @click="navigateTowardsVisum(route.params.campId)" class="xs:text-base flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline mb-0">
         <i-left-arrow />
         Terug naar overzicht
-      </h4>
+      </h6>
     </div>
   </div>
 </template>
