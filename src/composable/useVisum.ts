@@ -49,7 +49,6 @@ const useVisum = (): {
   }
 
   const getGlobalVisumState = (visum: Visum): GlobalVisumState => {
-    console.log('LOG VISUM STATE: ', visum.state)
     //If no signable, it's needs feedback to resolve
     if (visum.state === VisumStates.NOT_SIGNABLE) {
       return 'DISAPPROVED'

@@ -285,5 +285,10 @@
     "sections": "Takken",
     "camp-registration": "Kampregristratie",
     "camp-status": "Status kamp"
+  },
+  "page-footer": {
+    "back": "Terug naar overzicht",
+    "previous": "vorige categorie",
+    "next": "volgende categorie"
   }
 }

@@ -11,8 +11,6 @@ export const useDateHelper = (): {
     getCurrentYear: () => string,
 } => {
     const dateFromString = (date: string): string => {
-        console.log('LOG: ', DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('dd MMM yyyy', { locale: 'nl' }).toLowerCase().replace('.',''))
-
         return DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('dd MMM yyyy', { locale: 'nl' }).toLowerCase().replace('.','')
     }
 

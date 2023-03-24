@@ -10,10 +10,10 @@
           <div v-for="subCategory in category.subCategories" :key="subCategory">
             <base-subcategory-card @rl="rl($event)" :visum="visum" class="mb-3" :subCategory="subCategory" titleTextfield="Opmerkingen" :checks="subCategory.checks" @openSidebar="openSidebar()" />
           </div>
+          <page-footer v-if="visum" :visum="visum" />
         </div>
         <information-side-bar :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
       </div>
-      <page-footer />
     </div>
   </div>
 
@@ -69,29 +69,6 @@ export default defineComponent({
     const { selectedGroup } = useGroupAndYears()
     const { isForbidden } = useNotification()
     window.scrollTo({ top: 0, behavior: 'auto' })
-    const fetchCategory = () => {
-      getCategoryByRouteParam().then((c: Category) => {
-
-        category.value = c
-        isFetchingVisum.value = false
-
-        if (category.value) {
-          setCategoryInfo(category.value.categoryParent.description)
-          setBreadcrumbs([
-            { title: c.visum?.name ? c.visum?.name : '', name: 'kamp', uuid: c.visum?.id ? c.visum?.id : '' },
-            { title: category.value.categoryParent.label, name: category.value.categoryParent.name, uuid: category.value.id },
-          ])
-        }
-
-        if (route.params.sectionId) {
-          setTimeout(() => {
-            jumpToId(route.params.sectionId)
-          }, 200)
-        } else {
-          window.scrollTo({ top: 0, behavior: 'auto' })
-        }
-      }) 
-    }
 
     const fetchVisum = () => {
       getCampByRouteParam().then((v: Visum) => {
@@ -127,8 +104,6 @@ export default defineComponent({
     }
 
     const rl = () => {
-      // fetchCategory()
-      // fetchVisum()
        getCampByRouteParam().then((v: Visum) => {
         visum.value = v
         category.value = visum.value.categorySet.categories.find((c: Category) => c.id === route.params.id)
@@ -136,8 +111,6 @@ export default defineComponent({
     }
 
     fetchVisum()
-
-    // fetchCategory()
 
     return {
       getSectionsTitle,

@@ -44,7 +44,6 @@ export class FileRepository extends BaseRepository {
   }
 
   uploadToPresignedPost = async (formData: FormData): Promise<any> => {
-    console.log('MINIO ENDPOINT: ', this.getBase())
     return await axios.post(`${this.getBase()}`, formData);
   }
 

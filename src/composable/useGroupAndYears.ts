@@ -48,14 +48,6 @@ const useGroupAndYears = (): {
     }, 100)
   })
 
-  // watch(selectedYear, (newYear: string, oldYear: string) => {
-  //   // console.log('HERE@@@'); this loops 10 times?!
-  //   console.log(newYear, oldYear);
-  //   if (newYear !== oldYear && oldYear !== '') {
-  //     getVisums(selectedGroup.value, newYear);
-  //   }
-  // })
-
   const setSelectedYear = (year: string) => {
     selectedYear.value = year
     getVisums(selectedGroup.value, year);

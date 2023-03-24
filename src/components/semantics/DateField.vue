@@ -80,11 +80,8 @@ export default defineComponent({
       const tmpDates: any = []
       
       dates.forEach((date) => {
-        console.log('BEFORE: ', date)
         tmpDates.push(dateFromDatePickerFormatted(date))
       })
-
-      console.log('DATES: ', tmpDates)
 
       if (
         !(props.check?.value.startDate && props.check.value.startDate === tmpDates[0] &&
