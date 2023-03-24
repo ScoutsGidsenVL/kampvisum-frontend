@@ -47,8 +47,6 @@ const props = defineProps({
   }
 })
 
-console.log('categories: ',  props.visum)
-
 const { navigateTowardsCategory } = useNavigation()
 const route = useRoute()
 const { navigateTowardsVisum } = useNavigation()
