@@ -81,7 +81,7 @@
 
 <script lang="ts">
 import { EngagementRepository } from '@/repositories/EngagementRepository'
-import { CustomButtonSmall, Warning } from 'vue-3-component-library'
+import { CustomButtonSmall } from 'vue-3-component-library'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import {CampVisumRepository} from '@/repositories/CampVisumRepository'
 import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
@@ -93,6 +93,7 @@ import { Engagement } from '@/serializer/Engagement'
 import store from '../../store/store'
 import DcNotes from './DcNotes.vue'
 import { useI18n } from 'vue-i18n'
+import Warning from '../semantics/Warning.vue'
 
 export default defineComponent({
   name: 'Engagement',

@@ -47,6 +47,10 @@ const { checkIfIsMobileSize } = usePhoneHelper()
 
     const isFilterMenuOpen = ref<boolean>(true)
 
+    if (checkIfIsMobileSize()) {
+      isFilterMenuOpen.value = false
+    }
+
     const closeFilterMenu = () => {
       if (checkIfIsMobileSize()) {
         isFilterMenuOpen.value = false

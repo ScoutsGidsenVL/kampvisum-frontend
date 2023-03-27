@@ -94,7 +94,7 @@ export default defineComponent({
         .patchCategoryApproval(selectedGroup.value.groupAdminId, props.subCategory.id, selection.value)
         .then(() => {
           triggerNotification(t('engagement.feedback-notification'))
-          rl()
+          // rl()
         })
       }
     }

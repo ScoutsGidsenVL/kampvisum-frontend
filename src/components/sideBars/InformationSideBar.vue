@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-lighterGreen md:z-20 md:mt-3 -mb-60" :class="{ 'md:w-99 xs:w-full xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED, 'xs:z-50': sidebar.state === SidebarState.OPEN}">
+  <div class="bg-lighterGreen md:z-20 md:mt-3 -mb-60" :class="{ 'xs:w-full xs:fixed xs:top-0 xs:right-0 xs:h-full': sidebar.state === SidebarState.OPEN, 'w-8 d-flex': sidebar.state === SidebarState.CLOSED, 'xs:z-50': sidebar.state === SidebarState.OPEN}">
     <!-- WHEN CLOSED -->
     <div
       @click="openSideBar()"
@@ -26,9 +26,9 @@
       </div>
     </div>
 
-    <div class="h-screen" :class="{ 'd-flex xs:w-98 md:w-99 p-3 xs:mt-4 md:mt-0 md:top-56 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
-      <div class="md:fixed md:w-98">
-        <div class="xs:w-4/5 flex justify-between">
+    <div class="h-screen" :class="{ 'd-flex md:w-99 p-3 xs:mt-4 md:mt-0 md:top-56 flex-column': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
+      <div>
+        <div class="flex justify-between">
           <div class="flex gap-3">
             <i-info-green :info="'setting the info in the information sidebar and open the information sidebar'" />
             <strong class="text-lg"> Info </strong>
@@ -40,7 +40,7 @@
           </svg>
         </div>
         <slot />
-        <div v-html="info" class="break-words mt-4 text-justify"></div>
+        <div v-html="info" class="mt-4"></div>
       </div>
     </div>
   </div>

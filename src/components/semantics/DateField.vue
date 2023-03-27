@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-pad max-w-sm">
+  <div id="datefield-litepie" class="custom-pad max-w-sm">
     <strong>{{check.checkParent.label}}</strong>
     <div v-if="isWithRange">
       <litepie-datepicker
@@ -109,3 +109,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+#datefield-litepie .pr-12, .px-12 {
+    padding-right: 0rem !important;
+}
+</style>
