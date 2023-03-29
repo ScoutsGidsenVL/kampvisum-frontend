@@ -2,6 +2,9 @@ import RepositoryFactory from '@/repositories/repositoryFactory'
 import AuthRepository from '@/repositories/authRepository'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 import { useOfflineData } from '@/composable/useOfflineData'
+import { ref } from 'vue'
+
+export const isLoggedIn = ref<boolean>(false)
 
 const useAuthHelper = (): {
     logoutFromGA: () => void
@@ -13,6 +16,7 @@ const useAuthHelper = (): {
         clearTokens()
         unsetSelectedGroup()
         unsetMe()
+        window.location.replace('kampvisum-home')
     }
 
     const clearTokens = () => {
@@ -21,7 +25,7 @@ const useAuthHelper = (): {
     }
 
     return {
-        logoutFromGA
+        logoutFromGA,
     }
 }
 

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
-import { OpenIdConnectInterceptors } from 'inuits-vuejs-oidc'
+import { Interceptors } from '../interceptors/Interceptors'
 import MasterConfig from '../models/config/masterConfig'
 import store from '@/store/store'
 import { useNotification } from '../composable/useNotification'
@@ -20,26 +20,38 @@ export default abstract class BaseApiRepository {
     this.axiosInstance = axios.create({
       baseURL: this.baseUrl,
     })
+
     this.publicAxiosInstance = axios.create({
       baseURL: this.baseUrl,
     })
 
-    // Add oidc interceptors
-    if (config.oidc && config.oidc.clientId) {
-      this.axiosInstance.interceptors.request.use(
-        // @ts-ignore
-        OpenIdConnectInterceptors.buildRequestTokenInterceptorCallback(store)
-      )
-
-      this.axiosInstance.interceptors.response.use(
-        function (response: any) {
-          return response
-        },
-        (error: any) => OpenIdConnectInterceptors.buildResponseErrorInterceptorCallback(error, store, this.axiosInstance)
-      )
-    }
+    // Interceptors
+    this.axiosInstance.interceptors.request.use(
+        Interceptors.buildRequestTokenInterceptorCallback(store.getters.keycloak)
+    )
+    
+    this.axiosInstance.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.response && error.response.status === 401) {
+          try {
+            await store.getters.keycloak.updateToken(); // refresh the token
+            const token = store.getters.keycloak.token;
+            if (token) {
+              // retry the failed request with the new token
+              const config = error.config;
+              config.headers.Authorization = `Bearer ${token}`;
+              return this.axiosInstance(config);
+            }
+          } catch (e) {
+            console.error('Failed to refresh token', e);
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
   }
-
+  
   getMinioFile(minioUrl: string) {
     const instance = this.axiosInstance
     return instance

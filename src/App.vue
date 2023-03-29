@@ -1,11 +1,13 @@
 <template>
-  <div id="app">
+  
+  <div v-if="isLoggedIn" id="app">
     <!-- DUMMY NEEDS TO GET REMOVED AND IS ONLY FOR STYLING PURPOSES -->
     <scouts-dummy-bar v-show="!checkIfIsMobileSize()" />
     <base-page class="scouts-bar-padding">
       <div>
         <div class="sticky top-0 pl-4 bg-white z-41 border border-lightGray">
-          <bread-crumb :isInternetActive="isInternetActive" class="md:px-5 md:mx-3" :home="'/kampvisum-home/'" :router="router" :route="route" />
+          <bread-crumb :isInternetActive="isInternetActive" class="md:px-5 md:mx-3" :home="'/kampvisum-home/'"
+            :router="router" :route="route" />
         </div>
         <div class="d-flex">
           <navigation-side-bar class="xs:mr-4 md:mr-0" />
@@ -21,6 +23,11 @@
     </base-page>
     <notification />
   </div>
+  <div v-else class="flex h-screen -mt-40">
+    <div class="m-auto">
+      <loader color="lightGreen" size="20" :isLoading="true" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -30,10 +37,11 @@ import Breadcrumb from './components/semantics/Breadcrumb.vue'
 import Notification from './components/semantics/Notification.vue'
 import { useInternetHelper } from './helpers/internetHelper'
 import { defineComponent } from 'vue'
-import { useRoute } from 'vue-router'
 import router from '@/router'
 import CustomFooter from './components/semantics/CustomFooter.vue'
 import { usePhoneHelper } from './helpers/phoneHelper'
+import { Loader } from 'vue-3-component-library'
+import { isLoggedIn } from './helpers/authHelper'
 
 export default defineComponent({
   name: 'App',
@@ -44,11 +52,10 @@ export default defineComponent({
     NavigationSideBar,
     Notification,
     CustomFooter,
+    Loader
   },
   setup() {
     const { checkIfInternetActive, isInternetActive } = useInternetHelper()
-    const route = useRoute()
-
     checkIfInternetActive()
 
     defineRules()
@@ -58,8 +65,8 @@ export default defineComponent({
     return {
       isInternetActive,
       router,
-      route,
-      checkIfIsMobileSize
+      checkIfIsMobileSize,
+      isLoggedIn
     }
   },
 })

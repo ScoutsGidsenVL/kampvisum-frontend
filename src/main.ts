@@ -2,7 +2,6 @@ import StaticFileRepository from './repositories/staticFileRepository'
 import RepositoryFactory from './repositories/repositoryFactory'
 import AuthRepository from './repositories/authRepository'
 import MasterConfig from './models/config/masterConfig'
-import { OpenIdConnectPlugin } from 'inuits-vuejs-oidc'
 import 'vue-3-component-library/lib/index.css'
 import { createI18n } from 'vue-i18n'
 const VueLuxon = require('vue-luxon')
@@ -12,16 +11,20 @@ import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
 import { useInternetHelper } from './helpers/internetHelper'
-import useAuthHelper  from './helpers/authHelper'
+import useAuthHelper, { isLoggedIn } from './helpers/authHelper'
 import { useOfflineData } from './composable/useOfflineData'
 import Keycloak from 'keycloak-js';
 import getClient from "./keycloak-config";
 import { OnLoadOptionsType } from './keycloak-config'
 
-// import LitepieDatepicker from 'litepie-datepicker'
+declare module 'keycloak-js' {
+  interface KeycloakInstance {
+    parseCallback(url: string): any;
+  }
+}
 const nl = require('./locales/nl.json')
 const { isInternetActive } = useInternetHelper()
-const { logoutFromGA } = useAuthHelper()
+let { logoutFromGA } = useAuthHelper()
 const isOnline = require('is-online')
 const { initDb } = useOfflineData()
 
@@ -51,60 +54,31 @@ isOnline().then((isOnlineResult: any) => {
       })
 
     let configFile = result
-
     configFile = new MasterConfig().deserialize(configFile)
-
-    if (configFile.oidc && configFile.oidc.baseUrl && configFile.oidc.clientId) {
-      // @ts-ignore
-      app.use(OpenIdConnectPlugin, {
-        store: store,
-        router: router,
-        configuration: {
-          baseUrl: configFile.oidc.baseUrl,
-          serverBaseUrl: configFile.oidc.serverBaseUrl,
-          authEndpoint: configFile.oidc.authEndpoint ? configFile.oidc.authEndpoint : 'auth',
-          logoutEndpoint: configFile.oidc.logoutEndpoint ? configFile.oidc.logoutEndpoint : 'logout',
-          clientId: configFile.oidc.clientId,
-          authorizedRedirectRoute: '/',
-          serverTokenEndpoint: 'token/',
-          serverRefreshEndpoint: 'refresh/',
-          InternalRedirectUrl: configFile.oidc.internalRedirectUrl ? configFile.oidc.internalRedirectUrl : '/',
-        },
-      })
-    }
-
     store.dispatch('setConfig', configFile)
-    const config: MasterConfig = store.getters.config
 
-    let redirectUrl = sessionStorage.getItem('redirectUrl')
-    if (!redirectUrl) {
-      sessionStorage.setItem('redirectUrl', window.location.pathname)
-    }
-
-    let params = new URL(document.location.toString()).searchParams
-    let code = params.get('code')
-    
-    if (!store.getters.isLoggedIn && code) {
-      await store.dispatch('fetchTokens', code).then(() => {
-        window.location.replace(`${config.frontend.baseUrl}/kampvisum-home`)
-      })
-    } else {
-      await RepositoryFactory.get(AuthRepository)
-            .me()
-            .then((user: any) => {
-              store.dispatch('setUser', user)
-            }).catch((error) => {
-              console.log('error: ', error);
-            })
-    }
-
+    // KEYCLOAK
     let initOptions = getClient();
     const keycloak = Keycloak(initOptions);
-    keycloak.init({onLoad: initOptions.onLoad as OnLoadOptionsType})
+    keycloak.init({ onLoad: initOptions.onLoad as OnLoadOptionsType })
+
+    store.dispatch('setKeycloak', keycloak)
+
     keycloak.onAuthLogout = function () {
       logoutFromGA()
     }
 
+    keycloak.onAuthSuccess = async function () {
+      RepositoryFactory.get(AuthRepository)
+      .me()
+      .then((user: any) => {
+        store.dispatch('setUser', user)
+        isLoggedIn.value = true
+      }).catch((error) => {
+        console.log('error: ', error);
+      })
+    }
+    
     app.use(router).use(store).mount('#app')
   })
 })

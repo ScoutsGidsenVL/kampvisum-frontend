@@ -17,7 +17,7 @@ export class CampVisumRepository extends BaseRepository {
     const { getVisums } = useOfflineData()
     const { selectedGroup, selectedYear } = useGroupAndYears()
 
-    if (isInternetActive.value) {
+    if (isInternetActive.value && groupId) {
       return this.get(groupId, this.endpoint + (pagination ? pagination : ""), {}).then((response: ArrayResult) => {
         const array: any[] = []
         if (response?.results) {

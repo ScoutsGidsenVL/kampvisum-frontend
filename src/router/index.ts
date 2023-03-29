@@ -10,7 +10,6 @@ import SettingsOverview from '@/views/SettingsOverview.vue'
 import PassportOverview from '@/views/PassportOverview.vue'
 import KampvisumHome from '@/views/KampvisumHome.vue'
 import CampOverview from '@/views/CampOverview.vue'
-import StartView from '@/components/start.vue'
 import TestCallsVue from '@/views/TestCalls.vue'
 import DcOverview from '@/views/DcOverview.vue'
 
@@ -20,11 +19,6 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/test', 
     name: 'Test calls', 
     component: TestCallsVue
-  },
-  {
-    path: '/start',
-    name: 'Start',
-    component: StartView,
   },
   {
     path: '/kampvisum-home',
@@ -159,9 +153,9 @@ const routes: Array<RouteRecordRaw> = [
   }
 ]
 
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
 })
-
 export default router
