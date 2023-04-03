@@ -25,7 +25,7 @@
       </div>
 
       <div class="pr-2 flex gap-5">
-        <custom-button-small :text="t('logout')" type="button" class="text-white" @click="logout()"></custom-button-small>
+        <custom-button-small class="fixed text-white right-10 top-2 md:right-20" :text="t('logout')" type="button" @click="logout()"></custom-button-small>
         <!-- WIFI ON  -->
         <svg v-if="isInternetActive" class="fill-current text-green" xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24" width="24px" height="24px">

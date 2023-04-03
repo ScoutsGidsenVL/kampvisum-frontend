@@ -111,7 +111,7 @@ export default defineComponent({
 </script>
 
 <style>
-#datefield-litepie .pr-12, .px-12 {
+.pr-12, .px-12 {
     padding-right: 0rem !important;
 }
 </style>
