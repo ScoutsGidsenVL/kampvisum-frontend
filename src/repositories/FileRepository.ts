@@ -34,17 +34,12 @@ export class FileRepository extends BaseRepository {
     })
   }
 
-  getBase = (): string => {
-    const config: MasterConfig = store.getters.config
-    return `${config.minio.baseUrl}/${config.minio.storageBucketName}`
-  }
-
   getPresignedPost = async (fileName: string): Promise<PresignedPost> => {
     return this.postWithoutGroupId('files/s3/presigned_url_post', { name: fileName })
   }
 
-  uploadToPresignedPost = async (formData: FormData): Promise<any> => {
-    return await axios.post(`${this.getBase()}`, formData);
+  uploadToPresignedPost = async (url: string, formData: FormData): Promise<any> => {
+    return await axios.post(url, formData);
   }
 
   //FUNCTION TO COUPLE IT TOWARDS A CHECK
@@ -59,8 +54,7 @@ export class FileRepository extends BaseRepository {
     presignedFormData.append('x-amz-date', presignedPost.fields['x-amz-date'])
     presignedFormData.append('policy', presignedPost.fields.policy)
     presignedFormData.append('x-amz-signature', presignedPost.fields['x-amz-signature'])
-
-    await this.uploadToPresignedPost(presignedFormData)
+    await this.uploadToPresignedPost(presignedPost.url, presignedFormData)
 
     const config = {
       headers: {
