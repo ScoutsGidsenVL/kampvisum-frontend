@@ -5,6 +5,7 @@ import { ref, Ref, watch } from 'vue'
 import store from '../store/store'
 import useVisum from './useVisum'
 import { useDateHelper } from '@/helpers/dateHelper'
+import UserModel from '@/models/userModel'
 
 const years = ref<Array<string>>([])
 const isFetchingYears = ref<boolean>(false)
@@ -57,6 +58,9 @@ const useGroupAndYears = (): {
   const setSelectedGroup = (group: Group, backToHome: boolean = true) => {
     selectedGroup.value = group
     getVisums(selectedGroup.value, selectedYear.value)
+    let user: UserModel = store.getters.user
+    user.permissions = user.groupsPermissions[group.groupAdminId]
+    store.dispatch('setUser', user)
     return group
   }
 

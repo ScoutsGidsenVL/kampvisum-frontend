@@ -19,13 +19,14 @@
       />
     </div>
 
-    <div v-if="can(check.checkParent.requiresPermission) && check.value.participants.length === 0" class="text-left pl-3 mt-3">
-      
-      <p v-if="check.value.count > 0 && check.value.participants.length === 0" class="italic">{{ t('checks.participant-check.hidden') }}</p>
-      <p v-else class="italic">{{ !check.checkParent.isMultiple ? t('checks.participant-check.no-member') : t('checks.participant-check.no-members') }}</p>
+    <div v-if="can(check.checkParent.requiresPermission)" class="text-left pl-3 mt-3">
+      <p v-if="check.value.count === 0" class="italic">{{ !check.checkParent.isMultiple ? t('checks.participant-check.no-member') : t('checks.participant-check.no-members') }}</p>
     </div>
-
-    <div v-if="can(check.checkParent.requiresPermission) && !(check.value.count > 0 && check.value.participants.length === 0)" class="flex pl-3">
+    <div v-else>
+      <p class="italic">{{ t('checks.participant-check.hidden') }}</p>
+    </div>
+{{ check.checkParent.requiresPermission }}
+    <div v-if="can(check.checkParent.requiresPermission)" class="flex pl-3">
       <div class="xs:w-100 md:w-40">
         <custom-button-small
           @click="openMemberSidebar()"

@@ -12,7 +12,8 @@ export default class UserModel implements ResponsibleMember {
     public birthDate: string,
     public phoneNumber: string,
     public scoutsGroups: Group[],
-    public groups: Array<string>
+    public groups: Array<string>,
+    public groupsPermissions: any
   ) {
     return this
   }
@@ -28,7 +29,8 @@ export default class UserModel implements ResponsibleMember {
       input.birth_date,
       input.phone_number ? input.phone_number.replace(/ /g, '') : undefined,
       input.scouts_groups.map((group: any) => GroupDeserializer(group)),
-      input.groups
+      input.groups,
+      input.scouts_groups_permissions
     )
   }
 }
