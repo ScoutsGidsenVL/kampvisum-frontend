@@ -277,6 +277,7 @@ export default defineComponent({
 
     const changedFilters = (f: Filter) => {
       filter.value = f
+      filter.value.type = props.check.value.participantCheckType
     }
 
     watch(() => props.sideBarState, () => {
