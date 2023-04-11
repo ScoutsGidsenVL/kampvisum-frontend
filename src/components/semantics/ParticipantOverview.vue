@@ -25,7 +25,6 @@
     <div v-else>
       <p class="italic">{{ t('checks.participant-check.hidden') }}</p>
     </div>
-{{ check.checkParent.requiresPermission }}
     <div v-if="can(check.checkParent.requiresPermission)" class="flex pl-3">
       <div class="xs:w-100 md:w-40">
         <custom-button-small
