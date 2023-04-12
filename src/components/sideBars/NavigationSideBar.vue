@@ -50,7 +50,7 @@
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
             <navigation-item v-if="can('visums.view_camp_locations') && isInternetActive" link="/locaties" text="Locaties"/>
             <navigation-item v-if="hasRole('role_district_commissioner') && isInternetActive" link="/overzicht-dc" text="Overzicht DC"/>
-            <!-- <navigation-item v-if="isInternetActive" link="/locaties" text="Locaties"/> -->
+            <navigation-item v-if="isInternetActive" link="/locaties" text="Locaties"/>
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
           </div>
         </div>
