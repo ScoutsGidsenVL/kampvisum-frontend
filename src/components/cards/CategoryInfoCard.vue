@@ -3,14 +3,14 @@
     <div class="z-2">
       <h2 class="mb-3 mt-0 text-xl font-semibold font-museo">{{ category.categoryParent.label }}</h2>
       <div v-if="
-        selectedGroup.isDistrictCommissioner 
+        (selectedGroup.isDistrictCommissioner || selectedGroup.isGroupLeader || selectedGroup.isSectionLeader) 
         && visum.engagement.leaders 
         && visum.engagement.groupLeaders" class="font-bold bg-lighterGreen p-2 -m-2" style="width:fit-content">DC</div>
 
       <div style="width:fit-content" @click.stop="navigateTowardsSubCategory(category, subCategory)" v-for="subCategory in category.subCategories" :key="subCategory" class="d-flex gap-3 my-2.5 items-center group">
         <!-- DC CHECKS -->
         <div v-if="
-        selectedGroup.isDistrictCommissioner 
+        (selectedGroup.isDistrictCommissioner || selectedGroup.isGroupLeader || selectedGroup.isSectionLeader) 
         && visum.engagement.leaders 
         && visum.engagement.groupLeaders" class="bg-lighterGreen p-2 -m-2">
           <i-checked v-if="subCategory.approval === StatusFeedbackState.APPROVED" />
