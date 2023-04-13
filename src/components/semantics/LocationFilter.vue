@@ -29,7 +29,7 @@
               <input  v-model="filter.groupNumber" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">            
             </div>
             <div class="flex flex-col justify-end pb-2">
-              <custom-button-small class="w-100" :extraStyle="'w-100'" @click="filtersChanged()" :isSubmitting="false" :text="t('location-overview.filters.search')"></custom-button-small>
+              <custom-button-small :disabled="!filter.groupNumber" class="w-100" :class="!filter.groupNumber ? 'opacity-50' : ''" :extraStyle="'w-100'" @click="filtersChanged()" :isSubmitting="false" :text="t('location-overview.filters.search')"></custom-button-small>
             </div>
             <div class="flex flex-col justify-end pb-3">
               <cross v-if="filter.year || filter.startDate || filter.endDate || filter.groupNumber" @click="clearFilters()" class="cursor-pointer" />

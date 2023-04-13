@@ -93,6 +93,20 @@ export default abstract class BaseApiRepository {
       })
   }
 
+  protected async getWithoutGroupId(endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
+    const instance = publicCall && !store.getters['openid/isLoggedIn'] ? this.publicAxiosInstance : this.axiosInstance
+    return await instance
+      .get(endpoint, config)
+      .then(function (result: AxiosResponse) {
+        isForbidden.value = false
+        // Only return the data of response
+        return result.data
+      })
+      .catch((error: any) => {
+        return this.processError(error)
+      })
+  }
+
   protected post(groupId: string, endpoint: string, data: any, config: AxiosRequestConfig = {}): Promise<any> {
     return this.axiosInstance
       .post(this.parseEndpoint(groupId, endpoint), data, config)

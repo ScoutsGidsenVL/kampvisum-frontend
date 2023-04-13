@@ -8,11 +8,11 @@
       {{ dateFromLocalisedString(location.start_date) }} - {{ dateFromLocalisedString(location.end_date) }}
     </div>
 
-    <div>
+    <div v-if="location?.group?.full_name">
       {{location.group.full_name}}
     </div>
 
-    <div>
+    <div v-if="location?.name">
       {{location.name}}
     </div>
 
