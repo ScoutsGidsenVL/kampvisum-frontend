@@ -49,7 +49,7 @@ import DcMenuItem from '@/components/semantics/DcMenuItem.vue'
 const props = defineProps({
   group: Object as PropType<any>
 })
-const isMenuOpen = ref<boolean>(true)
+const isMenuOpen = ref<boolean>(false)
 const { checkIfIsMobileSize } = usePhoneHelper()
 const { t } = useI18n({
   inheritLocale: true,
