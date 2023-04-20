@@ -1,5 +1,6 @@
 <template>
-  <div v-show="!checkIfIsMobileSize()" class="w-full border-b py-2 grid grid-cols-5 gap-4 px-2 hover:opacity-30 cursor-pointer" @click="nav(camp.id)">
+  <div v-show="!checkIfIsMobileSize()"
+    class="w-full border-b py-2 grid grid-cols-5 gap-4 px-2 hover:opacity-30 cursor-pointer" @click="nav(camp.id)">
     <div>
       {{ camp.name }}
     </div>
@@ -11,8 +12,14 @@
     <div>
       {{ getSectionsTitle(camp) }}
     </div>
-    <div>
-      {{ camp.camp_deadline }}
+    <div class="flex">
+      <div v-if="camp.registration_status === 'late'">
+        <i-check-warning />
+      </div>
+      <div v-if="camp.registration_status === 'on_time'">
+        <i-checked />
+      </div>
+      <div v-if="camp.registration_status === 'not_completed'"></div>
     </div>
     <div>
       {{ stateLabel(camp.state) }}
@@ -37,12 +44,20 @@
 
     <div class="flex gap-3">
       <div class="font-bold">{{ t('dc-overview.camp-registration') }}:</div>
-      <div>{{ camp.camp_deadline }}</div>
+      <div class="flex">
+        <div v-if="camp.registration_status === 'late'">
+          <i-check-warning />
+        </div>
+        <div v-if="camp.registration_status === 'on_time'">
+          <i-checked />
+        </div>
+        <div v-if="camp.registration_status === 'not_completed'"></div>
+      </div>
     </div>
 
     <div class="flex gap-3">
       <div class="font-bold">{{ t('dc-overview.camp-status') }}:</div>
-      <div>{{ showTextLabel(camp.state) }}</div>
+      <div>{{ stateLabel(camp.state) }}</div>
     </div>
   </div>
 </template>
@@ -54,6 +69,8 @@ import { usePhoneHelper } from '@/helpers/phoneHelper'
 import { useSectionsHelper } from '@/helpers/sectionsHelper';
 import { PropType } from 'vue';
 import { useI18n } from 'vue-i18n'
+import IChecked from '@/components/icons/IChecked.vue'
+import ICheckWarning from '../icons/ICheckWarning.vue'
 import router from '@/router'
 const { getSectionsTitle } = useSectionsHelper()
 const { dateFromLocalisedString } = useDateHelper()
@@ -81,35 +98,45 @@ const nav = (id: string) => {
 
 const stateLabel = (state: string): string => {
 
+  if (state === 'APPROVED' || (state === 'FEEDBACK_HANDLED' && props.camp.engagement?.districtCommisioner)) {
+    return 'Kamp goedgekeurd'
+  }
 
-  if (state === 'DATA_REQUIRED') {
-    return 'Kamp in opbouw'
+  console.log('PROPS: ', props.camp)
+
+  if (props.camp.engagement?.leaders && props.camp.engagement.groupLeaders) {
+    return 'Kamp klaar voor DC'
   }
-  if (state === 'SIGNABLE') {
-    return 'Klaar om te tekenen'
-  }
-  if (state === 'NOT_SIGNABLE') {
-    return 'Kamp afgekeurd'
-  }
-  if (state === 'REVIEWABLE') {
-    return 'Klaar voor review'
-  }
-  if (state === 'REVIEWED_APPROVED') {
-    return 'Klaar om te tekenen'
-  }
-  if (state === 'REVIEWED_FEEDBACK') {
-    return 'Feedback bekeken'
-  }
-  if (state === 'REVIEWED_DISAPPROVED') {
-    return 'Kamp afgekeurd'
-  }
-  if (state === 'FEEDBACK_HANDLED') {
-    return 'Feedback verwerkt'
-  }
-  if (state === 'APPROVED') {
-    return 'Goedgekeurd'
-  }
-  return 'Kamp in opbouw'
+
+  // if (state === 'DATA_REQUIRED') {
+  //   return 'Kamp in opbouw'
+  // }
+  // if (state === 'SIGNABLE') {
+  //   return 'Klaar om te tekenen'
+  // }
+  // if (state === 'NOT_SIGNABLE') {
+  //   return 'Kamp afgekeurd'
+  // }
+  // if (state === 'REVIEWABLE') {
+  //   return 'Klaar voor review'
+  // }
+  // if (state === 'REVIEWED_APPROVED') {
+  //   return 'Klaar om te tekenen'
+  // }
+  // if (state === 'REVIEWED_FEEDBACK') {
+  //   return 'Feedback bekeken'
+  // }
+  // if (state === 'REVIEWED_DISAPPROVED') {
+  //   return 'Kamp afgekeurd'
+  // }
+  // if (state === 'FEEDBACK_HANDLED') {
+  //   return 'Feedback verwerkt'
+  // }
+  // if (state === 'APPROVED') {
+  //   return 'Goedgekeurd'
+  // }
+
+  // return 'Kamp in opbouw'
 }
 
 const { checkIfIsMobileSize } = usePhoneHelper()
