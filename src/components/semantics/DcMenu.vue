@@ -4,7 +4,7 @@
       <!-- TITLE -->
       <div class="w-full flex items-center gap-3">
         <slot name="title-icon" />
-        <span class="text-lg font-bold">{{ group.groupAdminId }}</span>
+        <span class="text-lg font-bold">{{ group.group }}</span>
       </div>
 
       <!-- CHEVONS -->
@@ -33,7 +33,7 @@
           {{ t('dc-overview.camp-status') }}
         </div>
       </div>
-      <dc-menu-item v-for="(camp, index) in group?.value" :key="index" :camp="camp"></dc-menu-item>
+      <dc-menu-item v-for="(camp, index) in group.camps" :key="index" :camp="camp"></dc-menu-item>
     </div>
   </div>
 </template>

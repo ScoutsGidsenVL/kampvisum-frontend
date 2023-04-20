@@ -2,6 +2,12 @@
   <div class="text-center">
     <loader color="lightGreen" size="20" :isLoading="!groups" />
   </div>
+
+  <div class="flex flex-col w-32 ml-3 mt-5">
+    <span class="text-base font-bold" >{{t('location-overview.filters.year')}}</span>
+    <input  v-model="selectedYear" class="appearance-none border rounded py-2 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+  </div>
+
   <div id="container" class="p-3 flex flex-col gap-5">
     <div class="flex flex-column gap-4">
       <dc-menu v-for="(group, index) in groups" :key="index" :group="group" />
@@ -15,7 +21,14 @@ import { useI18n } from 'vue-i18n'
 import { Loader } from 'vue-3-component-library'
 import { DcOverviewRepository } from '@/repositories/DcOverviewRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import useGroupAndYears from '@/composable/useGroupAndYears'
+import MultiSelect from '../components/inputs/MultiSelect.vue'
+const { years, getYearsForGroup } = useGroupAndYears()
+const selectedYear = ref<string>(new Date().getFullYear().toString())
+
+
+getYearsForGroup('X9002G')
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -24,7 +37,13 @@ const { t } = useI18n({
 
 const groups = ref<any>([])
 
-RepositoryFactory.get(DcOverviewRepository).getSingle().then((result) => {
+RepositoryFactory.get(DcOverviewRepository).getSingle(selectedYear.value).then((result) => {
   groups.value = result
+})
+
+watch(selectedYear, () => {
+  RepositoryFactory.get(DcOverviewRepository).getSingle(selectedYear.value).then((result) => {
+    groups.value = result
+  })
 })
 </script>
