@@ -97,14 +97,15 @@ const nav = (id: string) => {
 }
 
 const stateLabel = (state: string): string => {
+  if (state === 'NOT_SIGNABLE') {
+    return 'Kamp afgekeurd'
+  }
 
   if (state === 'APPROVED' || (state === 'FEEDBACK_HANDLED' && props.camp.engagement?.districtCommisioner)) {
     return 'Kamp goedgekeurd'
   }
 
-  console.log('PROPS: ', props.camp)
-
-  if (props.camp.engagement?.leaders && props.camp.engagement.groupLeaders) {
+  if (props.camp.engagement?.leaders && props.camp.engagement.group_leaders) {
     return 'Kamp klaar voor DC'
   }
 
@@ -114,9 +115,7 @@ const stateLabel = (state: string): string => {
   // if (state === 'SIGNABLE') {
   //   return 'Klaar om te tekenen'
   // }
-  // if (state === 'NOT_SIGNABLE') {
-  //   return 'Kamp afgekeurd'
-  // }
+  
   // if (state === 'REVIEWABLE') {
   //   return 'Klaar voor review'
   // }
@@ -136,7 +135,7 @@ const stateLabel = (state: string): string => {
   //   return 'Goedgekeurd'
   // }
 
-  // return 'Kamp in opbouw'
+  return 'Kamp in opbouw'
 }
 
 const { checkIfIsMobileSize } = usePhoneHelper()
