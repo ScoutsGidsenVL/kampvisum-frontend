@@ -47,8 +47,6 @@
           />
         </div>
 
-        {{ values }}
-
         <div class="mt-5 py-4 sticky bottom-0 bg-white pl-3" style="margin-left: -20px; margin-right: -20px">
           <custom-button :isSubmitting="isSubmitting" :text="sideBarState.state === 'edit' ? t('pages.settings.sections.sidebar.edit') : t('sidebars.kampvisum-sidebar.buttons.add')" />
         </div>
