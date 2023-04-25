@@ -29,7 +29,6 @@
               <div class="text-center">
                 <loader color="lightGreen" size="10" :isLoading="isFetchingVisums" />
               </div>
-              <!-- {{route.params}} -->
               <div  v-if="visumsAlphabetically.length > 0">
                 <div v-for="visum in visumsAlphabetically" :key="visum">
                   <navigation-item :visum="visum" :text="`${visum.name} - ${getSectionsTitle(visum)}`">
@@ -48,9 +47,9 @@
 
             <navigation-item v-if="!isForbidden && !isFetchingVisums && isInternetActive" @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
-            <navigation-item v-if="can('visums.view_camp_locations') && isInternetActive" link="/locaties" text="Locaties"/>
-            <navigation-item v-if="hasRole('role_district_commissioner') && isInternetActive" link="/overzicht-dc" text="Overzicht DC"/>
-            <navigation-item v-if="isInternetActive" link="/locaties" text="Locaties"/>
+            <navigation-item @click="closeSidebar()" v-if="can('visums.view_camp_locations') && isInternetActive" link="/locaties" text="Locaties"/>
+            <navigation-item @click="closeSidebar()" v-if="hasRole('role_district_commissioner') && isInternetActive" link="/overzicht-dc" text="Overzicht DC"/>
+            <navigation-item @click="closeSidebar()" v-if="hasRole('role_administrator') &&isInternetActive" link="/locaties" text="Locaties"/>
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
           </div>
         </div>

@@ -1,5 +1,6 @@
 <template>
-  <div class="p-3">
+  <div v-if="hasRole('role_administrator')">
+    <div class="p-3">
     <location-filter-component @changedFilters="changedFilters($event)" />
   </div>
   <div class="p-3">
@@ -10,6 +11,7 @@
         </div>
       </template>
     </camps-overview-map>
+  </div>
   </div>
 </template>
 
@@ -22,6 +24,7 @@ import { Loader } from 'vue-3-component-library'
 import { defineComponent, ref } from 'vue'
 import LocationFilterComponent from '../components/semantics/LocationFilter.vue'
 import useGroupAndYears from '@/composable/useGroupAndYears'
+import { usePermission } from '@/composable/usePermission'
 const d = new Date()
     let year = d.getFullYear();
 export default defineComponent({
@@ -37,6 +40,7 @@ export default defineComponent({
     const campLocations = ref<any>([])
     const isFetchingCampLocations = ref<boolean>(false)
     const { selectedGroup } = useGroupAndYears()
+    const { hasRole } = usePermission()
 
     const changedFilters = (f: LocationFilter) => {
       filters.value = f
@@ -59,7 +63,8 @@ export default defineComponent({
       changedFilters,
       filters,
       campLocations,
-      isFetchingCampLocations
+      isFetchingCampLocations,
+      hasRole
     }
   }
 })
