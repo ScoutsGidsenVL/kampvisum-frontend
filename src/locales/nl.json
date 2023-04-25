@@ -280,11 +280,11 @@
   "logout": "log uit",
   "duplicate_camp_responsible": "Dubbele kampverantwoordelijken!",
   "dc-overview": {
-    "name": "Naam",
-    "dates": "Datums",
-    "sections": "Takken",
-    "camp-registration": "Kampregristratie",
-    "camp-status": "Status kamp"
+    "name": "Kamp",
+    "dates": "Datum",
+    "sections": "Tak",
+    "camp-registration": "Kampregistratie",
+    "camp-status": "Status"
   },
   "page-footer": {
     "back": "Terug naar overzicht",
