@@ -22,7 +22,7 @@
     </div>
 
     <div style="margin-bottom: -10000px;" class="sticky h-screen"
-      :class="{ 'd-flex md:w-99 p-3 xs:mt-4 md:mt-0 flex-column md:top-5': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
+      :class="{ 'd-flex md:w-99 p-3 xs:mt-4 md:mt-0 flex-column md:top-12': sidebar.state === SidebarState.OPEN, 'd-none': sidebar.state === SidebarState.CLOSED }">
       <div>
         <div class="flex justify-between">
           <div class="flex gap-3">
