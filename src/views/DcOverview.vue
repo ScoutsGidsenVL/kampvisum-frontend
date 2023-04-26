@@ -22,13 +22,8 @@ import { Loader } from 'vue-3-component-library'
 import { DcOverviewRepository } from '@/repositories/DcOverviewRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { ref, watch } from 'vue'
-import useGroupAndYears from '@/composable/useGroupAndYears'
-import MultiSelect from '../components/inputs/MultiSelect.vue'
-const { years, getYearsForGroup } = useGroupAndYears()
 const selectedYear = ref<string>(new Date().getFullYear().toString())
 
-
-getYearsForGroup('X9002G')
 
 const { t } = useI18n({
   inheritLocale: true,
