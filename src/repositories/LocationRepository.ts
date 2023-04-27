@@ -40,6 +40,11 @@ export class LocationRepository extends BaseRepository {
       filterParams = { ...filterParams, ...{ group: filters.groupNumber } }
     }
 
+    if (!filters.groupNumber) {
+      filterParams = { ...filterParams, ...{ group: 'any' } }
+    }
+
+    console.log('FILTERSS...,', filterParams)
     return this.getWithoutGroupId(`/visums${this.endpoint}`, { params: filterParams }).then((response: any) => {
       return response
     })
