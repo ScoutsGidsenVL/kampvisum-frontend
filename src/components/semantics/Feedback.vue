@@ -1,7 +1,6 @@
 <template>
   <div class="p-3 bg-lighterGreen border-l-4 border-lightGreen">
     <strong>{{t('engagement.feedback')}}</strong>
-    
     <div>
       <custom-input @changedTextArea="changedTextArea($event)" textAreaWidth="w-100 w-100" :type="InputTypes.TEXT_AREA" :name="'feedback'" />
     </div>
@@ -88,15 +87,18 @@ export default defineComponent({
     const selection = ref<string>(props.subCategory.approval ? props.subCategory.approval : StatusFeedbackState.UNDECIDED)
 
     const select = (v: StatusFeedbackState) => {
-      selection.value = v
-      if (props.subCategory.id) {
-        RepositoryFactory.get(CampVisumRepository)
-        .patchCategoryApproval(selectedGroup.value.groupAdminId, props.subCategory.id, selection.value)
-        .then(() => {
-          triggerNotification(t('engagement.feedback-notification'))
-          // rl()
-        })
+      if (props.visum.state !== 'APPROVED') {
+        selection.value = v
+          if (props.subCategory.id) {
+            RepositoryFactory.get(CampVisumRepository)
+            .patchCategoryApproval(selectedGroup.value.groupAdminId, props.subCategory.id, selection.value)
+            .then(() => {
+              triggerNotification(t('engagement.feedback-notification'))
+              rl()
+            })
+          }
       }
+      
     }
 
     watch(

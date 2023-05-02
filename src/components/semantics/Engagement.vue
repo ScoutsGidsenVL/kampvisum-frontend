@@ -154,7 +154,7 @@ export default defineComponent({
         }
       } else {
           VisumHandleFeedbackGlobal()
-      } 
+      }
     }
 
     const VisumHandleFeedbackGlobal = () => {
@@ -164,7 +164,6 @@ export default defineComponent({
           isSigning.value = false
           hideWarning()
           getEngagementState()
-          rl()
         })
       }
     }
@@ -174,6 +173,7 @@ export default defineComponent({
       .getById(selectedGroup.value.groupAdminId, props.visum.engagement.id)
       .then((response: Engagement) => {
         visum.value.engagement = response
+        rl()
       })
     }
 

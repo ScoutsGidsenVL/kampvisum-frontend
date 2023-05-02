@@ -15,7 +15,7 @@
       </div>
       <deadlines-sidebar :visum="visum" :sidebar="sidebar" :isOverflowHidden="true" v-on:closeSidebar="closeSidebar()" v-on:openSidebar="openSidebar()" />
     </div>
-    <engagement  @rl="rl($event)" :visum="visum" />
+    <engagement  @rl="rl()" :visum="visum" />
 
     <custom-button class="w-100 bg-green" @click.stop="navigateTowardsPassport(visum.id)" :extraStyle="'w-100'" :text="t('passport.view-passport')">
     </custom-button>
@@ -94,6 +94,7 @@ export default defineComponent({
     }
 
     const rl = () => {
+      visum.value = undefined
       getCampByRouteParam().then((v: Visum) => {
         visum.value = v
         isFetchingVisum.value = false
