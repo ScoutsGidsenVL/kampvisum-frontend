@@ -2,7 +2,7 @@
   <div>
     <!-- SIGNABLE -->
     <div class="xs:w-100 md:w-80 mt-3" v-if="
-    (visum.state === VisumStates.SIGNABLE || visum.state === VisumStates.DATA_REQUIRED || visum.state === VisumStates.FEEDBACK_HANDLED) &&
+    (visum.state === VisumStates.SIGNABLE || visum.state === VisumStates.DATA_REQUIRED || visum.state === VisumStates.FEEDBACK_HANDLED || VisumStates.REVIEWED_FEEDBACK) &&
     (
       !visum.engagement.leaders && selectedGroup.isSectionLeader ||
       !visum.engagement.groupLeaders && selectedGroup.isGroupLeader ||

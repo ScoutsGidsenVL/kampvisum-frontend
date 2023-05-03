@@ -54,23 +54,27 @@ const useVisum = (): {
       return 'DISAPPROVED'
     }
 
-    let feedbackFlag = false
-
-    //Check if subcategory has feedback state
-    visum.categorySet.categories.forEach((cat: Category) => {
-      //@ts-ignore @Ricardo, check typing base interfaces
-      cat.subCategories && cat.subCategories.forEach((subCat: SubCategory) => {
-        console.log('sub cat feedback: ', subCat.approval)
-        if (subCat.approval === 'N') {
-          console.log('FEEDBACK!!!')
-          feedbackFlag = true
-        }
-      })
-    })
-
-    if (feedbackFlag) {
+    if (visum.state === VisumStates.REVIEWED_FEEDBACK) {
       return 'FEEDBACK'
-    } 
+    }
+
+    // let feedbackFlag = false
+
+    // //Check if subcategory has feedback state
+    // visum.categorySet.categories.forEach((cat: Category) => {
+    //   //@ts-ignore @Ricardo, check typing base interfaces
+    //   cat.subCategories && cat.subCategories.forEach((subCat: SubCategory) => {
+    //     console.log('sub cat feedback: ', subCat.approval)
+    //     if (subCat.approval === 'N') {
+    //       console.log('FEEDBACK!!!')
+    //       feedbackFlag = true
+    //     }
+    //   })
+    // })
+
+    // if (feedbackFlag) {
+    //   return 'FEEDBACK'
+    // } 
 
     //If camp is accepted show green badge
     if (visum.state === VisumStates.APPROVED || (visum.state === VisumStates.FEEDBACK_HANDLED && visum.engagement?.districtCommisioner)) {

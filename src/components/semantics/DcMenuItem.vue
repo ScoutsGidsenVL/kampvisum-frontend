@@ -101,6 +101,10 @@ const stateLabel = (state: string): string => {
     return 'Kamp afgekeurd'
   }
 
+  if (state === 'REVIEWED_FEEDBACK') {
+    return 'Kamp met feedback'
+  }
+
   if (state === 'APPROVED' || (state === 'FEEDBACK_HANDLED' && props.camp.engagement?.districtCommisioner)) {
     return 'Kamp goedgekeurd'
   }
@@ -121,9 +125,6 @@ const stateLabel = (state: string): string => {
   // }
   // if (state === 'REVIEWED_APPROVED') {
   //   return 'Klaar om te tekenen'
-  // }
-  // if (state === 'REVIEWED_FEEDBACK') {
-  //   return 'Feedback bekeken'
   // }
   // if (state === 'REVIEWED_DISAPPROVED') {
   //   return 'Kamp afgekeurd'
