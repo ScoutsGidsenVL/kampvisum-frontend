@@ -1,21 +1,8 @@
-import MasterConfig from '@/models/config/masterConfig';
+import useGroupAndYears from '@/composable/useGroupAndYears';
 import { BaseRepository } from '@/repositories/baseRepository';
 import { FileDeserializer, FileItem } from '@/serializer/FileItem';
-import store from '@/store/store'
-import axios from 'axios'
-export interface PresignedPost {
-  "url": string,
-  "directory_path": string,
-  "original_name": string,
-  "fields": {
-    "key": string,
-    "x-amz-algorithm": string,
-    "x-amz-credential": string,
-    "x-amz-date": string,
-    "policy": string,
-    "x-amz-signature": string
-  }
-}
+
+const { selectedGroup } = useGroupAndYears();
 
 export class FileRepository extends BaseRepository {
   id = '/files/'
@@ -34,39 +21,15 @@ export class FileRepository extends BaseRepository {
     })
   }
 
-  getPresignedPost = async (fileName: string): Promise<PresignedPost> => {
-    return this.postWithoutGroupId('files/s3/presigned_url_post', { name: fileName })
-  }
-
-  uploadToPresignedPost = async (url: string, formData: FormData): Promise<any> => {
-    return await axios.post(url, formData);
-  }
-
-  //FUNCTION TO COUPLE IT TOWARDS A CHECK
-
-  public uploadFile = async (groupID: string, file: any): Promise<FileItem> => {
-    const presignedPost = await this.getPresignedPost(file.name)
-    const presignedFormData = new FormData()
-    presignedFormData.append('file', file)
-    presignedFormData.append('key', presignedPost.fields.key)
-    presignedFormData.append('x-amz-algorithm', presignedPost.fields['x-amz-algorithm'])
-    presignedFormData.append('x-amz-credential', presignedPost.fields['x-amz-credential'])
-    presignedFormData.append('x-amz-date', presignedPost.fields['x-amz-date'])
-    presignedFormData.append('policy', presignedPost.fields.policy)
-    presignedFormData.append('x-amz-signature', presignedPost.fields['x-amz-signature'])
-    await this.uploadToPresignedPost(presignedPost.url, presignedFormData)
+  public uploadFile(groupID: string, file: any): Promise<FileItem> {
+    const fd = new FormData()
+    fd.append('file', file)
 
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
       },
     }
-
-    const fd = new FormData()
-    fd.append('file', file)
-    fd.append('directory_path', presignedPost.directory_path)
-    fd.append('original_name', presignedPost.original_name)
-
     return this.post(groupID, this.endpoint, fd, config).then((response: any) => {
       return FileDeserializer(response)
     }).catch((error: any) => {

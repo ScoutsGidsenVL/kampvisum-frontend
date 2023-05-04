@@ -105,8 +105,8 @@ export default defineComponent({
       if (isInternetActive.value) {
         RepositoryFactory.get(FileRepository)
         .getById(selectedGroup.value.groupAdminId, id)
-          .then((presignedUrl: string) => {
-          window.open(presignedUrl, '_blank');          
+        .then((minioData: { url: string}) => {
+          window.open(minioData.url, '_blank');          
         })
       } else {
         getFile(id).then((file: any) => {
