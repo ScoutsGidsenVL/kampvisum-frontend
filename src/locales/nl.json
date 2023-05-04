@@ -93,8 +93,8 @@
     },
     "location-sidebar": {
       "search": "Zoek op locatie",
-      "success-move-pin": "locatie gevonden, Versleep de pin naar de exacte locatie.",
-      "failed-move-pin": "locatie niet gevonden, Versleep de pin naar de exacte locatie.",
+      "success-move-pin": "locatie gevonden, versleep de pin naar de exacte locatie.",
+      "failed-move-pin": "locatie niet gevonden, versleep de pin naar de exacte locatie.",
       "loading-move-pin": "locatie aan het zoeken.",
       "form": {
         "atleast-one": "Selecteer minstens 1 locatie",
