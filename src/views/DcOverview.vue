@@ -13,6 +13,12 @@
       <dc-menu v-for="(group, index) in groups" :key="index" :group="group" />
     </div>
   </div>
+
+  <div style="width: 400px" class="rounded-md p-3 shadow-md ml-3 flex flex-col gap-2">
+    <span class="flex gap-3"><i-checked /> Volledig en voor de deadline</span>
+    <span class="flex gap-3"><i-check-warning /> Volledig maar na de deadline</span>
+    <span>blank: Nog niet volledig</span>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -22,6 +28,9 @@ import { Loader } from 'vue-3-component-library'
 import { DcOverviewRepository } from '@/repositories/DcOverviewRepository'
 import RepositoryFactory from '@/repositories/repositoryFactory'
 import { ref, watch } from 'vue'
+import IChecked from '../components/icons/IChecked.vue'
+import ICheckWarning from '../components/icons/ICheckWarning.vue'
+
 const selectedYear = ref<string>(new Date().getFullYear().toString())
 
 
