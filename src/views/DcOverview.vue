@@ -14,10 +14,10 @@
     </div>
   </div>
 
-  <div style="width: 400px" class="rounded-md p-3 shadow-md ml-3 flex flex-col gap-2">
+  <div style="width: 300px" class="rounded-md p-3 shadow-md ml-3 flex flex-col gap-2">
     <span class="flex gap-3"><i-checked /> Volledig en voor de deadline</span>
     <span class="flex gap-3"><i-check-warning /> Volledig maar na de deadline</span>
-    <span>blank: Nog niet volledig</span>
+    <span class="flex gap-3"><i-empty-check /> Nog niet volledig</span>
   </div>
 </template>
 
@@ -30,6 +30,7 @@ import RepositoryFactory from '@/repositories/repositoryFactory'
 import { ref, watch } from 'vue'
 import IChecked from '../components/icons/IChecked.vue'
 import ICheckWarning from '../components/icons/ICheckWarning.vue'
+import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
 
 const selectedYear = ref<string>(new Date().getFullYear().toString())
 

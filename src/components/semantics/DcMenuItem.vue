@@ -19,7 +19,9 @@
       <div v-if="camp.registration_status === 'on_time'">
         <i-checked />
       </div>
-      <div v-if="camp.registration_status === 'not_completed'"></div>
+      <div v-if="camp.registration_status === 'not_complete'">
+        <i-empty-check />
+      </div>
     </div>
     <div>
       {{ stateLabel(camp.state) }}
@@ -72,6 +74,7 @@ import { useI18n } from 'vue-i18n'
 import IChecked from '@/components/icons/IChecked.vue'
 import ICheckWarning from '../icons/ICheckWarning.vue'
 import router from '@/router'
+import IEmptyCheck from '../icons/IEmptyCheck.vue';
 const { getSectionsTitle } = useSectionsHelper()
 const { dateFromLocalisedString } = useDateHelper()
 
@@ -119,7 +122,7 @@ const stateLabel = (state: string): string => {
   // if (state === 'SIGNABLE') {
   //   return 'Klaar om te tekenen'
   // }
-  
+
   // if (state === 'REVIEWABLE') {
   //   return 'Klaar voor review'
   // }
