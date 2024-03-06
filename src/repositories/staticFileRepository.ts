@@ -21,7 +21,7 @@ export default class StaticFileRepository {
               "apiSuffix": "api/"
             },
             "oidc": {
-              "baseUrl": "https://login.scoutsengidsenvlaanderen.be/auth/realms/scouts",
+              "baseUrl": "https://login-dev.scoutsengidsenvlaanderen.be/auth/realms/scouts",
               "serverBaseUrl": "/api/oidc",
               "authEndpoint": "protocol/openid-connect/auth",
               "logoutEndpoint": "protocol/openid-connect/logout",

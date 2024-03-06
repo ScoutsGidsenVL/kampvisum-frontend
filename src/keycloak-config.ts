@@ -13,7 +13,7 @@ export default function getClient() {
   const config: MasterConfig = store.getters.config
   
   let returnClient = {
-    url: 'https://login.scoutsengidsenvlaanderen.be/auth',
+    url: 'https://login-dev.scoutsengidsenvlaanderen.be/auth',
     realm: "scouts",
     clientId: config.oidc.clientId,
     onLoad: OnLoadOptions.LOGIN_REQUIRED,
