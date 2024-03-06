@@ -239,12 +239,10 @@ export default defineComponent({
 .desktop-hover-trigger .desktop-hover-target {
   width: 0px;
   height: 25px;
-  transition: 0.5s;
 }
 
 .desktop-hover-trigger:hover .desktop-hover-target {
   width: 110px;
-  transition: 0.5s;
   padding-left: 20px;
   .desktop-iconSize {
     display: block;
