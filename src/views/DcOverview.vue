@@ -33,7 +33,7 @@ import ICheckWarning from '../components/icons/ICheckWarning.vue'
 import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
 
 // Vanaf september (maand 9, maar index 8) kijken we naar het jaar erna
-const selectedYear = ref<string>(new Date().getFullYear().toString() + ((8 <= new Date().getMonth()) ? 1 : 0))
+const selectedYear = ref<string>((new Date().getFullYear() + ((8 <= new Date().getMonth()) ? 1 : 0)).toString())
 
 
 const { t } = useI18n({
