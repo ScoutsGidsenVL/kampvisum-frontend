@@ -32,7 +32,8 @@ import IChecked from '../components/icons/IChecked.vue'
 import ICheckWarning from '../components/icons/ICheckWarning.vue'
 import IEmptyCheck from '@/components/icons/IEmptyCheck.vue'
 
-const selectedYear = ref<string>(new Date().getFullYear().toString())
+// Vanaf september (maand 9, maar index 8) kijken we naar het jaar erna
+const selectedYear = ref<string>(new Date().getFullYear().toString() + ((8 <= new Date().getMonth()) ? 1 : 0))
 
 
 const { t } = useI18n({
