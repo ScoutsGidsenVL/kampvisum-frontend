@@ -39,7 +39,7 @@
             </span>
 
             <div v-for="groupSection in groupSections" :key="groupSection.id">
-              <custom-input v-model="selectedGroupSections" :disabled="isSubmitting" :type="InputTypes.CHECK" rules="required" :name="groupSection.id" :label="groupSection.name.name" />
+              <custom-input v-model="selectedGroupSections" :disabled="isSubmitting" :type="InputTypes.RADIO" rules="required" :name="groupSection.id" :label="groupSection.name.name" />
             </div>
           </div>
         </div>
