@@ -105,7 +105,7 @@ export default defineComponent({
     const campTypes = ref<CampType[]>([])
     const isReload = ref<boolean>(false)
     const selectedCampTypes = ref<Array<string>>()
-    const { value: selectedGroupSections } = useField('sections', 'minimumOneSection', {
+    const { value: selectedGroupSections } = useField('sections', 'oneSection', {
       initialValue: Array<String>(),
     })
 
