@@ -420,6 +420,11 @@ export class scoutsCountriesRepository extends BaseRepository {
         nl: "Kiribati"
       },
       {
+        code: "KG",
+        en: "Kyrgyzstan",
+        nl: "Kirgizië"
+      },
+      {
         code: "KR",
         en: "Republic of Korea",
         nl: "Zuid-Korea"
