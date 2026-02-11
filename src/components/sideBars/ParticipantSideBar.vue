@@ -235,34 +235,31 @@ export default defineComponent({
     }
 
     const fetchedSearchResults = (results: Member[]) => {
-      //ALSO CHECK ALREADY ADDED MEMBERS IN SEARCH RESULTS
-      props.check.value.participants.forEach((alreadyAddedMember: Member) => {
-        results.forEach((member: Member) => {
-          if (member.id === alreadyAddedMember.id) {
-            member.isChecked = true
-          }
-        })
-      });
+      // Create Set of existing participant IDs for O(1) lookup
+      const existingIds = new Set(
+        props.check.value.participants.map((p: Member) => p.id)
+      )
+      
+      // Mark already-added members as checked using Set lookup (O(n) instead of O(n²))
+      results.forEach((member: Member) => {
+        if (existingIds.has(member.id)) {
+          member.isChecked = true
+        }
+      })
       
       loading.value = false
-      //KEEP THE CHECKED MEMBERS
-      let checkedMembers: Member[] = []
-
-      fetchedMembers.value.forEach((fetchedMember: Member) => {
-        if (fetchedMember.isChecked) {
-          checkedMembers.push(fetchedMember)
-        }
-      })
-
-      //SET CHECKED MEMBERS
-      fetchedMembers.value = checkedMembers
-
-      //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
-      results.forEach((r: Member) => {
-        if (!(fetchedMembers.value.some((f: Member) => checkForIdMatch(f,r)))) {
-          fetchedMembers.value.push(r)
-        }
-      })
+      
+      // Keep checked members using filter (cleaner than forEach+push)
+      const checkedMembers = fetchedMembers.value.filter((m: Member) => m.isChecked)
+      
+      // Create Set of checked member IDs for O(1) lookup
+      const checkedIds = new Set(checkedMembers.map((m: Member) => m.id.replaceAll('-', '')))
+      
+      // Combine checked members with new results (avoiding duplicates)
+      fetchedMembers.value = [
+        ...checkedMembers,
+        ...results.filter((r: Member) => !checkedIds.has(r.id.replaceAll('-', '')))
+      ]
     }
 
     const changeSideBar = (options: 'newParticipantSidebar' | 'searchParticipantSidebar') => {

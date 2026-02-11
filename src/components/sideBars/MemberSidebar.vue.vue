@@ -161,33 +161,29 @@ export default defineComponent({
     }
 
     const fetchedSearchResults = (results: Member[]) => {
-      const finalResult: any = []
-      //ALSO CHECK ALREADY ADDED MEMBERS IN SEARCH RESULTS
-      results.forEach((member: Member) => {
-        if (!props.check.value.participants.some((res: any) => res.id.replaceAll('-', '') === member.id.replaceAll('-', ''))) {
-          finalResult.push(member)
-        }
-      })
+      // Create Set of existing participant IDs (normalized once) for O(1) lookup
+      const existingIds = new Set(
+        props.check.value.participants.map((p: any) => p.id.replaceAll('-', ''))
+      )
+      
+      // Filter out already-added members using Set lookup (O(n) instead of O(n²))
+      const finalResult = results.filter(
+        (member: Member) => !existingIds.has(member.id.replaceAll('-', ''))
+      )
 
       loading.value = false
-      //KEEP THE CHECKED MEMBERS
-      let checkedMembers: Member[] = []
-
-      fetchedMembers.value.forEach((fetchedMember: Member) => {
-        if (fetchedMember.isChecked) {
-          checkedMembers.push(fetchedMember)
-        }
-      })
-
-      //SET CHECKED MEMBERS
-      fetchedMembers.value = checkedMembers
-
-      //ADD FETCHED RESULTS ONLY IF IT'S NOT ALREADY CHECKED
-      finalResult.forEach((r: Member) => {
-        if (!(fetchedMembers.value.some((f: Member) => checkForIdMatch(f, r)))) {
-          fetchedMembers.value.push(r)
-        }
-      })
+      
+      // Keep checked members using filter (cleaner than forEach+push)
+      const checkedMembers = fetchedMembers.value.filter((m: Member) => m.isChecked)
+      
+      // Create Set of checked member IDs for O(1) lookup
+      const checkedIds = new Set(checkedMembers.map((m: Member) => m.id.replaceAll('-', '')))
+      
+      // Combine checked members with new results (avoiding duplicates)
+      fetchedMembers.value = [
+        ...checkedMembers,
+        ...finalResult.filter((r: Member) => !checkedIds.has(r.id.replaceAll('-', '')))
+      ]
     }
 
     const selectAllFetchedMembers = () => {
@@ -196,24 +192,8 @@ export default defineComponent({
       })
     }
 
-    const fetchInitMembers = async () => {
-      const finalResult: any = []
-      loading.value = true
-      await RepositoryFactory.get(ParticipantRepository)
-        .search(selectedGroup.value.groupAdminId, '').then((results) => {
-          results.forEach((member: Member) => {
-            if (!props.check.value.participants.some((res: any) => res.id.replaceAll('-', '') === member.id.replaceAll('-', ''))) {
-              finalResult.push(member)
-            }
-          })
-          fetchedMembers.value = finalResult
-          loading.value = false
-        })
-    }
-
-    if (props.check.value.participantCheckType === 'M') {
-      fetchInitMembers()
-    }
+    // Removed automatic fetchInitMembers() call that loaded all members on open
+    // Users should now type to search, preventing massive initial data loads
 
     return {
       selectAllFetchedMembers,

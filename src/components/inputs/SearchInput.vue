@@ -57,6 +57,7 @@ export default defineComponent({
   },
   setup(props, context) {
     let debounce: any
+    let currentController: AbortController | null = null
     const query = ref<string>('')
     const options = ref<any>([])
     const { selectedGroup } = useGroupAndYears()
@@ -66,16 +67,33 @@ export default defineComponent({
       clearTimeout(debounce)
       debounce = setTimeout(() => {
         doCall()
-      }, 1500)
+      }, 400) // Reduced from 1500ms to 400ms for better responsiveness
     }
 
     const doCall = () => {
       if (query.value !== null || query.value !== undefined) {
+        // Cancel previous request if still in flight
+        if (currentController) {
+          currentController.abort()
+        }
+        
+        // Create new AbortController for this request
+        currentController = new AbortController()
+        const signal = currentController.signal
+        
         RepositoryFactory.get(props.repository)
-          .search(selectedGroup.value.groupAdminId, query.value, props.filter ? props.filter : undefined)
+          .search(selectedGroup.value.groupAdminId, query.value, props.filter ? props.filter : undefined, signal)
           .then((results: any) => {
             options.value = results
             context.emit('fetchedOptions', options.value)
+            currentController = null
+          })
+          .catch((error: any) => {
+            // Ignore AbortError from cancelled requests
+            if (error.name !== 'AbortError' && error.name !== 'CanceledError') {
+              console.error('Search error:', error)
+            }
+            currentController = null
           })
       }
     }

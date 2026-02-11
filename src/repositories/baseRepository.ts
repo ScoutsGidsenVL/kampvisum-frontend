@@ -49,8 +49,8 @@ export abstract class BaseRepository extends BaseApiRepository {
     })
   }
 
-  search(groupId: string, query: string, filter?: Filter): Promise<any> {
-    return this.get(groupId, this.endpoint + '?term=' + query, {}).then((response: any[]) => {
+  search(groupId: string, query: string, filter?: Filter, signal?: AbortSignal): Promise<any> {
+    return this.get(groupId, this.endpoint + '?term=' + query, {}, false, signal).then((response: any[]) => {
       const array: any[] = []
       response.forEach((result: any) => {
         array.push(this.deserializer(result))
