@@ -31,8 +31,8 @@ export default abstract class BaseApiRepository {
     )
     
     this.axiosInstance.interceptors.response.use(
-      (response) => response,
-      async (error) => {
+      (response: AxiosResponse) => response,
+      async (error: any) => {
         if (error.response && error.response.status === 401) {
           try {
             await store.getters.keycloak.updateToken(); // refresh the token
@@ -79,8 +79,14 @@ export default abstract class BaseApiRepository {
       })
   }
 
-  protected async get(groupId: string, endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false): Promise<any> {
+  protected async get(groupId: string, endpoint: string, config: AxiosRequestConfig = {}, publicCall: Boolean = false, signal?: AbortSignal): Promise<any> {
     const instance = publicCall && !store.getters['openid/isLoggedIn'] ? this.publicAxiosInstance : this.axiosInstance
+    
+    // Add AbortSignal to config if provided
+    if (signal) {
+      config.signal = signal
+    }
+    
     return await instance
       .get(this.parseEndpoint(groupId, endpoint), config)
       .then(function (result: AxiosResponse) {
@@ -89,6 +95,10 @@ export default abstract class BaseApiRepository {
         return result.data
       })
       .catch((error: any) => {
+        // Re-throw AbortError/CanceledError without processing
+        if (axios.isCancel(error) || error.name === 'AbortError') {
+          throw error
+        }
         return this.processError(error)
       })
   }

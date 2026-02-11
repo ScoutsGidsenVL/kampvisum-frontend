@@ -8,8 +8,8 @@ export class ParticipantRepository extends BaseRepository {
   deserializer = MemberDeserializer
   serializer = MemberSerializer
 
-  search(groupId: string, query: string, filter?: Filter): Promise<any> {
-    return this.get(groupId, `${this.endpoint}?term=${query}${filter && filter.gender ? '&gender=' + filter.gender : ''}${filter && filter.ageMin ? `&min_age=${filter.ageMin}` : ''}${filter && filter.ageMax ? `&max_age=${filter.ageMax}` : ''}${filter && filter.type ? `&type=${filter.type}` : ''}`, {}).then((response: any) => {
+  search(groupId: string, query: string, filter?: Filter, signal?: AbortSignal): Promise<any> {
+    return this.get(groupId, `${this.endpoint}?term=${query}${filter && filter.gender ? '&gender=' + filter.gender : ''}${filter && filter.ageMin ? `&min_age=${filter.ageMin}` : ''}${filter && filter.ageMax ? `&max_age=${filter.ageMax}` : ''}${filter && filter.type ? `&type=${filter.type}` : ''}&limit=100`, {}, false, signal).then((response: any) => {
       const array: any[] = []
       response.results.forEach((result: Member) => {
         result = MemberDeserializer(result)
