@@ -1,5 +1,6 @@
 import { CheckParent, CheckParentDeserializer } from "./CheckParent"
 import { CommentCheckDeserializer } from "./CommentCheck"
+import { SelectCheckDeserializer } from "./SelectCheck"
 import { DeadlineCategory, DeadlineCategoryDeserializer } from "./DeadlineCategory"
 
 //VALUE DESERIALIZERS (make it more dynamic MAYBE?)
@@ -16,7 +17,8 @@ export enum CheckTypes {
   FileUploadCheck = 'FileUploadCheck',
   MemberCheck = 'MemberCheck',
   ParticipantCheck = 'ParticipantCheck',
-  NumberCheck = 'NumberCheck'
+  NumberCheck = 'NumberCheck',
+  SelectCheck = 'SelectCheck'
 }
 export interface Check {
   id?: string
@@ -91,6 +93,8 @@ export const CheckDeserializer = (input: any): Check => {
     single.value = ParticipantCheckDeserializer(input.value)
   } else if (single.checkParent?.checkType?.checkType === CheckTypes.FileUploadCheck) {
     single.value = input.value
+  } else if (single.checkParent?.checkType?.checkType === CheckTypes.SelectCheck) {
+    single.value = SelectCheckDeserializer(input)
   } else {
     single.value = input.value
   }

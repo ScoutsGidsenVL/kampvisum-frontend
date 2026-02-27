@@ -39,6 +39,10 @@
     <div class="px-3 mt-4" v-if="checkType === CheckTypes.NumberCheck">
       <number-check :check="check" @rl="rl($event)" />
     </div>
+
+    <div class="px-3 mt-3" v-if="checkType === CheckTypes.SelectCheck">
+      <select-check :check="check" />
+    </div>
   </div>
 </template>
 
@@ -56,6 +60,7 @@ import CheckComponent from './checks/check.vue'
 import VSwitch from '@lmiller1990/v-switch'
 import { Visum } from '@/serializer/Visum'
 import NumberCheck from '../semantics/NumberCheck.vue'
+import SelectCheck from '../semantics/SelectCheck.vue'
 
 export default defineComponent({
   name: 'ConcernSwitch',
@@ -71,6 +76,7 @@ export default defineComponent({
     VSwitch,
     Message,
     NumberCheck,
+    SelectCheck,
   },
   props: {
     checkType: String,
