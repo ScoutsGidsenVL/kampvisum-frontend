@@ -26,13 +26,13 @@ export default defineComponent({
     },
     subTitle: String,
   },
-  setup () {
+  setup() {
     const route = useRoute()
     const backLink = '/kamp/' + route.params.campId
     return {
       backLink,
-      route
+      route,
     }
-  }
+  },
 })
 </script>

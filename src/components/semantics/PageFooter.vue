@@ -1,20 +1,25 @@
 <template>
   <div>
     <div class="px-3 md:py-1 xs:py-1 border border-lightGray shadow-sm flex justify-between xs:flex-col xs:gap-7">
-      <router-link :to="backLink" style="width: fit-content"
-        class="xs:text-base flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline mb-0">
+      <router-link :to="backLink" style="width: fit-content" class="xs:text-base flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline mb-0">
         <i-left-arrow />
-        {{t('page-footer.back')}}
+        {{ t('page-footer.back') }}
       </router-link>
 
       <div class="flex gap-10 xs:flex-col xs:gap-1">
-        <router-link v-if="previousCategory" :to="'/kamp/' + props.visum.id.toString() + '/category/' + previousCategory.id"
-          class="xs:text-base flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline mb-0">
-          {{t('page-footer.previous')}}
+        <router-link
+          v-if="previousCategory"
+          :to="'/kamp/' + props.visum.id.toString() + '/category/' + previousCategory.id"
+          class="xs:text-base flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline mb-0"
+        >
+          {{ t('page-footer.previous') }}
         </router-link>
-        <router-link v-if="nextCategory" :to="'/kamp/' + props.visum.id.toString() + '/category/' + nextCategory.id"
-          class="xs:text-base flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline mb-0">
-          {{t('page-footer.next')}}
+        <router-link
+          v-if="nextCategory"
+          :to="'/kamp/' + props.visum.id.toString() + '/category/' + nextCategory.id"
+          class="xs:text-base flex gap-2 items-center text-green font-aglet font-light cursor-pointer hover:underline mb-0"
+        >
+          {{ t('page-footer.next') }}
         </router-link>
       </div>
     </div>
@@ -37,8 +42,8 @@ const { t } = useI18n({
 const props = defineProps({
   visum: {
     type: Object as PropType<Visum>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const route = useRoute()

@@ -1,8 +1,11 @@
 <template>
-  <div class="w-auto h-screen " :class="sidebar.state === SidebarState.OPEN ? 'xs:z-50 md:z-40' : 'z-40'">
+  <div class="w-auto h-screen" :class="sidebar.state === SidebarState.OPEN ? 'xs:z-50 md:z-40' : 'z-40'">
     <div class="d-flex h-screen" :class="{ 'md:w-98 xs:w-full': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
       <div class="fixed d-flex" :class="{ 'md:w-98 xs:w-full': sidebar.state === SidebarState.OPEN, 'w-0': sidebar.state === SidebarState.CLOSED }">
-        <div class="overflow-y-auto  pb-20 w-100 border-r-2 border-lightGray flex-column bg-gray h-screen px-4" :class="{ 'd-none': sidebar.state === SidebarState.CLOSED, 'd-flex': sidebar.state === SidebarState.OPEN }">
+        <div
+          class="overflow-y-auto pb-20 w-100 border-r-2 border-lightGray flex-column bg-gray h-screen px-4"
+          :class="{ 'd-none': sidebar.state === SidebarState.CLOSED, 'd-flex': sidebar.state === SidebarState.OPEN }"
+        >
           <div @click="home()" class="mt-4 d-flex justify-between mb-3 items-center cursor-pointer">
             <i-logo />
             <h1 class="text-2xl mt-1.5">{{ t('title') }}</h1>
@@ -29,7 +32,7 @@
               <div class="text-center">
                 <loader color="lightGreen" size="10" :isLoading="isFetchingVisums" />
               </div>
-              <div  v-if="visumsAlphabetically.length > 0">
+              <div v-if="visumsAlphabetically.length > 0">
                 <div v-for="visum in visumsAlphabetically" :key="visum">
                   <navigation-item :visum="visum" :text="`${visum.name} - ${getSectionsTitle(visum)}`">
                     <div v-for="category in visum.categorySet.categories" :key="category">
@@ -38,7 +41,8 @@
                         @click="closeSidebar()"
                         class="xs:text-sm md:text-md block cursor-pointer my-1 px-2"
                         style="width: fit-content"
-                        :class="(category.id === route.params.id) ? 'text-green font-bold' : 'text-black'">
+                        :class="category.id === route.params.id ? 'text-green font-bold' : 'text-black'"
+                      >
                         {{ category.categoryParent.label }}
                       </router-link>
                     </div>
@@ -46,15 +50,21 @@
                 </div>
               </div>
               <div class="ml-2 italic text-sm py-3" v-if="visumsAlphabetically.length === 0 && !isFetchingVisums">
-                {{t('no-camps')}}
+                {{ t('no-camps') }}
               </div>
             </div>
 
-            <navigation-item v-if="!isForbidden && !isFetchingVisums && isInternetActive" @click="closeSidebar()" :highlight="(route.path === '/instellingen') ? true : false" link="/instellingen" :text="t('page-titles.settings')" />
+            <navigation-item
+              v-if="!isForbidden && !isFetchingVisums && isInternetActive"
+              @click="closeSidebar()"
+              :highlight="route.path === '/instellingen' ? true : false"
+              link="/instellingen"
+              :text="t('page-titles.settings')"
+            />
             <!-- <navigation-item link="/documenten" text="Documenten"/> -->
-            <navigation-item @click="closeSidebar()" v-if="can('visums.view_camp_locations') && isInternetActive" link="/locaties" text="Locaties"/>
-            <navigation-item @click="closeSidebar()" v-if="hasRole('role_district_commissioner') && isInternetActive" link="/overzicht-dc" text="Overzicht DC"/>
-            <navigation-item @click="closeSidebar()" v-if="hasRole('role_administrator') &&isInternetActive" link="/locaties" text="Locaties"/>
+            <navigation-item @click="closeSidebar()" v-if="can('visums.view_camp_locations') && isInternetActive" link="/locaties" text="Locaties" />
+            <navigation-item @click="closeSidebar()" v-if="hasRole('role_district_commissioner') && isInternetActive" link="/overzicht-dc" text="Overzicht DC" />
+            <navigation-item @click="closeSidebar()" v-if="hasRole('role_administrator') && isInternetActive" link="/locaties" text="Locaties" />
             <!-- <navigation-item link="/niet-leden" text="Niet-leden"/> -->
           </div>
         </div>
@@ -109,7 +119,7 @@ export default defineComponent({
     const { sidebar } = useNavigation()
     const { setSelectedGroup, getAvailableGroups, selectedGroup } = useGroupAndYears()
     const { isForbidden } = useNotification()
-    
+
     const { t } = useI18n({
       inheritLocale: true,
       useScope: 'local',
@@ -159,7 +169,7 @@ export default defineComponent({
       home,
       t,
       can,
-      hasRole
+      hasRole,
     }
   },
 })
