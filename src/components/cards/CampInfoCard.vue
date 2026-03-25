@@ -13,9 +13,14 @@
         </div>
       </div>
       <h2 class="mb-3 mt-1 text-xl font-semibold font-museo">{{ visum.name }}</h2>
-      <div style="width:fit-content"
-        @click.stop="navigateTowardsCategory(category.categoryParent.name, visum, category.id)"
-        v-for="category in visum.categorySet.categories" :key="category" class="d-flex gap-3 my-2.5 items-center group">
+      <router-link
+        v-for="category in visum.categorySet.categories"
+        :key="category"
+        :to="'/kamp/' + visum.id.toString() + '/category/' + category.id"
+        @click.stop
+        style="width:fit-content"
+        class="d-flex gap-3 my-2.5 items-center group"
+        :class="isInternetActive ? 'cursor-pointer' : 'pointer-events-none'">
         <div style="min-width: 24px">
           <svg v-if="category.state === 'CHECKED'" class="mt-1 fill-current text-green" xmlns="http://www.w3.org/2000/svg"
             width="24" height="24" viewBox="0 0 24 24">
@@ -32,7 +37,7 @@
           :class="isInternetActive ? 'group-hover:underline' : ''">
           {{ category.categoryParent.label }}
         </h4>
-      </div>
+      </router-link>
       <camp-global-status-label :visum="visum" />
       <custom-button class="w-100 bg-green cursor-pointer" @click.stop="navigateTowardsPassport(visum.id)"
         :extraStyle="'w-100'" :text="t('passport.view-passport')">
@@ -47,7 +52,6 @@ import { useSectionsHelper } from '../../helpers/sectionsHelper'
 import { useNavigation } from '../../composable/useNavigation'
 import { defineComponent, PropType } from 'vue'
 import { VisumOverview } from '../../serializer/Visum'
-import { useRoute } from 'vue-router'
 import router from '@/router'
 import useVisum from '@/composable/useVisum'
 import CampGlobalStatusLabel from '@/components/semantics/CampGlobalStatusLabel.vue'
@@ -68,8 +72,7 @@ export default defineComponent({
   },
   setup() {
     const { isInternetActive } = useInternetHelper()
-    const route = useRoute()
-    const { navigateTowardsCategory, navigateTowardsPassport } = useNavigation()
+    const { navigateTowardsPassport } = useNavigation()
     const { getSectionsTitle } = useSectionsHelper()
     const { navigateTowardsVisum } = useVisum()
 
@@ -79,11 +82,9 @@ export default defineComponent({
     })
 
     return {
-      navigateTowardsCategory,
       navigateTowardsPassport,
       navigateTowardsVisum,
       getSectionsTitle,
-      route,
       isInternetActive,
       t
     }
