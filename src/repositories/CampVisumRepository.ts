@@ -5,6 +5,12 @@ import { useInternetHelper } from '@/helpers/internetHelper'
 import { useOfflineData } from '@/composable/useOfflineData'
 import useGroupAndYears from '@/composable/useGroupAndYears'
 import { ref } from 'vue'
+import {
+  clearCachedVisumDetailsForGroup,
+  getCachedVisumDetail,
+  invalidateVisumDetailCacheOnReload,
+  setCachedVisumDetail,
+} from '@/helpers/visumCacheHelper'
 
 export class CampVisumRepository extends BaseRepository {
   id = '/camps/'
@@ -73,14 +79,24 @@ export class CampVisumRepository extends BaseRepository {
     }
   }
 
-  getById(groupId: string, id: string): Promise<any> {
+  getById(groupId: string, id: string, forceRefresh = false): Promise<any> {
     const { isInternetActive } = useInternetHelper()
     const { getVisum } = useOfflineData()
 
+    invalidateVisumDetailCacheOnReload()
 
     if (isInternetActive.value) {
+      if (!forceRefresh) {
+        const cachedVisum = getCachedVisumDetail(groupId, id)
+        if (cachedVisum) {
+          return Promise.resolve(cachedVisum)
+        }
+      }
+
       return this.get(groupId, this.endpoint + id, {}).then((response: any) => {
-        return this.deserializer(response)
+        const deserialized = this.deserializer(response)
+        setCachedVisumDetail(groupId, id, deserialized)
+        return deserialized
       })
     } else {
       return new Promise<any>((resolve) => {
@@ -99,42 +115,49 @@ export class CampVisumRepository extends BaseRepository {
 
   patchCategoryFeedback(groupId: string, subCategoryId: string, feedback: string): Promise<any> {
     return this.patch(groupId, `${this.endpoint}${subCategoryId}/feedback`, { feedback: feedback }).then((response: any) => {
+      clearCachedVisumDetailsForGroup(groupId)
       return response
     })
   }
 
   patchCategoryApproval(groupId: string, subCategoryId: string, approval: string): Promise<any> {
     return this.patch(groupId, `${this.endpoint}${subCategoryId}/approval`, { approval: approval }).then((response: any) => {
+      clearCachedVisumDetailsForGroup(groupId)
       return response
     })
   }
 
   patchVisumNotes(groupId: string, visumId: string, notes: string): Promise<any> {
     return this.patch(groupId, `${this.endpoint}${visumId}/notes`, { notes: notes }).then((response: any) => {
+      clearCachedVisumDetailsForGroup(groupId)
       return response
     })
   }
 
   patchVisumHandleFeedback(groupId: string, subCategoryId: string): Promise<any> {
     return this.patch(groupId, `${this.endpoint}${subCategoryId}/handle_feedback`, {}).then((response: any) => {
+      clearCachedVisumDetailsForGroup(groupId)
       return response
     })
   }
 
   patchVisumHandleFeedbackGlobal(groupId: string, visumId: string): Promise<any> {
     return this.patch(groupId, `${this.endpoint}${visumId}/global_handle_feedback`, {}).then((response: any) => {
+      clearCachedVisumDetailsForGroup(groupId)
       return response
     })
   }
 
   patchVisumApprovalGlobal(groupId: string, visumId: string): Promise<any> {
     return this.patch(groupId, `${this.endpoint}${visumId}/global_approval`, {}).then((response: any) => {
+      clearCachedVisumDetailsForGroup(groupId)
       return response
     })
   }
 
   patchVisumDisapproval(groupId: string, visumId: string): Promise<any> {
     return this.patch(groupId, `${this.endpoint}${visumId}/global_disapproval`, {}).then((response: any) => {
+      clearCachedVisumDetailsForGroup(groupId)
       return response
     })
   }
