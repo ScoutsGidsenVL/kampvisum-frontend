@@ -33,9 +33,14 @@
                 <div v-for="visum in visumsAlphabetically" :key="visum">
                   <navigation-item :visum="visum" :text="`${visum.name} - ${getSectionsTitle(visum)}`">
                     <div v-for="category in visum.categorySet.categories" :key="category">
-                      <a @click="navigateTowardsCategory(category.categoryParent.name, visum, category.id);closeSidebar()" class="xs:text-sm md:text-md block cursor-pointer my-1 px-2" style="width: fit-content" :class="(category.id === route.params.id) ? 'text-green font-bold' : 'text-black'">
+                      <router-link
+                        :to="'/kamp/' + visum.id.toString() + '/category/' + category.id"
+                        @click="closeSidebar()"
+                        class="xs:text-sm md:text-md block cursor-pointer my-1 px-2"
+                        style="width: fit-content"
+                        :class="(category.id === route.params.id) ? 'text-green font-bold' : 'text-black'">
                         {{ category.categoryParent.label }}
-                      </a>
+                      </router-link>
                     </div>
                   </navigation-item>
                 </div>
@@ -101,7 +106,7 @@ export default defineComponent({
     const route = useRoute()
     const { isFetchingVisums, visums, visumsAlphabetically } = useVisum()
     const { getSectionsTitle } = useSectionsHelper()
-    const { navigateTowardsCategory, sidebar } = useNavigation()
+    const { sidebar } = useNavigation()
     const { setSelectedGroup, getAvailableGroups, selectedGroup } = useGroupAndYears()
     const { isForbidden } = useNotification()
     
@@ -137,7 +142,6 @@ export default defineComponent({
     }
 
     return {
-      navigateTowardsCategory,
       visumsAlphabetically,
       changeSelectedGroup,
       getAvailableGroups,
