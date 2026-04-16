@@ -95,7 +95,7 @@ export default defineComponent({
 
     const rl = () => {
       visum.value = undefined
-      getCampByRouteParam().then((v: Visum) => {
+      getCampByRouteParam(true).then((v: Visum) => {
         visum.value = v
         isFetchingVisum.value = false
       })

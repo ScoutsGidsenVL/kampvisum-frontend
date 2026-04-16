@@ -15,7 +15,7 @@ const { setSelectedGroup, selectedGroup } = useGroupAndYears()
 const { goToHome } = useNavigation()
 
 export const useCampHelper = (): {
-  getCampByRouteParam: () => Promise<Visum>,
+  getCampByRouteParam: (forceRefresh?: boolean) => Promise<Visum>,
   getCategoryByRouteParam: () => Promise<Category>,
   setCampsByGroup: (camps: Visum[]) => void,
   campsByGroup: Ref<Visum[]>,
@@ -23,9 +23,9 @@ export const useCampHelper = (): {
 
   const route = useRoute()
 
-  const getCampByRouteParam = async (): Promise<Visum> => {
+  const getCampByRouteParam = async (forceRefresh = false): Promise<Visum> => {
     return RepositoryFactory.get(CampVisumRepository)
-      .getById(selectedGroup.value.groupAdminId, route.params.campId.toString() + "/")
+      .getById(selectedGroup.value.groupAdminId, route.params.campId.toString() + "/", forceRefresh)
       .then((c: Visum) => {
         store.getters.user.scoutsGroups.forEach((userGroup: Group) => {
           if (userGroup.groupAdminId === c.groupGroupAdminId) {

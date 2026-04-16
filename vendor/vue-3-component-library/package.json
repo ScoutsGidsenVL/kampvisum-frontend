@@ -1,0 +1,7 @@
+{
+  "name": "vue-3-component-library",
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
+  "description": "Vue 3 component library for Scouts en Gidsen Vlaanderen"
+}

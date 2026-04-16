@@ -1,0 +1,7 @@
+{
+  "name": "inuits-vuejs-oidc",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "description": "OpenID Connect plugin for Vue.js"
+}

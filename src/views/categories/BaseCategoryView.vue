@@ -104,7 +104,7 @@ export default defineComponent({
     }
 
     const rl = () => {
-       getCampByRouteParam().then((v: Visum) => {
+       getCampByRouteParam(true).then((v: Visum) => {
         visum.value = v
         category.value = visum.value.categorySet.categories.find((c: Category) => c.id === route.params.id)
        })
