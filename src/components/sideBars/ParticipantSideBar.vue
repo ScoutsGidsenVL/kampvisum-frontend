@@ -253,12 +253,12 @@ export default defineComponent({
       const checkedMembers = fetchedMembers.value.filter((m: Member) => m.isChecked)
       
       // Create Set of checked member IDs for O(1) lookup
-      const checkedIds = new Set(checkedMembers.map((m: Member) => m.id.replaceAll('-', '')))
-      
+      const checkedIds = new Set(checkedMembers.map((m: Member) => m.id))
+
       // Combine checked members with new results (avoiding duplicates)
       fetchedMembers.value = [
         ...checkedMembers,
-        ...results.filter((r: Member) => !checkedIds.has(r.id.replaceAll('-', '')))
+        ...results.filter((r: Member) => !checkedIds.has(r.id))
       ]
     }
 
