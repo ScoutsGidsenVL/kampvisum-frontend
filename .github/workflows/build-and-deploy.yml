@@ -75,4 +75,4 @@ jobs:
           envs: BRANCH_NAME
           script: |
             echo "Branch $BRANCH_NAME"
-            sudo -u ansible /opt/deploy-kamp.sh frontend ${BRANCH_NAME}
+            sudo -u ansible /opt/deploy-github-kamp.sh frontend ${BRANCH_NAME}
