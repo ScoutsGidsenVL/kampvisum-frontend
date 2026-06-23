@@ -13,13 +13,16 @@ export default function getClient() {
   const config: MasterConfig = store.getters.config
   
   let returnClient = {
-    url: 'https://login.scoutsengidsenvlaanderen.be/auth',
+    // De keycloak-host volgt config.json (oidc.baseUrl = https://<host>/realms/scouts),
+    // zodat dezelfde host gebruikt wordt als de backend i.p.v. een hardgecodeerde prod-url.
+    url: config.oidc.baseUrl.replace('/realms/scouts', ''),
     realm: "scouts",
     clientId: config.oidc.clientId,
     onLoad: OnLoadOptions.LOGIN_REQUIRED,
     redirectUri: config.frontend.baseUrl,
-    checkLoginIframe: true,
-    checkLoginIframeInterval: 5
+    // checkLoginIframe uit: de session-status iframe loopt vast tegen Keycloak 26
+    // door de SameSite-cookieregels.
+    checkLoginIframe: false
   };
   return returnClient;
 }
