@@ -1,6 +1,9 @@
 const path = require('path')
 
 module.exports = {
+  // keycloak-js 22+ wordt verdeeld als ESM met moderne syntax. vue-cli 4 (webpack 4)
+  // transpileert node_modules niet, dus keycloak-js expliciet meenemen.
+  transpileDependencies: ['keycloak-js'],
   pluginOptions: {
     i18n: {
       locale: 'nl',
