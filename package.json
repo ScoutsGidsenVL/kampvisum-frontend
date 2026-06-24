@@ -17,7 +17,7 @@
     "@vee-validate/rules": "4.5.11",
     "@vueform/multiselect": "2.3.3",
     "autoprefixer": "9.8.8",
-    "axios": "^0.31.0",
+    "axios": "^0.32.0",
     "core-js": "3.21.1",
     "dayjs": "1.11.0",
     "delay": "5.0.0",
