@@ -13,7 +13,9 @@ export default function getClient() {
   const config: MasterConfig = store.getters.config
   
   let returnClient = {
-    url: 'https://login-dev.scoutsengidsenvlaanderen.be',
+    // De keycloak-host komt uit config.json (door ansible getemplatet via
+    // django_keycloak_hostname): oidc.baseUrl = https://<host>/realms/scouts.
+    url: config.oidc.baseUrl.replace('/realms/scouts', ''),
     realm: "scouts",
     clientId: config.oidc.clientId,
     onLoad: OnLoadOptions.LOGIN_REQUIRED,
