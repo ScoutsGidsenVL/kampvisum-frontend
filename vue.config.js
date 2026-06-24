@@ -1,6 +1,7 @@
 const path = require('path')
 
 module.exports = {
+  transpileDependencies: ['keycloak-js'],
   pluginOptions: {
     i18n: {
       locale: 'nl',

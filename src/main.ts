@@ -17,11 +17,6 @@ import Keycloak from 'keycloak-js';
 import getClient from "./keycloak-config";
 import { OnLoadOptionsType } from './keycloak-config'
 
-declare module 'keycloak-js' {
-  interface KeycloakInstance {
-    parseCallback(url: string): any;
-  }
-}
 const nl = require('./locales/nl.json')
 const { isInternetActive } = useInternetHelper()
 let { logoutFromGA } = useAuthHelper()
@@ -59,7 +54,7 @@ isOnline().then((isOnlineResult: any) => {
 
     // KEYCLOAK
     let initOptions = getClient();
-    const keycloak = Keycloak(initOptions);
+    const keycloak = new Keycloak(initOptions);
     keycloak.init({ onLoad: initOptions.onLoad as OnLoadOptionsType })
 
     store.dispatch('setKeycloak', keycloak)
