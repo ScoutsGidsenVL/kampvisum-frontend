@@ -9,7 +9,13 @@ on:
       - production
 
 jobs:
+  controle:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/controle.yml
+
   build-and-deploy:
+    needs: controle
     runs-on: ubuntu-22.04
 
     steps:

@@ -1,0 +1,28 @@
+name: Controle
+
+# Geen concurrency: een aangeroepen workflow deelt github.workflow met de aanroeper
+# en zou zichzelf blokkeren.
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  controle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          # zelfde versie als build-and-deploy.yml
+          node-version: "18"
+      - name: Installeren
+        run: npm ci --ignore-scripts
+        env:
+          npm_config_registry: https://registry.npmjs.org/
+      - name: Build
+        run: npm run build
+        env:
+          # webpack 4 (Vue CLI 4) heeft op Node 17 of hoger de legacy OpenSSL-provider nodig
+          NODE_OPTIONS: --openssl-legacy-provider
