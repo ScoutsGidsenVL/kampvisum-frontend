@@ -1,4 +1,3 @@
-import { GroupDeserializer, GroupSerializer } from '@/serializer/Group'
 import { BaseRepository } from '@/repositories/baseRepository'
 import { Section, SectionDeserializer } from '@/serializer/Section'
 import { ArrayResult } from '@/interfaces/ArrayResult'
@@ -6,19 +5,9 @@ import { useInternetHelper } from '@/helpers/internetHelper'
 
 export class GroupRepository extends BaseRepository {
   id = '/groups/'
-  endpoint = 'ga/groups/'
-  deserializer = GroupDeserializer
-  serializer = GroupSerializer
-
-  getArray(groupId: string, pagination?: string): Promise<any> {
-    return this.get(groupId, this.endpoint + (pagination ? pagination : ''), {}).then((response: Array<any>) => {
-      const array: any[] = []
-      response.forEach((result: any) => {
-        array.push(this.deserializer(result))
-      })
-      return array
-    })
-  }
+  endpoint = ''
+  deserializer = undefined
+  serializer = undefined
 
   getGroupSections(groupId: string): Promise<any> {
     const { isInternetActive } = useInternetHelper()
